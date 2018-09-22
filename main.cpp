@@ -6,7 +6,9 @@
 #include <QtAV>
 #include <QtAVWidgets>
 #include <QDesktopWidget>
-#include <QtWin>
+#include <QSystemTrayIcon>
+#include <QMenu>
+#include <QIcon>
 
 //https://github.com/ThomasHuai/Wallpaper/blob/master/utils.cpp
 static HWND HWORKERW = nullptr;
@@ -53,12 +55,12 @@ int main(int argc, char *argv[])
     QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
     QCoreApplication::setApplicationName(QStringLiteral("Dynamic Desktop"));
     QCoreApplication::setApplicationVersion(QStringLiteral(DD_VERSION));
-    QApplication app(argc, argv);
+    QApplication app(argc, argv);    
     QtAV::GLWidgetRenderer2 renderer;
+    renderer.setWindowIcon(QIcon(QStringLiteral(":/icon.ico")));
+    renderer.setWindowTitle(QStringLiteral("Dynamic Desktop"));
     QRect screenGeometry = QApplication::desktop()->screenGeometry(&renderer);
-    QtWin::setCompositionEnabled(true);
     renderer.setAttribute(Qt::WA_NoSystemBackground);
-    QtWin::enableBlurBehindWindow(&renderer);
     renderer.setWindowFlags(renderer.windowFlags() | Qt::FramelessWindowHint);
     renderer.setGeometry(screenGeometry.left(), screenGeometry.bottom(), 5, 5);
     renderer.show();
@@ -66,10 +68,19 @@ int main(int argc, char *argv[])
     player.setRenderer(&renderer);
     //player.play(QStringLiteral("test.mkv"));
     PreferencesDialog preferencesDialog;
-    preferencesDialog.show();
+    preferencesDialog.setWindowIcon(QIcon(QStringLiteral(":/icon.ico")));
+    QMenu trayMenu;
+    trayMenu.addAction(QStringLiteral("Preferences"), &preferencesDialog, &QWidget::show);
+    trayMenu.addAction(QStringLiteral("Exit"), qApp, &QApplication::closeAllWindows);
+    QSystemTrayIcon trayIcon;
+    trayIcon.setIcon(QIcon(QStringLiteral(":/icon.ico")));
+    trayIcon.setToolTip(QStringLiteral("Dynamic Desktop"));
+    trayIcon.setContextMenu(&trayMenu);
+    trayIcon.show();
+    //preferencesDialog.show();
     HWND workerwHWND = getWorkerW();
-    auto wallpaperHWND = reinterpret_cast<HWND>(renderer.winId());
     hideWorkerW();
+    auto wallpaperHWND = reinterpret_cast<HWND>(renderer.winId());
     SetParent(wallpaperHWND, workerwHWND);    
     renderer.setGeometry(screenGeometry);
     int exec = QApplication::exec();
