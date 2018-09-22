@@ -6,6 +6,7 @@
 #include <QtAV>
 #include <QtAVWidgets>
 #include <QDesktopWidget>
+#include <QtWin>
 
 //https://github.com/ThomasHuai/Wallpaper/blob/master/utils.cpp
 static HWND HWORKERW = nullptr;
@@ -50,10 +51,17 @@ int main(int argc, char *argv[])
 {
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
+    QCoreApplication::setApplicationName(QStringLiteral("Dynamic Desktop"));
+    QCoreApplication::setApplicationVersion(QStringLiteral(DD_VERSION));
     QApplication app(argc, argv);
     QtAV::GLWidgetRenderer2 renderer;
+    QRect screenGeometry = QApplication::desktop()->screenGeometry(&renderer);
+    QtWin::setCompositionEnabled(true);
+    renderer.setAttribute(Qt::WA_NoSystemBackground);
+    QtWin::enableBlurBehindWindow(&renderer);
     renderer.setWindowFlags(renderer.windowFlags() | Qt::FramelessWindowHint);
-    renderer.showFullScreen();
+    renderer.setGeometry(screenGeometry.left(), screenGeometry.bottom(), 5, 5);
+    renderer.show();
     QtAV::AVPlayer player;
     player.setRenderer(&renderer);
     //player.play(QStringLiteral("test.mkv"));
@@ -62,10 +70,8 @@ int main(int argc, char *argv[])
     HWND workerwHWND = getWorkerW();
     auto wallpaperHWND = reinterpret_cast<HWND>(renderer.winId());
     hideWorkerW();
-    SetParent(wallpaperHWND, workerwHWND);
-    QRect screenGeo = QApplication::desktop()->screenGeometry(&renderer);
-    SetWindowPos(wallpaperHWND, HWND_TOP, 0, 0, screenGeo.width(), screenGeo.height(), SWP_NOACTIVATE);
-    renderer.setGeometry(screenGeo);
+    SetParent(wallpaperHWND, workerwHWND);    
+    renderer.setGeometry(screenGeometry);
     int exec = QApplication::exec();
     showWorkerW();
     return exec;
