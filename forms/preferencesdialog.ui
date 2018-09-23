@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>711</width>
-    <height>271</height>
+    <width>738</width>
+    <height>296</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -42,6 +42,13 @@
       <string>Player</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <widget class="QCheckBox" name="checkBox_hwdec">
+        <property name="text">
+         <string>Try to use Hardware Accelerated Decoding</string>
+        </property>
+       </widget>
+      </item>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_3">
         <item>

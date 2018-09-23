@@ -30,7 +30,7 @@ void SettingsManager::unregAutostart()
         set.remove(QStringLiteral("Dynamic Desktop"));
 }
 
-bool SettingsManager::isRegAutostart()
+bool SettingsManager::isRegAutostart() const
 {
     const QString key = QStringLiteral("HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run");
     QSettings set(key, QSettings::NativeFormat);
@@ -57,6 +57,11 @@ bool SettingsManager::getAutostart() const
     return settings->value(QStringLiteral("autostart"), false).toBool();
 }
 
+bool SettingsManager::getHwdec() const
+{
+    return settings->value(QStringLiteral("hwdec"), true).toBool();
+}
+
 void SettingsManager::setUrl(const QString &url)
 {
     settings->setValue(QStringLiteral("url"), url);
@@ -75,6 +80,11 @@ void SettingsManager::setVolume(unsigned int volume)
 void SettingsManager::setAutostart(bool enable)
 {
     settings->setValue(QStringLiteral("autostart"), enable);
+}
+
+void SettingsManager::setHwdec(bool enable)
+{
+    settings->setValue(QStringLiteral("hwdec"), enable);
 }
 
 SettingsManager::SettingsManager()

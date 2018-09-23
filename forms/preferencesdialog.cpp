@@ -6,6 +6,7 @@
 #include <QInputDialog>
 #include <QFileInfo>
 #include <QDir>
+#include <QMessageBox>
 
 PreferencesDialog::PreferencesDialog(QWidget *parent) :
     QWidget(parent),
@@ -13,6 +14,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
 {
     ui->setupUi(this);
     setFixedHeight(height());
+    ui->checkBox_hwdec->setChecked(SettingsManager::getInstance()->getHwdec());
     connect(ui->checkBox_volume, &QCheckBox::stateChanged,
         [=]
         {
@@ -50,6 +52,12 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
             QString url = QInputDialog::getText(nullptr, tr("Please input a valid url"), tr("URL"), QLineEdit::Normal, QStringLiteral("https://"), &ok);
             if (ok && !url.isEmpty())
                 ui->lineEdit_url->setText(url);
+        });
+    connect(ui->checkBox_hwdec, &QCheckBox::stateChanged,
+        [=]
+        {
+            if (isVisible())
+                QMessageBox::information(nullptr, QStringLiteral("Dynamic Desktop"), tr("Restart this application to experience it.\nMake sure this application runs in your GPU's Optimus mode."));
         });
     connect(this, SIGNAL(refreshUi()), this, SLOT(refreshUI()));
 }
@@ -102,4 +110,6 @@ void PreferencesDialog::saveSettings()
         SettingsManager::getInstance()->setAutostart(ui->checkBox_autostart->isChecked());
         emit autostartChanged(ui->checkBox_autostart->isChecked());
     }
+    if (ui->checkBox_hwdec->isChecked() != SettingsManager::getInstance()->getHwdec())
+        SettingsManager::getInstance()->setHwdec(ui->checkBox_hwdec->isChecked());
 }

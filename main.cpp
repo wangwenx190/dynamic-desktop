@@ -16,7 +16,7 @@
 #include <QLocale>
 
 //https://github.com/ThomasHuai/Wallpaper/blob/master/utils.cpp
-static HWND HWORKERW = nullptr;
+HWND HWORKERW = nullptr;
 
 BOOL CALLBACK EnumWindowsProc(HWND hwnd, LPARAM lParam)
 {
@@ -79,7 +79,23 @@ int main(int argc, char *argv[])
     renderer.show();
     QtAV::AVPlayer player;
     player.setRenderer(&renderer);
-    player.setRepeat(-1); // Loop
+    if (SettingsManager::getInstance()->getHwdec())
+    {
+        player.setVideoDecoderPriority(QStringList()
+                                       << QStringLiteral("CUDA")
+                                       << QStringLiteral("D3D11")
+                                       << QStringLiteral("DXVA")
+                                       << QStringLiteral("VAAPI")
+                                       << QStringLiteral("VideoToolbox")
+                                       << QStringLiteral("FFmpeg"));
+        QVariantHash cuda_opt;
+        cuda_opt[QStringLiteral("surfaces")] = 0;
+        cuda_opt[QStringLiteral("copyMode")] = QStringLiteral("ZeroCopy");
+        QVariantHash opt;
+        opt[QStringLiteral("CUDA")] = cuda_opt;
+        player.setOptionsForVideoCodec(opt);
+    }
+    player.setRepeat(-1);
     QObject::connect(&player, SIGNAL(stopped()), &player, SLOT(play()));
     PreferencesDialog preferencesDialog;
     preferencesDialog.setWindowIcon(QIcon(QStringLiteral(":/icon.ico")));
@@ -176,7 +192,6 @@ int main(int argc, char *argv[])
     SetWindowPos(wallpaper, HWND_BOTTOM, 0, 0, 0, 0, SWP_NOACTIVATE | SWP_NOMOVE | SWP_NOSIZE);
     renderer.setGeometry(screenGeometry);
     int exec = QApplication::exec();
-    delete muteAction;
     CloseHandle(mutex);    
     return exec;
 }
