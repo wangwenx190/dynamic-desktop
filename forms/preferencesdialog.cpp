@@ -78,7 +78,7 @@ void PreferencesDialog::refreshUI()
     ui->checkBox_mute->setChecked(SettingsManager::getInstance()->getMute());
     ui->horizontalSlider_volume->setEnabled(!ui->checkBox_mute->isChecked());
     ui->horizontalSlider_volume->setValue(static_cast<int>(SettingsManager::getInstance()->getVolume() * 10));
-    ui->checkBox_autostart->setChecked(SettingsManager::getInstance()->getAutostart());
+    ui->checkBox_autostart->setChecked(SettingsManager::getInstance()->getAutostart() && SettingsManager::getInstance()->isRegAutostart());
 }
 
 void PreferencesDialog::saveSettings()

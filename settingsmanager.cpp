@@ -18,7 +18,7 @@ bool SettingsManager::regAutostart()
         return false;
     }
     QString value = QLatin1Char('"') + QCoreApplication::applicationFilePath() + QLatin1Char('"');
-    set.setValue(QStringLiteral("Dynamic Desktop"), QDir::toNativeSeparators(value.simplified()));
+    set.setValue(QStringLiteral("Dynamic Desktop"), QDir::toNativeSeparators(value));
     return true;
 }
 

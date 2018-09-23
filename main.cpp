@@ -25,7 +25,8 @@ BOOL CALLBACK EnumWindowsProc(HWND hwnd, LPARAM lParam)
     if (HDEFVIEW != nullptr)
     {
         HWORKERW = FindWindowEx(nullptr, hwnd, TEXT("WorkerW"), nullptr);
-        return FALSE;
+        if (HWORKERW != nullptr)
+            return FALSE;
     }
     return TRUE;
 }
@@ -44,18 +45,24 @@ HWND getProgman()
 
 int main(int argc, char *argv[])
 {
-    HANDLE mutex = CreateMutex(nullptr, FALSE, TEXT("wangwenx190.DynamicDesktop.Mutex"));
+    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+    QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
+    QCoreApplication::setApplicationName(QStringLiteral("Dynamic Desktop"));
+    QApplication::setApplicationDisplayName(QStringLiteral("Dynamic Desktop"));
+    QCoreApplication::setApplicationVersion(QStringLiteral(DD_VERSION));
+    QCoreApplication::setOrganizationName(QStringLiteral("wangwenx190"));
+    QCoreApplication::setOrganizationDomain(QStringLiteral("wangwenx190.github.io"));
+    QApplication app(argc, argv);
+    QTranslator translator;
+    if (translator.load(QLocale(), QStringLiteral("dd"), QStringLiteral("_"), QStringLiteral(":/i18n")))
+        QApplication::installTranslator(&translator);
+    HANDLE mutex = CreateMutex(nullptr, FALSE, TEXT("wangwenx190.DynamicDesktop.1000.AppMutex"));
     if (GetLastError() == ERROR_ALREADY_EXISTS)
     {
         QMessageBox::critical(nullptr, QStringLiteral("Dynamic Desktop"), QObject::tr("There is another instance running."));
         CloseHandle(mutex);
         return 0;
     }
-    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
-    QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
-    QCoreApplication::setApplicationName(QStringLiteral("Dynamic Desktop"));
-    QCoreApplication::setApplicationVersion(QStringLiteral(DD_VERSION));
-    QApplication app(argc, argv);
     if (SettingsManager::getInstance()->getAutostart() && !SettingsManager::getInstance()->isRegAutostart())
         SettingsManager::getInstance()->regAutostart();
     else if (!SettingsManager::getInstance()->getAutostart() && SettingsManager::getInstance()->isRegAutostart())
