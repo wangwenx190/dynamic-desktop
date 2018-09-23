@@ -21,22 +21,15 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
-    <widget class="QGroupBox" name="groupBox_autoStart">
+    <widget class="QGroupBox" name="groupBox_general">
      <property name="title">
-      <string>Auto start</string>
+      <string>General</string>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_2">
       <item>
-       <widget class="QPushButton" name="pushButton_enableAutoStart">
+       <widget class="QCheckBox" name="checkBox_autostart">
         <property name="text">
-         <string>Enable</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="pushButton_disableAutoStart">
-        <property name="text">
-         <string>Disable</string>
+         <string>Auto start</string>
         </property>
        </widget>
       </item>
@@ -60,13 +53,26 @@
         </item>
         <item>
          <widget class="QLineEdit" name="lineEdit_url">
+          <property name="enabled">
+           <bool>true</bool>
+          </property>
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
           <property name="placeholderText">
-           <string>Input local file or web url</string>
+           <string>Local files and web urls are all acceptable</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton_browse">
+         <widget class="QPushButton" name="pushButton_url_input">
+          <property name="text">
+           <string>Input</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pushButton_url_browse">
           <property name="text">
            <string>Browse</string>
           </property>
@@ -105,13 +111,6 @@
          <widget class="QPushButton" name="pushButton_pause">
           <property name="text">
            <string>Pause</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="pushButton_stop">
-          <property name="text">
-           <string>Stop</string>
           </property>
          </widget>
         </item>

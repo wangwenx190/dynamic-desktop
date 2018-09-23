@@ -1,29 +1,26 @@
 ﻿#pragma once
 
-#include <QObject>
 #include <QSettings>
 
 class SettingsManager
 {
-    Q_OBJECT
-
-signals:
-    void urlChanged(const QString &url);
-    void muteChanged(bool mute);
-    void volumeChanged(unsigned int volume);
-
 public:
     static SettingsManager *getInstance();
 
-public slots:
+public:
+    bool regAutostart();
+    void unregAutostart();
+    bool isRegAutostart();
+
     QString getUrl() const;
     bool getMute() const;
-    unsigned int getVolume() const;
+    qreal getVolume() const;
+    bool getAutostart() const;
 
-public slots:
     void setUrl(const QString &url);
     void setMute(bool mute);
-    void setVolume(unsigned int volume);
+    void setVolume(qreal volume);
+    void setAutostart(bool enable);
 
 private:
     SettingsManager();

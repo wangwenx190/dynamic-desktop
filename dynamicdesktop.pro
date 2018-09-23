@@ -1,4 +1,5 @@
 !win32: error(This project only supports Win32 platform!)
+!versionAtLeast(QT_VERSION, 5.6.3): error(Upgrade your Qt to at least 5.6.3!)
 include(version.pri)
 include(optimization.pri)
 TARGET = dd
@@ -21,6 +22,7 @@ LIBS += -lUser32
 SOURCES += main.cpp forms/preferencesdialog.cpp settingsmanager.cpp
 HEADERS += forms/preferencesdialog.h settingsmanager.h
 FORMS += forms/preferencesdialog.ui
+TRANSLATIONS += translations/dd_zh_CN.ts
 RESOURCES += resources.qrc
 target.path = $$DESTDIR
 INSTALLS += target
