@@ -85,8 +85,6 @@ int main(int argc, char *argv[])
                                        << QStringLiteral("CUDA")
                                        << QStringLiteral("D3D11")
                                        << QStringLiteral("DXVA")
-                                       << QStringLiteral("VAAPI")
-                                       << QStringLiteral("VideoToolbox")
                                        << QStringLiteral("FFmpeg"));
         QVariantHash cuda_opt;
         cuda_opt[QStringLiteral("surfaces")] = 0;
