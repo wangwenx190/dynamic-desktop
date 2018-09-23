@@ -1,5 +1,5 @@
-!win32: error(This project only supports Win32 platform!)
-!versionAtLeast(QT_VERSION, 5.6.3): error(Upgrade your Qt to at least 5.6.3!)
+!win32: error("This project only supports Win32 platform!")
+!versionAtLeast(QT_VERSION, 5.6.3): error("Upgrade your Qt to at least 5.6.3!")
 include(version.pri)
 include(optimization.pri)
 TARGET = dd
