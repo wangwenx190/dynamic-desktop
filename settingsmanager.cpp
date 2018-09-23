@@ -62,6 +62,15 @@ bool SettingsManager::getHwdec() const
     return settings->value(QStringLiteral("hwdec"), true).toBool();
 }
 
+QStringList SettingsManager::getDecoders() const
+{
+    return settings->value(QStringLiteral("decoders"), QStringList()
+                           << QStringLiteral("CUDA")
+                           << QStringLiteral("D3D11")
+                           << QStringLiteral("DXVA")
+                           << QStringLiteral("FFmpeg")).toStringList();
+}
+
 void SettingsManager::setUrl(const QString &url)
 {
     settings->setValue(QStringLiteral("url"), url);
@@ -85,6 +94,11 @@ void SettingsManager::setAutostart(bool enable)
 void SettingsManager::setHwdec(bool enable)
 {
     settings->setValue(QStringLiteral("hwdec"), enable);
+}
+
+void SettingsManager::setDecoders(const QStringList &decoders)
+{
+    settings->setValue(QStringLiteral("decoders"), decoders);
 }
 
 SettingsManager::SettingsManager()

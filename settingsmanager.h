@@ -17,12 +17,14 @@ public:
     unsigned int getVolume() const;
     bool getAutostart() const;
     bool getHwdec() const;
+    QStringList getDecoders() const;
 
     void setUrl(const QString &url);
     void setMute(bool mute);
     void setVolume(unsigned int volume);
     void setAutostart(bool enable);
     void setHwdec(bool enable);
+    void setDecoders(const QStringList &decoders);
 
 private:
     SettingsManager();

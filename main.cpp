@@ -81,24 +81,39 @@ int main(int argc, char *argv[])
     player.setRenderer(&renderer);
     if (SettingsManager::getInstance()->getHwdec())
     {
-        player.setVideoDecoderPriority(QStringList()
-                                       << QStringLiteral("CUDA")
-                                       << QStringLiteral("D3D11")
-                                       << QStringLiteral("DXVA")
-                                       << QStringLiteral("FFmpeg"));
-        QVariantHash cuda_opt;
-        cuda_opt[QStringLiteral("surfaces")] = 0;
-        cuda_opt[QStringLiteral("copyMode")] = QStringLiteral("ZeroCopy");
-        QVariantHash opt;
-        opt[QStringLiteral("CUDA")] = cuda_opt;
-        player.setOptionsForVideoCodec(opt);
+        QStringList decoders = SettingsManager::getInstance()->getDecoders();
+        if (!decoders.contains(QStringLiteral("FFmpeg")))
+            decoders << QStringLiteral("FFmpeg");
+        player.setVideoDecoderPriority(decoders);
+        if (decoders.contains(QStringLiteral("CUDA")))
+        {
+            QVariantHash cuda_opt;
+            cuda_opt[QStringLiteral("surfaces")] = 0;
+            cuda_opt[QStringLiteral("copyMode")] = QStringLiteral("ZeroCopy");
+            QVariantHash opt;
+            opt[QStringLiteral("CUDA")] = cuda_opt;
+            player.setOptionsForVideoCodec(opt);
+        }
     }
     player.setRepeat(-1);
     QObject::connect(&player, SIGNAL(stopped()), &player, SLOT(play()));
     PreferencesDialog preferencesDialog;
     preferencesDialog.setWindowIcon(QIcon(QStringLiteral(":/icon.ico")));
     QMenu trayMenu;
-    trayMenu.addAction(QObject::tr("Preferences"), &preferencesDialog, &QWidget::show);
+    QAction *optionsAction = trayMenu.addAction(QObject::tr("Preferences"));
+    QObject::connect(optionsAction, &QAction::triggered,
+        [=, &preferencesDialog]
+        {
+            if (preferencesDialog.isHidden())
+                preferencesDialog.show();
+            if (!preferencesDialog.isActiveWindow())
+                preferencesDialog.setWindowState(preferencesDialog.windowState() & ~Qt::WindowMinimized);
+            if (!preferencesDialog.isActiveWindow())
+            {
+                preferencesDialog.raise();
+                preferencesDialog.activateWindow();
+            }
+        });
     trayMenu.addSeparator();
     trayMenu.addAction(QObject::tr("Play"), &player, SLOT(play()));
     trayMenu.addAction(QObject::tr("Pause"), &player, SLOT(pause()));
@@ -138,22 +153,12 @@ int main(int argc, char *argv[])
     if (!SettingsManager::getInstance()->getUrl().isEmpty())
         player.play(SettingsManager::getInstance()->getUrl());
     else
-        preferencesDialog.show();
+        optionsAction->triggered();
     QObject::connect(&trayIcon, &QSystemTrayIcon::activated,
-        [=, &preferencesDialog](QSystemTrayIcon::ActivationReason reason)
+        [=](QSystemTrayIcon::ActivationReason reason)
         {
             if (reason != QSystemTrayIcon::Context)
-            {
-                if (preferencesDialog.isHidden())
-                    preferencesDialog.show();
-                if (!preferencesDialog.isActiveWindow())
-                    preferencesDialog.setWindowState(preferencesDialog.windowState() & ~Qt::WindowMinimized);
-                if (!preferencesDialog.isActiveWindow())
-                {
-                    preferencesDialog.raise();
-                    preferencesDialog.activateWindow();
-                }
-            }
+                optionsAction->triggered();
         });
     QObject::connect(&preferencesDialog, SIGNAL(play()), &player, SLOT(play()));
     QObject::connect(&preferencesDialog, SIGNAL(pause()), &player, SLOT(pause()));
@@ -161,8 +166,7 @@ int main(int argc, char *argv[])
         [=, &player](const QString &url)
         {
             if (!url.isEmpty())
-                if (url != SettingsManager::getInstance()->getUrl())
-                    player.play(url);
+                player.play(url);
         });
     QObject::connect(&preferencesDialog, &PreferencesDialog::volumeChanged,
         [=, &player](unsigned int volume)

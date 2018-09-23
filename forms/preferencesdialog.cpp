@@ -14,7 +14,6 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
 {
     ui->setupUi(this);
     setFixedHeight(height());
-    ui->checkBox_hwdec->setChecked(SettingsManager::getInstance()->getHwdec());
     connect(ui->checkBox_volume, &QCheckBox::stateChanged,
         [=]
         {
@@ -56,7 +55,11 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
     connect(ui->checkBox_hwdec, &QCheckBox::stateChanged,
         [=]
         {
-            if (isVisible())
+            bool hwdecEnabled = ui->checkBox_hwdec->isChecked();
+            ui->checkBox_hwdec_cuda->setEnabled(hwdecEnabled);
+            ui->checkBox_hwdec_d3d11->setEnabled(hwdecEnabled);
+            ui->checkBox_hwdec_dxva->setEnabled(hwdecEnabled);
+            if (hwdecEnabled && this->isVisible() && this->isActiveWindow())
                 QMessageBox::information(nullptr, QStringLiteral("Dynamic Desktop"), tr("Restart this application to experience it.\nMake sure this application runs in your GPU's Optimus mode."));
         });
     connect(this, SIGNAL(refreshUi()), this, SLOT(refreshUI()));
@@ -86,6 +89,23 @@ void PreferencesDialog::refreshUI()
     ui->horizontalSlider_volume->setEnabled(ui->checkBox_volume->isChecked());
     ui->horizontalSlider_volume->setValue(SettingsManager::getInstance()->getVolume());
     ui->checkBox_autostart->setChecked(SettingsManager::getInstance()->getAutostart() && SettingsManager::getInstance()->isRegAutostart());
+    QStringList decoders = SettingsManager::getInstance()->getDecoders();
+    ui->checkBox_hwdec_cuda->setChecked(decoders.contains(QStringLiteral("CUDA")));
+    ui->checkBox_hwdec_d3d11->setChecked(decoders.contains(QStringLiteral("D3D11")));
+    ui->checkBox_hwdec_dxva->setChecked(decoders.contains(QStringLiteral("DXVA")));
+    bool hwdecEnabled = (ui->checkBox_hwdec_cuda->isChecked()
+            || ui->checkBox_hwdec_d3d11->isChecked()
+            || ui->checkBox_hwdec_dxva->isChecked())
+            && SettingsManager::getInstance()->getHwdec();
+    ui->checkBox_hwdec->setChecked(hwdecEnabled);
+    static bool firstShow = true;
+    if (firstShow)
+    {
+        ui->checkBox_hwdec_cuda->setEnabled(hwdecEnabled);
+        ui->checkBox_hwdec_d3d11->setEnabled(hwdecEnabled);
+        ui->checkBox_hwdec_dxva->setEnabled(hwdecEnabled);
+        firstShow = false;
+    }
 }
 
 void PreferencesDialog::saveSettings()
@@ -110,6 +130,18 @@ void PreferencesDialog::saveSettings()
         SettingsManager::getInstance()->setAutostart(ui->checkBox_autostart->isChecked());
         emit autostartChanged(ui->checkBox_autostart->isChecked());
     }
+    QStringList decoders;
+    if (ui->checkBox_hwdec_cuda->isChecked())
+        decoders << QStringLiteral("CUDA");
+    if (ui->checkBox_hwdec_d3d11->isChecked())
+        decoders << QStringLiteral("D3D11");
+    if (ui->checkBox_hwdec_dxva->isChecked())
+        decoders << QStringLiteral("DXVA");
+    if (decoders.isEmpty())
+        ui->checkBox_hwdec->setChecked(false);
     if (ui->checkBox_hwdec->isChecked() != SettingsManager::getInstance()->getHwdec())
         SettingsManager::getInstance()->setHwdec(ui->checkBox_hwdec->isChecked());
+    decoders << QStringLiteral("FFmpeg");
+    if (decoders != SettingsManager::getInstance()->getDecoders())
+        SettingsManager::getInstance()->setDecoders(decoders);
 }
