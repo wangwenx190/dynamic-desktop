@@ -14,12 +14,12 @@ public:
 
     QString getUrl() const;
     bool getMute() const;
-    qreal getVolume() const;
+    unsigned int getVolume() const;
     bool getAutostart() const;
 
     void setUrl(const QString &url);
     void setMute(bool mute);
-    void setVolume(qreal volume);
+    void setVolume(unsigned int volume);
     void setAutostart(bool enable);
 
 private:

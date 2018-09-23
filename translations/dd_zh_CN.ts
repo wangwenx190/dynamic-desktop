@@ -25,7 +25,7 @@
     </message>
     <message>
         <location filename="../forms/preferencesdialog.ui" line="50"/>
-        <location filename="../forms/preferencesdialog.cpp" line="49"/>
+        <location filename="../forms/preferencesdialog.cpp" line="50"/>
         <source>URL</source>
         <translation>路径</translation>
     </message>
@@ -70,17 +70,17 @@
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="41"/>
+        <location filename="../forms/preferencesdialog.cpp" line="42"/>
         <source>Please select a media file</source>
         <translation>请选择一个媒体文件</translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="41"/>
+        <location filename="../forms/preferencesdialog.cpp" line="42"/>
         <source>Videos (*.avi *.mp4 *.mkv *.flv);;All files (*)</source>
-        <translation>视频 （*.avi *.mp4 *.mkv *.flv）;;所有文件 （*）</translation>
+        <translation>视频 (*.avi *.mp4 *.mkv *.flv);;所有文件 (*)</translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="49"/>
+        <location filename="../forms/preferencesdialog.cpp" line="50"/>
         <source>Please input a valid url</source>
         <translation>请输入一个有效的网址</translation>
     </message>
@@ -88,32 +88,37 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../main.cpp" line="62"/>
+        <location filename="../main.cpp" line="63"/>
         <source>There is another instance running.</source>
         <translation>另一个实例已经在运行。请勿重复运行。</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="86"/>
+        <location filename="../main.cpp" line="74"/>
+        <source>My wallpaper</source>
+        <translation>我的壁纸</translation>
+    </message>
+    <message>
+        <location filename="../main.cpp" line="87"/>
         <source>Preferences</source>
         <translation>首选项</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="88"/>
+        <location filename="../main.cpp" line="89"/>
         <source>Play</source>
         <translation>播放</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="89"/>
+        <location filename="../main.cpp" line="90"/>
         <source>Pause</source>
         <translation>暂停</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="90"/>
+        <location filename="../main.cpp" line="91"/>
         <source>Mute</source>
         <translation>静音</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="102"/>
+        <location filename="../main.cpp" line="105"/>
         <source>Exit</source>
         <translation>退出</translation>
     </message>

@@ -14,9 +14,10 @@ signals:
     void play();
     void pause();
     void muteChanged(bool);
-    void volumeChanged(qreal);
+    void volumeChanged(unsigned int);
     void urlChanged(const QString &);
     void autostartChanged(bool);
+    void refreshUi();
 
 public:
     explicit PreferencesDialog(QWidget *parent = nullptr);

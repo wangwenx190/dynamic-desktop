@@ -12,10 +12,11 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
     ui(new Ui::PreferencesDialog)
 {
     ui->setupUi(this);
-    connect(ui->checkBox_mute, &QCheckBox::stateChanged,
+    setFixedHeight(height());
+    connect(ui->checkBox_volume, &QCheckBox::stateChanged,
         [=]
         {
-            ui->horizontalSlider_volume->setEnabled(!ui->checkBox_mute->isChecked());
+            ui->horizontalSlider_volume->setEnabled(ui->checkBox_volume->isChecked());
         });
     connect(ui->pushButton_play, &QPushButton::clicked,
         [=]
@@ -50,6 +51,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
             if (ok && !url.isEmpty())
                 ui->lineEdit_url->setText(url);
         });
+    connect(this, SIGNAL(refreshUi()), this, SLOT(refreshUI()));
 }
 
 PreferencesDialog::~PreferencesDialog()
@@ -59,11 +61,8 @@ PreferencesDialog::~PreferencesDialog()
 
 void PreferencesDialog::setAudioAreaEnabled(bool enabled)
 {
-    ui->checkBox_mute->setEnabled(enabled);
-    if (ui->checkBox_mute->isEnabled())
-        ui->horizontalSlider_volume->setEnabled(!enabled);
-    else
-        ui->horizontalSlider_volume->setEnabled(enabled);
+    ui->checkBox_volume->setEnabled(enabled);
+    ui->horizontalSlider_volume->setEnabled(enabled && ui->checkBox_volume->isChecked() ? true : false);
 }
 
 void PreferencesDialog::showEvent(QShowEvent *event)
@@ -75,9 +74,9 @@ void PreferencesDialog::showEvent(QShowEvent *event)
 void PreferencesDialog::refreshUI()
 {
     ui->lineEdit_url->setText(SettingsManager::getInstance()->getUrl());
-    ui->checkBox_mute->setChecked(SettingsManager::getInstance()->getMute());
-    ui->horizontalSlider_volume->setEnabled(!ui->checkBox_mute->isChecked());
-    ui->horizontalSlider_volume->setValue(static_cast<int>(SettingsManager::getInstance()->getVolume() * 10));
+    ui->checkBox_volume->setChecked(!SettingsManager::getInstance()->getMute());
+    ui->horizontalSlider_volume->setEnabled(ui->checkBox_volume->isChecked());
+    ui->horizontalSlider_volume->setValue(SettingsManager::getInstance()->getVolume());
     ui->checkBox_autostart->setChecked(SettingsManager::getInstance()->getAutostart() && SettingsManager::getInstance()->isRegAutostart());
 }
 
@@ -88,15 +87,15 @@ void PreferencesDialog::saveSettings()
         SettingsManager::getInstance()->setUrl(ui->lineEdit_url->text());
         emit urlChanged(ui->lineEdit_url->text());
     }
-    if (ui->checkBox_mute->isChecked() != SettingsManager::getInstance()->getMute())
+    if (ui->checkBox_volume->isChecked() != !SettingsManager::getInstance()->getMute())
     {
-        SettingsManager::getInstance()->setMute(ui->checkBox_mute->isChecked());
-        emit muteChanged(ui->checkBox_mute->isChecked());
+        SettingsManager::getInstance()->setMute(!ui->checkBox_volume->isChecked());
+        emit muteChanged(!ui->checkBox_volume->isChecked());
     }
-    if (static_cast<qreal>(ui->horizontalSlider_volume->value()) != SettingsManager::getInstance()->getVolume())
+    if (ui->horizontalSlider_volume->value() != SettingsManager::getInstance()->getVolume())
     {
-        SettingsManager::getInstance()->setVolume(static_cast<qreal>(ui->horizontalSlider_volume->value() / 10));
-        emit volumeChanged(static_cast<qreal>(ui->horizontalSlider_volume->value()));
+        SettingsManager::getInstance()->setVolume(ui->horizontalSlider_volume->value());
+        emit volumeChanged(ui->horizontalSlider_volume->value());
     }
     if (ui->checkBox_autostart->isChecked() != SettingsManager::getInstance()->getAutostart())
     {

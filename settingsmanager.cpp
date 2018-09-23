@@ -47,9 +47,9 @@ bool SettingsManager::getMute() const
     return settings->value(QStringLiteral("mute"), false).toBool();
 }
 
-qreal SettingsManager::getVolume() const
+unsigned int SettingsManager::getVolume() const
 {
-    return settings->value(QStringLiteral("volume"), 0.1).toReal();
+    return settings->value(QStringLiteral("volume"), 9).toUInt();
 }
 
 bool SettingsManager::getAutostart() const
@@ -67,7 +67,7 @@ void SettingsManager::setMute(bool mute)
     settings->setValue(QStringLiteral("mute"), mute);
 }
 
-void SettingsManager::setVolume(qreal volume)
+void SettingsManager::setVolume(unsigned int volume)
 {
     settings->setValue(QStringLiteral("volume"), volume);
 }

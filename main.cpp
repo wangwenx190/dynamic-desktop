@@ -53,6 +53,7 @@ int main(int argc, char *argv[])
     QCoreApplication::setOrganizationName(QStringLiteral("wangwenx190"));
     QCoreApplication::setOrganizationDomain(QStringLiteral("wangwenx190.github.io"));
     QApplication app(argc, argv);
+    AllowSetForegroundWindow(static_cast<DWORD>(QApplication::applicationPid()));
     QTranslator translator;
     if (translator.load(QLocale(), QStringLiteral("dd"), QStringLiteral("_"), QStringLiteral(":/i18n")))
         QApplication::installTranslator(&translator);
@@ -70,7 +71,7 @@ int main(int argc, char *argv[])
     QtAV::GLWidgetRenderer2 renderer;
     renderer.forcePreferredPixelFormat(true);
     renderer.setWindowIcon(QIcon(QStringLiteral(":/icon.ico")));
-    renderer.setWindowTitle(QStringLiteral("Dynamic Desktop"));
+    renderer.setWindowTitle(QObject::tr("My wallpaper"));
     QRect screenGeometry = QApplication::desktop()->screenGeometry(&renderer);
     renderer.setAttribute(Qt::WA_NoSystemBackground);
     renderer.setWindowFlags(renderer.windowFlags() | Qt::FramelessWindowHint);
@@ -88,14 +89,16 @@ int main(int argc, char *argv[])
     trayMenu.addAction(QObject::tr("Play"), &player, SLOT(play()));
     trayMenu.addAction(QObject::tr("Pause"), &player, SLOT(pause()));
     QAction *muteAction = trayMenu.addAction(QObject::tr("Mute"));
+    muteAction->setCheckable(true);
     QObject::connect(muteAction, &QAction::triggered,
-        [=, &player]
+        [=, &player, &preferencesDialog](bool checked)
         {
             if (player.audio())
             {
-                muteAction->setChecked(!muteAction->isChecked());
-                player.audio()->setMute(muteAction->isChecked());
-                SettingsManager::getInstance()->setMute(muteAction->isChecked());
+                muteAction->setChecked(checked);
+                player.audio()->setMute(checked);
+                SettingsManager::getInstance()->setMute(checked);
+                preferencesDialog.refreshUi();
             }
         });
     trayMenu.addSeparator();
@@ -107,12 +110,14 @@ int main(int argc, char *argv[])
     trayIcon.show();
     if (player.audio())
     {
-        player.audio()->setVolume(SettingsManager::getInstance()->getVolume());
+        player.audio()->setVolume(static_cast<qreal>(SettingsManager::getInstance()->getVolume() / 10.0));
         player.audio()->setMute(SettingsManager::getInstance()->getMute());
+        muteAction->setCheckable(true);
         muteAction->setChecked(SettingsManager::getInstance()->getMute());
     }
     else
     {
+        muteAction->setCheckable(false);
         muteAction->setEnabled(false);
         preferencesDialog.setAudioAreaEnabled(false);
     }
@@ -124,7 +129,17 @@ int main(int argc, char *argv[])
         [=, &preferencesDialog](QSystemTrayIcon::ActivationReason reason)
         {
             if (reason != QSystemTrayIcon::Context)
-                preferencesDialog.show();
+            {
+                if (preferencesDialog.isHidden())
+                    preferencesDialog.show();
+                if (!preferencesDialog.isActiveWindow())
+                    preferencesDialog.setWindowState(preferencesDialog.windowState() & ~Qt::WindowMinimized);
+                if (!preferencesDialog.isActiveWindow())
+                {
+                    preferencesDialog.raise();
+                    preferencesDialog.activateWindow();
+                }
+            }
         });
     QObject::connect(&preferencesDialog, SIGNAL(play()), &player, SLOT(play()));
     QObject::connect(&preferencesDialog, SIGNAL(pause()), &player, SLOT(pause()));
@@ -136,10 +151,10 @@ int main(int argc, char *argv[])
                     player.play(url);
         });
     QObject::connect(&preferencesDialog, &PreferencesDialog::volumeChanged,
-        [=, &player](qreal volume)
+        [=, &player](unsigned int volume)
         {
             if (player.audio())
-                player.audio()->setVolume(volume);
+                player.audio()->setVolume(static_cast<qreal>(volume / 10.0));
         });
     QObject::connect(&preferencesDialog, &PreferencesDialog::muteChanged,
         [=, &player](bool mute)
@@ -161,6 +176,7 @@ int main(int argc, char *argv[])
     SetWindowPos(wallpaper, HWND_BOTTOM, 0, 0, 0, 0, SWP_NOACTIVATE | SWP_NOMOVE | SWP_NOSIZE);
     renderer.setGeometry(screenGeometry);
     int exec = QApplication::exec();
-    CloseHandle(mutex);
+    delete muteAction;
+    CloseHandle(mutex);    
     return exec;
 }

@@ -83,7 +83,7 @@
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_4">
         <item>
-         <widget class="QCheckBox" name="checkBox_mute">
+         <widget class="QCheckBox" name="checkBox_volume">
           <property name="text">
            <string>Volume</string>
           </property>
