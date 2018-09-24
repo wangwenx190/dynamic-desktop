@@ -123,7 +123,7 @@ bool SettingsManager::getHwdec() const
 QStringList SettingsManager::getDecoders() const
 {
     QStringList decoders = settings->value(QStringLiteral("decoders"), defaultDecoders()).toStringList();
-    for (auto& decoder : decoders)
+    /*for (auto& decoder : decoders)
     {
         if (decoder != QStringLiteral("CUDA")
                 && decoder != QStringLiteral("D3D11")
@@ -148,7 +148,7 @@ QStringList SettingsManager::getDecoders() const
     }
     decoders.removeAll(QString());
     if (!decoders.contains(QStringLiteral("FFmpeg")))
-        decoders << QStringLiteral("FFmpeg");
+        decoders << QStringLiteral("FFmpeg");*/
     return decoders;
 }
 
@@ -187,7 +187,7 @@ void SettingsManager::setHwdec(bool enable)
 
 void SettingsManager::setDecoders(const QStringList &decoders)
 {
-    QStringList newDecoders;
+    /*QStringList newDecoders;
     if (hasNvidiaCard() && decoders.contains(QStringLiteral("CUDA")))
         newDecoders << QStringLiteral("CUDA");
     if ((hasNvidiaCard() || hasAmdCard() || hasIntelCard())
@@ -196,8 +196,8 @@ void SettingsManager::setDecoders(const QStringList &decoders)
     if ((hasNvidiaCard() || hasAmdCard() || hasIntelCard())
             && decoders.contains(QStringLiteral("DXVA")))
         newDecoders << QStringLiteral("DXVA");
-    newDecoders << QStringLiteral("FFmpeg");
-    settings->setValue(QStringLiteral("decoders"), newDecoders);
+    newDecoders << QStringLiteral("FFmpeg");*/
+    settings->setValue(QStringLiteral("decoders"), /*newDecoders*/decoders);
 }
 
 void SettingsManager::setLocalize(bool enable)

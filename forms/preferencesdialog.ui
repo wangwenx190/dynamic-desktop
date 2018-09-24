@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>616</width>
-    <height>316</height>
+    <width>586</width>
+    <height>315</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -95,20 +95,20 @@ QSlider::handle:horizontal {
 	width: 12px;
 }
 
-QCheckBox::indicator, QGroupBox::indicator {
+QCheckBox::indicator {
 	width: 11px;
 	height: 11px;
 	border: 1px solid #008098;
 	border-radius: 2px;
 }
 
-QCheckBox::indicator:unchecked, QGroupBox::indicator:unchecked {
+QCheckBox::indicator:unchecked {
 	border: 1px solid whitesmoke;
 	background: #1A1A1A;
 	image: none;
 }
 
-QCheckBox::indicator:checked, QGroupBox::indicator:checked {
+QCheckBox::indicator:checked {
 	border: 1px solid #008098;
 	background: #008098;
 	image: url(:/checked.svg);
@@ -126,19 +126,19 @@ QLineEdit:focus {
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <property name="spacing">
-    <number>6</number>
+    <number>5</number>
    </property>
    <property name="leftMargin">
-    <number>9</number>
+    <number>10</number>
    </property>
    <property name="topMargin">
-    <number>0</number>
+    <number>5</number>
    </property>
    <property name="rightMargin">
-    <number>9</number>
+    <number>10</number>
    </property>
    <property name="bottomMargin">
-    <number>9</number>
+    <number>5</number>
    </property>
    <item>
     <widget class="QWidget" name="widget_windowtitlebar" native="true">
@@ -302,6 +302,12 @@ QLineEdit:focus {
    </item>
    <item>
     <widget class="QGroupBox" name="groupBox_general">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
      <property name="title">
       <string>General</string>
      </property>
@@ -325,6 +331,12 @@ QLineEdit:focus {
    </item>
    <item>
     <widget class="QGroupBox" name="groupBox_player">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
      <property name="title">
       <string>Player</string>
      </property>

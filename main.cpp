@@ -124,9 +124,9 @@ int main(int argc, char *argv[])
     QObject::connect(playAction, &QAction::triggered,
         [=, &renderer, &player]
         {
-            player.play();
             if (renderer.isHidden())
                 renderer.show();
+            player.play();
         });
     trayMenu.addAction(QObject::tr("Pause"), &player, SLOT(pause()));
     QAction *muteAction = trayMenu.addAction(QObject::tr("Mute"));
@@ -163,7 +163,11 @@ int main(int argc, char *argv[])
         preferencesDialog.setAudioAreaEnabled(false);
     }
     if (!SettingsManager::getInstance()->getUrl().isEmpty())
+    {
+        if (renderer.isHidden())
+            renderer.show();
         player.play(SettingsManager::getInstance()->getUrl());
+    }
     else
         optionsAction->triggered();
     QObject::connect(&trayIcon, &QSystemTrayIcon::activated,
@@ -172,13 +176,17 @@ int main(int argc, char *argv[])
             if (reason != QSystemTrayIcon::Context)
                 optionsAction->triggered();
         });
-    QObject::connect(&preferencesDialog, SIGNAL(play()), playAction, SLOT(triggered()));
+    QObject::connect(&preferencesDialog, SIGNAL(play()), playAction, SIGNAL(triggered()));
     QObject::connect(&preferencesDialog, SIGNAL(pause()), &player, SLOT(pause()));
     QObject::connect(&preferencesDialog, &PreferencesDialog::urlChanged,
-        [=, &player](const QString &url)
+        [=, &player, &renderer](const QString &url)
         {
             if (!url.isEmpty())
+            {
+                if (renderer.isHidden())
+                    renderer.show();
                 player.play(url);
+            }
         });
     QObject::connect(&preferencesDialog, &PreferencesDialog::volumeChanged,
         [=, &player](unsigned int volume)
@@ -203,8 +211,6 @@ int main(int argc, char *argv[])
     HWND progman = getProgman();
     auto wallpaper = reinterpret_cast<HWND>(renderer.winId());
     SetParent(wallpaper, progman);
-    if (player.isLoaded() || player.isPlaying())
-        renderer.show();
     int exec = QApplication::exec();
     CloseHandle(mutex);    
     return exec;
