@@ -19,8 +19,8 @@ DEFINES += QT_DEPRECATED_WARNINGS QT_DISABLE_DEPRECATED_BEFORE=0x051102
 CONFIG *= c++11
 CONFIG -= app_bundle
 LIBS += -lUser32
-SOURCES += main.cpp forms/preferencesdialog.cpp settingsmanager.cpp
-HEADERS += forms/preferencesdialog.h settingsmanager.h
+SOURCES += main.cpp forms/preferencesdialog.cpp settingsmanager.cpp framelesswindow.cpp
+HEADERS += forms/preferencesdialog.h settingsmanager.h framelesswindow.h
 FORMS += forms/preferencesdialog.ui
 TRANSLATIONS += translations/dd_en.ts translations/dd_zh_CN.ts
 RESOURCES += resources.qrc
