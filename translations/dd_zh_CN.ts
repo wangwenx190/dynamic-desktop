@@ -170,7 +170,7 @@ Make sure this application runs in your GPU&apos;s Optimus mode.</source>
         <translation>关于</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="152"/>
+        <location filename="../main.cpp" line="151"/>
         <source>Version: %0
 Source code: %1
 Build time: %2 %3</source>
@@ -179,7 +179,7 @@ Build time: %2 %3</source>
 构建时间： %2 %3</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="158"/>
+        <location filename="../main.cpp" line="157"/>
         <source>Exit</source>
         <translation>退出</translation>
     </message>

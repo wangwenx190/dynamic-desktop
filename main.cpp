@@ -148,7 +148,6 @@ int main(int argc, char *argv[])
         [=]
         {
             QMessageBox::about(nullptr, QStringLiteral("Dynamic Desktop"),
-                               QStringLiteral("Dynamic Desktop\n") +
                                QObject::tr("Version: %0\nSource code: %1\nBuild time: %2 %3")
                                    .arg(QStringLiteral(DD_VERSION))
                                    .arg(QStringLiteral("https://github.com/wangwenx190/dynamic-desktop"))
@@ -225,6 +224,6 @@ int main(int argc, char *argv[])
     auto wallpaper = reinterpret_cast<HWND>(renderer.winId());
     SetParent(wallpaper, progman);
     int exec = QApplication::exec();
-    CloseHandle(mutex);    
+    CloseHandle(mutex);
     return exec;
 }
