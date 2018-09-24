@@ -10,88 +10,88 @@
         <translation>首选项</translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.ui" line="306"/>
+        <location filename="../forms/preferencesdialog.ui" line="312"/>
         <source>General</source>
         <translation>通用</translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.ui" line="312"/>
+        <location filename="../forms/preferencesdialog.ui" line="318"/>
         <source>Auto start</source>
         <translation>开机自启</translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.ui" line="319"/>
+        <location filename="../forms/preferencesdialog.ui" line="325"/>
         <source>Localize</source>
         <translation>本地化</translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.ui" line="329"/>
+        <location filename="../forms/preferencesdialog.ui" line="341"/>
         <source>Player</source>
         <translation>播放器</translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.ui" line="337"/>
+        <location filename="../forms/preferencesdialog.ui" line="349"/>
         <source>Try to use Hardware Accelerated Decoding</source>
         <translation>尝试使用硬件加速解码</translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.ui" line="357"/>
+        <location filename="../forms/preferencesdialog.ui" line="369"/>
         <source>CUDA</source>
         <translation>CUDA</translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.ui" line="364"/>
+        <location filename="../forms/preferencesdialog.ui" line="376"/>
         <source>D3D11</source>
         <translation>D3D11</translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.ui" line="371"/>
+        <location filename="../forms/preferencesdialog.ui" line="383"/>
         <source>DXVA</source>
         <translation>DXVA</translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.ui" line="382"/>
+        <location filename="../forms/preferencesdialog.ui" line="394"/>
         <location filename="../forms/preferencesdialog.cpp" line="72"/>
         <source>URL</source>
         <translation>路径</translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.ui" line="395"/>
+        <location filename="../forms/preferencesdialog.ui" line="407"/>
         <source>Local files and web urls are all acceptable</source>
         <translation>可接受本地文件的路径或任何有效的网址</translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.ui" line="402"/>
+        <location filename="../forms/preferencesdialog.ui" line="414"/>
         <source>Input</source>
         <translation>输入</translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.ui" line="409"/>
+        <location filename="../forms/preferencesdialog.ui" line="421"/>
         <source>Browse</source>
         <translation>浏览</translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.ui" line="420"/>
+        <location filename="../forms/preferencesdialog.ui" line="432"/>
         <source>Volume</source>
         <translation>音量</translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.ui" line="438"/>
+        <location filename="../forms/preferencesdialog.ui" line="450"/>
         <source>Play</source>
         <translation>播放</translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.ui" line="445"/>
+        <location filename="../forms/preferencesdialog.ui" line="457"/>
         <source>Pause</source>
         <translation>暂停</translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.ui" line="472"/>
+        <location filename="../forms/preferencesdialog.ui" line="484"/>
         <source>OK</source>
         <translation>确定</translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.ui" line="479"/>
+        <location filename="../forms/preferencesdialog.ui" line="491"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>

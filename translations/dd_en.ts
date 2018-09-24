@@ -10,88 +10,88 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.ui" line="306"/>
+        <location filename="../forms/preferencesdialog.ui" line="312"/>
         <source>General</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.ui" line="312"/>
+        <location filename="../forms/preferencesdialog.ui" line="318"/>
         <source>Auto start</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.ui" line="319"/>
+        <location filename="../forms/preferencesdialog.ui" line="325"/>
         <source>Localize</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.ui" line="329"/>
+        <location filename="../forms/preferencesdialog.ui" line="341"/>
         <source>Player</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.ui" line="337"/>
+        <location filename="../forms/preferencesdialog.ui" line="349"/>
         <source>Try to use Hardware Accelerated Decoding</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.ui" line="357"/>
+        <location filename="../forms/preferencesdialog.ui" line="369"/>
         <source>CUDA</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.ui" line="364"/>
+        <location filename="../forms/preferencesdialog.ui" line="376"/>
         <source>D3D11</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.ui" line="371"/>
+        <location filename="../forms/preferencesdialog.ui" line="383"/>
         <source>DXVA</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.ui" line="382"/>
+        <location filename="../forms/preferencesdialog.ui" line="394"/>
         <location filename="../forms/preferencesdialog.cpp" line="72"/>
         <source>URL</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.ui" line="395"/>
+        <location filename="../forms/preferencesdialog.ui" line="407"/>
         <source>Local files and web urls are all acceptable</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.ui" line="402"/>
+        <location filename="../forms/preferencesdialog.ui" line="414"/>
         <source>Input</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.ui" line="409"/>
+        <location filename="../forms/preferencesdialog.ui" line="421"/>
         <source>Browse</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.ui" line="420"/>
+        <location filename="../forms/preferencesdialog.ui" line="432"/>
         <source>Volume</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.ui" line="438"/>
+        <location filename="../forms/preferencesdialog.ui" line="450"/>
         <source>Play</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.ui" line="445"/>
+        <location filename="../forms/preferencesdialog.ui" line="457"/>
         <source>Pause</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.ui" line="472"/>
+        <location filename="../forms/preferencesdialog.ui" line="484"/>
         <source>OK</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.ui" line="479"/>
+        <location filename="../forms/preferencesdialog.ui" line="491"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
