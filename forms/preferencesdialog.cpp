@@ -19,7 +19,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
     setResizeable(true);
     setResizeableAreaWidth(5);
     setTitleBar(ui->widget_windowtitlebar);
-    addIgnoreWidget(ui->label_windowtitle);    
+    addIgnoreWidget(ui->label_windowtitle);
     connect(ui->pushButton_about, SIGNAL(clicked()), this, SIGNAL(about()));
     connect(ui->checkBox_localize, &QCheckBox::stateChanged,
         [=]
@@ -192,11 +192,8 @@ void PreferencesDialog::saveSettings()
         SettingsManager::getInstance()->setVolume(ui->horizontalSlider_volume->value());
         emit volumeChanged(SettingsManager::getInstance()->getVolume());
     }
-    if (ui->checkBox_autostart->isChecked() != SettingsManager::getInstance()->getAutostart())
-    {
-        SettingsManager::getInstance()->setAutostart(ui->checkBox_autostart->isChecked());
-        emit autostartChanged(SettingsManager::getInstance()->getAutostart());
-    }
+    SettingsManager::getInstance()->setAutostart(ui->checkBox_autostart->isChecked());
+    emit autostartChanged(SettingsManager::getInstance()->getAutostart());
     QStringList decoders;
     if (ui->checkBox_hwdec_cuda->isChecked()
             /*&& SettingsManager::getInstance()->hasNvidiaCard()*/)
