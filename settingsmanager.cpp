@@ -37,7 +37,7 @@ bool SettingsManager::isRegAutostart() const
     return set.contains(QStringLiteral("Dynamic Desktop"));
 }
 
-bool SettingsManager::hasNvidiaCard() const
+/*bool SettingsManager::hasNvidiaCard() const
 {
     const QString key = QStringLiteral("HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\services\\nvlddmkm\\Device0");
     QSettings set(key, QSettings::NativeFormat);
@@ -65,14 +65,14 @@ bool SettingsManager::hasIntelCard() const
         return false;
     QString description = set.value(QStringLiteral("Device Description")).toString();
     return description.contains(QStringLiteral("Intel"), Qt::CaseInsensitive);
-}
+}*/
 
 QStringList SettingsManager::defaultDecoders() const
 {
     QStringList decoders;
-    if (hasNvidiaCard())
+    //if (hasNvidiaCard())
         decoders << QStringLiteral("CUDA");
-    if (hasNvidiaCard() || hasAmdCard() || hasIntelCard())
+    //if (hasNvidiaCard() || hasAmdCard() || hasIntelCard())
         decoders << QStringLiteral("D3D11") << QStringLiteral("DXVA");
     decoders << QStringLiteral("FFmpeg");
     return decoders;

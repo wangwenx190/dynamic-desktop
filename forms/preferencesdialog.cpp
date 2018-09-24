@@ -77,14 +77,14 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
         [=]
         {
             bool hwdecEnabled = ui->checkBox_hwdec->isChecked();
-            if (!SettingsManager::getInstance()->hasNvidiaCard())
+            /*if (!SettingsManager::getInstance()->hasNvidiaCard())
             {
                 ui->checkBox_hwdec_cuda->setChecked(false);
                 ui->checkBox_hwdec_cuda->setEnabled(false);
             }
-            else
+            else*/
                 ui->checkBox_hwdec_cuda->setEnabled(hwdecEnabled);
-            if (!SettingsManager::getInstance()->hasNvidiaCard()
+            /*if (!SettingsManager::getInstance()->hasNvidiaCard()
                     && !SettingsManager::getInstance()->hasAmdCard()
                     && !SettingsManager::getInstance()->hasIntelCard())
             {
@@ -93,11 +93,11 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
                 ui->checkBox_hwdec_dxva->setChecked(false);
                 ui->checkBox_hwdec_dxva->setEnabled(false);
             }
-            else
-            {
+            else*/
+            //{
                 ui->checkBox_hwdec_d3d11->setEnabled(hwdecEnabled);
                 ui->checkBox_hwdec_dxva->setEnabled(hwdecEnabled);
-            }
+            //}
             if (hwdecEnabled && this->isVisible() && this->isActiveWindow())
                 QMessageBox::information(nullptr, QStringLiteral("Dynamic Desktop"), tr("Restart this application to experience it.\nMake sure this application runs in your GPU's Optimus mode."));
         });
