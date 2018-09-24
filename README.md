@@ -30,6 +30,7 @@ Microsoft Windows 7 ~ 10, both 32 bit and 64 bit systems are OK.
 - Special thanks to [wang bin](https://github.com/wang-bin) for his awesome [QtAV](https://github.com/wang-bin/QtAV)!
 - Most frameless window codes are copied from https://github.com/Bringer-of-Light/Qt-Nice-Frameless-Window , thanks to [Bringer-of-Light](https://github.com/Bringer-of-Light)
 - Most style sheets of Preferences Dialog are copied from https://github.com/u8sand/Baka-MPlayer , thanks to [Daniel Clarke](https://github.com/u8sand)
-- [resources/icon.ico](/resources/icon.ico), [resources/minimize.svg](/resources/minimize.svg), [resources/maximize.svg](/resources/maximize.svg) ,[resources/restore.svg](/resources/restore.svg), [resources/close.svg](/resources/close.svg): downloaded from https://www.easyicon.net/
+- [resources/icon.ico](/resources/icon.ico): downloaded from https://www.easyicon.net/
+- [resources/minimize.svg](/resources/minimize.svg), [resources/maximize.svg](/resources/maximize.svg) ,[resources/restore.svg](/resources/restore.svg), [resources/close.svg](/resources/close.svg): downloaded from http://www.iconfont.cn/
 - [resources/checked.svg](/resources/checked.svg): copied from https://github.com/u8sand/Baka-MPlayer
 - Dynamic Desktop: [GPLv3](/LICENSE.md)
