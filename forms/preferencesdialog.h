@@ -1,12 +1,12 @@
 ﻿#pragma once
 
-#include <QWidget>
+#include "framelesswindow.h"
 
 namespace Ui {
 class PreferencesDialog;
 }
 
-class PreferencesDialog : public QWidget
+class PreferencesDialog : public FramelessWindow
 {
     Q_OBJECT
 
@@ -28,6 +28,7 @@ public slots:
 
 protected:
     void showEvent(QShowEvent *event) override;
+    void changeEvent(QEvent *event) override;
 
 private slots:
     void refreshUI();

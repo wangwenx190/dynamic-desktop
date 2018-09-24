@@ -19,6 +19,111 @@
   <property name="windowTitle">
    <string>Preferences</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">QWidget {
+	font-family: 12px &quot;Noto Sans&quot;, &quot;FreeSans&quot;;
+	background: #1A1A1A;
+	color: whitesmoke;
+}
+
+QPushButton {
+	background: #454A4D;
+	border: 1px solid #000;
+	border-radius: 2px;
+	color: whitesmoke;
+	min-width: 76px;
+	min-height: 17px;
+	padding: 4px 6px;
+}
+
+QPushButton:focus {
+	border: 1px solid #008098;
+	outline: none;
+}
+
+QPushButton:pressed {
+	background: #2E3133;
+}
+
+QPushButton:disabled {
+	background: transparent;
+	border: 1px solid #454A4D;
+	color: #6F6F6F;
+}
+
+QPushButton#pushButton_minimize {
+	background: none;
+	border: 0px;
+	border-radius: 0px;
+	color: none;
+	min-width: 8px;
+	min-height: 8px;
+}
+
+QPushButton#pushButton_maximize {
+	background: none;
+	border: 0px;
+	border-radius: 0px;
+	color: none;
+	min-width: 8px;
+	min-height: 8px;
+}
+
+QPushButton#pushButton_close {
+	background: none;
+	border: 0px;
+	border-radius: 0px;
+	color: none;
+	min-width: 8px;
+	min-height: 8px;
+}
+
+QSlider::groove:horizontal {
+	background: #5A5A5A;
+	height: 1px;
+}
+
+QSlider::sub-page:horizontal {
+	background: #008098;
+}
+
+QSlider::handle:horizontal {
+	background: whitesmoke;
+	border: 2px solid #1A1A1A;
+	border-radius: 7px;
+	margin: -7px 0;
+	width: 12px;
+}
+
+QCheckBox::indicator, QGroupBox::indicator {
+	width: 11px;
+	height: 11px;
+	border: 1px solid #008098;
+	border-radius: 2px;
+}
+
+QCheckBox::indicator:unchecked, QGroupBox::indicator:unchecked {
+	border: 1px solid whitesmoke;
+	background: #1A1A1A;
+	image: none;
+}
+
+QCheckBox::indicator:checked, QGroupBox::indicator:checked {
+	border: 1px solid #008098;
+	background: #008098;
+	image: url(:/checked.svg);
+}
+
+QLineEdit {
+	background: #000;
+	border: 1px solid #454A4D;
+	padding: 2px;
+}
+
+QLineEdit:focus {
+	border: 1px solid #008098;
+}</string>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <property name="spacing">
     <number>6</number>
@@ -151,6 +256,9 @@
       </item>
       <item>
        <widget class="QPushButton" name="pushButton_maximize">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="sizePolicy">
          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
           <horstretch>0</horstretch>

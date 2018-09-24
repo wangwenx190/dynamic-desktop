@@ -152,6 +152,11 @@ QStringList SettingsManager::getDecoders() const
     return decoders;
 }
 
+bool SettingsManager::getLocalize() const
+{
+    return settings->value(QStringLiteral("localize"), true).toBool();
+}
+
 void SettingsManager::setUrl(const QString &url)
 {
     settings->setValue(QStringLiteral("url"), url);
@@ -193,6 +198,11 @@ void SettingsManager::setDecoders(const QStringList &decoders)
         newDecoders << QStringLiteral("DXVA");
     newDecoders << QStringLiteral("FFmpeg");
     settings->setValue(QStringLiteral("decoders"), newDecoders);
+}
+
+void SettingsManager::setLocalize(bool enable)
+{
+    settings->setValue(QStringLiteral("localize"), enable);
 }
 
 SettingsManager::SettingsManager()

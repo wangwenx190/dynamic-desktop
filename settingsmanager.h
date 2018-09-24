@@ -24,6 +24,7 @@ public:
     bool getAutostart() const;
     bool getHwdec() const;
     QStringList getDecoders() const;
+    bool getLocalize() const;
 
     void setUrl(const QString &url);
     void setMute(bool mute);
@@ -31,6 +32,7 @@ public:
     void setAutostart(bool enable);
     void setHwdec(bool enable);
     void setDecoders(const QStringList &decoders);
+    void setLocalize(bool enable);
 
 private:
     SettingsManager();

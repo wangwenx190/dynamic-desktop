@@ -1,5 +1,6 @@
 ﻿#include "preferencesdialog.h"
 #include "ui_preferencesdialog.h"
+
 #include "settingsmanager.h"
 
 #include <QFileDialog>
@@ -7,13 +8,33 @@
 #include <QFileInfo>
 #include <QDir>
 #include <QMessageBox>
+#include <QIcon>
 
 PreferencesDialog::PreferencesDialog(QWidget *parent) :
-    QWidget(parent),
+    FramelessWindow(parent),
     ui(new Ui::PreferencesDialog)
 {
     ui->setupUi(this);
     setFixedHeight(height());
+    setTitleBar(ui->widget_windowtitlebar);
+    addIgnoreWidget(ui->label_windowtitle);
+    setContentsMargins(0, 0, 0, 0);
+    connect(ui->checkBox_localize, &QCheckBox::stateChanged,
+        [=]
+        {
+            if (this->isVisible() && this->isActiveWindow())
+                QMessageBox::information(nullptr, QStringLiteral("Dynamic Desktop"), tr("Application restart is needed to apply this change."));
+        });
+    connect(ui->pushButton_minimize, SIGNAL(clicked()), this, SLOT(showMinimized()));
+    connect(ui->pushButton_close, SIGNAL(clicked()), this, SLOT(close()));
+    connect(ui->pushButton_maximize, &QPushButton::clicked,
+        [=]
+        {
+            if (this->isMaximized())
+                this->showNormal();
+            else
+                this->showMaximized();
+        });
     connect(ui->checkBox_volume, &QCheckBox::stateChanged,
         [=]
         {
@@ -96,8 +117,18 @@ void PreferencesDialog::setAudioAreaEnabled(bool enabled)
 
 void PreferencesDialog::showEvent(QShowEvent *event)
 {
-    QWidget::showEvent(event);
+    FramelessWindow::showEvent(event);
     refreshUI();
+}
+
+void PreferencesDialog::changeEvent(QEvent *event)
+{
+    if (event->type() == QEvent::WindowStateChange)
+        if (windowState() == Qt::WindowMaximized)
+            ui->pushButton_maximize->setIcon(QIcon(QStringLiteral(":/restore.svg")));
+        else
+            ui->pushButton_maximize->setIcon(QIcon(QStringLiteral(":/maximize.svg")));
+    FramelessWindow::changeEvent(event);
 }
 
 void PreferencesDialog::refreshUI()
@@ -139,6 +170,7 @@ void PreferencesDialog::refreshUI()
                                     || SettingsManager::getInstance()->hasIntelCard()));
         firstShow = false;
     }
+    ui->checkBox_localize->setChecked(SettingsManager::getInstance()->getLocalize());
 }
 
 void PreferencesDialog::saveSettings()
@@ -184,4 +216,6 @@ void PreferencesDialog::saveSettings()
     decoders << QStringLiteral("FFmpeg");
     if (decoders != SettingsManager::getInstance()->getDecoders())
         SettingsManager::getInstance()->setDecoders(decoders);
+    if (ui->checkBox_localize->isChecked() != SettingsManager::getInstance()->getLocalize())
+        SettingsManager::getInstance()->setLocalize(ui->checkBox_localize->isChecked());
 }

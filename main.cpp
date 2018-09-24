@@ -56,10 +56,13 @@ int main(int argc, char *argv[])
     QApplication app(argc, argv);
     AllowSetForegroundWindow(static_cast<DWORD>(QApplication::applicationPid()));
     QTranslator qtTranslator, ddTranslator;
-    if (qtTranslator.load(QLocale(), QStringLiteral("qt"), QStringLiteral("_"), QLibraryInfo::location(QLibraryInfo::TranslationsPath)))
-        QApplication::installTranslator(&qtTranslator);
-    if (ddTranslator.load(QLocale(), QStringLiteral("dd"), QStringLiteral("_"), QLibraryInfo::location(QLibraryInfo::TranslationsPath)))
-        QApplication::installTranslator(&ddTranslator);
+    if (SettingsManager::getInstance()->getLocalize())
+    {
+        if (qtTranslator.load(QLocale(), QStringLiteral("qt"), QStringLiteral("_"), QLibraryInfo::location(QLibraryInfo::TranslationsPath)))
+            QApplication::installTranslator(&qtTranslator);
+        if (ddTranslator.load(QLocale(), QStringLiteral("dd"), QStringLiteral("_"), QLibraryInfo::location(QLibraryInfo::TranslationsPath)))
+            QApplication::installTranslator(&ddTranslator);
+    }
     HANDLE mutex = CreateMutex(nullptr, FALSE, TEXT("wangwenx190.DynamicDesktop.1000.AppMutex"));
     if (GetLastError() == ERROR_ALREADY_EXISTS)
     {
@@ -117,7 +120,14 @@ int main(int argc, char *argv[])
             }
         });
     trayMenu.addSeparator();
-    trayMenu.addAction(QObject::tr("Play"), &player, SLOT(play()));
+    QAction *playAction = trayMenu.addAction(QObject::tr("Play"));
+    QObject::connect(playAction, &QAction::triggered,
+        [=, &renderer, &player]
+        {
+            player.play();
+            if (renderer.isHidden())
+                renderer.show();
+        });
     trayMenu.addAction(QObject::tr("Pause"), &player, SLOT(pause()));
     QAction *muteAction = trayMenu.addAction(QObject::tr("Mute"));
     muteAction->setCheckable(true);
@@ -162,7 +172,7 @@ int main(int argc, char *argv[])
             if (reason != QSystemTrayIcon::Context)
                 optionsAction->triggered();
         });
-    QObject::connect(&preferencesDialog, SIGNAL(play()), &player, SLOT(play()));
+    QObject::connect(&preferencesDialog, SIGNAL(play()), playAction, SLOT(triggered()));
     QObject::connect(&preferencesDialog, SIGNAL(pause()), &player, SLOT(pause()));
     QObject::connect(&preferencesDialog, &PreferencesDialog::urlChanged,
         [=, &player](const QString &url)
@@ -193,7 +203,8 @@ int main(int argc, char *argv[])
     HWND progman = getProgman();
     auto wallpaper = reinterpret_cast<HWND>(renderer.winId());
     SetParent(wallpaper, progman);
-    renderer.show();
+    if (player.isLoaded() || player.isPlaying())
+        renderer.show();
     int exec = QApplication::exec();
     CloseHandle(mutex);    
     return exec;

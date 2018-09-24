@@ -18,7 +18,7 @@ TEMPLATE = app
 DEFINES += QT_DEPRECATED_WARNINGS QT_DISABLE_DEPRECATED_BEFORE=0x051102
 CONFIG *= c++11
 CONFIG -= app_bundle
-LIBS += -lUser32
+LIBS += -lUser32 -lDwmapi
 SOURCES += main.cpp forms/preferencesdialog.cpp settingsmanager.cpp framelesswindow.cpp
 HEADERS += forms/preferencesdialog.h settingsmanager.h framelesswindow.h
 FORMS += forms/preferencesdialog.ui
