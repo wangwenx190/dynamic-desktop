@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>586</width>
-    <height>315</height>
+    <width>811</width>
+    <height>311</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -129,16 +129,16 @@ QLineEdit:focus {
     <number>5</number>
    </property>
    <property name="leftMargin">
-    <number>10</number>
+    <number>13</number>
    </property>
    <property name="topMargin">
-    <number>5</number>
+    <number>0</number>
    </property>
    <property name="rightMargin">
-    <number>10</number>
+    <number>13</number>
    </property>
    <property name="bottomMargin">
-    <number>5</number>
+    <number>6</number>
    </property>
    <item>
     <widget class="QWidget" name="widget_windowtitlebar" native="true">
@@ -147,6 +147,12 @@ QLineEdit:focus {
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>30</height>
+      </size>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_7">
       <property name="spacing">
@@ -180,8 +186,8 @@ QLineEdit:focus {
         </property>
         <property name="maximumSize">
          <size>
-          <width>20</width>
-          <height>20</height>
+          <width>25</width>
+          <height>25</height>
          </size>
         </property>
         <property name="text">
@@ -216,6 +222,12 @@ QLineEdit:focus {
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>30</height>
+         </size>
+        </property>
         <property name="text">
          <string>Preferences</string>
         </property>
@@ -242,6 +254,12 @@ QLineEdit:focus {
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
+        <property name="maximumSize">
+         <size>
+          <width>30</width>
+          <height>30</height>
+         </size>
+        </property>
         <property name="text">
          <string/>
         </property>
@@ -265,6 +283,12 @@ QLineEdit:focus {
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
+        <property name="maximumSize">
+         <size>
+          <width>30</width>
+          <height>30</height>
+         </size>
+        </property>
         <property name="text">
          <string/>
         </property>
@@ -284,6 +308,12 @@ QLineEdit:focus {
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>30</width>
+          <height>30</height>
+         </size>
         </property>
         <property name="text">
          <string/>
@@ -465,6 +495,13 @@ QLineEdit:focus {
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QPushButton" name="pushButton_about">
+       <property name="text">
+        <string>About</string>
+       </property>
+      </widget>
+     </item>
      <item>
       <spacer name="horizontalSpacer">
        <property name="orientation">

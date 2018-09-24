@@ -143,6 +143,18 @@ int main(int argc, char *argv[])
             }
         });
     trayMenu.addSeparator();
+    QAction *aboutAction = trayMenu.addAction(QObject::tr("About"));
+    QObject::connect(aboutAction, &QAction::triggered,
+        [=]
+        {
+            QMessageBox::about(nullptr, QStringLiteral("Dynamic Desktop"),
+                               QStringLiteral("Dynamic Desktop\n") +
+                               QObject::tr("Version: %0\nSource code: %1\nBuild time: %2 %3")
+                                   .arg(QStringLiteral(DD_VERSION))
+                                   .arg(QStringLiteral("https://github.com/wangwenx190/dynamic-desktop"))
+                                   .arg(QStringLiteral(__DATE__))
+                                   .arg(QStringLiteral(__TIME__)));
+        });
     trayMenu.addAction(QObject::tr("Exit"), qApp, &QApplication::closeAllWindows);
     QSystemTrayIcon trayIcon;
     trayIcon.setIcon(QIcon(QStringLiteral(":/icon.ico")));
@@ -176,6 +188,7 @@ int main(int argc, char *argv[])
             if (reason != QSystemTrayIcon::Context)
                 optionsAction->triggered();
         });
+    QObject::connect(&preferencesDialog, SIGNAL(about()), aboutAction, SIGNAL(triggered()));
     QObject::connect(&preferencesDialog, SIGNAL(play()), playAction, SIGNAL(triggered()));
     QObject::connect(&preferencesDialog, SIGNAL(pause()), &player, SLOT(pause()));
     QObject::connect(&preferencesDialog, &PreferencesDialog::urlChanged,

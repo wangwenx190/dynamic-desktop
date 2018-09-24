@@ -18,6 +18,7 @@ signals:
     void urlChanged(const QString &);
     void autostartChanged(bool);
     void refreshUi();
+    void about();
 
 public:
     explicit PreferencesDialog(QWidget *parent = nullptr);

@@ -15,10 +15,12 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
     ui(new Ui::PreferencesDialog)
 {
     ui->setupUi(this);
-    setFixedHeight(height());
-    setTitleBar(ui->widget_windowtitlebar);
-    addIgnoreWidget(ui->label_windowtitle);
     setContentsMargins(0, 0, 0, 0);
+    setResizeable(true);
+    setResizeableAreaWidth(5);
+    setTitleBar(ui->widget_windowtitlebar);
+    addIgnoreWidget(ui->label_windowtitle);    
+    connect(ui->pushButton_about, SIGNAL(clicked()), this, SIGNAL(about()));
     connect(ui->checkBox_localize, &QCheckBox::stateChanged,
         [=]
         {
