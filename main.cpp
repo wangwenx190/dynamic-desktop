@@ -15,6 +15,7 @@
 #include <QTranslator>
 #include <QLocale>
 #include <QLibraryInfo>
+//#include <QTimer>
 
 //https://github.com/ThomasHuai/Wallpaper/blob/master/utils.cpp
 HWND HWORKERW = nullptr;
@@ -79,7 +80,7 @@ int main(int argc, char *argv[])
     renderer.setWindowIcon(QIcon(QStringLiteral(":/icon.ico")));
     renderer.setWindowTitle(QObject::tr("My wallpaper"));
     renderer.setAttribute(Qt::WA_NoSystemBackground);
-    renderer.setWindowFlags(renderer.windowFlags() | Qt::FramelessWindowHint | Qt::WindowStaysOnBottomHint);
+    renderer.setWindowFlags(renderer.windowFlags() | Qt::FramelessWindowHint | Qt::WindowStaysOnBottomHint | Qt::WindowDoesNotAcceptFocus);
     QRect screenGeometry = QApplication::desktop()->screenGeometry(&renderer);
     renderer.setGeometry(screenGeometry);
     QtAV::AVPlayer player;
@@ -223,6 +224,15 @@ int main(int argc, char *argv[])
     HWND progman = getProgman();
     auto wallpaper = reinterpret_cast<HWND>(renderer.winId());
     SetParent(wallpaper, progman);
+    /*QTimer timer;
+    QObject::connect(&timer, &QTimer::timeout,
+        [=, &renderer]
+        {
+            if (renderer.isVisible())
+                if (GetParent(wallpaper) != progman)
+                    SetParent(wallpaper, progman);
+        });
+    timer.start(1000);*/
     int exec = QApplication::exec();
     CloseHandle(mutex);
     return exec;
