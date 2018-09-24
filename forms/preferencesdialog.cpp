@@ -56,9 +56,27 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
         [=]
         {
             bool hwdecEnabled = ui->checkBox_hwdec->isChecked();
-            ui->checkBox_hwdec_cuda->setEnabled(hwdecEnabled);
-            ui->checkBox_hwdec_d3d11->setEnabled(hwdecEnabled);
-            ui->checkBox_hwdec_dxva->setEnabled(hwdecEnabled);
+            if (!SettingsManager::getInstance()->hasNvidiaCard())
+            {
+                ui->checkBox_hwdec_cuda->setChecked(false);
+                ui->checkBox_hwdec_cuda->setEnabled(false);
+            }
+            else
+                ui->checkBox_hwdec_cuda->setEnabled(hwdecEnabled);
+            if (!SettingsManager::getInstance()->hasNvidiaCard()
+                    && !SettingsManager::getInstance()->hasAmdCard()
+                    && !SettingsManager::getInstance()->hasIntelCard())
+            {
+                ui->checkBox_hwdec_d3d11->setChecked(false);
+                ui->checkBox_hwdec_d3d11->setEnabled(false);
+                ui->checkBox_hwdec_dxva->setChecked(false);
+                ui->checkBox_hwdec_dxva->setEnabled(false);
+            }
+            else
+            {
+                ui->checkBox_hwdec_d3d11->setEnabled(hwdecEnabled);
+                ui->checkBox_hwdec_dxva->setEnabled(hwdecEnabled);
+            }
             if (hwdecEnabled && this->isVisible() && this->isActiveWindow())
                 QMessageBox::information(nullptr, QStringLiteral("Dynamic Desktop"), tr("Restart this application to experience it.\nMake sure this application runs in your GPU's Optimus mode."));
         });
@@ -88,11 +106,19 @@ void PreferencesDialog::refreshUI()
     ui->checkBox_volume->setChecked(!SettingsManager::getInstance()->getMute());
     ui->horizontalSlider_volume->setEnabled(ui->checkBox_volume->isChecked());
     ui->horizontalSlider_volume->setValue(SettingsManager::getInstance()->getVolume());
-    ui->checkBox_autostart->setChecked(SettingsManager::getInstance()->getAutostart() && SettingsManager::getInstance()->isRegAutostart());
+    ui->checkBox_autostart->setChecked(SettingsManager::getInstance()->getAutostart()
+                                       && SettingsManager::getInstance()->isRegAutostart());
     QStringList decoders = SettingsManager::getInstance()->getDecoders();
-    ui->checkBox_hwdec_cuda->setChecked(decoders.contains(QStringLiteral("CUDA")));
-    ui->checkBox_hwdec_d3d11->setChecked(decoders.contains(QStringLiteral("D3D11")));
-    ui->checkBox_hwdec_dxva->setChecked(decoders.contains(QStringLiteral("DXVA")));
+    ui->checkBox_hwdec_cuda->setChecked(decoders.contains(QStringLiteral("CUDA"))
+                                        && SettingsManager::getInstance()->hasNvidiaCard());
+    ui->checkBox_hwdec_d3d11->setChecked(decoders.contains(QStringLiteral("D3D11"))
+                                         && (SettingsManager::getInstance()->hasNvidiaCard()
+                                             || SettingsManager::getInstance()->hasAmdCard()
+                                             || SettingsManager::getInstance()->hasIntelCard()));
+    ui->checkBox_hwdec_dxva->setChecked(decoders.contains(QStringLiteral("DXVA"))
+                                        && (SettingsManager::getInstance()->hasNvidiaCard()
+                                            || SettingsManager::getInstance()->hasAmdCard()
+                                            || SettingsManager::getInstance()->hasIntelCard()));
     bool hwdecEnabled = (ui->checkBox_hwdec_cuda->isChecked()
             || ui->checkBox_hwdec_d3d11->isChecked()
             || ui->checkBox_hwdec_dxva->isChecked())
@@ -101,9 +127,16 @@ void PreferencesDialog::refreshUI()
     static bool firstShow = true;
     if (firstShow)
     {
-        ui->checkBox_hwdec_cuda->setEnabled(hwdecEnabled);
-        ui->checkBox_hwdec_d3d11->setEnabled(hwdecEnabled);
-        ui->checkBox_hwdec_dxva->setEnabled(hwdecEnabled);
+        ui->checkBox_hwdec_cuda->setEnabled(hwdecEnabled
+                               && SettingsManager::getInstance()->hasNvidiaCard());
+        ui->checkBox_hwdec_d3d11->setEnabled(hwdecEnabled
+                               && (SettingsManager::getInstance()->hasNvidiaCard()
+                                    || SettingsManager::getInstance()->hasAmdCard()
+                                    || SettingsManager::getInstance()->hasIntelCard()));
+        ui->checkBox_hwdec_dxva->setEnabled(hwdecEnabled
+                               && (SettingsManager::getInstance()->hasNvidiaCard()
+                                    || SettingsManager::getInstance()->hasAmdCard()
+                                    || SettingsManager::getInstance()->hasIntelCard()));
         firstShow = false;
     }
 }
@@ -113,29 +146,36 @@ void PreferencesDialog::saveSettings()
     if (ui->lineEdit_url->text() != SettingsManager::getInstance()->getUrl())
     {
         SettingsManager::getInstance()->setUrl(ui->lineEdit_url->text());
-        emit urlChanged(ui->lineEdit_url->text());
+        emit urlChanged(SettingsManager::getInstance()->getUrl());
     }
     if (ui->checkBox_volume->isChecked() != !SettingsManager::getInstance()->getMute())
     {
         SettingsManager::getInstance()->setMute(!ui->checkBox_volume->isChecked());
-        emit muteChanged(!ui->checkBox_volume->isChecked());
+        emit muteChanged(SettingsManager::getInstance()->getMute());
     }
     if (ui->horizontalSlider_volume->value() != SettingsManager::getInstance()->getVolume())
     {
         SettingsManager::getInstance()->setVolume(ui->horizontalSlider_volume->value());
-        emit volumeChanged(ui->horizontalSlider_volume->value());
+        emit volumeChanged(SettingsManager::getInstance()->getVolume());
     }
     if (ui->checkBox_autostart->isChecked() != SettingsManager::getInstance()->getAutostart())
     {
         SettingsManager::getInstance()->setAutostart(ui->checkBox_autostart->isChecked());
-        emit autostartChanged(ui->checkBox_autostart->isChecked());
+        emit autostartChanged(SettingsManager::getInstance()->getAutostart());
     }
     QStringList decoders;
-    if (ui->checkBox_hwdec_cuda->isChecked())
+    if (ui->checkBox_hwdec_cuda->isChecked()
+            && SettingsManager::getInstance()->hasNvidiaCard())
         decoders << QStringLiteral("CUDA");
-    if (ui->checkBox_hwdec_d3d11->isChecked())
+    if (ui->checkBox_hwdec_d3d11->isChecked()
+            && (SettingsManager::getInstance()->hasNvidiaCard()
+                || SettingsManager::getInstance()->hasAmdCard()
+                || SettingsManager::getInstance()->hasIntelCard()))
         decoders << QStringLiteral("D3D11");
-    if (ui->checkBox_hwdec_dxva->isChecked())
+    if (ui->checkBox_hwdec_dxva->isChecked()
+            && (SettingsManager::getInstance()->hasNvidiaCard()
+                || SettingsManager::getInstance()->hasAmdCard()
+                || SettingsManager::getInstance()->hasIntelCard()))
         decoders << QStringLiteral("DXVA");
     if (decoders.isEmpty())
         ui->checkBox_hwdec->setChecked(false);

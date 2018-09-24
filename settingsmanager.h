@@ -12,6 +12,12 @@ public:
     void unregAutostart();
     bool isRegAutostart() const;
 
+    bool hasNvidiaCard() const;
+    bool hasAmdCard() const;
+    bool hasIntelCard() const;
+
+    QStringList defaultDecoders() const;
+
     QString getUrl() const;
     bool getMute() const;
     unsigned int getVolume() const;

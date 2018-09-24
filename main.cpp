@@ -14,6 +14,7 @@
 #include <QMessageBox>
 #include <QTranslator>
 #include <QLocale>
+#include <QLibraryInfo>
 
 //https://github.com/ThomasHuai/Wallpaper/blob/master/utils.cpp
 HWND HWORKERW = nullptr;
@@ -54,13 +55,15 @@ int main(int argc, char *argv[])
     QCoreApplication::setOrganizationDomain(QStringLiteral("wangwenx190.github.io"));
     QApplication app(argc, argv);
     AllowSetForegroundWindow(static_cast<DWORD>(QApplication::applicationPid()));
-    QTranslator translator;
-    if (translator.load(QLocale(), QStringLiteral("dd"), QStringLiteral("_"), QStringLiteral(":/i18n")))
-        QApplication::installTranslator(&translator);
+    QTranslator qtTranslator, ddTranslator;
+    if (qtTranslator.load(QLocale(), QStringLiteral("qt"), QStringLiteral("_"), QLibraryInfo::location(QLibraryInfo::TranslationsPath)))
+        QApplication::installTranslator(&qtTranslator);
+    if (ddTranslator.load(QLocale(), QStringLiteral("dd"), QStringLiteral("_"), QLibraryInfo::location(QLibraryInfo::TranslationsPath)))
+        QApplication::installTranslator(&ddTranslator);
     HANDLE mutex = CreateMutex(nullptr, FALSE, TEXT("wangwenx190.DynamicDesktop.1000.AppMutex"));
     if (GetLastError() == ERROR_ALREADY_EXISTS)
     {
-        QMessageBox::critical(nullptr, QStringLiteral("Dynamic Desktop"), QObject::tr("There is another instance running."));
+        QMessageBox::critical(nullptr, QStringLiteral("Dynamic Desktop"), QObject::tr("There is another instance running. Please do not run twice."));
         CloseHandle(mutex);
         return 0;
     }
@@ -72,11 +75,10 @@ int main(int argc, char *argv[])
     renderer.forcePreferredPixelFormat(true);
     renderer.setWindowIcon(QIcon(QStringLiteral(":/icon.ico")));
     renderer.setWindowTitle(QObject::tr("My wallpaper"));
-    QRect screenGeometry = QApplication::desktop()->screenGeometry(&renderer);
     renderer.setAttribute(Qt::WA_NoSystemBackground);
-    renderer.setWindowFlags(renderer.windowFlags() | Qt::FramelessWindowHint);
-    renderer.setGeometry(screenGeometry.left(), screenGeometry.bottom(), 5, 5);
-    renderer.show();
+    renderer.setWindowFlags(renderer.windowFlags() | Qt::FramelessWindowHint | Qt::WindowStaysOnBottomHint);
+    QRect screenGeometry = QApplication::desktop()->screenGeometry(&renderer);
+    renderer.setGeometry(screenGeometry);
     QtAV::AVPlayer player;
     player.setRenderer(&renderer);
     if (SettingsManager::getInstance()->getHwdec())
@@ -191,8 +193,7 @@ int main(int argc, char *argv[])
     HWND progman = getProgman();
     auto wallpaper = reinterpret_cast<HWND>(renderer.winId());
     SetParent(wallpaper, progman);
-    SetWindowPos(wallpaper, HWND_BOTTOM, 0, 0, 0, 0, SWP_NOACTIVATE | SWP_NOMOVE | SWP_NOSIZE);
-    renderer.setGeometry(screenGeometry);
+    renderer.show();
     int exec = QApplication::exec();
     CloseHandle(mutex);    
     return exec;
