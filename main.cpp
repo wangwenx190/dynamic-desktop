@@ -15,7 +15,6 @@
 #include <QTranslator>
 #include <QLocale>
 #include <QLibraryInfo>
-//#include <QTimer>
 
 //https://github.com/ThomasHuai/Wallpaper/blob/master/utils.cpp
 HWND HWORKERW = nullptr;
@@ -33,7 +32,7 @@ BOOL CALLBACK EnumWindowsProc(HWND hwnd, LPARAM lParam)
     return TRUE;
 }
 
-HWND getProgman()
+HWND getWorkerW()
 {
     int result;
     HWND hwnd = FindWindow(TEXT("Progman"), nullptr);
@@ -41,7 +40,8 @@ HWND getProgman()
     SendMessageTimeout(hwnd, 0x052c, 0, 0, SMTO_NORMAL, 0x3e8, reinterpret_cast<PDWORD_PTR>(&result));
     // 遍历窗体获得窗口句柄
     EnumWindows(EnumWindowsProc, 0);
-    ShowWindow(HWORKERW, SW_HIDE);
+    // 显示 WorkerW
+    ShowWindow(HWORKERW, SW_SHOW);
     return hwnd;
 }
 
@@ -221,19 +221,11 @@ int main(int argc, char *argv[])
             else if (!enabled && SettingsManager::getInstance()->isRegAutostart())
                 SettingsManager::getInstance()->unregAutostart();
         });
-    HWND progman = getProgman();
+    getWorkerW();
     auto wallpaper = reinterpret_cast<HWND>(renderer.winId());
-    SetParent(wallpaper, progman);
-    /*QTimer timer;
-    QObject::connect(&timer, &QTimer::timeout,
-        [=, &renderer]
-        {
-            if (renderer.isVisible())
-                if (GetParent(wallpaper) != progman)
-                    SetParent(wallpaper, progman);
-        });
-    timer.start(1000);*/
+    SetParent(wallpaper, HWORKERW);
     int exec = QApplication::exec();
+    ShowWindow(HWORKERW, SW_HIDE);
     CloseHandle(mutex);
     return exec;
 }
