@@ -51,7 +51,7 @@
     </message>
     <message>
         <location filename="../forms/preferencesdialog.ui" line="424"/>
-        <location filename="../forms/preferencesdialog.cpp" line="74"/>
+        <location filename="../forms/preferencesdialog.cpp" line="75"/>
         <source>URL</source>
         <translation>路径</translation>
     </message>
@@ -106,22 +106,22 @@
         <translation>重启此应用程序以生效。</translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="66"/>
+        <location filename="../forms/preferencesdialog.cpp" line="67"/>
         <source>Please select a media file</source>
         <translation>请选择一个媒体文件</translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="66"/>
+        <location filename="../forms/preferencesdialog.cpp" line="67"/>
         <source>Videos (*.avi *.mp4 *.mkv *.flv);;All files (*)</source>
         <translation>视频 (*.avi *.mp4 *.mkv *.flv);;所有文件 (*)</translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="74"/>
+        <location filename="../forms/preferencesdialog.cpp" line="75"/>
         <source>Please input a valid url</source>
         <translation>请输入一个有效的网址</translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="104"/>
+        <location filename="../forms/preferencesdialog.cpp" line="105"/>
         <source>Restart this application to experience it.
 Make sure this application runs in your GPU&apos;s Optimus mode.</source>
         <translation>重新运行此程序以体验改变。
