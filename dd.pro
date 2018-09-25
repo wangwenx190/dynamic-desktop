@@ -19,14 +19,35 @@ DEFINES += QT_DEPRECATED_WARNINGS QT_DISABLE_DEPRECATED_BEFORE=0x051102
 CONFIG *= c++11
 CONFIG -= app_bundle
 LIBS += -lUser32 -lDwmapi
-SOURCES += main.cpp forms/preferencesdialog.cpp settingsmanager.cpp framelesswindow.cpp
-HEADERS += forms/preferencesdialog.h settingsmanager.h framelesswindow.h
+HEADERS += \
+    forms/preferencesdialog.h \
+    settingsmanager.h \
+    framelesswindow.h
+SOURCES += \
+    main.cpp \
+    forms/preferencesdialog.cpp \
+    settingsmanager.cpp \
+    framelesswindow.cpp
 FORMS += forms/preferencesdialog.ui
-TRANSLATIONS += translations/dd_en.ts translations/dd_zh_CN.ts
+TRANSLATIONS += \
+    translations/dd_en.ts \
+    translations/dd_zh_CN.ts
 RESOURCES += resources.qrc
 target.path = $$BIN_DIR
-translations.files = $$[QT_INSTALL_TRANSLATIONS]/qt_en.qm $$[QT_INSTALL_TRANSLATIONS]/qt_zh_CN.qm $$PWD/translations/dd_en.qm $$PWD/translations/dd_zh_CN.qm
+translations.files = \
+    $$PWD/translations/dd_en.qm \
+    $$PWD/translations/dd_zh_CN.qm
 translations.path = $$BIN_DIR/translations
-qtavlibs.files = $$[QT_INSTALL_BINS]/Qt5OpenGL.dll $$[QT_INSTALL_BINS]/QtAV1.dll $$[QT_INSTALL_BINS]/QtAVWidgets1.dll
+qtavlibs.files = \
+    $$[QT_INSTALL_BINS]/Qt*OpenGL.dll \
+    $$[QT_INSTALL_BINS]/Qt*AV*.dll \
+    $$[QT_INSTALL_BINS]/avcodec*.dll \
+    $$[QT_INSTALL_BINS]/avdevice*.dll \
+    $$[QT_INSTALL_BINS]/avfilter*.dll \
+    $$[QT_INSTALL_BINS]/avformat*.dll \
+    $$[QT_INSTALL_BINS]/avutil*.dll \
+    $$[QT_INSTALL_BINS]/OpenAL32*.dll \
+    $$[QT_INSTALL_BINS]/swresample*.dll \
+    $$[QT_INSTALL_BINS]/swscale*.dll
 qtavlibs.path = $$BIN_DIR
 INSTALLS += target translations qtavlibs

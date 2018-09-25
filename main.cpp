@@ -15,6 +15,8 @@
 #include <QTranslator>
 #include <QLocale>
 #include <QLibraryInfo>
+#include <QSysInfo>
+#include <QVersionNumber>
 
 //https://github.com/ThomasHuai/Wallpaper/blob/master/utils.cpp
 HWND HWORKERW = nullptr;
@@ -22,8 +24,8 @@ HWND HWORKERW = nullptr;
 BOOL CALLBACK EnumWindowsProc(HWND hwnd, LPARAM lParam)
 {
     Q_UNUSED(lParam)
-    HWND HDEFVIEW = FindWindowEx(hwnd, nullptr, TEXT("SHELLDLL_DefView"), nullptr);
-    if (HDEFVIEW != nullptr)
+    HWND defview = FindWindowEx(hwnd, nullptr, TEXT("SHELLDLL_DefView"), nullptr);
+    if (defview != nullptr)
     {
         HWORKERW = FindWindowEx(nullptr, hwnd, TEXT("WorkerW"), nullptr);
         if (HWORKERW != nullptr)
@@ -32,17 +34,18 @@ BOOL CALLBACK EnumWindowsProc(HWND hwnd, LPARAM lParam)
     return TRUE;
 }
 
-HWND getWorkerW()
+HWND getProgman()
 {
-    int result;
-    HWND hwnd = FindWindow(TEXT("Progman"), nullptr);
-    // 使用 0x3e8 命令分割出两个 WorkerW
-    SendMessageTimeout(hwnd, 0x052c, 0, 0, SMTO_NORMAL, 0x3e8, reinterpret_cast<PDWORD_PTR>(&result));
-    // 遍历窗体获得窗口句柄
+    return FindWindow(TEXT("Progman"), TEXT("Program Manager"));
+}
+
+HWND getWorkerW(bool legacyMode = false)
+{
+    HWND hwnd = getProgman();
+    SendMessage(hwnd, 0x052c, 0, 0);
     EnumWindows(EnumWindowsProc, 0);
-    // 显示 WorkerW
-    ShowWindow(HWORKERW, SW_SHOW);
-    return hwnd;
+    ShowWindow(HWORKERW, legacyMode ? SW_HIDE : SW_SHOW);
+    return legacyMode ? hwnd : HWORKERW;
 }
 
 int main(int argc, char *argv[])
@@ -55,20 +58,14 @@ int main(int argc, char *argv[])
     QCoreApplication::setOrganizationName(QStringLiteral("wangwenx190"));
     QCoreApplication::setOrganizationDomain(QStringLiteral("wangwenx190.github.io"));
     QApplication app(argc, argv);
-    AllowSetForegroundWindow(static_cast<DWORD>(QApplication::applicationPid()));
-    QTranslator qtTranslator, ddTranslator;
+    QTranslator ddTranslator;
     if (SettingsManager::getInstance()->getLocalize())
-    {
-        if (qtTranslator.load(QLocale(), QStringLiteral("qt"), QStringLiteral("_"), QLibraryInfo::location(QLibraryInfo::TranslationsPath)))
-            QApplication::installTranslator(&qtTranslator);
         if (ddTranslator.load(QLocale(), QStringLiteral("dd"), QStringLiteral("_"), QLibraryInfo::location(QLibraryInfo::TranslationsPath)))
             QApplication::installTranslator(&ddTranslator);
-    }
     HANDLE mutex = CreateMutex(nullptr, FALSE, TEXT("wangwenx190.DynamicDesktop.1000.AppMutex"));
     if (GetLastError() == ERROR_ALREADY_EXISTS)
     {
         QMessageBox::critical(nullptr, QStringLiteral("Dynamic Desktop"), QObject::tr("There is another instance running. Please do not run twice."));
-        CloseHandle(mutex);
         return 0;
     }
     if (SettingsManager::getInstance()->getAutostart() && !SettingsManager::getInstance()->isRegAutostart())
@@ -221,9 +218,14 @@ int main(int argc, char *argv[])
             else if (!enabled && SettingsManager::getInstance()->isRegAutostart())
                 SettingsManager::getInstance()->unregAutostart();
         });
-    getWorkerW();
-    auto wallpaper = reinterpret_cast<HWND>(renderer.winId());
-    SetParent(wallpaper, HWORKERW);
+    HWND hworkerw = nullptr;
+    auto hrenderer = reinterpret_cast<HWND>(renderer.winId());
+    int suffixIndex;
+    QVersionNumber currentVersion = QVersionNumber::fromString(QSysInfo::kernelVersion(), &suffixIndex);
+    QVersionNumber minimumVersion(6, 2, 9200); // Windows 8
+    hworkerw = getWorkerW(currentVersion < minimumVersion);
+    if (hworkerw != nullptr)
+        SetParent(hrenderer, hworkerw);
     int exec = QApplication::exec();
     ShowWindow(HWORKERW, SW_HIDE);
     CloseHandle(mutex);
