@@ -1,6 +1,6 @@
 if exist "%~dp0build" rd /s /q "%~dp0build"
 lupdate -no-obsolete dd.pro
-lrelease -idbased -compress -nounfinished -removeidentical dd.pro
+lrelease -nounfinished -removeidentical dd.pro
 qmake dd.pro -spec win32-msvc CONFIG+=release
 jom qmake_all
 jom && jom install
