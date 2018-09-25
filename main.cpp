@@ -62,6 +62,14 @@ int main(int argc, char *argv[])
     if (SettingsManager::getInstance()->getLocalize())
         if (ddTranslator.load(QLocale(), QStringLiteral("dd"), QStringLiteral("_"), QLibraryInfo::location(QLibraryInfo::TranslationsPath)))
             QApplication::installTranslator(&ddTranslator);
+    int suffixIndex;
+    QVersionNumber currentVersion = QVersionNumber::fromString(QSysInfo::kernelVersion(), &suffixIndex);
+    QVersionNumber win7Version(6, 1, 7600);
+    if (currentVersion < win7Version)
+    {
+        QMessageBox::critical(nullptr, QStringLiteral("Dynamic Desktop"), QObject::tr("This application only supports Windows 7 and newer."));
+        return 0;
+    }
     HANDLE mutex = CreateMutex(nullptr, FALSE, TEXT("wangwenx190.DynamicDesktop.1000.AppMutex"));
     if (GetLastError() == ERROR_ALREADY_EXISTS)
     {
@@ -220,10 +228,17 @@ int main(int argc, char *argv[])
         });
     HWND hworkerw = nullptr;
     auto hrenderer = reinterpret_cast<HWND>(renderer.winId());
-    int suffixIndex;
-    QVersionNumber currentVersion = QVersionNumber::fromString(QSysInfo::kernelVersion(), &suffixIndex);
-    QVersionNumber minimumVersion(6, 2, 9200); // Windows 8
-    hworkerw = getWorkerW(currentVersion < minimumVersion);
+    QVersionNumber win10Version(10, 0, 10240); // Windows 10 Version 1507
+    // How to place our window under desktop icons:
+    // Use "Program Manager" as our parent window in Win7/8/8.1.
+    // Use "WorkerW" as our parent window in Win10.
+    // Use "Program Manager" as our parent window in
+    // Win10 is also OK, but our window will come
+    // to front if we press "Win + Tab" and it will
+    // also block our desktop icons, however using
+    // "WorkerW" as our parent window will not result
+    // in this problem, I don't know why. It's strange.
+    hworkerw = getWorkerW(currentVersion < win10Version);
     if (hworkerw != nullptr)
         SetParent(hrenderer, hworkerw);
     int exec = QApplication::exec();

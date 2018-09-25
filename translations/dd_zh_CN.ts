@@ -131,46 +131,47 @@ Make sure this application runs in your GPU&apos;s Optimus mode.</source>
 <context>
     <name>QObject</name>
     <message>
-        <source>There is another instance running.</source>
-        <translation type="vanished">另一个实例已经在运行。请勿重复运行。</translation>
+        <location filename="../main.cpp" line="70"/>
+        <source>This application only supports Windows 7 and newer.</source>
+        <translation>此应用程序仅支持 Windows 7 及更新的系统。</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="68"/>
+        <location filename="../main.cpp" line="76"/>
         <source>There is another instance running. Please do not run twice.</source>
         <translation>另一个实例已经在运行。请勿重复运行。</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="78"/>
+        <location filename="../main.cpp" line="86"/>
         <source>My wallpaper</source>
         <translation>我的壁纸</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="106"/>
+        <location filename="../main.cpp" line="114"/>
         <source>Preferences</source>
         <translation>首选项</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="121"/>
+        <location filename="../main.cpp" line="129"/>
         <source>Play</source>
         <translation>播放</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="129"/>
+        <location filename="../main.cpp" line="137"/>
         <source>Pause</source>
         <translation>暂停</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="130"/>
+        <location filename="../main.cpp" line="138"/>
         <source>Mute</source>
         <translation>静音</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="144"/>
+        <location filename="../main.cpp" line="152"/>
         <source>About</source>
         <translation>关于</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="149"/>
+        <location filename="../main.cpp" line="157"/>
         <source>Version: %0
 Source code: %1
 Build time: %2 %3</source>
@@ -179,7 +180,7 @@ Build time: %2 %3</source>
 构建时间： %2 %3</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="155"/>
+        <location filename="../main.cpp" line="163"/>
         <source>Exit</source>
         <translation>退出</translation>
     </message>
