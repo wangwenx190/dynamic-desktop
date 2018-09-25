@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include <QSettings>
+#include <QtCore>
 
 class SettingsManager
 {
@@ -10,7 +10,6 @@ public:
 public:
     bool regAutostart();
     void unregAutostart();
-    bool isRegAutostart() const;
 
     /*bool hasNvidiaCard() const;
     bool hasAmdCard() const;
@@ -36,8 +35,7 @@ public:
 
 private:
     SettingsManager();
-    ~SettingsManager();
 
 private:
-    QSettings *settings = nullptr;
+    QString iniPath;
 };

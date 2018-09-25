@@ -4,22 +4,12 @@
 #include <QDir>
 #include <QUrl>
 #include <QFileInfo>
+#include <QSettings>
 
 SettingsManager *SettingsManager::getInstance()
 {
     static SettingsManager settingsManager;
     return &settingsManager;
-}
-
-bool SettingsManager::regAutostart()
-{
-    const QString key = QStringLiteral("HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run");
-    QSettings set(key, QSettings::NativeFormat);
-    if (set.status() != QSettings::NoError)
-        return false;
-    QString value = QLatin1Char('"') + QCoreApplication::applicationFilePath() + QLatin1Char('"');
-    set.setValue(QStringLiteral("Dynamic Desktop"), QDir::toNativeSeparators(value));
-    return true;
 }
 
 void SettingsManager::unregAutostart()
@@ -30,11 +20,16 @@ void SettingsManager::unregAutostart()
         set.remove(QStringLiteral("Dynamic Desktop"));
 }
 
-bool SettingsManager::isRegAutostart() const
+bool SettingsManager::regAutostart()
 {
+    unregAutostart();
     const QString key = QStringLiteral("HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run");
     QSettings set(key, QSettings::NativeFormat);
-    return set.contains(QStringLiteral("Dynamic Desktop"));
+    if (set.status() != QSettings::NoError)
+        return false;
+    QString value = QLatin1Char('"') + QCoreApplication::applicationFilePath() + QLatin1Char('"');
+    set.setValue(QStringLiteral("Dynamic Desktop"), QDir::toNativeSeparators(value));
+    return true;
 }
 
 /*bool SettingsManager::hasNvidiaCard() const
@@ -80,7 +75,8 @@ QStringList SettingsManager::defaultDecoders() const
 
 QString SettingsManager::getUrl() const
 {
-    QString path = settings->value(QStringLiteral("url"), QString()).toString();
+    QSettings settings(iniPath, QSettings::IniFormat);
+    QString path = settings.value(QStringLiteral("dd/url"), QString()).toString();
     if (QFileInfo(path).isDir())
         return QString();
     if (!QFileInfo::exists(path))
@@ -97,12 +93,14 @@ QString SettingsManager::getUrl() const
 
 bool SettingsManager::getMute() const
 {
-    return settings->value(QStringLiteral("mute"), false).toBool();
+    QSettings settings(iniPath, QSettings::IniFormat);
+    return settings.value(QStringLiteral("dd/mute"), false).toBool();
 }
 
 unsigned int SettingsManager::getVolume() const
 {
-    int vol = settings->value(QStringLiteral("volume"), 9).toInt();
+    QSettings settings(iniPath, QSettings::IniFormat);
+    int vol = settings.value(QStringLiteral("dd/volume"), 9).toInt();
     if (vol < 0)
         vol = 0;
     if (vol > 99)
@@ -112,17 +110,20 @@ unsigned int SettingsManager::getVolume() const
 
 bool SettingsManager::getAutostart() const
 {
-    return settings->value(QStringLiteral("autostart"), false).toBool();
+    QSettings settings(iniPath, QSettings::IniFormat);
+    return settings.value(QStringLiteral("dd/autostart"), false).toBool();
 }
 
 bool SettingsManager::getHwdec() const
 {
-    return settings->value(QStringLiteral("hwdec"), true).toBool();
+    QSettings settings(iniPath, QSettings::IniFormat);
+    return settings.value(QStringLiteral("dd/hwdec"), true).toBool();
 }
 
 QStringList SettingsManager::getDecoders() const
 {
-    QStringList decoders = settings->value(QStringLiteral("decoders"), defaultDecoders()).toStringList();
+    QSettings settings(iniPath, QSettings::IniFormat);
+    QStringList decoders = settings.value(QStringLiteral("dd/decoders"), defaultDecoders()).toStringList();
     /*for (auto& decoder : decoders)
     {
         if (decoder != QStringLiteral("CUDA")
@@ -154,17 +155,20 @@ QStringList SettingsManager::getDecoders() const
 
 bool SettingsManager::getLocalize() const
 {
-    return settings->value(QStringLiteral("localize"), true).toBool();
+    QSettings settings(iniPath, QSettings::IniFormat);
+    return settings.value(QStringLiteral("dd/localize"), true).toBool();
 }
 
 void SettingsManager::setUrl(const QString &url)
 {
-    settings->setValue(QStringLiteral("url"), url);
+    QSettings settings(iniPath, QSettings::IniFormat);
+    settings.setValue(QStringLiteral("dd/url"), url);
 }
 
 void SettingsManager::setMute(bool mute)
 {
-    settings->setValue(QStringLiteral("mute"), mute);
+    QSettings settings(iniPath, QSettings::IniFormat);
+    settings.setValue(QStringLiteral("dd/mute"), mute);
 }
 
 void SettingsManager::setVolume(unsigned int volume)
@@ -172,17 +176,20 @@ void SettingsManager::setVolume(unsigned int volume)
     unsigned int vol = volume;
     if (vol > 99)
         vol = 99;
-    settings->setValue(QStringLiteral("volume"), vol);
+    QSettings settings(iniPath, QSettings::IniFormat);
+    settings.setValue(QStringLiteral("dd/volume"), vol);
 }
 
 void SettingsManager::setAutostart(bool enable)
 {
-    settings->setValue(QStringLiteral("autostart"), enable);
+    QSettings settings(iniPath, QSettings::IniFormat);
+    settings.setValue(QStringLiteral("dd/autostart"), enable);
 }
 
 void SettingsManager::setHwdec(bool enable)
 {
-    settings->setValue(QStringLiteral("hwdec"), enable);
+    QSettings settings(iniPath, QSettings::IniFormat);
+    settings.setValue(QStringLiteral("dd/hwdec"), enable);
 }
 
 void SettingsManager::setDecoders(const QStringList &decoders)
@@ -197,24 +204,20 @@ void SettingsManager::setDecoders(const QStringList &decoders)
             && decoders.contains(QStringLiteral("DXVA")))
         newDecoders << QStringLiteral("DXVA");
     newDecoders << QStringLiteral("FFmpeg");*/
-    settings->setValue(QStringLiteral("decoders"), /*newDecoders*/decoders);
+    QSettings settings(iniPath, QSettings::IniFormat);
+    settings.setValue(QStringLiteral("dd/decoders"), /*newDecoders*/decoders);
 }
 
 void SettingsManager::setLocalize(bool enable)
 {
-    settings->setValue(QStringLiteral("localize"), enable);
+    QSettings settings(iniPath, QSettings::IniFormat);
+    settings.setValue(QStringLiteral("dd/localize"), enable);
 }
 
 SettingsManager::SettingsManager()
 {
-    QString iniPath = QCoreApplication::applicationFilePath();
+    iniPath = QCoreApplication::applicationFilePath();
     if (iniPath.endsWith(QStringLiteral(".exe"), Qt::CaseInsensitive))
         iniPath = iniPath.remove(iniPath.lastIndexOf(QLatin1Char('.')), 4);
     iniPath += QStringLiteral(".ini");
-    settings = new QSettings(iniPath, QSettings::IniFormat);
-}
-
-SettingsManager::~SettingsManager()
-{
-    delete settings;
 }

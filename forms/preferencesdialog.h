@@ -37,4 +37,5 @@ private slots:
 
 private:
     Ui::PreferencesDialog *ui;
+    bool closing = false;
 };

@@ -275,7 +275,7 @@ QLineEdit:focus {
       <item>
        <widget class="QPushButton" name="pushButton_maximize">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="sizePolicy">
          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">

@@ -55,6 +55,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
     connect(ui->pushButton_ok, &QPushButton::clicked,
         [=]
         {
+            closing = true;
             this->saveSettings();
             this->close();
         });
@@ -100,7 +101,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
                 ui->checkBox_hwdec_d3d11->setEnabled(hwdecEnabled);
                 ui->checkBox_hwdec_dxva->setEnabled(hwdecEnabled);
             //}
-            if (hwdecEnabled && this->isVisible() && this->isActiveWindow())
+            if (this->isVisible() && this->isActiveWindow())
                 QMessageBox::information(nullptr, QStringLiteral("Dynamic Desktop"), tr("Restart this application to experience it.\nMake sure this application runs in your GPU's Optimus mode."));
         });
     connect(this, SIGNAL(refreshUi()), this, SLOT(refreshUI()));
@@ -120,6 +121,7 @@ void PreferencesDialog::setAudioAreaEnabled(bool enabled)
 void PreferencesDialog::showEvent(QShowEvent *event)
 {
     FramelessWindow::showEvent(event);
+    closing = false;
     refreshUI();
 }
 
@@ -135,12 +137,13 @@ void PreferencesDialog::changeEvent(QEvent *event)
 
 void PreferencesDialog::refreshUI()
 {
+    if (closing)
+        return;
     ui->lineEdit_url->setText(SettingsManager::getInstance()->getUrl());
     ui->checkBox_volume->setChecked(!SettingsManager::getInstance()->getMute());
     ui->horizontalSlider_volume->setEnabled(ui->checkBox_volume->isChecked());
     ui->horizontalSlider_volume->setValue(SettingsManager::getInstance()->getVolume());
-    ui->checkBox_autostart->setChecked(SettingsManager::getInstance()->getAutostart()
-                                       && SettingsManager::getInstance()->isRegAutostart());
+    ui->checkBox_autostart->setChecked(SettingsManager::getInstance()->getAutostart());
     QStringList decoders = SettingsManager::getInstance()->getDecoders();
     ui->checkBox_hwdec_cuda->setChecked(decoders.contains(QStringLiteral("CUDA"))
                                         /*&& SettingsManager::getInstance()->hasNvidiaCard()*/);

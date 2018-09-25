@@ -68,9 +68,9 @@ int main(int argc, char *argv[])
         QMessageBox::critical(nullptr, QStringLiteral("Dynamic Desktop"), QObject::tr("There is another instance running. Please do not run twice."));
         return 0;
     }
-    if (SettingsManager::getInstance()->getAutostart() && !SettingsManager::getInstance()->isRegAutostart())
+    if (SettingsManager::getInstance()->getAutostart())
         SettingsManager::getInstance()->regAutostart();
-    else if (!SettingsManager::getInstance()->getAutostart() && SettingsManager::getInstance()->isRegAutostart())
+    else
         SettingsManager::getInstance()->unregAutostart();
     QtAV::GLWidgetRenderer2 renderer;
     renderer.forcePreferredPixelFormat(true);
@@ -213,9 +213,9 @@ int main(int argc, char *argv[])
     QObject::connect(&preferencesDialog, &PreferencesDialog::autostartChanged,
         [=](bool enabled)
         {
-            if (enabled && !SettingsManager::getInstance()->isRegAutostart())
+            if (enabled)
                 SettingsManager::getInstance()->regAutostart();
-            else if (!enabled && SettingsManager::getInstance()->isRegAutostart())
+            else
                 SettingsManager::getInstance()->unregAutostart();
         });
     HWND hworkerw = nullptr;
