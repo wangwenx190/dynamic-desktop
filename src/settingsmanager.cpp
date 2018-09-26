@@ -36,8 +36,8 @@ QStringList SettingsManager::defaultDecoders() const
 {
     return QStringList()
             << QStringLiteral("CUDA")
-            << QStringLiteral("DXVA")
             << QStringLiteral("D3D11")
+            << QStringLiteral("DXVA")
             << QStringLiteral("FFmpeg");
 }
 

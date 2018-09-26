@@ -534,16 +534,16 @@ QRadioButton::indicator:checked {
          </widget>
         </item>
         <item>
-         <widget class="QCheckBox" name="checkBox_hwdec_dxva">
+         <widget class="QCheckBox" name="checkBox_hwdec_d3d11">
           <property name="text">
-           <string>DXVA</string>
+           <string>D3D11</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QCheckBox" name="checkBox_hwdec_d3d11">
+         <widget class="QCheckBox" name="checkBox_hwdec_dxva">
           <property name="text">
-           <string>D3D11</string>
+           <string>DXVA</string>
           </property>
          </widget>
         </item>

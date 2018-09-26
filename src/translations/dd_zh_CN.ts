@@ -45,7 +45,7 @@
         <translation>CUDA</translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.ui" line="546"/>
+        <location filename="../forms/preferencesdialog.ui" line="539"/>
         <source>D3D11</source>
         <translation>D3D11</translation>
     </message>
@@ -75,7 +75,7 @@
         <translation>音频轨道</translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.ui" line="539"/>
+        <location filename="../forms/preferencesdialog.ui" line="546"/>
         <source>DXVA</source>
         <translation>DXVA</translation>
     </message>

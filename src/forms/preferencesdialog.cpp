@@ -262,10 +262,10 @@ void PreferencesDialog::saveSettings()
     QStringList decoders;
     if (ui->checkBox_hwdec_cuda->isChecked())
         decoders << QStringLiteral("CUDA");
-    if (ui->checkBox_hwdec_dxva->isChecked())
-        decoders << QStringLiteral("DXVA");
     if (ui->checkBox_hwdec_d3d11->isChecked())
         decoders << QStringLiteral("D3D11");
+    if (ui->checkBox_hwdec_dxva->isChecked())
+        decoders << QStringLiteral("DXVA");
     if (decoders.isEmpty())
         ui->checkBox_hwdec->setChecked(false);
     if (ui->checkBox_hwdec->isChecked() != SettingsManager::getInstance()->getHwdec())
