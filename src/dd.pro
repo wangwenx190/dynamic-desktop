@@ -4,13 +4,7 @@ isEmpty(ROOT): ROOT = $$PWD/..
 include($$ROOT/version.pri)
 include($$ROOT/optimization.pri)
 TARGET = dd
-DESTDIR = bin
 BIN_DIR = $$ROOT/bin
-BUILD_DIR = $$ROOT/build
-OBJECTS_DIR = $$BUILD_DIR/obj
-MOC_DIR = $$BUILD_DIR/moc
-RCC_DIR = $$BUILD_DIR/rcc
-UI_DIR = $$BUILD_DIR/ui
 contains(QT_ARCH, x86_64) {
     BIN_DIR = $$join(BIN_DIR,,,64)
     TARGET = $$join(TARGET,,,64)
