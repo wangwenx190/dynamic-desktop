@@ -5,6 +5,7 @@
 
 #include <QApplication>
 #include <QtAV>
+#include <QtAV/version.h>
 #include <QtAVWidgets>
 #include <QDesktopWidget>
 #include <QSystemTrayIcon>
@@ -206,7 +207,7 @@ int main(int argc, char *argv[])
                                QObject::tr("DD version: %0\nQt version: %1\nQtAV version: %2\nFFmpeg version: %3\nSource code: %4\nBuild time: %5 %6")
                                    .arg(QStringLiteral(DD_VERSION))
                                    .arg(QStringLiteral(QT_VERSION_STR))
-                                   .arg(QStringLiteral("git-90de967"))
+                                   .arg(QStringLiteral(QTAV_VERSION_STR))
                                    .arg(QStringLiteral("4.0.2-git"))
                                    .arg(QStringLiteral("https://github.com/wangwenx190/dynamic-desktop"))
                                    .arg(QStringLiteral(__DATE__))

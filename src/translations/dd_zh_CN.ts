@@ -201,47 +201,47 @@ Make sure this application runs in your GPU&apos;s Optimus mode.</source>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../main.cpp" line="71"/>
+        <location filename="../main.cpp" line="72"/>
         <source>This application only supports Windows 7 and newer.</source>
         <translation>此应用程序仅支持 Windows 7 及更新的系统。</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="77"/>
+        <location filename="../main.cpp" line="78"/>
         <source>There is another instance running. Please do not run twice.</source>
         <translation>另一个实例已经在运行。请勿重复运行。</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="87"/>
+        <location filename="../main.cpp" line="88"/>
         <source>My wallpaper</source>
         <translation>我的壁纸</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="154"/>
+        <location filename="../main.cpp" line="155"/>
         <source>Preferences</source>
         <translation>首选项</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="169"/>
+        <location filename="../main.cpp" line="170"/>
         <source>Play</source>
         <translation>播放</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="183"/>
+        <location filename="../main.cpp" line="184"/>
         <source>Pause</source>
         <translation>暂停</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="184"/>
+        <location filename="../main.cpp" line="185"/>
         <source>Mute</source>
         <translation>静音</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="201"/>
+        <location filename="../main.cpp" line="202"/>
         <source>About</source>
         <translation>关于</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="206"/>
+        <location filename="../main.cpp" line="207"/>
         <source>DD version: %0
 Qt version: %1
 QtAV version: %2
@@ -256,7 +256,7 @@ FFmpeg 版本： %3
 构建时间： %5 %6</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="215"/>
+        <location filename="../main.cpp" line="216"/>
         <source>Exit</source>
         <translation>退出</translation>
     </message>

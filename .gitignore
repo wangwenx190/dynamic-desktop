@@ -49,3 +49,4 @@ CMakeLists.txt.user*
 [Rr]elease/
 [Bb]uild/
 *.rc
+Thumbs.db
