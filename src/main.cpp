@@ -15,7 +15,9 @@
 #include <QMessageBox>
 #include <QTranslator>
 #include <QLocale>
+#ifndef STATIC_BUILD
 #include <QLibraryInfo>
+#endif
 #include <QSysInfo>
 #include <QVersionNumber>
 #include <QtConcurrent>
@@ -62,8 +64,16 @@ int main(int argc, char *argv[])
     QApplication app(argc, argv);
     QTranslator ddTranslator;
     if (SettingsManager::getInstance()->getLocalize())
-        if (ddTranslator.load(QLocale(), QStringLiteral("dd"), QStringLiteral("_"), QLibraryInfo::location(QLibraryInfo::TranslationsPath)))
+    {
+        QString qmDir;
+#ifdef STATIC_BUILD
+        qmDir = QStringLiteral(":/i18n");
+#else
+        qmDir = QLibraryInfo::location(QLibraryInfo::TranslationsPath);
+#endif
+        if (ddTranslator.load(QLocale(), QStringLiteral("dd"), QStringLiteral("_"), qmDir))
             QApplication::installTranslator(&ddTranslator);
+    }
     int suffixIndex;
     QVersionNumber currentVersion = QVersionNumber::fromString(QSysInfo::kernelVersion(), &suffixIndex);
     QVersionNumber win7Version(6, 1, 7600);

@@ -48,7 +48,10 @@ translations.files = \
     $$PWD/translations/dd_zh_CN.qm
 translations.path = $$BIN_DIR/translations
 qtavlibs.files = $$[QT_INSTALL_BINS]/OpenAL32*.dll
-!CONFIG(static_ffmpeg) {
+CONFIG(static_build) {
+    DEFINES += STATIC_BUILD
+    RESOURCES += i18n.qrc
+} else {
     qtavlibs.files += \
         $$[QT_INSTALL_BINS]/Qt*OpenGL.dll \
         $$[QT_INSTALL_BINS]/Qt*AV*.dll \
