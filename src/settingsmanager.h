@@ -11,10 +11,6 @@ public:
     bool regAutostart();
     void unregAutostart();
 
-    /*bool hasNvidiaCard() const;
-    bool hasAmdCard() const;
-    bool hasIntelCard() const;*/
-
     QStringList defaultDecoders() const;
     QStringList supportedMimeTypes();
     QStringList supportedSuffixes();

@@ -15,13 +15,17 @@ contains(QT_ARCH, x86_64) {
     BIN_DIR = $$join(BIN_DIR,,,64)
     TARGET = $$join(TARGET,,,64)
 }
-CONFIG(debug, debug|release): TARGET = $$join(TARGET,,,d)
+CONFIG(debug, debug|release) {
+    TARGET = $$join(TARGET,,,d)
+} else {
+    CONFIG *= update_translations release_translations
+}
 CONFIG(update_translations) {
-    isEmpty(lupdate): lupdate = lupdate
+    isEmpty(lupdate): lupdate = $$[QT_INSTALL_BINS]/lupdate
     system("$${lupdate} -no-obsolete $${_PRO_FILE_}")
 }
 CONFIG(release_translations) {
-    isEmpty(lrelease): lrelease = lrelease
+    isEmpty(lrelease): lrelease = $$[QT_INSTALL_BINS]/lrelease
     system("$${lrelease} -nounfinished -removeidentical $${_PRO_FILE_}")
 }
 QT += gui widgets avwidgets concurrent
@@ -49,16 +53,18 @@ translations.files = \
     $$PWD/translations/dd_en.qm \
     $$PWD/translations/dd_zh_CN.qm
 translations.path = $$BIN_DIR/translations
-qtavlibs.files = \
-    $$[QT_INSTALL_BINS]/Qt*OpenGL.dll \
-    $$[QT_INSTALL_BINS]/Qt*AV*.dll \
-    $$[QT_INSTALL_BINS]/avcodec*.dll \
-    $$[QT_INSTALL_BINS]/avdevice*.dll \
-    $$[QT_INSTALL_BINS]/avfilter*.dll \
-    $$[QT_INSTALL_BINS]/avformat*.dll \
-    $$[QT_INSTALL_BINS]/avutil*.dll \
-    $$[QT_INSTALL_BINS]/OpenAL32*.dll \
-    $$[QT_INSTALL_BINS]/swresample*.dll \
-    $$[QT_INSTALL_BINS]/swscale*.dll
+qtavlibs.files = $$[QT_INSTALL_BINS]/OpenAL32*.dll
+!CONFIG(static_ffmpeg) {
+    qtavlibs.files += \
+        $$[QT_INSTALL_BINS]/Qt*OpenGL.dll \
+        $$[QT_INSTALL_BINS]/Qt*AV*.dll \
+        $$[QT_INSTALL_BINS]/avcodec*.dll \
+        $$[QT_INSTALL_BINS]/avdevice*.dll \
+        $$[QT_INSTALL_BINS]/avfilter*.dll \
+        $$[QT_INSTALL_BINS]/avformat*.dll \
+        $$[QT_INSTALL_BINS]/avutil*.dll \
+        $$[QT_INSTALL_BINS]/swresample*.dll \
+        $$[QT_INSTALL_BINS]/swscale*.dll
+}
 qtavlibs.path = $$BIN_DIR
 INSTALLS += target translations qtavlibs

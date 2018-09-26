@@ -17,15 +17,20 @@ signals:
     void volumeChanged(unsigned int);
     void urlChanged(const QString &);
     void autostartChanged(bool);
-    void refreshUi();
     void about();
+    void seekBySlider(qint64);
+
+signals:
+    void refreshUi();
+    void updateVideoSlider(qint64);
+    void updateVideoSliderUnit(int);
+    void updateVideoSliderRange(qint64);
+    void setVideoAreaEnabled(bool);
+    void setAudioAreaEnabled(bool);
 
 public:
     explicit PreferencesDialog(QWidget *parent = nullptr);
     ~PreferencesDialog() override;
-
-public slots:
-    void setAudioAreaEnabled(bool enabled);
 
 protected:
     void showEvent(QShowEvent *event) override;
@@ -40,4 +45,5 @@ private slots:
 private:
     Ui::PreferencesDialog *ui;
     bool closing = false;
+    unsigned int sliderUnit = 1000;
 };

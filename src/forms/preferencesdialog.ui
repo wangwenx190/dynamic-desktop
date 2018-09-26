@@ -604,7 +604,7 @@ QRadioButton::indicator:checked {
            </sizepolicy>
           </property>
           <property name="text">
-           <string>Track</string>
+           <string>Video track</string>
           </property>
          </widget>
         </item>
@@ -630,6 +630,9 @@ QRadioButton::indicator:checked {
         </item>
         <item>
          <widget class="QSlider" name="horizontalSlider_video_position">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>
@@ -673,7 +676,7 @@ QRadioButton::indicator:checked {
       <item>
        <widget class="QCheckBox" name="checkBox_audio_autoLoadExternal">
         <property name="text">
-         <string>Auto load external tracks</string>
+         <string>Auto load external audio tracks</string>
         </property>
        </widget>
       </item>
@@ -688,7 +691,7 @@ QRadioButton::indicator:checked {
            </sizepolicy>
           </property>
           <property name="text">
-           <string>Track</string>
+           <string>Audio track</string>
           </property>
          </widget>
         </item>
@@ -722,7 +725,7 @@ QRadioButton::indicator:checked {
       <item>
        <widget class="QCheckBox" name="checkBox_subtitle_autoLoadExternal">
         <property name="text">
-         <string>Auto load external tracks</string>
+         <string>Auto load external subtitle tracks</string>
         </property>
        </widget>
       </item>
@@ -737,7 +740,7 @@ QRadioButton::indicator:checked {
            </sizepolicy>
           </property>
           <property name="text">
-           <string>Track</string>
+           <string>Subtitle track</string>
           </property>
          </widget>
         </item>

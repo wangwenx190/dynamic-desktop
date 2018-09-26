@@ -2,7 +2,7 @@
 A small tool that can play videos on your desktop.
 
 ## Features
-- Small, only about 20MB
+- Relatively small
 - Multilingual support(translators needed)
 - Supports almost all kinds of media files
 - Supports play online media streams
@@ -23,14 +23,14 @@ Microsoft Windows 7 ~ 10, both 32 bit and 64 bit systems are OK.
 - Download [Qt5](http://download.qt.io/archive/qt/) and install it.
 - Download [QtAV](https://github.com/wang-bin/QtAV)'s prebuilt SDK and install it, or build yourself.
 - Download [FFmpeg](https://github.com/wang-bin/avbuild)'s prebuilt binaries or build yourself.
-- Open "dynamicdesktop.pro" and compile. It's quite easy.
+- Open "dynamic-desktop.pro" and start compiling or call "build.bat". It's quite easy.
 
-## License
+## Licenses
 - Main train of thought comes from https://github.com/ThomasHuai/Wallpaper , some codes are also copied from https://github.com/ThomasHuai/Wallpaper/blob/master/utils.cpp and https://github.com/ThomasHuai/Wallpaper/blob/master/wallpaper.cpp , thanks to [**ThomasHuai**](https://github.com/ThomasHuai)!
 - Special thanks to [wang bin](https://github.com/wang-bin) for his awesome [QtAV](https://github.com/wang-bin/QtAV)!
 - Most frameless window codes are copied from https://github.com/Bringer-of-Light/Qt-Nice-Frameless-Window , thanks to [Bringer-of-Light](https://github.com/Bringer-of-Light)
 - Most style sheets of Preferences Dialog are copied from https://github.com/u8sand/Baka-MPlayer , thanks to [Daniel Clarke](https://github.com/u8sand)
-- [resources/icon.ico](/resources/icon.ico): downloaded from https://www.easyicon.net/
-- [resources/minimize.svg](/resources/minimize.svg), [resources/maximize.svg](/resources/maximize.svg) ,[resources/restore.svg](/resources/restore.svg), [resources/close.svg](/resources/close.svg): downloaded from http://www.iconfont.cn/
-- [resources/checked.svg](/resources/checked.svg): copied from https://github.com/u8sand/Baka-MPlayer
+- [src/resources/icon.ico](/src/resources/icon.ico): downloaded from https://www.easyicon.net/
+- [src/resources/minimize.svg](/src/resources/minimize.svg), [src/resources/maximize.svg](/src/resources/maximize.svg) ,[src/resources/restore.svg](/src/resources/restore.svg), [src/resources/close.svg](/src/resources/close.svg): downloaded from http://www.iconfont.cn/
+- [src/resources/checked.svg](/src/resources/checked.svg), [src/resources/down-arrow.svg](/src/resources/down-arrow.svg), [src/resources/selected.svg](/src/resources/selected.svg): copied from https://github.com/u8sand/Baka-MPlayer
 - Dynamic Desktop: [GPLv3](/LICENSE.md)

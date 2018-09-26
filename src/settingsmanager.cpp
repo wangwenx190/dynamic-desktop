@@ -33,50 +33,18 @@ bool SettingsManager::regAutostart()
     return true;
 }
 
-/*bool SettingsManager::hasNvidiaCard() const
-{
-    const QString key = QStringLiteral("HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\services\\nvlddmkm\\Device0");
-    QSettings set(key, QSettings::NativeFormat);
-    if (set.status() != QSettings::NoError)
-        return false;
-    QString description = set.value(QStringLiteral("Device Description")).toString();
-    return description.contains(QStringLiteral("NVIDIA"), Qt::CaseInsensitive);
-}
-
-bool SettingsManager::hasAmdCard() const
-{
-    const QString key = QStringLiteral("HKEY_LOCAL_MACHINE\\SYSTEM\\ControlSet001\\Services\\amdkmdap\\Device0");
-    QSettings set(key, QSettings::NativeFormat);
-    if (set.status() != QSettings::NoError)
-        return false;
-    QString description = set.value(QStringLiteral("Device Description")).toString();
-    return description.contains(QStringLiteral("AMD"), Qt::CaseInsensitive);
-}
-
-bool SettingsManager::hasIntelCard() const
-{
-    const QString key = QStringLiteral("HKEY_LOCAL_MACHINE\\SYSTEM\\ControlSet001\\Services\\igfx\\Device0");
-    QSettings set(key, QSettings::NativeFormat);
-    if (set.status() != QSettings::NoError)
-        return false;
-    QString description = set.value(QStringLiteral("Device Description")).toString();
-    return description.contains(QStringLiteral("Intel"), Qt::CaseInsensitive);
-}*/
-
 QStringList SettingsManager::defaultDecoders() const
 {
-    QStringList decoders;
-    //if (hasNvidiaCard())
-        decoders << QStringLiteral("CUDA");
-    //if (hasNvidiaCard() || hasAmdCard() || hasIntelCard())
-        decoders << QStringLiteral("D3D11") << QStringLiteral("DXVA");
-    decoders << QStringLiteral("FFmpeg");
-    return decoders;
+    return QStringList()
+            << QStringLiteral("CUDA")
+            << QStringLiteral("DXVA")
+            << QStringLiteral("D3D11")
+            << QStringLiteral("FFmpeg");
 }
 
 QStringList SettingsManager::supportedMimeTypes()
 {
-    return (QStringList()
+    return QStringList()
             << QStringLiteral("audio/ac3")
             << QStringLiteral("audio/eac3")
             << QStringLiteral("audio/vnd.dolby.mlp")
@@ -127,7 +95,7 @@ QStringList SettingsManager::supportedMimeTypes()
             << QStringLiteral("video/3gpp")
             << QStringLiteral("video/3gpp2")
             << QStringLiteral("audio/x-mpegurl")
-            << QStringLiteral("audio/x-scpls"));
+            << QStringLiteral("audio/x-scpls");
 }
 
 QStringList SettingsManager::supportedSuffixes()
@@ -197,34 +165,7 @@ bool SettingsManager::getHwdec() const
 QStringList SettingsManager::getDecoders() const
 {
     QSettings settings(iniPath, QSettings::IniFormat);
-    QStringList decoders = settings.value(QStringLiteral("dd/decoders"), defaultDecoders()).toStringList();
-    /*for (auto& decoder : decoders)
-    {
-        if (decoder != QStringLiteral("CUDA")
-                && decoder != QStringLiteral("D3D11")
-                && decoder != QStringLiteral("DXVA")
-                && decoder != QStringLiteral("FFmpeg"))
-        {
-            decoder.clear();
-            continue;
-        }
-        if (decoder == QStringLiteral("CUDA") && !hasNvidiaCard())
-        {
-            decoder.clear();
-            continue;
-        }
-        if ((decoder == QStringLiteral("D3D11")
-             || decoder == QStringLiteral("DXVA"))
-                && (!hasNvidiaCard() && !hasAmdCard() && !hasIntelCard()))
-        {
-            decoder.clear();
-            continue;
-        }
-    }
-    decoders.removeAll(QString());
-    if (!decoders.contains(QStringLiteral("FFmpeg")))
-        decoders << QStringLiteral("FFmpeg");*/
-    return decoders;
+    return settings.value(QStringLiteral("dd/decoders"), defaultDecoders()).toStringList();
 }
 
 bool SettingsManager::getLocalize() const
@@ -268,18 +209,8 @@ void SettingsManager::setHwdec(bool enable)
 
 void SettingsManager::setDecoders(const QStringList &decoders)
 {
-    /*QStringList newDecoders;
-    if (hasNvidiaCard() && decoders.contains(QStringLiteral("CUDA")))
-        newDecoders << QStringLiteral("CUDA");
-    if ((hasNvidiaCard() || hasAmdCard() || hasIntelCard())
-            && decoders.contains(QStringLiteral("D3D11")))
-        newDecoders << QStringLiteral("D3D11");
-    if ((hasNvidiaCard() || hasAmdCard() || hasIntelCard())
-            && decoders.contains(QStringLiteral("DXVA")))
-        newDecoders << QStringLiteral("DXVA");
-    newDecoders << QStringLiteral("FFmpeg");*/
     QSettings settings(iniPath, QSettings::IniFormat);
-    settings.setValue(QStringLiteral("dd/decoders"), /*newDecoders*/decoders);
+    settings.setValue(QStringLiteral("dd/decoders"), decoders);
 }
 
 void SettingsManager::setLocalize(bool enable)

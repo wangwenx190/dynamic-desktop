@@ -3,7 +3,7 @@ cd /d "%~dp0"
 if exist build rd /s /q build
 md build
 cd build
-qmake "%~dp0src\dd.pro" -spec win32-msvc "CONFIG+=release update_translations release_translations"
+qmake "%~dp0src\dd.pro" -spec win32-msvc "CONFIG+=release"
 jom qmake_all
 jom && jom install
 if exist "%~dp0bin" (

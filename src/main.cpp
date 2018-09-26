@@ -91,6 +91,8 @@ int main(int argc, char *argv[])
     renderer.setGeometry(screenGeometry);
     QtAV::AVPlayer player;
     player.setRenderer(&renderer);
+    PreferencesDialog preferencesDialog;
+    preferencesDialog.setWindowIcon(QIcon(QStringLiteral(":/icon.ico")));
     if (SettingsManager::getInstance()->getHwdec())
     {
         QStringList decoders = SettingsManager::getInstance()->getDecoders();
@@ -127,8 +129,27 @@ int main(int argc, char *argv[])
     }
     player.setRepeat(-1);
     QObject::connect(&player, SIGNAL(stopped()), &player, SLOT(play()));
-    PreferencesDialog preferencesDialog;
-    preferencesDialog.setWindowIcon(QIcon(QStringLiteral(":/icon.ico")));
+    QObject::connect(&player, SIGNAL(positionChanged(qint64)), &preferencesDialog, SIGNAL(updateVideoSlider(qint64)));
+    QObject::connect(&player, &QtAV::AVPlayer::started,
+        [=, &preferencesDialog, &player]
+        {
+            preferencesDialog.updateVideoSliderUnit(player.notifyInterval());
+            preferencesDialog.updateVideoSliderRange(player.duration());
+            preferencesDialog.updateVideoSlider(player.position());
+            preferencesDialog.setVideoAreaEnabled(player.isSeekable());
+        });
+    QObject::connect(&player, &QtAV::AVPlayer::notifyIntervalChanged,
+        [=, &preferencesDialog, &player]
+        {
+            preferencesDialog.updateVideoSliderUnit(player.notifyInterval());
+            preferencesDialog.updateVideoSlider(player.position());
+        });
+    QObject::connect(&player, &QtAV::AVPlayer::durationChanged,
+        [=, &preferencesDialog, &player](qint64 duration)
+        {
+            preferencesDialog.updateVideoSliderRange(duration);
+            preferencesDialog.updateVideoSlider(player.position());
+        });
     QMenu trayMenu;
     QAction *optionsAction = trayMenu.addAction(QObject::tr("Preferences"));
     QObject::connect(optionsAction, &QAction::triggered,
@@ -149,9 +170,15 @@ int main(int argc, char *argv[])
     QObject::connect(playAction, &QAction::triggered,
         [=, &renderer, &player]
         {
+            if (!player.isLoaded())
+                return;
             if (renderer.isHidden())
                 renderer.show();
-            player.play();
+            QtConcurrent::run(
+                [=, &player]
+                {
+                    player.play();
+                });
         });
     trayMenu.addAction(QObject::tr("Pause"), &player, SLOT(pause()));
     QAction *muteAction = trayMenu.addAction(QObject::tr("Mute"));
@@ -159,13 +186,16 @@ int main(int argc, char *argv[])
     QObject::connect(muteAction, &QAction::triggered,
         [=, &player, &preferencesDialog](bool checked)
         {
-            if (player.audio())
-            {
-                muteAction->setChecked(checked);
-                player.audio()->setMute(checked);
-                SettingsManager::getInstance()->setMute(checked);
-                preferencesDialog.refreshUi();
-            }
+            if (!player.audio())
+                return;
+            muteAction->setChecked(checked);
+            SettingsManager::getInstance()->setMute(checked);
+            preferencesDialog.refreshUi();
+            QtConcurrent::run(
+                [=, &player]
+                {
+                    player.audio()->setMute(checked);
+                });
         });
     trayMenu.addSeparator();
     QAction *aboutAction = trayMenu.addAction(QObject::tr("About"));
@@ -173,8 +203,11 @@ int main(int argc, char *argv[])
         [=]
         {
             QMessageBox::about(nullptr, QStringLiteral("Dynamic Desktop"),
-                               QObject::tr("Version: %0\nSource code: %1\nBuild time: %2 %3")
+                               QObject::tr("DD version: %0\nQt version: %1\nQtAV version: %2\nFFmpeg version: %3\nSource code: %4\nBuild time: %5 %6")
                                    .arg(QStringLiteral(DD_VERSION))
+                                   .arg(QStringLiteral(QT_VERSION_STR))
+                                   .arg(QStringLiteral("git-90de967"))
+                                   .arg(QStringLiteral("4.0.2-git"))
                                    .arg(QStringLiteral("https://github.com/wangwenx190/dynamic-desktop"))
                                    .arg(QStringLiteral(__DATE__))
                                    .arg(QStringLiteral(__TIME__)));
@@ -187,8 +220,12 @@ int main(int argc, char *argv[])
     trayIcon.show();
     if (player.audio())
     {
-        player.audio()->setVolume(static_cast<qreal>(SettingsManager::getInstance()->getVolume() / 10.0));
-        player.audio()->setMute(SettingsManager::getInstance()->getMute());
+        QtConcurrent::run(
+            [=, &player]
+            {
+                player.audio()->setVolume(static_cast<qreal>(SettingsManager::getInstance()->getVolume() / 10.0));
+                player.audio()->setMute(SettingsManager::getInstance()->getMute());
+            });
         muteAction->setCheckable(true);
         muteAction->setChecked(SettingsManager::getInstance()->getMute());
     }
@@ -202,7 +239,11 @@ int main(int argc, char *argv[])
     {
         if (renderer.isHidden())
             renderer.show();
-        player.play(SettingsManager::getInstance()->getUrl());
+        QtConcurrent::run(
+            [=, &player]
+            {
+                player.play(SettingsManager::getInstance()->getUrl());
+            });
     }
     else
         optionsAction->triggered();
@@ -218,24 +259,33 @@ int main(int argc, char *argv[])
     QObject::connect(&preferencesDialog, &PreferencesDialog::urlChanged,
         [=, &player, &renderer](const QString &url)
         {
-            if (!url.isEmpty())
-            {
-                if (renderer.isHidden())
-                    renderer.show();
-                player.play(url);
-            }
+            if (url.isEmpty())
+                return;
+            if (renderer.isHidden())
+                renderer.show();
+            QtConcurrent::run(
+                [=, &player]
+                {
+                    player.play(url);
+                });
         });
     QObject::connect(&preferencesDialog, &PreferencesDialog::volumeChanged,
         [=, &player](unsigned int volume)
         {
-            if (player.audio())
-                player.audio()->setVolume(static_cast<qreal>(volume / 10.0));
+            if (!player.audio())
+                return;
+            QtConcurrent::run(
+                [=, &player]
+                {
+                    player.audio()->setVolume(static_cast<qreal>(volume / 10.0));
+                });
         });
     QObject::connect(&preferencesDialog, &PreferencesDialog::muteChanged,
         [=, &player](bool mute)
         {
-            if (player.audio())
-                muteAction->triggered(mute);
+            if (!player.audio())
+                return;
+            muteAction->triggered(mute);
         });
     QObject::connect(&preferencesDialog, &PreferencesDialog::autostartChanged,
         [=](bool enabled)
@@ -244,6 +294,17 @@ int main(int argc, char *argv[])
                 SettingsManager::getInstance()->regAutostart();
             else
                 SettingsManager::getInstance()->unregAutostart();
+        });
+    QObject::connect(&preferencesDialog, &PreferencesDialog::seekBySlider,
+        [=, &player](qint64 value)
+        {
+            if (!player.isPlaying())
+                return;
+            QtConcurrent::run(
+                [=, &player]
+                {
+                    player.seek(value);
+                });
         });
     HWND hworkerw = nullptr;
     auto hrenderer = reinterpret_cast<HWND>(renderer.winId());
