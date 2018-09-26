@@ -16,6 +16,8 @@ public:
     bool hasIntelCard() const;*/
 
     QStringList defaultDecoders() const;
+    QStringList supportedMimeTypes();
+    QStringList supportedSuffixes();
 
     QString getUrl() const;
     bool getMute() const;

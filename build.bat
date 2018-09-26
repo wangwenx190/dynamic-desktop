@@ -3,9 +3,7 @@ cd /d "%~dp0"
 if exist build rd /s /q build
 md build
 cd build
-lupdate -no-obsolete "%~dp0src\dd.pro"
-lrelease -nounfinished -removeidentical "%~dp0src\dd.pro"
-qmake "%~dp0src\dd.pro" -spec win32-msvc "CONFIG+=release"
+qmake "%~dp0src\dd.pro" -spec win32-msvc "CONFIG+=release update_translations release_translations"
 jom qmake_all
 jom && jom install
 if exist "%~dp0bin" (

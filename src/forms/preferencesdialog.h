@@ -30,6 +30,8 @@ public slots:
 protected:
     void showEvent(QShowEvent *event) override;
     void changeEvent(QEvent *event) override;
+    void dragEnterEvent(QDragEnterEvent *event) override;
+    void dropEvent(QDropEvent *event) override;
 
 private slots:
     void refreshUI();

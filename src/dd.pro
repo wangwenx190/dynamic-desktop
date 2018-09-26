@@ -4,17 +4,27 @@ isEmpty(ROOT): ROOT = $$PWD/..
 include($$ROOT/version.pri)
 include($$ROOT/optimization.pri)
 TARGET = dd
+DESTDIR = bin
 BIN_DIR = $$ROOT/bin
-OBJECTS_DIR = $$ROOT/build/obj
-MOC_DIR = $ROOT/build/moc
-RCC_DIR = $$ROOT/build/rcc
-UI_DIR = $$ROOT/build/ui
+BUILD_DIR = $$ROOT/build
+OBJECTS_DIR = $$BUILD_DIR/obj
+MOC_DIR = $$BUILD_DIR/moc
+RCC_DIR = $$BUILD_DIR/rcc
+UI_DIR = $$BUILD_DIR/ui
 contains(QT_ARCH, x86_64) {
     BIN_DIR = $$join(BIN_DIR,,,64)
     TARGET = $$join(TARGET,,,64)
 }
 CONFIG(debug, debug|release): TARGET = $$join(TARGET,,,d)
-QT += gui widgets avwidgets
+CONFIG(update_translations) {
+    isEmpty(lupdate): lupdate = lupdate
+    system("$${lupdate} -no-obsolete $${_PRO_FILE_}")
+}
+CONFIG(release_translations) {
+    isEmpty(lrelease): lrelease = lrelease
+    system("$${lrelease} -nounfinished -removeidentical $${_PRO_FILE_}")
+}
+QT += gui widgets avwidgets concurrent
 TEMPLATE = app
 DEFINES += QT_DEPRECATED_WARNINGS QT_DISABLE_DEPRECATED_BEFORE=0x051102
 CONFIG *= c++11

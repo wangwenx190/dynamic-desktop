@@ -6,5 +6,7 @@
         <file alias="minimize.svg">resources/minimize.svg</file>
         <file alias="restore.svg">resources/restore.svg</file>
         <file alias="checked.svg">resources/checked.svg</file>
+        <file alias="down-arrow.svg">resources/down-arrow.svg</file>
+        <file alias="selected.svg">resources/selected.svg</file>
     </qresource>
 </RCC>

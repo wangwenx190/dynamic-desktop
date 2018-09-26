@@ -5,6 +5,7 @@
 #include <QUrl>
 #include <QFileInfo>
 #include <QSettings>
+#include <QMimeDatabase>
 
 SettingsManager *SettingsManager::getInstance()
 {
@@ -71,6 +72,79 @@ QStringList SettingsManager::defaultDecoders() const
         decoders << QStringLiteral("D3D11") << QStringLiteral("DXVA");
     decoders << QStringLiteral("FFmpeg");
     return decoders;
+}
+
+QStringList SettingsManager::supportedMimeTypes()
+{
+    return (QStringList()
+            << QStringLiteral("audio/ac3")
+            << QStringLiteral("audio/eac3")
+            << QStringLiteral("audio/vnd.dolby.mlp")
+            << QStringLiteral("audio/vnd.dts")
+            << QStringLiteral("audio/vnd.dts.hd")
+            << QStringLiteral("audio/wav")
+            << QStringLiteral("audio/aiff")
+            << QStringLiteral("audio/amr")
+            << QStringLiteral("audio/amr-wb")
+            << QStringLiteral("audio/basic")
+            << QStringLiteral("audio/x-ape")
+            << QStringLiteral("audio/x-wavpack")
+            << QStringLiteral("audio/x-shorten")
+            << QStringLiteral("video/vnd.dlna.mpeg-tts")
+            << QStringLiteral("audio/vnd.dlna.adts")
+            << QStringLiteral("audio/mpeg")
+            << QStringLiteral("video/mpeg")
+            << QStringLiteral("video/dvd")
+            << QStringLiteral("video/mp4")
+            << QStringLiteral("audio/mp4")
+            << QStringLiteral("audio/aac")
+            << QStringLiteral("audio/flac")
+            << QStringLiteral("audio/ogg")
+            << QStringLiteral("video/ogg")
+            << QStringLiteral("application/ogg")
+            << QStringLiteral("video/x-matroska")
+            << QStringLiteral("audio/x-matroska")
+            << QStringLiteral("video/webm")
+            << QStringLiteral("audio/webm")
+            << QStringLiteral("video/avi")
+            << QStringLiteral("video/x-msvideo")
+            << QStringLiteral("video/flc")
+            << QStringLiteral("application/gxf")
+            << QStringLiteral("application/mxf")
+            << QStringLiteral("audio/x-ms-wma")
+            << QStringLiteral("video/x-ms-wm")
+            << QStringLiteral("video/x-ms-wmv")
+            << QStringLiteral("video/x-ms-asf")
+            << QStringLiteral("video/x-flv")
+            << QStringLiteral("video/mp4")
+            << QStringLiteral("audio/mp4")
+            << QStringLiteral("video/quicktime")
+            << QStringLiteral("application/vnd.rn-realmedia")
+            << QStringLiteral("application/vnd.rn-realmedia-vbr")
+            << QStringLiteral("audio/vnd.rn-realaudio")
+            << QStringLiteral("audio/3gpp")
+            << QStringLiteral("audio/3gpp2")
+            << QStringLiteral("video/3gpp")
+            << QStringLiteral("video/3gpp2")
+            << QStringLiteral("audio/x-mpegurl")
+            << QStringLiteral("audio/x-scpls"));
+}
+
+QStringList SettingsManager::supportedSuffixes()
+{
+    QStringList mSupportedSuffixes;
+    QMimeDatabase mMimeDatabase;
+    const QStringList mSupportedMimeTypes = supportedMimeTypes();
+    for (auto& mFileType : mSupportedMimeTypes)
+    {
+        const QStringList mSuffixes = mMimeDatabase.mimeTypeForName(mFileType).suffixes();
+        for (auto mSuffix : mSuffixes)
+        {
+            mSuffix.prepend(QStringLiteral("*."));
+            mSupportedSuffixes << mSuffix;
+        }
+    }
+    return mSupportedSuffixes;
 }
 
 QString SettingsManager::getUrl() const

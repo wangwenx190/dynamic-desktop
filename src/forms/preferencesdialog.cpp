@@ -9,6 +9,9 @@
 #include <QDir>
 #include <QMessageBox>
 #include <QIcon>
+#include <QDragEnterEvent>
+#include <QUrl>
+#include <QMimeDatabase>
 
 PreferencesDialog::PreferencesDialog(QWidget *parent) :
     FramelessWindow(parent),
@@ -18,8 +21,8 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
     setContentsMargins(0, 0, 0, 0);
     setResizeable(true);
     setResizeableAreaWidth(5);
-    setTitleBar(ui->widget_windowtitlebar);
-    addIgnoreWidget(ui->label_windowtitle);
+    setTitleBar(ui->widget_windowTitleBar);
+    addIgnoreWidget(ui->label_windowTitle);
     connect(ui->pushButton_about, SIGNAL(clicked()), this, SIGNAL(about()));
     connect(ui->checkBox_localize, &QCheckBox::stateChanged,
         [=]
@@ -135,6 +138,34 @@ void PreferencesDialog::changeEvent(QEvent *event)
     FramelessWindow::changeEvent(event);
 }
 
+static bool canHandleDrop(const QDragEnterEvent *event)
+{
+    const QList<QUrl> urls = event->mimeData()->urls();
+    if (urls.empty()) return false;
+    QMimeDatabase mimeDatabase;
+    return SettingsManager::getInstance()->supportedMimeTypes().
+        contains(mimeDatabase.mimeTypeForUrl(urls.constFirst()).name());
+}
+
+void PreferencesDialog::dragEnterEvent(QDragEnterEvent *event)
+{
+    event->setAccepted(canHandleDrop(event));
+    FramelessWindow::dragEnterEvent(event);
+}
+
+void PreferencesDialog::dropEvent(QDropEvent *event)
+{
+    event->accept();
+    QUrl url = event->mimeData()->urls().constFirst();
+    QString path;
+    if (url.isLocalFile())
+        path = QDir::toNativeSeparators(url.toLocalFile());
+    else
+        path = url.url();
+    ui->lineEdit_url->setText(path);
+    FramelessWindow::dropEvent(event);
+}
+
 void PreferencesDialog::refreshUI()
 {
     if (closing)
@@ -143,7 +174,7 @@ void PreferencesDialog::refreshUI()
     ui->checkBox_volume->setChecked(!SettingsManager::getInstance()->getMute());
     ui->horizontalSlider_volume->setEnabled(ui->checkBox_volume->isChecked());
     ui->horizontalSlider_volume->setValue(SettingsManager::getInstance()->getVolume());
-    ui->checkBox_autostart->setChecked(SettingsManager::getInstance()->getAutostart());
+    ui->checkBox_autoStart->setChecked(SettingsManager::getInstance()->getAutostart());
     QStringList decoders = SettingsManager::getInstance()->getDecoders();
     ui->checkBox_hwdec_cuda->setChecked(decoders.contains(QStringLiteral("CUDA"))
                                         /*&& SettingsManager::getInstance()->hasNvidiaCard()*/);
@@ -195,7 +226,7 @@ void PreferencesDialog::saveSettings()
         SettingsManager::getInstance()->setVolume(ui->horizontalSlider_volume->value());
         emit volumeChanged(SettingsManager::getInstance()->getVolume());
     }
-    SettingsManager::getInstance()->setAutostart(ui->checkBox_autostart->isChecked());
+    SettingsManager::getInstance()->setAutostart(ui->checkBox_autoStart->isChecked());
     emit autostartChanged(SettingsManager::getInstance()->getAutostart());
     QStringList decoders;
     if (ui->checkBox_hwdec_cuda->isChecked()

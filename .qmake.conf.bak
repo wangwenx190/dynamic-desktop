@@ -1,21 +1,20 @@
 # To build static version of QtAV and
 # link against static version of FFmpeg
-exists($$PWD/ffmpeg/include/libavcodec/*.h) {
-    contains(QT_ARCH, x86_64) {
-        # FFmpeg
-        LIBS += -L$$PWD/ffmpeg/lib/x64
-        # Intel Media SDK, change to your own path
-        LIBS += -L"C:\Program Files (x86)\IntelSWTools\Intel(R) Media SDK 2018 R2\Software Development Kit\lib\x64" -llibmfx
-    } else {
-        # FFmpeg
-        LIBS += -L$$PWD/ffmpeg/lib/x86
-        # Intel Media SDK, change to your own path
-        LIBS += -L"C:\Program Files (x86)\IntelSWTools\Intel(R) Media SDK 2018 R2\Software Development Kit\lib\win32" -llibmfx
-    }
+CONFIG += static_ffmpeg
+contains(QT_ARCH, x86_64) {
     # FFmpeg
-    INCLUDEPATH += $$PWD/ffmpeg/include
+    LIBS += -L$$PWD/ffmpeg/lib/x64
     # Intel Media SDK, change to your own path
-    INCLUDEPATH += "C:\Program Files (x86)\IntelSWTools\Intel(R) Media SDK 2018 R2\Software Development Kit\include"
-    # Missing Windows libraries
-    LIBS += -lSecur32 -lBcrypt -llegacy_stdio_definitions
+    LIBS += -L"C:\Program Files (x86)\IntelSWTools\Intel(R) Media SDK 2018 R2\Software Development Kit\lib\x64" -llibmfx
+} else {
+    # FFmpeg
+    LIBS += -L$$PWD/ffmpeg/lib/x86
+    # Intel Media SDK, change to your own path
+    LIBS += -L"C:\Program Files (x86)\IntelSWTools\Intel(R) Media SDK 2018 R2\Software Development Kit\lib\win32" -llibmfx
 }
+# FFmpeg
+INCLUDEPATH += $$PWD/ffmpeg/include
+# Intel Media SDK, change to your own path
+INCLUDEPATH += "C:\Program Files (x86)\IntelSWTools\Intel(R) Media SDK 2018 R2\Software Development Kit\include"
+# Missing Windows libraries
+LIBS += -lSecur32 -lBcrypt -llegacy_stdio_definitions

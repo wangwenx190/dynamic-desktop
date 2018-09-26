@@ -17,6 +17,7 @@
 #include <QLibraryInfo>
 #include <QSysInfo>
 #include <QVersionNumber>
+#include <QtConcurrent>
 
 //https://github.com/ThomasHuai/Wallpaper/blob/master/utils.cpp
 HWND HWORKERW = nullptr;
@@ -105,6 +106,24 @@ int main(int argc, char *argv[])
             opt[QStringLiteral("CUDA")] = cuda_opt;
             player.setOptionsForVideoCodec(opt);
         }
+        /*if (decoders.contains(QStringLiteral("D3D11")))
+        {
+            QVariantHash d3d11_opt;
+            //d3d11_opt[QStringLiteral("surfaces")] = 0;
+            d3d11_opt[QStringLiteral("copyMode")] = QStringLiteral("ZeroCopy");
+            QVariantHash opt;
+            opt[QStringLiteral("D3D11")] = d3d11_opt;
+            player.setOptionsForVideoCodec(opt);
+        }
+        if (decoders.contains(QStringLiteral("DXVA")))
+        {
+            QVariantHash dxva_opt;
+            //dxva_opt[QStringLiteral("surfaces")] = 0;
+            dxva_opt[QStringLiteral("copyMode")] = QStringLiteral("ZeroCopy");
+            QVariantHash opt;
+            opt[QStringLiteral("DXVA")] = dxva_opt;
+            player.setOptionsForVideoCodec(opt);
+        }*/
     }
     player.setRepeat(-1);
     QObject::connect(&player, SIGNAL(stopped()), &player, SLOT(play()));
