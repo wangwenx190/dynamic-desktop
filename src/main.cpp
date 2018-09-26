@@ -84,10 +84,15 @@ int main(int argc, char *argv[])
         SettingsManager::getInstance()->unregAutostart();
     QtAV::GLWidgetRenderer2 renderer;
     renderer.forcePreferredPixelFormat(true);
+    renderer.setQuality(QtAV::VideoRenderer::QualityBest);
+    if (SettingsManager::getInstance()->getFitDesktop())
+        renderer.setOutAspectRatioMode(QtAV::VideoRenderer::RendererAspectRatio);
+    else
+        renderer.setOutAspectRatioMode(QtAV::VideoRenderer::VideoAspectRatio);
     renderer.setWindowIcon(QIcon(QStringLiteral(":/icon.ico")));
     renderer.setWindowTitle(QObject::tr("My wallpaper"));
     renderer.setAttribute(Qt::WA_NoSystemBackground);
-    renderer.setWindowFlags(renderer.windowFlags() | Qt::FramelessWindowHint | Qt::WindowStaysOnBottomHint | Qt::WindowDoesNotAcceptFocus);
+    renderer.setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnBottomHint | Qt::WindowDoesNotAcceptFocus);
     QRect screenGeometry = QApplication::desktop()->screenGeometry(&renderer);
     renderer.setGeometry(screenGeometry);
     QtAV::AVPlayer player;
@@ -306,6 +311,14 @@ int main(int argc, char *argv[])
                 {
                     player.seek(value);
                 });
+        });
+    QObject::connect(&preferencesDialog, &PreferencesDialog::pictureRatioChanged,
+        [=, &renderer](bool fitDesktop)
+        {
+            if (fitDesktop)
+                renderer.setOutAspectRatioMode(QtAV::VideoRenderer::RendererAspectRatio);
+            else
+                renderer.setOutAspectRatioMode(QtAV::VideoRenderer::VideoAspectRatio);
         });
     HWND hworkerw = nullptr;
     auto hrenderer = reinterpret_cast<HWND>(renderer.winId());

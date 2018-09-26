@@ -578,16 +578,16 @@ QRadioButton::indicator:checked {
          </spacer>
         </item>
         <item>
-         <widget class="QRadioButton" name="radioButton_ratio_raw">
+         <widget class="QRadioButton" name="radioButton_ratio_videoAspectRatio">
           <property name="text">
-           <string>Raw</string>
+           <string>Keep video aspect ratio</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QRadioButton" name="radioButton_ratio_stretch">
+         <widget class="QRadioButton" name="radioButton_ratio_fitDesktop">
           <property name="text">
-           <string>Stretch</string>
+           <string>Fit desktop</string>
           </property>
          </widget>
         </item>

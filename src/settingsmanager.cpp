@@ -4,7 +4,6 @@
 #include <QDir>
 #include <QUrl>
 #include <QFileInfo>
-#include <QSettings>
 #include <QMimeDatabase>
 
 SettingsManager *SettingsManager::getInstance()
@@ -117,8 +116,7 @@ QStringList SettingsManager::supportedSuffixes()
 
 QString SettingsManager::getUrl() const
 {
-    QSettings settings(iniPath, QSettings::IniFormat);
-    QString path = settings.value(QStringLiteral("dd/url"), QString()).toString();
+    QString path = settings->value(QStringLiteral("dd/url"), QString()).toString();
     if (QFileInfo(path).isDir())
         return QString();
     if (!QFileInfo::exists(path))
@@ -135,14 +133,12 @@ QString SettingsManager::getUrl() const
 
 bool SettingsManager::getMute() const
 {
-    QSettings settings(iniPath, QSettings::IniFormat);
-    return settings.value(QStringLiteral("dd/mute"), false).toBool();
+    return settings->value(QStringLiteral("dd/mute"), false).toBool();
 }
 
 unsigned int SettingsManager::getVolume() const
 {
-    QSettings settings(iniPath, QSettings::IniFormat);
-    int vol = settings.value(QStringLiteral("dd/volume"), 9).toInt();
+    int vol = settings->value(QStringLiteral("dd/volume"), 9).toInt();
     if (vol < 0)
         vol = 0;
     if (vol > 99)
@@ -152,38 +148,37 @@ unsigned int SettingsManager::getVolume() const
 
 bool SettingsManager::getAutostart() const
 {
-    QSettings settings(iniPath, QSettings::IniFormat);
-    return settings.value(QStringLiteral("dd/autostart"), false).toBool();
+    return settings->value(QStringLiteral("dd/autostart"), false).toBool();
 }
 
 bool SettingsManager::getHwdec() const
 {
-    QSettings settings(iniPath, QSettings::IniFormat);
-    return settings.value(QStringLiteral("dd/hwdec"), true).toBool();
+    return settings->value(QStringLiteral("dd/hwdec"), true).toBool();
 }
 
 QStringList SettingsManager::getDecoders() const
 {
-    QSettings settings(iniPath, QSettings::IniFormat);
-    return settings.value(QStringLiteral("dd/decoders"), defaultDecoders()).toStringList();
+    return settings->value(QStringLiteral("dd/decoders"), defaultDecoders()).toStringList();
 }
 
 bool SettingsManager::getLocalize() const
 {
-    QSettings settings(iniPath, QSettings::IniFormat);
-    return settings.value(QStringLiteral("dd/localize"), true).toBool();
+    return settings->value(QStringLiteral("dd/localize"), true).toBool();
+}
+
+bool SettingsManager::getFitDesktop() const
+{
+    return settings->value(QStringLiteral("dd/fit"), true).toBool();
 }
 
 void SettingsManager::setUrl(const QString &url)
 {
-    QSettings settings(iniPath, QSettings::IniFormat);
-    settings.setValue(QStringLiteral("dd/url"), url);
+    settings->setValue(QStringLiteral("dd/url"), url);
 }
 
 void SettingsManager::setMute(bool mute)
 {
-    QSettings settings(iniPath, QSettings::IniFormat);
-    settings.setValue(QStringLiteral("dd/mute"), mute);
+    settings->setValue(QStringLiteral("dd/mute"), mute);
 }
 
 void SettingsManager::setVolume(unsigned int volume)
@@ -191,38 +186,44 @@ void SettingsManager::setVolume(unsigned int volume)
     unsigned int vol = volume;
     if (vol > 99)
         vol = 99;
-    QSettings settings(iniPath, QSettings::IniFormat);
-    settings.setValue(QStringLiteral("dd/volume"), vol);
+    settings->setValue(QStringLiteral("dd/volume"), vol);
 }
 
 void SettingsManager::setAutostart(bool enable)
 {
-    QSettings settings(iniPath, QSettings::IniFormat);
-    settings.setValue(QStringLiteral("dd/autostart"), enable);
+    settings->setValue(QStringLiteral("dd/autostart"), enable);
 }
 
 void SettingsManager::setHwdec(bool enable)
 {
-    QSettings settings(iniPath, QSettings::IniFormat);
-    settings.setValue(QStringLiteral("dd/hwdec"), enable);
+    settings->setValue(QStringLiteral("dd/hwdec"), enable);
 }
 
 void SettingsManager::setDecoders(const QStringList &decoders)
 {
-    QSettings settings(iniPath, QSettings::IniFormat);
-    settings.setValue(QStringLiteral("dd/decoders"), decoders);
+    settings->setValue(QStringLiteral("dd/decoders"), decoders);
 }
 
 void SettingsManager::setLocalize(bool enable)
 {
-    QSettings settings(iniPath, QSettings::IniFormat);
-    settings.setValue(QStringLiteral("dd/localize"), enable);
+    settings->setValue(QStringLiteral("dd/localize"), enable);
+}
+
+void SettingsManager::setFitDesktop(bool fit)
+{
+    settings->setValue(QStringLiteral("dd/fit"), fit);
 }
 
 SettingsManager::SettingsManager()
 {
-    iniPath = QCoreApplication::applicationFilePath();
+    QString iniPath = QCoreApplication::applicationFilePath();
     if (iniPath.endsWith(QStringLiteral(".exe"), Qt::CaseInsensitive))
         iniPath = iniPath.remove(iniPath.lastIndexOf(QLatin1Char('.')), 4);
     iniPath += QStringLiteral(".ini");
+    settings = new QSettings(iniPath, QSettings::IniFormat);
+}
+
+SettingsManager::~SettingsManager()
+{
+    delete settings;
 }

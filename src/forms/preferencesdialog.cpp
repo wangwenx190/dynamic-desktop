@@ -12,6 +12,7 @@
 #include <QDragEnterEvent>
 #include <QUrl>
 #include <QMimeDatabase>
+#include <QMimeData>
 
 PreferencesDialog::PreferencesDialog(QWidget *parent) :
     FramelessWindow(parent),
@@ -235,6 +236,8 @@ void PreferencesDialog::refreshUI()
         firstShow = false;
     }
     ui->checkBox_localize->setChecked(SettingsManager::getInstance()->getLocalize());
+    ui->radioButton_ratio_fitDesktop->setChecked(SettingsManager::getInstance()->getFitDesktop());
+    ui->radioButton_ratio_videoAspectRatio->setChecked(!ui->radioButton_ratio_fitDesktop->isChecked());
 }
 
 void PreferencesDialog::saveSettings()
@@ -272,4 +275,9 @@ void PreferencesDialog::saveSettings()
         SettingsManager::getInstance()->setDecoders(decoders);
     if (ui->checkBox_localize->isChecked() != SettingsManager::getInstance()->getLocalize())
         SettingsManager::getInstance()->setLocalize(ui->checkBox_localize->isChecked());
+    if (ui->radioButton_ratio_fitDesktop->isChecked() != SettingsManager::getInstance()->getFitDesktop())
+    {
+        SettingsManager::getInstance()->setFitDesktop(ui->radioButton_ratio_fitDesktop->isChecked());
+        emit pictureRatioChanged(SettingsManager::getInstance()->getFitDesktop());
+    }
 }

@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include <QtCore>
+#include <QSettings>
 
 class SettingsManager
 {
@@ -22,6 +22,7 @@ public:
     bool getHwdec() const;
     QStringList getDecoders() const;
     bool getLocalize() const;
+    bool getFitDesktop() const;
 
     void setUrl(const QString &url);
     void setMute(bool mute);
@@ -30,10 +31,12 @@ public:
     void setHwdec(bool enable);
     void setDecoders(const QStringList &decoders);
     void setLocalize(bool enable);
+    void setFitDesktop(bool fit);
 
 private:
     SettingsManager();
+    ~SettingsManager();
 
 private:
-    QString iniPath;
+    QSettings *settings;
 };

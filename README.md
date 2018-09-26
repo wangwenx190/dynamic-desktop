@@ -6,7 +6,7 @@ A small tool that can play videos on your desktop.
 - Multilingual support(translators needed)
 - Supports almost all kinds of media files
 - Supports play online media streams
-- **Hardware Accelerated Decoding** support: **CUDA** and **DXVA/D3D11**
+- **Hardware Accelerated Decoding** support: **CUDA**, **DXVA** and **D3D11**
 - Low CPU and memory usage
 - Do not need any run-time library
 - Pure green: do not need install, do not write registry and no files left in your system

@@ -19,6 +19,7 @@ signals:
     void autostartChanged(bool);
     void about();
     void seekBySlider(qint64);
+    void pictureRatioChanged(bool);
 
 signals:
     void refreshUi();
