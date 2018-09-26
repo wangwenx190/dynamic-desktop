@@ -1,0 +1,20 @@
+﻿## TODO
+- [ ] Support HDR videos
+- [ ] Play 4K videos smoothly
+- [ ] Parse video web pages
+- [ ] Can drag media files to preferences dialog
+- [ ] More translations
+- [ ] Support showing web pages on desktop? (useless)
+- [ ] Support showing executables on desktop? (useless)
+- [ ] Support only playing audios
+- [ ] Support showing pictures on desktop
+- [ ] Auto update?
+- [ ] Support selecting video/audio/subtitle tracks
+- [ ] Support auto load external audio/subtitle files
+- [ ] Play videos seamlessly
+- [ ] Support Windows XP? (mostly not)
+- [ ] Support playlist
+- [ ] Support changing video position
+- [ ] Trim Qt libraries to make them much smaller, but don't affect their performances
+- [ ] Keep the libraries, compilers and even the standards always up-to-date
+- [ ] Find bugs and fix them
