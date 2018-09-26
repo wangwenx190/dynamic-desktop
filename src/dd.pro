@@ -1,13 +1,14 @@
 !win32: error("This project only supports Win32 platform!")
 !versionAtLeast(QT_VERSION, 5.6.3): error("Upgrade your Qt to at least 5.6.3!")
-include(version.pri)
-include(optimization.pri)
+isEmpty(ROOT): ROOT = $$PWD/..
+include($$ROOT/version.pri)
+include($$ROOT/optimization.pri)
 TARGET = dd
-BIN_DIR = $$PWD/build/bin
-OBJECTS_DIR = $$BIN_DIR/../obj
-MOC_DIR = $$BIN_DIR/../moc
-RCC_DIR = $$BIN_DIR/../rcc
-UI_DIR = $$BIN_DIR/../ui
+BIN_DIR = $$ROOT/bin
+OBJECTS_DIR = $$ROOT/build/obj
+MOC_DIR = $ROOT/build/moc
+RCC_DIR = $$ROOT/build/rcc
+UI_DIR = $$ROOT/build/ui
 contains(QT_ARCH, x86_64) {
     BIN_DIR = $$join(BIN_DIR,,,64)
     TARGET = $$join(TARGET,,,64)

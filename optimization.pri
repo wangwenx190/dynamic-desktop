@@ -1,3 +1,8 @@
+# This allows our program to use up to 3 GB memory on 32-bit systems and
+# 4 GB memory on 64-bit systems, rather than being limited to just 2 GB.
+win32-g++*|linux-g++*|macx-g++*:     QMAKE_LFLAGS *= -Wl,--large-address-aware
+win32-msvc*|win32-icc*|win32-clang*: QMAKE_LFLAGS *= /LARGEADDRESSAWARE
+
 # Enable Whole Program Optimization and Link Time Code Generation
 win32-msvc* {
     isEmpty(QMAKE_CFLAGS_LTCG): QMAKE_CFLAGS_LTCG     = -GL
@@ -30,10 +35,10 @@ win32-icc* {
 win32-clang* {
     #isEmpty(QMAKE_CFLAGS_LTCG): QMAKE_CFLAGS_LTCG     = -GL
     #isEmpty(QMAKE_CXXFLAGS_LTCG): QMAKE_CXXFLAGS_LTCG = $$QMAKE_CFLAGS_LTCG
-    isEmpty(QMAKE_LFLAGS_LTCG): QMAKE_LFLAGS_LTCG     = /LTCG
+    isEmpty(QMAKE_LFLAGS_LTCG): QMAKE_LFLAGS_LTCG      = /LTCG
     #QMAKE_CFLAGS_RELEASE                             *= $$QMAKE_CFLAGS_LTCG
     #QMAKE_CXXFLAGS_RELEASE                           *= $$QMAKE_CXXFLAGS_LTCG
     #QMAKE_CFLAGS_RELEASE_WITH_DEBUGINFO              *= $$QMAKE_CFLAGS_LTCG
     #QMAKE_CXXFLAGS_RELEASE_WITH_DEBUGINFO            *= $$QMAKE_CXXFLAGS_LTCG
-    QMAKE_LFLAGS_RELEASE                             *= $$QMAKE_LFLAGS_LTCG
+    QMAKE_LFLAGS_RELEASE                              *= $$QMAKE_LFLAGS_LTCG
 }
