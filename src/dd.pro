@@ -41,20 +41,21 @@ FORMS += forms/preferencesdialog.ui
 TRANSLATIONS += \
     translations/dd_en.ts \
     translations/dd_zh_CN.ts
-RESOURCES += resources.qrc
+RESOURCES += images.qrc
 target.path = $$BIN_DIR
-translations.files = \
-    $$PWD/translations/dd_en.qm \
-    $$PWD/translations/dd_zh_CN.qm
-translations.path = $$BIN_DIR/translations
-qtavlibs.files = $$[QT_INSTALL_BINS]/OpenAL32*.dll
+INSTALLS += target
 CONFIG(static_build) {
     DEFINES += STATIC_BUILD
     RESOURCES += i18n.qrc
 } else {
-    qtavlibs.files += \
+    translations.files = \
+        $$PWD/translations/dd_en.qm \
+        $$PWD/translations/dd_zh_CN.qm
+    translations.path = $$BIN_DIR/translations
+    qtavlibs.files = \
         $$[QT_INSTALL_BINS]/Qt*OpenGL.dll \
         $$[QT_INSTALL_BINS]/Qt*AV*.dll \
+        $$[QT_INSTALL_BINS]/OpenAL32*.dll \
         $$[QT_INSTALL_BINS]/avcodec*.dll \
         $$[QT_INSTALL_BINS]/avdevice*.dll \
         $$[QT_INSTALL_BINS]/avfilter*.dll \
@@ -62,6 +63,6 @@ CONFIG(static_build) {
         $$[QT_INSTALL_BINS]/avutil*.dll \
         $$[QT_INSTALL_BINS]/swresample*.dll \
         $$[QT_INSTALL_BINS]/swscale*.dll
+    qtavlibs.path = $$BIN_DIR
+    INSTALLS += translations qtavlibs
 }
-qtavlibs.path = $$BIN_DIR
-INSTALLS += target translations qtavlibs
