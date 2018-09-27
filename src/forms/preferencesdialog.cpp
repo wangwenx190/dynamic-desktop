@@ -73,7 +73,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
     connect(this, &PreferencesDialog::updateVolumeArea,
         [=]
         {
-            if (!hasAudio)
+            if (!audioAvailable)
                 return;
             ui->checkBox_volume->setChecked(!SettingsManager::getInstance()->getMute());
             ui->horizontalSlider_volume->setEnabled(ui->checkBox_volume->isChecked());
@@ -82,8 +82,8 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
     connect(this, &PreferencesDialog::setVolumeAreaEnabled,
         [=](bool enabled)
         {
-            ui->checkBox_volume->setEnabled(hasAudio && enabled);
-            ui->horizontalSlider_volume->setEnabled(hasAudio && enabled && ui->checkBox_volume->isChecked());
+            ui->checkBox_volume->setEnabled(audioAvailable && enabled);
+            ui->horizontalSlider_volume->setEnabled(audioAvailable && enabled && ui->checkBox_volume->isChecked());
         });
     connect(ui->horizontalSlider_volume, &QSlider::sliderMoved,
         [=](int value)
@@ -106,10 +106,10 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
             emit this->volumeChanged(static_cast<unsigned int>(value));
         });
     connect(this, &PreferencesDialog::setAudioAreaEnabled,
-        [=](bool hasAudio)
+        [=](bool audioAvailable)
         {
-            this->hasAudio = hasAudio;
-            ui->groupBox_audio->setEnabled(hasAudio);
+            this->audioAvailable = audioAvailable;
+            ui->groupBox_audio->setEnabled(audioAvailable);
         });
     connect(this, &PreferencesDialog::setSeekAreaEnabled,
         [=](bool enabled)
@@ -279,7 +279,7 @@ void PreferencesDialog::refreshUI()
     if (closing)
         return;
     ui->lineEdit_url->setText(SettingsManager::getInstance()->getUrl());
-    if (hasAudio)
+    if (audioAvailable)
     {
         ui->checkBox_volume->setChecked(!SettingsManager::getInstance()->getMute());
         ui->horizontalSlider_volume->setEnabled(ui->checkBox_volume->isChecked());

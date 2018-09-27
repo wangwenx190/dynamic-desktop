@@ -57,6 +57,6 @@ private slots:
 
 private:
     Ui::PreferencesDialog *ui;
-    bool closing = false, hasAudio = true;
+    bool closing = false, audioAvailable = true;
     unsigned int sliderUnit = 1000;
 };

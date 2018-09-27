@@ -59,6 +59,7 @@ CONFIG(static_build) {
         $$[QT_INSTALL_BINS]/avformat*.dll \
         $$[QT_INSTALL_BINS]/avutil*.dll \
         $$[QT_INSTALL_BINS]/swresample*.dll \
-        $$[QT_INSTALL_BINS]/swscale*.dll
+        $$[QT_INSTALL_BINS]/swscale*.dll \
+        $$[QT_INSTALL_BINS]/*ass.dll
     INSTALLS += translations qtavlibs
 }
