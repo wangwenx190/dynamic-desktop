@@ -21,6 +21,7 @@
 #include <QSysInfo>
 #include <QVersionNumber>
 #include <QtConcurrent>
+#include <QCommandLineParser>
 
 //https://github.com/ThomasHuai/Wallpaper/blob/master/utils.cpp
 HWND HWORKERW = nullptr;
@@ -56,12 +57,12 @@ int main(int argc, char *argv[])
 {
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
+    QApplication app(argc, argv);
     QCoreApplication::setApplicationName(QStringLiteral("Dynamic Desktop"));
     QApplication::setApplicationDisplayName(QStringLiteral("Dynamic Desktop"));
     QCoreApplication::setApplicationVersion(QStringLiteral(DD_VERSION));
     QCoreApplication::setOrganizationName(QStringLiteral("wangwenx190"));
     QCoreApplication::setOrganizationDomain(QStringLiteral("wangwenx190.github.io"));
-    QApplication app(argc, argv);
     QTranslator ddTranslator;
     if (SettingsManager::getInstance()->getLocalize())
     {
@@ -88,6 +89,10 @@ int main(int argc, char *argv[])
         QMessageBox::critical(nullptr, QStringLiteral("Dynamic Desktop"), QObject::tr("There is another instance running. Please do not run twice."));
         return 0;
     }
+    QCommandLineParser parser;
+    parser.setApplicationDescription(QObject::tr("A tool that make your desktop alive."));
+    parser.addHelpOption();
+    parser.addVersionOption();
     if (SettingsManager::getInstance()->getAutostart())
         SettingsManager::getInstance()->regAutostart();
     else
@@ -107,8 +112,15 @@ int main(int argc, char *argv[])
     renderer.setGeometry(screenGeometry);
     QtAV::AVPlayer player;
     player.setRenderer(&renderer);
-    PreferencesDialog preferencesDialog;
-    preferencesDialog.setWindowIcon(QIcon(QStringLiteral(":/icon.ico")));
+    QtAV::SubtitleFilter subtitle;
+    if (SettingsManager::getInstance()->getSubtitle())
+    {
+        subtitle.setPlayer(&player);
+        subtitle.installTo(&renderer);
+        subtitle.setCodec(SettingsManager::getInstance()->getCharset().toLatin1());
+        subtitle.setEngines(QStringList() << QStringLiteral("LibASS") << QStringLiteral("FFmpeg"));
+        subtitle.setAutoLoad(SettingsManager::getInstance()->getSubtitleAutoLoad());
+    }
     if (SettingsManager::getInstance()->getHwdec())
     {
         QStringList decoders = SettingsManager::getInstance()->getDecoders();
@@ -144,6 +156,8 @@ int main(int argc, char *argv[])
         }*/
     }
     player.setRepeat(-1);
+    PreferencesDialog preferencesDialog;
+    preferencesDialog.setWindowIcon(QIcon(QStringLiteral(":/icon.ico")));
     QObject::connect(&player, SIGNAL(stopped()), &player, SLOT(play()));
     QObject::connect(&player, SIGNAL(positionChanged(qint64)), &preferencesDialog, SIGNAL(updateVideoSlider(qint64)));
     QObject::connect(&player, &QtAV::AVPlayer::loaded,
@@ -223,14 +237,15 @@ int main(int argc, char *argv[])
         [=]
         {
             QMessageBox::about(nullptr, QStringLiteral("Dynamic Desktop"),
-                               QObject::tr("DD version: %0\nQt version: %1\nQtAV version: %2\nFFmpeg version: %3\nSource code: %4\nBuild time: %5 %6")
+                               QObject::tr("DD version: %0\nQt version: %1\nQtAV version: %2\nFFmpeg version: %3\nSource code: %4\nBuild time: %5 %6\nArchitecture: %7")
                                    .arg(QStringLiteral(DD_VERSION))
                                    .arg(QStringLiteral(QT_VERSION_STR))
                                    .arg(QStringLiteral(QTAV_VERSION_STR))
                                    .arg(QStringLiteral("4.0.2-git"))
                                    .arg(QStringLiteral("https://github.com/wangwenx190/dynamic-desktop"))
                                    .arg(QStringLiteral(__DATE__))
-                                   .arg(QStringLiteral(__TIME__)));
+                                   .arg(QStringLiteral(__TIME__))
+                                   .arg(QSysInfo::buildCpuArchitecture()));
         });
     trayMenu.addAction(QObject::tr("Exit"), qApp, &QApplication::closeAllWindows);
     QSystemTrayIcon trayIcon;
@@ -330,9 +345,81 @@ int main(int argc, char *argv[])
         [=, &renderer](bool fitDesktop)
         {
             if (fitDesktop)
-                renderer.setOutAspectRatioMode(QtAV::VideoRenderer::RendererAspectRatio);
+                QtConcurrent::run(
+                    [=, &renderer]
+                    {
+                        renderer.setOutAspectRatioMode(QtAV::VideoRenderer::RendererAspectRatio);
+                    });
             else
-                renderer.setOutAspectRatioMode(QtAV::VideoRenderer::VideoAspectRatio);
+                QtConcurrent::run(
+                    [=, &renderer]
+                    {
+                        renderer.setOutAspectRatioMode(QtAV::VideoRenderer::VideoAspectRatio);
+                    });
+        });
+    QObject::connect(&preferencesDialog, &PreferencesDialog::videoTrackChanged,
+        [=, &player](int id)
+        {
+            if (!player.isLoaded())
+                return;
+            if (id == player.currentVideoStream())
+                return;
+            QtConcurrent::run(
+                [=, &player]
+                {
+                    player.setVideoStream(id);
+                });
+        });
+    QObject::connect(&preferencesDialog, &PreferencesDialog::audioTrackChanged,
+        [=, &player](int id)
+        {
+            if (!player.isLoaded())
+                return;
+            if (id == player.currentAudioStream())
+                return;
+            QtConcurrent::run(
+                [=, &player]
+                {
+                    player.setAudioStream(id);
+                });
+        });
+    QObject::connect(&preferencesDialog, &PreferencesDialog::subtitleTrackChanged,
+        [=, &player](int id)
+        {
+            if (!player.isLoaded())
+                return;
+            if (id == player.currentSubtitleStream())
+                return;
+            QtConcurrent::run(
+                [=, &player]
+                {
+                    player.setSubtitleStream(id);
+                });
+        });
+    QObject::connect(&preferencesDialog, &PreferencesDialog::charsetChanged,
+        [=, &subtitle](const QString &charset)
+        {
+            if (!SettingsManager::getInstance()->getSubtitle())
+                return;
+            QtConcurrent::run(
+                [=, &subtitle]
+                {
+                    subtitle.setCodec(charset.toLatin1());
+                });
+        });
+    QObject::connect(&preferencesDialog, &PreferencesDialog::subtitleAutoLoadChanged,
+        [=, &subtitle](bool autoload)
+        {
+            QtConcurrent::run(
+                [=, &subtitle]
+                {
+                    subtitle.setAutoLoad(autoload);
+                });
+        });
+    QObject::connect(&preferencesDialog, &PreferencesDialog::subtitleEnabled,
+        [=, &player](bool enabled)
+        {
+            // Hide subtitle
         });
     HWND hworkerw = nullptr;
     auto hrenderer = reinterpret_cast<HWND>(renderer.winId());

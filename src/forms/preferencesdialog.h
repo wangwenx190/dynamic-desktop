@@ -20,6 +20,12 @@ signals:
     void about();
     void seekBySlider(qint64);
     void pictureRatioChanged(bool);
+    void videoTrackChanged(int);
+    void audioTrackChanged(int);
+    void subtitleTrackChanged(int);
+    void charsetChanged(const QString &);
+    void subtitleAutoLoadChanged(bool);
+    void subtitleEnabled(bool);
 
 signals:
     void refreshUi();

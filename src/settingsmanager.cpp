@@ -171,6 +171,21 @@ bool SettingsManager::getFitDesktop() const
     return settings->value(QStringLiteral("dd/fit"), true).toBool();
 }
 
+bool SettingsManager::getSubtitle() const
+{
+    return settings->value(QStringLiteral("dd/subtitle"), true).toBool();
+}
+
+QString SettingsManager::getCharset() const
+{
+    return settings->value(QStringLiteral("dd/charset"), QStringLiteral("AutoDetect")).toString();
+}
+
+bool SettingsManager::getSubtitleAutoLoad() const
+{
+    return settings->value(QStringLiteral("dd/subtitleautoload"), true).toBool();
+}
+
 void SettingsManager::setUrl(const QString &url)
 {
     settings->setValue(QStringLiteral("dd/url"), url);
@@ -212,6 +227,21 @@ void SettingsManager::setLocalize(bool enable)
 void SettingsManager::setFitDesktop(bool fit)
 {
     settings->setValue(QStringLiteral("dd/fit"), fit);
+}
+
+void SettingsManager::setSubtitle(bool show)
+{
+    settings->setValue(QStringLiteral("dd/subtitle"), show);
+}
+
+void SettingsManager::setCharset(const QString &charset)
+{
+    settings->setValue(QStringLiteral("dd/charset"), charset);
+}
+
+void SettingsManager::setSubtitleAutoLoad(bool autoload)
+{
+    settings->setValue(QStringLiteral("dd/subtitleautoload"), autoload);
 }
 
 SettingsManager::SettingsManager()

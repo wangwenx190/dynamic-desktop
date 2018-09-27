@@ -288,8 +288,8 @@ void PreferencesDialog::refreshUI()
     ui->checkBox_autoStart->setChecked(SettingsManager::getInstance()->getAutostart());
     QStringList decoders = SettingsManager::getInstance()->getDecoders();
     ui->checkBox_hwdec_cuda->setChecked(decoders.contains(QStringLiteral("CUDA")));
-    ui->checkBox_hwdec_dxva->setChecked(decoders.contains(QStringLiteral("DXVA")));
     ui->checkBox_hwdec_d3d11->setChecked(decoders.contains(QStringLiteral("D3D11")));
+    ui->checkBox_hwdec_dxva->setChecked(decoders.contains(QStringLiteral("DXVA")));
     bool hwdecEnabled = (ui->checkBox_hwdec_cuda->isChecked()
             || ui->checkBox_hwdec_d3d11->isChecked()
             || ui->checkBox_hwdec_dxva->isChecked())
@@ -299,13 +299,16 @@ void PreferencesDialog::refreshUI()
     if (firstShow)
     {
         ui->checkBox_hwdec_cuda->setEnabled(hwdecEnabled);
-        ui->checkBox_hwdec_dxva->setEnabled(hwdecEnabled);
         ui->checkBox_hwdec_d3d11->setEnabled(hwdecEnabled);
+        ui->checkBox_hwdec_dxva->setEnabled(hwdecEnabled);
         firstShow = false;
     }
     ui->checkBox_localize->setChecked(SettingsManager::getInstance()->getLocalize());
     ui->radioButton_ratio_fitDesktop->setChecked(SettingsManager::getInstance()->getFitDesktop());
     ui->radioButton_ratio_videoAspectRatio->setChecked(!ui->radioButton_ratio_fitDesktop->isChecked());
+    ui->comboBox_subtitle_charset->setCurrentIndex(ui->comboBox_subtitle_charset->findData(SettingsManager::getInstance()->getCharset()));
+    ui->checkBox_subtitle_autoLoadExternal->setChecked(SettingsManager::getInstance()->getSubtitleAutoLoad());
+    ui->checkBox_displaySubtitle->setChecked(SettingsManager::getInstance()->getSubtitle());
 }
 
 void PreferencesDialog::saveSettings()
@@ -347,5 +350,23 @@ void PreferencesDialog::saveSettings()
     {
         SettingsManager::getInstance()->setFitDesktop(ui->radioButton_ratio_fitDesktop->isChecked());
         emit pictureRatioChanged(SettingsManager::getInstance()->getFitDesktop());
+    }
+    emit videoTrackChanged(ui->comboBox_video_track->currentData().toInt());
+    emit audioTrackChanged(ui->comboBox_audio_track->currentData().toInt());
+    emit subtitleTrackChanged(ui->comboBox_subtitle_track->currentData().toInt());
+    if (ui->comboBox_subtitle_charset->currentData().toString() != SettingsManager::getInstance()->getCharset())
+    {
+        SettingsManager::getInstance()->setCharset(ui->comboBox_subtitle_charset->currentData().toString());
+        emit charsetChanged(SettingsManager::getInstance()->getCharset());
+    }
+    if (ui->checkBox_subtitle_autoLoadExternal->isChecked() != SettingsManager::getInstance()->getSubtitleAutoLoad())
+    {
+        SettingsManager::getInstance()->setSubtitleAutoLoad(ui->checkBox_subtitle_autoLoadExternal->isChecked());
+        emit subtitleAutoLoadChanged(SettingsManager::getInstance()->getSubtitleAutoLoad());
+    }
+    if (ui->checkBox_displaySubtitle->isChecked() != SettingsManager::getInstance()->getSubtitle())
+    {
+        SettingsManager::getInstance()->setSubtitle(ui->checkBox_displaySubtitle->isChecked());
+        emit subtitleEnabled(SettingsManager::getInstance()->getSubtitle());
     }
 }

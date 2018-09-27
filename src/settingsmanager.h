@@ -23,6 +23,9 @@ public:
     QStringList getDecoders() const;
     bool getLocalize() const;
     bool getFitDesktop() const;
+    bool getSubtitle() const;
+    QString getCharset() const;
+    bool getSubtitleAutoLoad() const;
 
     void setUrl(const QString &url);
     void setMute(bool mute);
@@ -32,6 +35,9 @@ public:
     void setDecoders(const QStringList &decoders);
     void setLocalize(bool enable);
     void setFitDesktop(bool fit);
+    void setSubtitle(bool show);
+    void setCharset(const QString &charset);
+    void setSubtitleAutoLoad(bool autoload);
 
 private:
     SettingsManager();
