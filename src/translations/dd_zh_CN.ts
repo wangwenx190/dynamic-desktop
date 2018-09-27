@@ -81,7 +81,7 @@
     </message>
     <message>
         <location filename="../forms/preferencesdialog.ui" line="441"/>
-        <location filename="../forms/preferencesdialog.cpp" line="135"/>
+        <location filename="../forms/preferencesdialog.cpp" line="150"/>
         <source>URL</source>
         <translation>路径</translation>
     </message>
@@ -166,32 +166,32 @@
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="88"/>
+        <location filename="../forms/preferencesdialog.cpp" line="103"/>
         <source>Application restart is needed to apply this change.</source>
         <translation>重启此应用程序以生效。</translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="127"/>
+        <location filename="../forms/preferencesdialog.cpp" line="142"/>
         <source>Please select a media file</source>
         <translation>请选择一个媒体文件</translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="127"/>
+        <location filename="../forms/preferencesdialog.cpp" line="142"/>
         <source>Videos (*.avi *.mp4 *.mkv *.flv);;All files (*)</source>
         <translation>视频 (*.avi *.mp4 *.mkv *.flv);;所有文件 (*)</translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="135"/>
+        <location filename="../forms/preferencesdialog.cpp" line="150"/>
         <source>Please input a valid URL</source>
         <translation>请输入一个有效的网址</translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="141"/>
+        <location filename="../forms/preferencesdialog.cpp" line="156"/>
         <source>&quot;%0&quot; is not a valid URL.</source>
         <translation>“%0”不是一个有效的网址。</translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="157"/>
+        <location filename="../forms/preferencesdialog.cpp" line="172"/>
         <source>Restart this application to experience it.
 Make sure this application runs in your GPU&apos;s Optimus mode.</source>
         <translation>重新运行此程序以体验改变。
@@ -216,32 +216,32 @@ Make sure this application runs in your GPU&apos;s Optimus mode.</source>
         <translation>我的壁纸</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="170"/>
+        <location filename="../main.cpp" line="171"/>
         <source>Preferences</source>
         <translation>首选项</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="185"/>
+        <location filename="../main.cpp" line="186"/>
         <source>Play</source>
         <translation>播放</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="199"/>
+        <location filename="../main.cpp" line="200"/>
         <source>Pause</source>
         <translation>暂停</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="200"/>
+        <location filename="../main.cpp" line="201"/>
         <source>Mute</source>
         <translation>静音</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="217"/>
+        <location filename="../main.cpp" line="218"/>
         <source>About</source>
         <translation>关于</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="222"/>
+        <location filename="../main.cpp" line="223"/>
         <source>DD version: %0
 Qt version: %1
 QtAV version: %2
@@ -256,7 +256,7 @@ FFmpeg 版本： %3
 构建时间： %5 %6</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="231"/>
+        <location filename="../main.cpp" line="232"/>
         <source>Exit</source>
         <translation>退出</translation>
     </message>

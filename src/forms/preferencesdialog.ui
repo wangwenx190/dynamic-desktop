@@ -250,7 +250,7 @@ QRadioButton::indicator:checked {
          <string/>
         </property>
         <property name="pixmap">
-         <pixmap resource="../resources.qrc">:/icon.ico</pixmap>
+         <pixmap resource="../images.qrc">:/icon.ico</pixmap>
         </property>
         <property name="scaledContents">
          <bool>true</bool>
@@ -320,7 +320,7 @@ QRadioButton::indicator:checked {
          <string/>
         </property>
         <property name="icon">
-         <iconset resource="../resources.qrc">
+         <iconset resource="../images.qrc">
           <normaloff>:/minimize.svg</normaloff>:/minimize.svg</iconset>
         </property>
         <property name="flat">
@@ -349,7 +349,7 @@ QRadioButton::indicator:checked {
          <string/>
         </property>
         <property name="icon">
-         <iconset resource="../resources.qrc">
+         <iconset resource="../images.qrc">
           <normaloff>:/maximize.svg</normaloff>:/maximize.svg</iconset>
         </property>
         <property name="flat">
@@ -375,7 +375,7 @@ QRadioButton::indicator:checked {
          <string/>
         </property>
         <property name="icon">
-         <iconset resource="../resources.qrc">
+         <iconset resource="../images.qrc">
           <normaloff>:/close.svg</normaloff>:/close.svg</iconset>
         </property>
         <property name="flat">
@@ -801,7 +801,7 @@ QRadioButton::indicator:checked {
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="../resources.qrc"/>
+  <include location="../images.qrc"/>
  </resources>
  <connections/>
 </ui>

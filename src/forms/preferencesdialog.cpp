@@ -24,6 +24,21 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
     setResizeableAreaWidth(5);
     setTitleBar(ui->widget_windowTitleBar);
     addIgnoreWidget(ui->label_windowTitle);
+    connect(this, &PreferencesDialog::updateVolumeArea,
+        [=]
+        {
+            if (!hasAudio)
+                return;
+            ui->checkBox_volume->setChecked(!SettingsManager::getInstance()->getMute());
+            ui->horizontalSlider_volume->setEnabled(ui->checkBox_volume->isChecked());
+            ui->horizontalSlider_volume->setValue(SettingsManager::getInstance()->getVolume());
+        });
+    connect(this, &PreferencesDialog::setVolumeAreaEnabled,
+        [=](bool enabled)
+        {
+            ui->checkBox_volume->setEnabled(hasAudio && enabled);
+            ui->horizontalSlider_volume->setEnabled(hasAudio && enabled && ui->checkBox_volume->isChecked());
+        });
     connect(ui->horizontalSlider_volume, &QSlider::sliderMoved,
         [=](int value)
         {
@@ -45,12 +60,12 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
             emit this->volumeChanged(static_cast<unsigned int>(value));
         });
     connect(this, &PreferencesDialog::setAudioAreaEnabled,
-        [=](bool enabled)
+        [=](bool hasAudio)
         {
-            ui->checkBox_volume->setEnabled(enabled);
-            ui->horizontalSlider_volume->setEnabled(enabled && ui->checkBox_volume->isChecked());
+            this->hasAudio = hasAudio;
+            ui->groupBox_audio->setEnabled(hasAudio);
         });
-    connect(this, &PreferencesDialog::setVideoAreaEnabled,
+    connect(this, &PreferencesDialog::setSeekAreaEnabled,
         [=](bool enabled)
         {
             ui->horizontalSlider_video_position->setEnabled(enabled);
@@ -214,9 +229,12 @@ void PreferencesDialog::refreshUI()
     if (closing)
         return;
     ui->lineEdit_url->setText(SettingsManager::getInstance()->getUrl());
-    ui->checkBox_volume->setChecked(!SettingsManager::getInstance()->getMute());
-    ui->horizontalSlider_volume->setEnabled(ui->checkBox_volume->isChecked());
-    ui->horizontalSlider_volume->setValue(SettingsManager::getInstance()->getVolume());
+    if (hasAudio)
+    {
+        ui->checkBox_volume->setChecked(!SettingsManager::getInstance()->getMute());
+        ui->horizontalSlider_volume->setEnabled(ui->checkBox_volume->isChecked());
+        ui->horizontalSlider_volume->setValue(SettingsManager::getInstance()->getVolume());
+    }
     ui->checkBox_autoStart->setChecked(SettingsManager::getInstance()->getAutostart());
     QStringList decoders = SettingsManager::getInstance()->getDecoders();
     ui->checkBox_hwdec_cuda->setChecked(decoders.contains(QStringLiteral("CUDA")));

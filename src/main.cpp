@@ -94,7 +94,7 @@ int main(int argc, char *argv[])
         SettingsManager::getInstance()->unregAutostart();
     QtAV::GLWidgetRenderer2 renderer;
     renderer.forcePreferredPixelFormat(true);
-    renderer.setQuality(QtAV::VideoRenderer::QualityBest);
+    renderer.setQuality(QtAV::VideoRenderer::QualityFastest);
     if (SettingsManager::getInstance()->getFitDesktop())
         renderer.setOutAspectRatioMode(QtAV::VideoRenderer::RendererAspectRatio);
     else
@@ -127,7 +127,7 @@ int main(int argc, char *argv[])
         /*if (decoders.contains(QStringLiteral("D3D11")))
         {
             QVariantHash d3d11_opt;
-            //d3d11_opt[QStringLiteral("surfaces")] = 0;
+            //d3d11_opt[QStringLiteral("???")] = ???;
             d3d11_opt[QStringLiteral("copyMode")] = QStringLiteral("ZeroCopy");
             QVariantHash opt;
             opt[QStringLiteral("D3D11")] = d3d11_opt;
@@ -136,7 +136,7 @@ int main(int argc, char *argv[])
         if (decoders.contains(QStringLiteral("DXVA")))
         {
             QVariantHash dxva_opt;
-            //dxva_opt[QStringLiteral("surfaces")] = 0;
+            //dxva_opt[QStringLiteral("???")] = ???;
             dxva_opt[QStringLiteral("copyMode")] = QStringLiteral("ZeroCopy");
             QVariantHash opt;
             opt[QStringLiteral("DXVA")] = dxva_opt;
@@ -152,7 +152,8 @@ int main(int argc, char *argv[])
             preferencesDialog.updateVideoSliderUnit(player.notifyInterval());
             preferencesDialog.updateVideoSliderRange(player.duration());
             preferencesDialog.updateVideoSlider(player.position());
-            preferencesDialog.setVideoAreaEnabled(player.isSeekable());
+            preferencesDialog.setSeekAreaEnabled(player.isSeekable());
+            preferencesDialog.setAudioAreaEnabled(player.audio());
         });
     QObject::connect(&player, &QtAV::AVPlayer::notifyIntervalChanged,
         [=, &preferencesDialog, &player]
@@ -206,7 +207,7 @@ int main(int argc, char *argv[])
                 return;
             muteAction->setChecked(checked);
             SettingsManager::getInstance()->setMute(checked);
-            preferencesDialog.refreshUi();
+            preferencesDialog.updateVolumeArea();
             QtConcurrent::run(
                 [=, &player]
                 {
@@ -249,7 +250,7 @@ int main(int argc, char *argv[])
     {
         muteAction->setCheckable(false);
         muteAction->setEnabled(false);
-        preferencesDialog.setAudioAreaEnabled(false);
+        preferencesDialog.setVolumeAreaEnabled(false);
     }
     if (!SettingsManager::getInstance()->getUrl().isEmpty())
     {

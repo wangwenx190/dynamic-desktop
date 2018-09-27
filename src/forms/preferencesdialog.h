@@ -27,7 +27,10 @@ signals:
     void updateVideoSliderUnit(int);
     void updateVideoSliderRange(qint64);
     void setVideoAreaEnabled(bool);
+    void setSeekAreaEnabled(bool);
     void setAudioAreaEnabled(bool);
+    void setVolumeAreaEnabled(bool);
+    void updateVolumeArea();
 
 public:
     explicit PreferencesDialog(QWidget *parent = nullptr);
@@ -45,6 +48,6 @@ private slots:
 
 private:
     Ui::PreferencesDialog *ui;
-    bool closing = false;
+    bool closing = false, hasAudio = true;
     unsigned int sliderUnit = 1000;
 };

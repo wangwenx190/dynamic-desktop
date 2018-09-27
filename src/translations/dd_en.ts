@@ -81,7 +81,7 @@
     </message>
     <message>
         <location filename="../forms/preferencesdialog.ui" line="441"/>
-        <location filename="../forms/preferencesdialog.cpp" line="135"/>
+        <location filename="../forms/preferencesdialog.cpp" line="150"/>
         <source>URL</source>
         <translation type="unfinished"></translation>
     </message>
@@ -166,32 +166,32 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="88"/>
+        <location filename="../forms/preferencesdialog.cpp" line="103"/>
         <source>Application restart is needed to apply this change.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="127"/>
+        <location filename="../forms/preferencesdialog.cpp" line="142"/>
         <source>Please select a media file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="127"/>
+        <location filename="../forms/preferencesdialog.cpp" line="142"/>
         <source>Videos (*.avi *.mp4 *.mkv *.flv);;All files (*)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="135"/>
+        <location filename="../forms/preferencesdialog.cpp" line="150"/>
         <source>Please input a valid URL</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="141"/>
+        <location filename="../forms/preferencesdialog.cpp" line="156"/>
         <source>&quot;%0&quot; is not a valid URL.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="157"/>
+        <location filename="../forms/preferencesdialog.cpp" line="172"/>
         <source>Restart this application to experience it.
 Make sure this application runs in your GPU&apos;s Optimus mode.</source>
         <translation type="unfinished"></translation>
@@ -215,32 +215,32 @@ Make sure this application runs in your GPU&apos;s Optimus mode.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="170"/>
+        <location filename="../main.cpp" line="171"/>
         <source>Preferences</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="185"/>
+        <location filename="../main.cpp" line="186"/>
         <source>Play</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="199"/>
+        <location filename="../main.cpp" line="200"/>
         <source>Pause</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="200"/>
+        <location filename="../main.cpp" line="201"/>
         <source>Mute</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="217"/>
+        <location filename="../main.cpp" line="218"/>
         <source>About</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="222"/>
+        <location filename="../main.cpp" line="223"/>
         <source>DD version: %0
 Qt version: %1
 QtAV version: %2
@@ -250,7 +250,7 @@ Build time: %5 %6</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="231"/>
+        <location filename="../main.cpp" line="232"/>
         <source>Exit</source>
         <translation type="unfinished"></translation>
     </message>
