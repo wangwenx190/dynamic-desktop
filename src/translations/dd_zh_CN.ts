@@ -238,37 +238,37 @@ Make sure this application runs in your GPU&apos;s Optimus mode.</source>
         <translation>一个能使您的桌面更加丰富多彩的工具。</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="108"/>
+        <location filename="../main.cpp" line="109"/>
         <source>My wallpaper</source>
         <translation>我的壁纸</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="188"/>
+        <location filename="../main.cpp" line="189"/>
         <source>Preferences</source>
         <translation>首选项</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="203"/>
+        <location filename="../main.cpp" line="204"/>
         <source>Play</source>
         <translation>播放</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="217"/>
+        <location filename="../main.cpp" line="218"/>
         <source>Pause</source>
         <translation>暂停</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="218"/>
+        <location filename="../main.cpp" line="219"/>
         <source>Mute</source>
         <translation>静音</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="235"/>
+        <location filename="../main.cpp" line="236"/>
         <source>About</source>
         <translation>关于</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="240"/>
+        <location filename="../main.cpp" line="241"/>
         <source>DD version: %0
 Qt version: %1
 QtAV version: %2
@@ -285,7 +285,7 @@ FFmpeg 版本：%3
 架构：%7</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="250"/>
+        <location filename="../main.cpp" line="251"/>
         <source>Exit</source>
         <translation>退出</translation>
     </message>

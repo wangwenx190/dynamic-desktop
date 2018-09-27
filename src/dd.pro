@@ -9,19 +9,7 @@ contains(QT_ARCH, x86_64) {
     BIN_DIR = $$join(BIN_DIR,,,64)
     TARGET = $$join(TARGET,,,64)
 }
-CONFIG(debug, debug|release) {
-    TARGET = $$join(TARGET,,,d)
-} else {
-    CONFIG *= update_translations release_translations
-}
-CONFIG(update_translations) {
-    isEmpty(lupdate): lupdate = $$[QT_INSTALL_BINS]/lupdate
-    system("$${lupdate} -no-obsolete $${_PRO_FILE_}")
-}
-CONFIG(release_translations) {
-    isEmpty(lrelease): lrelease = $$[QT_INSTALL_BINS]/lrelease
-    system("$${lrelease} -nounfinished -removeidentical $${_PRO_FILE_}")
-}
+CONFIG(debug, debug|release): TARGET = $$join(TARGET,,,d)
 QT += gui widgets avwidgets concurrent
 TEMPLATE = app
 DEFINES += QT_DEPRECATED_WARNINGS QT_DISABLE_DEPRECATED_BEFORE=0x051102
@@ -48,10 +36,19 @@ CONFIG(static_build) {
     DEFINES += STATIC_BUILD
     RESOURCES += i18n.qrc
 } else {
+    isEmpty(lupdate): lupdate = $$[QT_INSTALL_BINS]/lupdate.exe
+    isEmpty(lrelease): lrelease = $$[QT_INSTALL_BINS]/lrelease.exe
+    isEmpty(windeployqt): windeployqt = $$[QT_INSTALL_BINS]/windeployqt.exe
+    translations.path = $$BIN_DIR/translations
+    translations.commands += $$quote(\"$${lupdate}\" -no-obsolete \"$${_PRO_FILE_}\")
+    translations.commands += $$quote(\"$${lrelease}\" -nounfinished -removeidentical \"$${_PRO_FILE_}\")
+    translations.commands = $$join(translations.commands, $$escape_expand(\\n\\t))
     translations.files = \
         $$PWD/translations/dd_en.qm \
         $$PWD/translations/dd_zh_CN.qm
-    translations.path = $$BIN_DIR/translations
+    qtavlibs.path = $$BIN_DIR
+    qtavlibs.commands = $$quote(\"$${windeployqt}\" --plugindir \"$${BIN_DIR}/plugins\" --force --no-translations --compiler-runtime --angle --no-opengl-sw \"$${BIN_DIR}/$${TARGET}.exe\")
+    qtavlibs.commands = $$join(qtavlibs.commands, $$escape_expand(\\n\\t))
     qtavlibs.files = \
         $$[QT_INSTALL_BINS]/Qt*OpenGL.dll \
         $$[QT_INSTALL_BINS]/Qt*AV*.dll \
@@ -63,6 +60,5 @@ CONFIG(static_build) {
         $$[QT_INSTALL_BINS]/avutil*.dll \
         $$[QT_INSTALL_BINS]/swresample*.dll \
         $$[QT_INSTALL_BINS]/swscale*.dll
-    qtavlibs.path = $$BIN_DIR
     INSTALLS += translations qtavlibs
 }

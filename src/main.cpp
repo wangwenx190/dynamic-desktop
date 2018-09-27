@@ -93,6 +93,7 @@ int main(int argc, char *argv[])
     parser.setApplicationDescription(QObject::tr("A tool that make your desktop alive."));
     parser.addHelpOption();
     parser.addVersionOption();
+    parser.process(app);
     if (SettingsManager::getInstance()->getAutostart())
         SettingsManager::getInstance()->regAutostart();
     else
