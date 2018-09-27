@@ -13,6 +13,7 @@
 #include <QUrl>
 #include <QMimeDatabase>
 #include <QMimeData>
+#include <QTextCodec>
 
 PreferencesDialog::PreferencesDialog(QWidget *parent) :
     FramelessWindow(parent),
@@ -24,6 +25,51 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
     setResizeableAreaWidth(5);
     setTitleBar(ui->widget_windowTitleBar);
     addIgnoreWidget(ui->label_windowTitle);
+    connect(this, &PreferencesDialog::updateVideoTracks,
+        [=](const QVariantList &videoTracks)
+        {
+            for (auto& track : videoTracks)
+            {
+                QVariantMap trackData = track.toMap();
+                int id = trackData[QStringLiteral("id")].toInt();
+                QString lang = trackData[QStringLiteral("language")].toString();
+                QString title = trackData[QStringLiteral("title")].toString();
+                QString txt = tr("ID: %0 | Title: %1 | Language: %2")
+                        .arg(id).arg(title).arg(lang);
+                ui->comboBox_video_track->clear();
+                ui->comboBox_video_track->addItem(txt, id);
+            }
+        });
+    connect(this, &PreferencesDialog::updateAudioTracks,
+        [=](const QVariantList &audioTracks)
+        {
+            for (auto& track : audioTracks)
+            {
+                QVariantMap trackData = track.toMap();
+                int id = trackData[QStringLiteral("id")].toInt();
+                QString lang = trackData[QStringLiteral("language")].toString();
+                QString title = trackData[QStringLiteral("title")].toString();
+                QString txt = tr("ID: %0 | Title: %1 | Language: %2")
+                        .arg(id).arg(title).arg(lang);
+                ui->comboBox_audio_track->clear();
+                ui->comboBox_audio_track->addItem(txt, id);
+            }
+        });
+    connect(this, &PreferencesDialog::updateSubtitleTracks,
+        [=](const QVariantList &subtitleTracks)
+        {
+            for (auto& track : subtitleTracks)
+            {
+                QVariantMap trackData = track.toMap();
+                int id = trackData[QStringLiteral("id")].toInt();
+                QString lang = trackData[QStringLiteral("language")].toString();
+                QString title = trackData[QStringLiteral("title")].toString();
+                QString txt = tr("ID: %0 | Title: %1 | Language: %2")
+                        .arg(id).arg(title).arg(lang);
+                ui->comboBox_subtitle_track->clear();
+                ui->comboBox_subtitle_track->addItem(txt, id);
+            }
+        });
     connect(this, &PreferencesDialog::updateVolumeArea,
         [=]
         {
@@ -171,6 +217,10 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
             if (this->isVisible() && this->isActiveWindow())
                 QMessageBox::information(nullptr, QStringLiteral("Dynamic Desktop"), tr("Restart this application to experience it.\nMake sure this application runs in your GPU's Optimus mode."));
         });
+    ui->comboBox_subtitle_charset->addItem(tr("Auto detect"), QStringLiteral("AutoDetect"));
+    ui->comboBox_subtitle_charset->addItem(tr("System"), QStringLiteral("System"));
+    for (auto& codec : QTextCodec::availableCodecs())
+        ui->comboBox_subtitle_charset->addItem(QString::fromLatin1(codec), QString::fromLatin1(codec));
     connect(this, SIGNAL(refreshUi()), this, SLOT(refreshUI()));
 }
 

@@ -146,7 +146,7 @@ int main(int argc, char *argv[])
     player.setRepeat(-1);
     QObject::connect(&player, SIGNAL(stopped()), &player, SLOT(play()));
     QObject::connect(&player, SIGNAL(positionChanged(qint64)), &preferencesDialog, SIGNAL(updateVideoSlider(qint64)));
-    QObject::connect(&player, &QtAV::AVPlayer::started,
+    QObject::connect(&player, &QtAV::AVPlayer::loaded,
         [=, &preferencesDialog, &player]
         {
             preferencesDialog.updateVideoSliderUnit(player.notifyInterval());
@@ -154,6 +154,9 @@ int main(int argc, char *argv[])
             preferencesDialog.updateVideoSlider(player.position());
             preferencesDialog.setSeekAreaEnabled(player.isSeekable());
             preferencesDialog.setAudioAreaEnabled(player.audio());
+            preferencesDialog.updateVideoTracks(player.internalVideoTracks());
+            preferencesDialog.updateAudioTracks(player.internalAudioTracks());
+            preferencesDialog.updateSubtitleTracks(player.internalSubtitleTracks());
         });
     QObject::connect(&player, &QtAV::AVPlayer::notifyIntervalChanged,
         [=, &preferencesDialog, &player]

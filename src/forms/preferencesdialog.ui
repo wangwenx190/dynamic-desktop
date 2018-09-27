@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>811</width>
-    <height>590</height>
+    <height>622</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -746,6 +746,26 @@ QRadioButton::indicator:checked {
         </item>
         <item>
          <widget class="QComboBox" name="comboBox_subtitle_track"/>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_13">
+        <item>
+         <widget class="QLabel" name="label_subtitle_charset">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>Charset</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QComboBox" name="comboBox_subtitle_charset"/>
         </item>
        </layout>
       </item>

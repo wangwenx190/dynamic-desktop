@@ -31,6 +31,9 @@ signals:
     void setAudioAreaEnabled(bool);
     void setVolumeAreaEnabled(bool);
     void updateVolumeArea();
+    void updateVideoTracks(const QVariantList &);
+    void updateAudioTracks(const QVariantList &);
+    void updateSubtitleTracks(const QVariantList &);
 
 public:
     explicit PreferencesDialog(QWidget *parent = nullptr);
