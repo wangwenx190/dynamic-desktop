@@ -94,6 +94,8 @@ int main(int argc, char *argv[])
     parser.addHelpOption();
     parser.addVersionOption();
     parser.process(app);
+    if (QLibraryInfo::isDebugBuild())
+        QMessageBox::warning(nullptr, QStringLiteral("Dynamic Desktop"), QObject::tr("WARNING: You are running a debug version of this tool!\nDo not continue running it if you are not a developer!"));
     if (SettingsManager::getInstance()->getAutostart())
         SettingsManager::getInstance()->regAutostart();
     else

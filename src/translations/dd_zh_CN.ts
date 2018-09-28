@@ -316,37 +316,44 @@ Make sure this application runs in your GPU&apos;s Optimus mode.</source>
         <translation>一个能使您的桌面更加丰富多彩的工具。</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="109"/>
+        <location filename="../main.cpp" line="98"/>
+        <source>WARNING: You are running a debug version of this tool!
+Do not continue running it if you are not a developer!</source>
+        <translation>警告：您运行的是此应用程序的调试版本！
+如果您不是开发者，请不要继续运行！</translation>
+    </message>
+    <message>
+        <location filename="../main.cpp" line="111"/>
         <source>My wallpaper</source>
         <translation>我的壁纸</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="189"/>
+        <location filename="../main.cpp" line="191"/>
         <source>Preferences</source>
         <translation>首选项</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="204"/>
+        <location filename="../main.cpp" line="206"/>
         <source>Play</source>
         <translation>播放</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="218"/>
+        <location filename="../main.cpp" line="220"/>
         <source>Pause</source>
         <translation>暂停</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="219"/>
+        <location filename="../main.cpp" line="221"/>
         <source>Mute</source>
         <translation>静音</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="236"/>
+        <location filename="../main.cpp" line="238"/>
         <source>About</source>
         <translation>关于</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="238"/>
+        <location filename="../main.cpp" line="240"/>
         <source>Exit</source>
         <translation>退出</translation>
     </message>
