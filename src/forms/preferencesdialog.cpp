@@ -185,7 +185,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
         {
             QString lastDir = SettingsManager::getInstance()->getUrl();
             lastDir = lastDir.isEmpty() ? QStringLiteral(".") : QFileInfo(lastDir).dir().absolutePath();
-            QString path = QFileDialog::getOpenFileName(nullptr, tr("Please select a media file"), lastDir, tr("Videos (*.avi *.mp4 *.mkv *.flv);;All files (*)"));
+            QString path = QFileDialog::getOpenFileName(nullptr, tr("Please select a media file"), lastDir, tr("Videos (*.avi *.mp4 *.mkv *.flv);;Audios (*.mp3 *.flac *.ape *.wav);;Pictures (*.bmp *.jpg *.jpeg *.png *.gif);;All files (*)"));
             if (!path.isEmpty())
                 ui->lineEdit_url->setText(QDir::toNativeSeparators(path));
         });
@@ -214,6 +214,24 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
             ui->checkBox_hwdec_cuda->setEnabled(hwdecEnabled);
             ui->checkBox_hwdec_d3d11->setEnabled(hwdecEnabled);
             ui->checkBox_hwdec_dxva->setEnabled(hwdecEnabled);
+            if (this->isVisible() && this->isActiveWindow())
+                QMessageBox::information(nullptr, QStringLiteral("Dynamic Desktop"), tr("Restart this application to experience it.\nMake sure this application runs in your GPU's Optimus mode."));
+        });
+    connect(ui->checkBox_hwdec_cuda, &QCheckBox::stateChanged,
+        [=]
+        {
+            if (this->isVisible() && this->isActiveWindow())
+                QMessageBox::information(nullptr, QStringLiteral("Dynamic Desktop"), tr("Restart this application to experience it.\nMake sure this application runs in your GPU's Optimus mode."));
+        });
+    connect(ui->checkBox_hwdec_d3d11, &QCheckBox::stateChanged,
+        [=]
+        {
+            if (this->isVisible() && this->isActiveWindow())
+                QMessageBox::information(nullptr, QStringLiteral("Dynamic Desktop"), tr("Restart this application to experience it.\nMake sure this application runs in your GPU's Optimus mode."));
+        });
+    connect(ui->checkBox_hwdec_dxva, &QCheckBox::stateChanged,
+        [=]
+        {
             if (this->isVisible() && this->isActiveWindow())
                 QMessageBox::information(nullptr, QStringLiteral("Dynamic Desktop"), tr("Restart this application to experience it.\nMake sure this application runs in your GPU's Optimus mode."));
         });
@@ -309,6 +327,7 @@ void PreferencesDialog::refreshUI()
     ui->comboBox_subtitle_charset->setCurrentIndex(ui->comboBox_subtitle_charset->findData(SettingsManager::getInstance()->getCharset()));
     ui->checkBox_subtitle_autoLoadExternal->setChecked(SettingsManager::getInstance()->getSubtitleAutoLoad());
     ui->checkBox_displaySubtitle->setChecked(SettingsManager::getInstance()->getSubtitle());
+    ui->checkBox_audio_autoLoadExternal->setChecked(SettingsManager::getInstance()->getAudioAutoLoad());
 }
 
 void PreferencesDialog::saveSettings()
@@ -369,4 +388,5 @@ void PreferencesDialog::saveSettings()
         SettingsManager::getInstance()->setSubtitle(ui->checkBox_displaySubtitle->isChecked());
         emit subtitleEnabled(SettingsManager::getInstance()->getSubtitle());
     }
+    SettingsManager::getInstance()->setAudioAutoLoad(ui->checkBox_audio_autoLoadExternal->isChecked());
 }

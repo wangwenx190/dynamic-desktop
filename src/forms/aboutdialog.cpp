@@ -12,21 +12,6 @@ AboutDialog::AboutDialog(QWidget *parent) :
     ui(new Ui::AboutDialog)
 {
     ui->setupUi(this);
-    connect(ui->label_source, &QLabel::linkActivated,
-        [=]
-        {
-            QDesktopServices::openUrl(QUrl(QStringLiteral("https://github.com/wangwenx190/dynamic-desktop")));
-        });
-    connect(ui->label_issues, &QLabel::linkActivated,
-        [=]
-        {
-            QDesktopServices::openUrl(QUrl(QStringLiteral("https://github.com/wangwenx190/dynamic-desktop/issues")));
-        });
-    connect(ui->label_release, &QLabel::linkActivated,
-        [=]
-        {
-            QDesktopServices::openUrl(QUrl(QStringLiteral("https://github.com/wangwenx190/dynamic-desktop/releases/latest")));
-        });
     ui->lineEdit_version->setText(QStringLiteral(DD_VERSION));
     ui->lineEdit_commit_id->setText(QStringLiteral(DD_COMMIT_ID));
     ui->lineEdit_commit_time->setText(QStringLiteral(DD_COMMIT_TIME));

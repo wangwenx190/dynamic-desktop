@@ -12,8 +12,7 @@ public:
     void unregAutostart();
 
     QStringList defaultDecoders() const;
-    QStringList supportedMimeTypes();
-    QStringList supportedSuffixes();
+    QStringList supportedMimeTypes() const;
 
     QString getUrl() const;
     bool getMute() const;
@@ -26,6 +25,7 @@ public:
     bool getSubtitle() const;
     QString getCharset() const;
     bool getSubtitleAutoLoad() const;
+    bool getAudioAutoLoad() const;
 
     void setUrl(const QString &url);
     void setMute(bool mute);
@@ -38,6 +38,7 @@ public:
     void setSubtitle(bool show);
     void setCharset(const QString &charset);
     void setSubtitleAutoLoad(bool autoload);
+    void setAudioAutoLoad(bool autoload);
 
 private:
     SettingsManager();

@@ -9,72 +9,57 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/aboutdialog.ui" line="35"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic; color:#5500ff;&quot;&gt;Get source code from GitHub!&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../forms/aboutdialog.ui" line="71"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic; color:#ff55ff;&quot;&gt;Report suggestions or issues.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../forms/aboutdialog.ui" line="107"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic; color:#ffb915;&quot;&gt;Get the latest release!&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../forms/aboutdialog.ui" line="140"/>
+        <location filename="../forms/aboutdialog.ui" line="32"/>
         <source>Version</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/aboutdialog.ui" line="183"/>
+        <location filename="../forms/aboutdialog.ui" line="81"/>
         <source>Commit ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/aboutdialog.ui" line="226"/>
+        <location filename="../forms/aboutdialog.ui" line="124"/>
         <source>Commit time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/aboutdialog.ui" line="312"/>
+        <location filename="../forms/aboutdialog.ui" line="210"/>
         <source>Qt</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/aboutdialog.ui" line="355"/>
+        <location filename="../forms/aboutdialog.ui" line="253"/>
         <source>QtAV</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/aboutdialog.ui" line="398"/>
+        <location filename="../forms/aboutdialog.ui" line="296"/>
         <source>FFmpeg</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/aboutdialog.ui" line="441"/>
+        <location filename="../forms/aboutdialog.ui" line="339"/>
         <source>Compiler</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/aboutdialog.ui" line="484"/>
+        <location filename="../forms/aboutdialog.ui" line="382"/>
         <source>Architecture</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/aboutdialog.ui" line="269"/>
+        <location filename="../forms/aboutdialog.ui" line="167"/>
         <source>Build time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/aboutdialog.ui" line="521"/>
+        <location filename="../forms/aboutdialog.ui" line="419"/>
         <source>About QtAV</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/aboutdialog.ui" line="541"/>
+        <location filename="../forms/aboutdialog.ui" line="439"/>
         <source>OK</source>
         <translation type="unfinished"></translation>
     </message>
@@ -267,7 +252,7 @@
     </message>
     <message>
         <location filename="../forms/preferencesdialog.cpp" line="188"/>
-        <source>Videos (*.avi *.mp4 *.mkv *.flv);;All files (*)</source>
+        <source>Videos (*.avi *.mp4 *.mkv *.flv);;Audios (*.mp3 *.flac *.ape *.wav);;Pictures (*.bmp *.jpg *.jpeg *.png *.gif);;All files (*)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -282,17 +267,20 @@
     </message>
     <message>
         <location filename="../forms/preferencesdialog.cpp" line="218"/>
+        <location filename="../forms/preferencesdialog.cpp" line="224"/>
+        <location filename="../forms/preferencesdialog.cpp" line="230"/>
+        <location filename="../forms/preferencesdialog.cpp" line="236"/>
         <source>Restart this application to experience it.
 Make sure this application runs in your GPU&apos;s Optimus mode.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="220"/>
+        <location filename="../forms/preferencesdialog.cpp" line="238"/>
         <source>Auto detect</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="221"/>
+        <location filename="../forms/preferencesdialog.cpp" line="239"/>
         <source>System</source>
         <translation type="unfinished"></translation>
     </message>
@@ -300,58 +288,58 @@ Make sure this application runs in your GPU&apos;s Optimus mode.</source>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../main.cpp" line="83"/>
+        <location filename="../main.cpp" line="115"/>
         <source>This application only supports Windows 7 and newer.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="89"/>
+        <location filename="../main.cpp" line="121"/>
         <source>There is another instance running. Please do not run twice.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="93"/>
+        <location filename="../main.cpp" line="125"/>
         <source>A tool that make your desktop alive.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="98"/>
+        <location filename="../main.cpp" line="130"/>
         <source>WARNING: You are running a debug version of this tool!
 Do not continue running it if you are not a developer!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="111"/>
+        <location filename="../main.cpp" line="143"/>
         <source>My wallpaper</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="191"/>
+        <location filename="../main.cpp" line="233"/>
         <source>Preferences</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="206"/>
+        <location filename="../main.cpp" line="248"/>
         <source>Play</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="220"/>
+        <location filename="../main.cpp" line="262"/>
         <source>Pause</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="221"/>
+        <location filename="../main.cpp" line="263"/>
         <source>Mute</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="238"/>
+        <location filename="../main.cpp" line="280"/>
         <source>About</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="240"/>
+        <location filename="../main.cpp" line="282"/>
         <source>Exit</source>
         <translation type="unfinished"></translation>
     </message>

@@ -41,7 +41,7 @@ QStringList SettingsManager::defaultDecoders() const
             << QStringLiteral("FFmpeg");
 }
 
-QStringList SettingsManager::supportedMimeTypes()
+QStringList SettingsManager::supportedMimeTypes() const
 {
     return QStringList()
             << QStringLiteral("audio/ac3")
@@ -97,38 +97,19 @@ QStringList SettingsManager::supportedMimeTypes()
             << QStringLiteral("audio/x-scpls");
 }
 
-QStringList SettingsManager::supportedSuffixes()
-{
-    QStringList mSupportedSuffixes;
-    QMimeDatabase mMimeDatabase;
-    const QStringList mSupportedMimeTypes = supportedMimeTypes();
-    for (auto& mFileType : mSupportedMimeTypes)
-    {
-        const QStringList mSuffixes = mMimeDatabase.mimeTypeForName(mFileType).suffixes();
-        for (auto mSuffix : mSuffixes)
-        {
-            mSuffix.prepend(QStringLiteral("*."));
-            mSupportedSuffixes << mSuffix;
-        }
-    }
-    return mSupportedSuffixes;
-}
-
 QString SettingsManager::getUrl() const
 {
     QString path = settings->value(QStringLiteral("dd/url"), QString()).toString();
     if (QFileInfo(path).isDir())
         return QString();
-    if (!QFileInfo::exists(path))
-    {
-        QUrl url(path);
-        if (!url.isValid())
-            return QString();
+    QUrl url(path);
+    if (url.isValid())
         if (url.isLocalFile())
             return url.toLocalFile();
-        return QUrl::fromPercentEncoding(url.toEncoded());
-    }
-    return path;
+        else return QUrl::fromPercentEncoding(url.toEncoded());
+    else if (QFileInfo::exists(path))
+        return path;
+    return QString();
 }
 
 bool SettingsManager::getMute() const
@@ -184,6 +165,11 @@ QString SettingsManager::getCharset() const
 bool SettingsManager::getSubtitleAutoLoad() const
 {
     return settings->value(QStringLiteral("dd/subtitleautoload"), true).toBool();
+}
+
+bool SettingsManager::getAudioAutoLoad() const
+{
+    return settings->value(QStringLiteral("dd/audioautoload"), true).toBool();
 }
 
 void SettingsManager::setUrl(const QString &url)
@@ -242,6 +228,11 @@ void SettingsManager::setCharset(const QString &charset)
 void SettingsManager::setSubtitleAutoLoad(bool autoload)
 {
     settings->setValue(QStringLiteral("dd/subtitleautoload"), autoload);
+}
+
+void SettingsManager::setAudioAutoLoad(bool autoload)
+{
+    settings->setValue(QStringLiteral("dd/audioautoload"), autoload);
 }
 
 SettingsManager::SettingsManager()

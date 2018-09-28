@@ -1,6 +1,6 @@
 ﻿#include "forms/preferencesdialog.h"
-#include "settingsmanager.h"
 #include "forms/aboutdialog.h"
+#include "settingsmanager.h"
 
 #include <Windows.h>
 
@@ -22,6 +22,7 @@
 #include <QVersionNumber>
 #include <QtConcurrent>
 #include <QCommandLineParser>
+#include <QFileInfo>
 
 //https://github.com/ThomasHuai/Wallpaper/blob/master/utils.cpp
 HWND HWORKERW = nullptr;
@@ -51,6 +52,37 @@ HWND getWorkerW(bool legacyMode = false)
     EnumWindows(EnumWindowsProc, 0);
     ShowWindow(HWORKERW, legacyMode ? SW_HIDE : SW_SHOW);
     return legacyMode ? hwnd : HWORKERW;
+}
+
+QStringList externalFilesToLoad(const QFileInfo &originalMediaFile, const QString &fileType)
+{
+    if (!originalMediaFile.exists() || originalMediaFile.isDir() || fileType.isEmpty())
+        return QStringList();
+    QDir subDir(originalMediaFile.absoluteDir());
+    QFileInfoList fileList = subDir.entryInfoList(QDir::Files | QDir::NoSymLinks, QDir::Name);
+    if (fileList.count() < 2)
+        return QStringList();
+    const QString fileBaseName = originalMediaFile.baseName().toLower();
+    QStringList newFileList;
+    for (auto& fi : fileList)
+    {
+        if (fi.absoluteFilePath() == originalMediaFile.absoluteFilePath())
+            continue;
+        const QString newBaseName = fi.baseName().toLower();
+        if (newBaseName == fileBaseName)
+            if (fileType.toLower() == QLatin1String("sub"))
+            {
+                if (fi.suffix().toLower() == QLatin1String("ass")
+                        || fi.suffix().toLower() == QLatin1String("ssa")
+                        || fi.suffix().toLower() == QLatin1String("srt")
+                        || fi.suffix().toLower() == QLatin1String("sup"))
+                    newFileList.append(QDir::toNativeSeparators(fi.absoluteFilePath()));
+            }
+            else if (fileType.toLower() == QLatin1String("audio"))
+                if (fi.suffix().toLower() == QLatin1String("mka"))
+                    newFileList.append(QDir::toNativeSeparators(fi.absoluteFilePath()));
+    }
+    return newFileList;
 }
 
 int main(int argc, char *argv[])
@@ -116,14 +148,12 @@ int main(int argc, char *argv[])
     QtAV::AVPlayer player;
     player.setRenderer(&renderer);
     QtAV::SubtitleFilter subtitle;
-    if (SettingsManager::getInstance()->getSubtitle())
-    {
-        subtitle.setPlayer(&player);
-        subtitle.installTo(&renderer);
-        subtitle.setCodec(SettingsManager::getInstance()->getCharset().toLatin1());
-        subtitle.setEngines(QStringList() << QStringLiteral("LibASS") << QStringLiteral("FFmpeg"));
-        subtitle.setAutoLoad(SettingsManager::getInstance()->getSubtitleAutoLoad());
-    }
+    subtitle.setPlayer(&player);
+    subtitle.installTo(&renderer);
+    subtitle.setCodec(SettingsManager::getInstance()->getCharset().toLatin1());
+    subtitle.setEngines(QStringList() << QStringLiteral("LibASS") << QStringLiteral("FFmpeg"));
+    subtitle.setAutoLoad(SettingsManager::getInstance()->getSubtitleAutoLoad());
+    subtitle.setEnabled(SettingsManager::getInstance()->getSubtitle());
     if (SettingsManager::getInstance()->getHwdec())
     {
         QStringList decoders = SettingsManager::getInstance()->getDecoders();
@@ -139,7 +169,7 @@ int main(int argc, char *argv[])
             opt[QStringLiteral("CUDA")] = cuda_opt;
             player.setOptionsForVideoCodec(opt);
         }
-        /*if (decoders.contains(QStringLiteral("D3D11")))
+        if (decoders.contains(QStringLiteral("D3D11")))
         {
             QVariantHash d3d11_opt;
             //d3d11_opt[QStringLiteral("???")] = ???;
@@ -156,7 +186,7 @@ int main(int argc, char *argv[])
             QVariantHash opt;
             opt[QStringLiteral("DXVA")] = dxva_opt;
             player.setOptionsForVideoCodec(opt);
-        }*/
+        }
     }
     player.setRepeat(-1);
     PreferencesDialog preferencesDialog;
@@ -164,8 +194,20 @@ int main(int argc, char *argv[])
     QObject::connect(&player, SIGNAL(stopped()), &player, SLOT(play()));
     QObject::connect(&player, SIGNAL(positionChanged(qint64)), &preferencesDialog, SIGNAL(updateVideoSlider(qint64)));
     QObject::connect(&player, &QtAV::AVPlayer::loaded,
-        [=, &preferencesDialog, &player]
+        [=, &preferencesDialog, &player, &subtitle]
         {
+            if (player.audio() && SettingsManager::getInstance()->getAudioAutoLoad())
+            {
+                QStringList externalAudios = externalFilesToLoad(QFileInfo(player.file()), QStringLiteral("audio"));
+                if (!externalAudios.isEmpty())
+                    player.setExternalAudio(externalAudios.constFirst());
+            }
+            if (subtitle.isEnabled() && SettingsManager::getInstance()->getSubtitleAutoLoad())
+            {
+                QStringList externalSubtitles = externalFilesToLoad(QFileInfo(player.file()), QStringLiteral("sub"));
+                if (!externalSubtitles.isEmpty())
+                    subtitle.setFile(externalSubtitles.constFirst());
+            }
             preferencesDialog.updateVideoSliderUnit(player.notifyInterval());
             preferencesDialog.updateVideoSliderRange(player.duration());
             preferencesDialog.updateVideoSlider(player.position());
@@ -407,9 +449,9 @@ int main(int argc, char *argv[])
                 });
         });
     QObject::connect(&preferencesDialog, &PreferencesDialog::subtitleEnabled,
-        [=, &player](bool enabled)
+        [=, &subtitle](bool enabled)
         {
-            // Hide subtitle
+            subtitle.setEnabled(enabled);
         });
     HWND hworkerw = nullptr;
     auto hrenderer = reinterpret_cast<HWND>(renderer.winId());

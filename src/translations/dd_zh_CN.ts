@@ -9,72 +9,57 @@
         <translation>关于</translation>
     </message>
     <message>
-        <location filename="../forms/aboutdialog.ui" line="35"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic; color:#5500ff;&quot;&gt;Get source code from GitHub!&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic; color:#5500ff;&quot;&gt;从 GitHub 获取源码！&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-        <location filename="../forms/aboutdialog.ui" line="71"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic; color:#ff55ff;&quot;&gt;Report suggestions or issues.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic; color:#ff55ff;&quot;&gt;上报建议或问题。&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-        <location filename="../forms/aboutdialog.ui" line="107"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic; color:#ffb915;&quot;&gt;Get the latest release!&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic; color:#ffb915;&quot;&gt;获取最新发布版本！&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-        <location filename="../forms/aboutdialog.ui" line="140"/>
+        <location filename="../forms/aboutdialog.ui" line="32"/>
         <source>Version</source>
         <translation>版本</translation>
     </message>
     <message>
-        <location filename="../forms/aboutdialog.ui" line="183"/>
+        <location filename="../forms/aboutdialog.ui" line="81"/>
         <source>Commit ID</source>
         <translation>提交 ID</translation>
     </message>
     <message>
-        <location filename="../forms/aboutdialog.ui" line="226"/>
+        <location filename="../forms/aboutdialog.ui" line="124"/>
         <source>Commit time</source>
         <translation>提交时间</translation>
     </message>
     <message>
-        <location filename="../forms/aboutdialog.ui" line="312"/>
+        <location filename="../forms/aboutdialog.ui" line="210"/>
         <source>Qt</source>
         <translation>Qt</translation>
     </message>
     <message>
-        <location filename="../forms/aboutdialog.ui" line="355"/>
+        <location filename="../forms/aboutdialog.ui" line="253"/>
         <source>QtAV</source>
         <translation>QtAV</translation>
     </message>
     <message>
-        <location filename="../forms/aboutdialog.ui" line="398"/>
+        <location filename="../forms/aboutdialog.ui" line="296"/>
         <source>FFmpeg</source>
         <translation>FFmpeg</translation>
     </message>
     <message>
-        <location filename="../forms/aboutdialog.ui" line="441"/>
+        <location filename="../forms/aboutdialog.ui" line="339"/>
         <source>Compiler</source>
         <translation>编译器</translation>
     </message>
     <message>
-        <location filename="../forms/aboutdialog.ui" line="484"/>
+        <location filename="../forms/aboutdialog.ui" line="382"/>
         <source>Architecture</source>
         <translation>架构</translation>
     </message>
     <message>
-        <location filename="../forms/aboutdialog.ui" line="269"/>
+        <location filename="../forms/aboutdialog.ui" line="167"/>
         <source>Build time</source>
         <translation>构建时间</translation>
     </message>
     <message>
-        <location filename="../forms/aboutdialog.ui" line="521"/>
+        <location filename="../forms/aboutdialog.ui" line="419"/>
         <source>About QtAV</source>
         <translation>关于 QtAV</translation>
     </message>
     <message>
-        <location filename="../forms/aboutdialog.ui" line="541"/>
+        <location filename="../forms/aboutdialog.ui" line="439"/>
         <source>OK</source>
         <translation>确定</translation>
     </message>
@@ -267,8 +252,8 @@
     </message>
     <message>
         <location filename="../forms/preferencesdialog.cpp" line="188"/>
-        <source>Videos (*.avi *.mp4 *.mkv *.flv);;All files (*)</source>
-        <translation>视频 (*.avi *.mp4 *.mkv *.flv);;所有文件 (*)</translation>
+        <source>Videos (*.avi *.mp4 *.mkv *.flv);;Audios (*.mp3 *.flac *.ape *.wav);;Pictures (*.bmp *.jpg *.jpeg *.png *.gif);;All files (*)</source>
+        <translation>视频 (*.avi *.mp4 *.mkv *.flv);;音频 (*.mp3 *.flac *.ape *.wav);;图片 (*.bmp *.jpg *.jpeg *.png *.gif);;所有文件 (*)</translation>
     </message>
     <message>
         <location filename="../forms/preferencesdialog.cpp" line="196"/>
@@ -282,18 +267,21 @@
     </message>
     <message>
         <location filename="../forms/preferencesdialog.cpp" line="218"/>
+        <location filename="../forms/preferencesdialog.cpp" line="224"/>
+        <location filename="../forms/preferencesdialog.cpp" line="230"/>
+        <location filename="../forms/preferencesdialog.cpp" line="236"/>
         <source>Restart this application to experience it.
 Make sure this application runs in your GPU&apos;s Optimus mode.</source>
         <translation>重新运行此程序以体验改变。
 请确保此程序是以您的图形处理器在高性能模式运行的。</translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="220"/>
+        <location filename="../forms/preferencesdialog.cpp" line="238"/>
         <source>Auto detect</source>
         <translation>自动检测</translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="221"/>
+        <location filename="../forms/preferencesdialog.cpp" line="239"/>
         <source>System</source>
         <translation>系统</translation>
     </message>
@@ -301,59 +289,59 @@ Make sure this application runs in your GPU&apos;s Optimus mode.</source>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../main.cpp" line="83"/>
+        <location filename="../main.cpp" line="115"/>
         <source>This application only supports Windows 7 and newer.</source>
         <translation>此应用程序仅支持 Windows 7 及更新的系统。</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="89"/>
+        <location filename="../main.cpp" line="121"/>
         <source>There is another instance running. Please do not run twice.</source>
         <translation>另一个实例已经在运行。请勿重复运行。</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="93"/>
+        <location filename="../main.cpp" line="125"/>
         <source>A tool that make your desktop alive.</source>
         <translation>一个能使您的桌面更加丰富多彩的工具。</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="98"/>
+        <location filename="../main.cpp" line="130"/>
         <source>WARNING: You are running a debug version of this tool!
 Do not continue running it if you are not a developer!</source>
         <translation>警告：您运行的是此应用程序的调试版本！
 如果您不是开发者，请不要继续运行！</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="111"/>
+        <location filename="../main.cpp" line="143"/>
         <source>My wallpaper</source>
         <translation>我的壁纸</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="191"/>
+        <location filename="../main.cpp" line="233"/>
         <source>Preferences</source>
         <translation>首选项</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="206"/>
+        <location filename="../main.cpp" line="248"/>
         <source>Play</source>
         <translation>播放</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="220"/>
+        <location filename="../main.cpp" line="262"/>
         <source>Pause</source>
         <translation>暂停</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="221"/>
+        <location filename="../main.cpp" line="263"/>
         <source>Mute</source>
         <translation>静音</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="238"/>
+        <location filename="../main.cpp" line="280"/>
         <source>About</source>
         <translation>关于</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="240"/>
+        <location filename="../main.cpp" line="282"/>
         <source>Exit</source>
         <translation>退出</translation>
     </message>
