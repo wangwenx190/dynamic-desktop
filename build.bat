@@ -4,7 +4,7 @@ if exist build rd /s /q build
 md build
 cd build
 qmake "%~dp0dynamic-desktop.pro" -spec win32-msvc "CONFIG+=release"
-jom qmake_all
-jom && jom install
+nmake qmake_all
+nmake && nmake install
 cd "%~dp0"
 rd /s /q build
