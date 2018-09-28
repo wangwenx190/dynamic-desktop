@@ -106,7 +106,8 @@ QString SettingsManager::getUrl() const
     if (url.isValid())
         if (url.isLocalFile())
             return url.toLocalFile();
-        else return QUrl::fromPercentEncoding(url.toEncoded());
+        else
+            return QUrl::fromPercentEncoding(url.toEncoded());
     else if (QFileInfo::exists(path))
         return path;
     return QString();

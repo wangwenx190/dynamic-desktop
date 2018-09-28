@@ -28,6 +28,8 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
     connect(this, &PreferencesDialog::updateVideoTracks,
         [=](const QVariantList &videoTracks)
         {
+            if (videoTracks.isEmpty())
+                return;
             for (auto& track : videoTracks)
             {
                 QVariantMap trackData = track.toMap();
@@ -41,8 +43,10 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
             }
         });
     connect(this, &PreferencesDialog::updateAudioTracks,
-        [=](const QVariantList &audioTracks)
+        [=](const QVariantList &audioTracks, bool add)
         {
+            if (audioTracks.isEmpty())
+                return;
             for (auto& track : audioTracks)
             {
                 QVariantMap trackData = track.toMap();
@@ -51,13 +55,16 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
                 QString title = trackData[QStringLiteral("title")].toString();
                 QString txt = tr("ID: %0 | Title: %1 | Language: %2")
                         .arg(id).arg(title).arg(lang);
-                ui->comboBox_audio_track->clear();
+                if (!add)
+                    ui->comboBox_audio_track->clear();
                 ui->comboBox_audio_track->addItem(txt, id);
             }
         });
     connect(this, &PreferencesDialog::updateSubtitleTracks,
-        [=](const QVariantList &subtitleTracks)
+        [=](const QVariantList &subtitleTracks, bool add)
         {
+            if (subtitleTracks.isEmpty())
+                return;
             for (auto& track : subtitleTracks)
             {
                 QVariantMap trackData = track.toMap();
@@ -66,7 +73,8 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
                 QString title = trackData[QStringLiteral("title")].toString();
                 QString txt = tr("ID: %0 | Title: %1 | Language: %2")
                         .arg(id).arg(title).arg(lang);
-                ui->comboBox_subtitle_track->clear();
+                if (!add)
+                    ui->comboBox_subtitle_track->clear();
                 ui->comboBox_subtitle_track->addItem(txt, id);
             }
         });

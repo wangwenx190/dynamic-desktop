@@ -38,8 +38,8 @@ signals:
     void setVolumeAreaEnabled(bool);
     void updateVolumeArea();
     void updateVideoTracks(const QVariantList &);
-    void updateAudioTracks(const QVariantList &);
-    void updateSubtitleTracks(const QVariantList &);
+    void updateAudioTracks(const QVariantList &, bool);
+    void updateSubtitleTracks(const QVariantList &, bool);
 
 public:
     explicit PreferencesDialog(QWidget *parent = nullptr);

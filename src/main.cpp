@@ -196,13 +196,7 @@ int main(int argc, char *argv[])
     QObject::connect(&player, &QtAV::AVPlayer::loaded,
         [=, &preferencesDialog, &player, &subtitle]
         {
-            if (player.audio() && SettingsManager::getInstance()->getAudioAutoLoad())
-            {
-                QStringList externalAudios = externalFilesToLoad(QFileInfo(player.file()), QStringLiteral("audio"));
-                if (!externalAudios.isEmpty())
-                    player.setExternalAudio(externalAudios.constFirst());
-            }
-            if (subtitle.isEnabled() && SettingsManager::getInstance()->getSubtitleAutoLoad())
+            if (subtitle.isEnabled() && SettingsManager::getInstance()->getSubtitleAutoLoad() && subtitle.file().isEmpty())
             {
                 QStringList externalSubtitles = externalFilesToLoad(QFileInfo(player.file()), QStringLiteral("sub"));
                 if (!externalSubtitles.isEmpty())
@@ -214,8 +208,9 @@ int main(int argc, char *argv[])
             preferencesDialog.setSeekAreaEnabled(player.isSeekable());
             preferencesDialog.setAudioAreaEnabled(player.audio());
             preferencesDialog.updateVideoTracks(player.internalVideoTracks());
-            preferencesDialog.updateAudioTracks(player.internalAudioTracks());
-            preferencesDialog.updateSubtitleTracks(player.internalSubtitleTracks());
+            preferencesDialog.updateAudioTracks(player.internalAudioTracks(), false);
+            preferencesDialog.updateAudioTracks(player.externalAudioTracks(), true);
+            preferencesDialog.updateSubtitleTracks(player.internalSubtitleTracks(), false);
         });
     QObject::connect(&player, &QtAV::AVPlayer::notifyIntervalChanged,
         [=, &preferencesDialog, &player]
