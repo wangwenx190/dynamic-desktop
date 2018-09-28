@@ -19,25 +19,30 @@ LIBS += -lUser32 -lDwmapi
 HEADERS += \
     forms/preferencesdialog.h \
     settingsmanager.h \
-    framelesswindow.h
+    framelesswindow.h \
+    forms/aboutdialog.h
 SOURCES += \
     main.cpp \
     forms/preferencesdialog.cpp \
     settingsmanager.cpp \
-    framelesswindow.cpp
-FORMS += forms/preferencesdialog.ui
+    framelesswindow.cpp \
+    forms/aboutdialog.cpp
+FORMS += forms/preferencesdialog.ui \
+    forms/aboutdialog.ui
 TRANSLATIONS += \
     translations/dd_en.ts \
     translations/dd_zh_CN.ts
 RESOURCES += images.qrc
+isEmpty(lupdate): lupdate = $$[QT_INSTALL_BINS]/lupdate.exe
+isEmpty(lrelease): lrelease = $$[QT_INSTALL_BINS]/lrelease.exe
+system("$${lupdate} -no-obsolete $${_PRO_FILE_}")
+system("$${lrelease} -nounfinished -removeidentical $${_PRO_FILE_}")
 target.path = $$BIN_DIR
 INSTALLS += target
 CONFIG(static_build) {
     DEFINES += STATIC_BUILD
     RESOURCES += i18n.qrc
 } else {
-    isEmpty(lupdate): lupdate = $$[QT_INSTALL_BINS]/lupdate.exe
-    isEmpty(lrelease): lrelease = $$[QT_INSTALL_BINS]/lrelease.exe
     isEmpty(windeployqt): windeployqt = $$[QT_INSTALL_BINS]/windeployqt.exe
     translations.path = $$BIN_DIR/translations
     translations.commands += $$quote(\"$${lupdate}\" -no-obsolete \"$${_PRO_FILE_}\")

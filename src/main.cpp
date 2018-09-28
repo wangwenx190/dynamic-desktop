@@ -1,11 +1,11 @@
 ﻿#include "forms/preferencesdialog.h"
 #include "settingsmanager.h"
+#include "forms/aboutdialog.h"
 
 #include <Windows.h>
 
 #include <QApplication>
 #include <QtAV>
-#include <QtAV/version.h>
 #include <QtAVWidgets>
 #include <QDesktopWidget>
 #include <QSystemTrayIcon>
@@ -158,7 +158,7 @@ int main(int argc, char *argv[])
     }
     player.setRepeat(-1);
     PreferencesDialog preferencesDialog;
-    preferencesDialog.setWindowIcon(QIcon(QStringLiteral(":/icon.ico")));
+    AboutDialog aboutDialog;
     QObject::connect(&player, SIGNAL(stopped()), &player, SLOT(play()));
     QObject::connect(&player, SIGNAL(positionChanged(qint64)), &preferencesDialog, SIGNAL(updateVideoSlider(qint64)));
     QObject::connect(&player, &QtAV::AVPlayer::loaded,
@@ -234,20 +234,7 @@ int main(int argc, char *argv[])
         });
     trayMenu.addSeparator();
     QAction *aboutAction = trayMenu.addAction(QObject::tr("About"));
-    QObject::connect(aboutAction, &QAction::triggered,
-        [=]
-        {
-            QMessageBox::about(nullptr, QStringLiteral("Dynamic Desktop"),
-                               QObject::tr("DD version: %0\nQt version: %1\nQtAV version: %2\nFFmpeg version: %3\nSource code: %4\nBuild time: %5 %6\nArchitecture: %7")
-                                   .arg(QStringLiteral(DD_VERSION))
-                                   .arg(QStringLiteral(QT_VERSION_STR))
-                                   .arg(QStringLiteral(QTAV_VERSION_STR))
-                                   .arg(QStringLiteral("4.0.2-git"))
-                                   .arg(QStringLiteral("https://github.com/wangwenx190/dynamic-desktop"))
-                                   .arg(QStringLiteral(__DATE__))
-                                   .arg(QStringLiteral(__TIME__))
-                                   .arg(QSysInfo::buildCpuArchitecture()));
-        });
+    QObject::connect(aboutAction, SIGNAL(triggered()), &aboutDialog, SLOT(show()));
     trayMenu.addAction(QObject::tr("Exit"), qApp, &QApplication::closeAllWindows);
     QSystemTrayIcon trayIcon;
     trayIcon.setIcon(QIcon(QStringLiteral(":/icon.ico")));

@@ -22,6 +22,10 @@
   <property name="windowTitle">
    <string>Preferences</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="../images.qrc">
+    <normaloff>:/icon.ico</normaloff>:/icon.ico</iconset>
+  </property>
   <property name="styleSheet">
    <string notr="true">QWidget {
 	font-family: 12px &quot;Noto Sans&quot;, &quot;FreeSans&quot;;
