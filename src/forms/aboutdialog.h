@@ -1,5 +1,4 @@
-#ifndef ABOUTDIALOG_H
-#define ABOUTDIALOG_H
+﻿#pragma once
 
 #include <QWidget>
 
@@ -13,10 +12,8 @@ class AboutDialog : public QWidget
 
 public:
     explicit AboutDialog(QWidget *parent = nullptr);
-    ~AboutDialog();
+    ~AboutDialog() override;
 
 private:
     Ui::AboutDialog *ui;
 };
-
-#endif // ABOUTDIALOG_H
