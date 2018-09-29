@@ -1,4 +1,3 @@
-@echo off
 cd /d "%~dp0"
 if exist build rd /s /q build
 md build
