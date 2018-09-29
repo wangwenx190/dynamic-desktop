@@ -50,3 +50,4 @@ CMakeLists.txt.user*
 [Bb]uild/
 *.rc
 Thumbs.db
+version_ci.pri
