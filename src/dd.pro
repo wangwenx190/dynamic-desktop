@@ -1,5 +1,7 @@
 !win32: error("This project only supports Win32 platform!")
-!versionAtLeast(QT_VERSION, 5.6.3): error("Upgrade your Qt to at least 5.6.3!")
+# minQtVersion is not recognized by newer Qt versions
+# However, versionAtLeast is not recognized by older Qt versions
+# !versionAtLeast(QT_VERSION, 5.6.3): error("Upgrade your Qt to at least 5.6.3!")
 isEmpty(ROOT): ROOT = $$PWD/..
 include($$ROOT/version.pri)
 include($$ROOT/optimization.pri)
