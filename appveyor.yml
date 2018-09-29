@@ -63,12 +63,12 @@ before_build:
   - echo DD_COMMIT_TIME = %APPVEYOR_REPO_COMMIT_TIMESTAMP% >> "%APPVEYOR_BUILD_FOLDER%\version_ci.pri"
 build_script:
   - qmake "%APPVEYOR_BUILD_FOLDER%\dynamic-desktop.pro" -spec win32-msvc "CONFIG+=release"
-  - %build_tool% qmake_all
-  - %build_tool%
+  - "%build_tool%" qmake_all
+  - "%build_tool%"
   - cd ..
   - rd /s /q build
 on_failure:
-  - %build_tool% distclean
+  - "%build_tool%" distclean
 test: off
 artifacts:
   - path: version_ci.pri
