@@ -351,6 +351,9 @@ void PreferencesDialog::refreshUI()
     ui->checkBox_subtitle_autoLoadExternal->setChecked(SettingsManager::getInstance()->getSubtitleAutoLoad());
     ui->checkBox_displaySubtitle->setChecked(SettingsManager::getInstance()->getSubtitle());
     ui->checkBox_audio_autoLoadExternal->setChecked(SettingsManager::getInstance()->getAudioAutoLoad());
+    ui->comboBox_video_track->setCurrentIndex(ui->comboBox_video_track->findData(SettingsManager::getInstance()->getCurrentVideoStream()));
+    ui->comboBox_audio_track->setCurrentIndex(ui->comboBox_audio_track->findData(SettingsManager::getInstance()->getCurrentAudioStream()));
+    ui->comboBox_subtitle_track->setCurrentIndex(ui->comboBox_subtitle_track->findData(SettingsManager::getInstance()->getCurrentSubtitleStream()));
 }
 
 void PreferencesDialog::saveSettings()

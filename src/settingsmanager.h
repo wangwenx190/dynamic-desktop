@@ -26,6 +26,9 @@ public:
     QString getCharset() const;
     bool getSubtitleAutoLoad() const;
     bool getAudioAutoLoad() const;
+    int getCurrentVideoStream() const;
+    int getCurrentAudioStream() const;
+    const QVariant &getCurrentSubtitleStream() const;
 
     void setUrl(const QString &url);
     void setMute(bool mute);
@@ -39,6 +42,9 @@ public:
     void setCharset(const QString &charset);
     void setSubtitleAutoLoad(bool autoload);
     void setAudioAutoLoad(bool autoload);
+    void setCurrentVideoStream(int stream);
+    void setCurrentAudioStream(int stream);
+    void setCurrentSubtitleStream(const QVariant &stream);
 
 private:
     SettingsManager();
@@ -46,4 +52,6 @@ private:
 
 private:
     QSettings *settings;
+    int currentVideoStream = 0, currentAudioStream = 0;
+    QVariant currentSubtitleStream;
 };

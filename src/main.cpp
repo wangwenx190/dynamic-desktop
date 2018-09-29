@@ -199,12 +199,6 @@ int main(int argc, char *argv[])
         [=, &preferencesDialog, &player, &subtitle]
         {
             preferencesDialog.clearAllTracks();
-            if (SettingsManager::getInstance()->getSubtitle() && SettingsManager::getInstance()->getSubtitleAutoLoad() && subtitle.file().isEmpty())
-            {
-                QStringList externalSubtitles = externalFilesToLoad(QFileInfo(player.file()), QStringLiteral("sub"));
-                if (!externalSubtitles.isEmpty())
-                    subtitle.setFile(externalSubtitles.constFirst());
-            }
             preferencesDialog.updateVideoSliderUnit(player.notifyInterval());
             preferencesDialog.updateVideoSliderRange(player.duration());
             preferencesDialog.updateVideoSlider(player.position());
@@ -215,6 +209,27 @@ int main(int argc, char *argv[])
             if (SettingsManager::getInstance()->getAudioAutoLoad())
                 preferencesDialog.updateAudioTracks(player.externalAudioTracks(), true);
             preferencesDialog.updateSubtitleTracks(player.internalSubtitleTracks(), false);
+            if (SettingsManager::getInstance()->getSubtitleAutoLoad())
+            {
+                QVariantList externalSubtitleTracks;
+                QStringList externalSubtitlePaths = externalFilesToLoad(QFileInfo(player.file()), QStringLiteral("sub"));
+                if (!externalSubtitlePaths.isEmpty())
+                {
+                    for (auto& subPath : externalSubtitlePaths)
+                    {
+                        QVariantMap externalSubtitle;
+                        externalSubtitle[QStringLiteral("file")] = subPath;
+                        externalSubtitleTracks.append(externalSubtitle);
+                    }
+                    preferencesDialog.updateSubtitleTracks(externalSubtitleTracks, true);
+                }
+            }
+            if (SettingsManager::getInstance()->getSubtitle() && SettingsManager::getInstance()->getSubtitleAutoLoad() && subtitle.file().isEmpty())
+            {
+                QStringList externalSubtitles = externalFilesToLoad(QFileInfo(player.file()), QStringLiteral("sub"));
+                if (!externalSubtitles.isEmpty())
+                    subtitle.setFile(externalSubtitles.constFirst());
+            }
         });
     QObject::connect(&player, &QtAV::AVPlayer::notifyIntervalChanged,
         [=, &preferencesDialog, &player]
@@ -393,6 +408,7 @@ int main(int argc, char *argv[])
         {
             if (!player.isLoaded())
                 return;
+            SettingsManager::getInstance()->setCurrentVideoStream(id);
             if (id == player.currentVideoStream())
                 return;
             QtConcurrent::run(
@@ -406,6 +422,7 @@ int main(int argc, char *argv[])
         {
             if (!player.isLoaded())
                 return;
+            SettingsManager::getInstance()->setCurrentAudioStream(id);
             if (id == player.currentAudioStream())
                 return;
             QtConcurrent::run(
@@ -420,6 +437,7 @@ int main(int argc, char *argv[])
             if (!player.isLoaded())
                 return;
             const QString newSubFile = track.toString();
+            SettingsManager::getInstance()->setCurrentSubtitleStream(newSubFile);
             if (QFileInfo::exists(newSubFile) && subtitle.file() != newSubFile)
             {
                 QtConcurrent::run(
@@ -430,6 +448,7 @@ int main(int argc, char *argv[])
                 return;
             }
             int id = track.toInt();
+            SettingsManager::getInstance()->setCurrentSubtitleStream(id);
             if (id == player.currentSubtitleStream())
                 return;
             QtConcurrent::run(

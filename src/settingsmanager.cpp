@@ -235,6 +235,21 @@ void SettingsManager::setAudioAutoLoad(bool autoload)
     settings->setValue(QStringLiteral("dd/audioautoload"), autoload);
 }
 
+void SettingsManager::setCurrentVideoStream(int stream)
+{
+    currentVideoStream = stream;
+}
+
+void SettingsManager::setCurrentAudioStream(int stream)
+{
+    currentAudioStream = stream;
+}
+
+void SettingsManager::setCurrentSubtitleStream(const QVariant &stream)
+{
+    currentSubtitleStream = stream;
+}
+
 SettingsManager::SettingsManager()
 {
     QString iniPath = QCoreApplication::applicationFilePath();
@@ -247,4 +262,19 @@ SettingsManager::SettingsManager()
 SettingsManager::~SettingsManager()
 {
     delete settings;
+}
+
+int SettingsManager::getCurrentVideoStream() const
+{
+    return currentVideoStream;
+}
+
+int SettingsManager::getCurrentAudioStream() const
+{
+    return currentAudioStream;
+}
+
+const QVariant &SettingsManager::getCurrentSubtitleStream() const
+{
+    return currentSubtitleStream;
 }
