@@ -28,9 +28,6 @@ init:
   - set QTDIR=C:\Qt\5.9\msvc2017_64
   - call "%QTDIR%\bin\qtenv2.bat"
   - call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat" x64
-  - set build_tool=jom
-  - where %build_tool%
-  - if %ERRORLEVEL% neq 0 set build_tool=nmake
   - cd /d "%APPVEYOR_BUILD_FOLDER%"
 install:
   - if exist build rd /s /q build
@@ -63,12 +60,12 @@ before_build:
   - echo DD_COMMIT_TIME = %APPVEYOR_REPO_COMMIT_TIMESTAMP% >> "%APPVEYOR_BUILD_FOLDER%\version_ci.pri"
 build_script:
   - qmake "%APPVEYOR_BUILD_FOLDER%\dynamic-desktop.pro" -spec win32-msvc "CONFIG+=release"
-  - "%build_tool%" qmake_all
-  - "%build_tool%"
+  - nmake qmake_all
+  - nmake
   - cd ..
   - rd /s /q build
 on_failure:
-  - "%build_tool%" distclean
+  - nmake distclean
 test: off
 artifacts:
   - path: version_ci.pri
