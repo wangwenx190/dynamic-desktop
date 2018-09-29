@@ -144,7 +144,7 @@
     </message>
     <message>
         <location filename="../forms/preferencesdialog.ui" line="445"/>
-        <location filename="../forms/preferencesdialog.cpp" line="204"/>
+        <location filename="../forms/preferencesdialog.cpp" line="219"/>
         <source>URL</source>
         <translation>路径</translation>
     </message>
@@ -234,54 +234,59 @@
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="39"/>
-        <location filename="../forms/preferencesdialog.cpp" line="56"/>
-        <location filename="../forms/preferencesdialog.cpp" line="74"/>
+        <location filename="../forms/preferencesdialog.cpp" line="46"/>
+        <location filename="../forms/preferencesdialog.cpp" line="63"/>
+        <location filename="../forms/preferencesdialog.cpp" line="83"/>
         <source>ID: %0 | Title: %1 | Language: %2</source>
         <translation>ID：%0 | 标题：%1 | 语言：%2</translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="157"/>
+        <location filename="../forms/preferencesdialog.cpp" line="91"/>
+        <source>File: %0</source>
+        <translation>文件：%0</translation>
+    </message>
+    <message>
+        <location filename="../forms/preferencesdialog.cpp" line="172"/>
         <source>Application restart is needed to apply this change.</source>
         <translation>重启此应用程序以生效。</translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="196"/>
+        <location filename="../forms/preferencesdialog.cpp" line="211"/>
         <source>Please select a media file</source>
         <translation>请选择一个媒体文件</translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="196"/>
+        <location filename="../forms/preferencesdialog.cpp" line="211"/>
         <source>Videos (*.avi *.mp4 *.mkv *.flv);;Audios (*.mp3 *.flac *.ape *.wav);;Pictures (*.bmp *.jpg *.jpeg *.png *.gif);;All files (*)</source>
         <translation>视频 (*.avi *.mp4 *.mkv *.flv);;音频 (*.mp3 *.flac *.ape *.wav);;图片 (*.bmp *.jpg *.jpeg *.png *.gif);;所有文件 (*)</translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="204"/>
+        <location filename="../forms/preferencesdialog.cpp" line="219"/>
         <source>Please input a valid URL</source>
         <translation>请输入一个有效的网址</translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="210"/>
+        <location filename="../forms/preferencesdialog.cpp" line="225"/>
         <source>&quot;%0&quot; is not a valid URL.</source>
         <translation>“%0”不是一个有效的网址。</translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="226"/>
-        <location filename="../forms/preferencesdialog.cpp" line="232"/>
-        <location filename="../forms/preferencesdialog.cpp" line="238"/>
-        <location filename="../forms/preferencesdialog.cpp" line="244"/>
+        <location filename="../forms/preferencesdialog.cpp" line="241"/>
+        <location filename="../forms/preferencesdialog.cpp" line="247"/>
+        <location filename="../forms/preferencesdialog.cpp" line="253"/>
+        <location filename="../forms/preferencesdialog.cpp" line="259"/>
         <source>Restart this application to experience it.
 Make sure this application runs in your GPU&apos;s Optimus mode.</source>
         <translation>重新运行此程序以体验改变。
 请确保此程序是以您的图形处理器在高性能模式运行的。</translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="246"/>
+        <location filename="../forms/preferencesdialog.cpp" line="261"/>
         <source>Auto detect</source>
         <translation>自动检测</translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="247"/>
+        <location filename="../forms/preferencesdialog.cpp" line="262"/>
         <source>System</source>
         <translation>系统</translation>
     </message>
@@ -304,44 +309,44 @@ Make sure this application runs in your GPU&apos;s Optimus mode.</source>
         <translation>一个能使您的桌面更加丰富多彩的工具。</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="130"/>
+        <location filename="../main.cpp" line="131"/>
         <source>WARNING: You are running a debug version of this tool!
 Do not continue running it if you are not a developer!</source>
         <translation>警告：您运行的是此应用程序的调试版本！
 如果您不是开发者，请不要继续运行！</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="143"/>
+        <location filename="../main.cpp" line="145"/>
         <source>My wallpaper</source>
         <translation>我的壁纸</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="228"/>
+        <location filename="../main.cpp" line="247"/>
         <source>Preferences</source>
         <translation>首选项</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="243"/>
+        <location filename="../main.cpp" line="262"/>
         <source>Play</source>
         <translation>播放</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="257"/>
+        <location filename="../main.cpp" line="276"/>
         <source>Pause</source>
         <translation>暂停</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="258"/>
+        <location filename="../main.cpp" line="277"/>
         <source>Mute</source>
         <translation>静音</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="275"/>
+        <location filename="../main.cpp" line="294"/>
         <source>About</source>
         <translation>关于</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="277"/>
+        <location filename="../main.cpp" line="296"/>
         <source>Exit</source>
         <translation>退出</translation>
     </message>
