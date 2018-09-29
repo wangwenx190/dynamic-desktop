@@ -12,7 +12,7 @@ contains(QT_ARCH, x86_64) {
 CONFIG(debug, debug|release): TARGET = $$join(TARGET,,,d)
 QT += gui widgets avwidgets concurrent
 TEMPLATE = app
-DEFINES += QT_DEPRECATED_WARNINGS QT_DISABLE_DEPRECATED_BEFORE=0x051102
+DEFINES += QT_DEPRECATED_WARNINGS QT_DISABLE_DEPRECATED_BEFORE=0x050603
 CONFIG *= c++11
 CONFIG -= app_bundle
 LIBS += -lUser32 -lDwmapi

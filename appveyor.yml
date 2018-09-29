@@ -1,0 +1,82 @@
+version: 1.0.0.{build}
+branches:
+  only:
+    - master
+skip_tags: true
+only_commits:
+  files:
+    - '**/*.h'
+    - '**/*.hpp'
+    - '**/*.cpp'
+    - '**/*.pro'
+    - '**/*.pri'
+    - '**/*.qrc'
+    - '**/*.ui'
+image: Visual Studio 2017
+shallow_clone: true
+matrix:
+  fast_finish: true
+  allow_failures:
+    - platform: x64
+      configuration: Release
+  exclude:
+    - platform: x86
+    - configuration: Debug
+platform: x64
+configuration: Release
+init:
+  - set QTDIR=C:\Qt\5.9\msvc2017_64
+  - call "%QTDIR%\bin\qtenv2.bat"
+  - call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat" x64
+  - set build_tool=jom
+  - where %build_tool%
+  - if %ERRORLEVEL% neq 0 set build_tool=nmake
+  - cd /d "%APPVEYOR_BUILD_FOLDER%"
+install:
+  - if exist build rd /s /q build
+  - md build
+  - cd build
+  - if exist depends rd /s /q depends
+  - appveyor DownloadFile "https://sourceforge.net/projects/qtav/files/depends/QtAV-depends-windows-x86%2Bx64.7z/download" -FileName qtavdepends.7z
+  - 7z x qtavdepends.7z
+  - del /f qtavdepends.7z
+  - move QtAV-depends* depends
+  - xcopy /s /y /i depends\include %QTDIR%\include
+  - xcopy /s /y /i depends\lib\x64 %QTDIR%\lib
+  - rd /s /q depends
+  - if exist av rd /s /q av
+  - md av
+  - cd av
+  - appveyor DownloadFile "https://sourceforge.net/projects/qtav/files/ci/QtAV-Qt5.9-VS2017x64-release-7ddf6db.7z/download" -FileName qtavci.7z
+  - 7z x qtavci.7z
+  - xcopy /s /y /i include %QTDIR%\include
+  - copy /y lib\*Qt*AV*.lib %QTDIR%\lib
+  - copy /y lib\QtAV1.lib %QTDIR%\lib\Qt5AV.lib
+  - copy /y lib\QtAVWidgets1.lib %QTDIR%\lib\Qt5AVWidgets.lib
+  - xcopy /s /y /i bin\QtAV %QTDIR%\qml\QtAV
+  - xcopy /s /y /i mkspecs %QTDIR%\mkspecs
+  - cd ..
+  - rd /s /q av
+before_build:
+  - echo DD_VERSION = %APPVEYOR_BUILD_VERSION% > "%APPVEYOR_BUILD_FOLDER%\version_ci.pri"
+  - echo DD_COMMIT_ID = %APPVEYOR_REPO_COMMIT% >> "%APPVEYOR_BUILD_FOLDER%\version_ci.pri"
+  - echo DD_COMMIT_TIME = %APPVEYOR_REPO_COMMIT_TIMESTAMP% >> "%APPVEYOR_BUILD_FOLDER%\version_ci.pri"
+build_script:
+  - qmake "%APPVEYOR_BUILD_FOLDER%\dynamic-desktop.pro" -spec win32-msvc "CONFIG+=release"
+  - %build_tool% qmake_all
+  - %build_tool%
+  - cd ..
+  - rd /s /q build
+on_failure:
+  - %build_tool% distclean
+test: off
+artifacts:
+  - path: version_ci.pri
+deploy: off
+notifications:
+  - provider: Email
+    to:
+      - '{{commitAuthorEmail}}'
+    on_build_success: false
+    on_build_failure: true
+    on_build_status_changed: false

@@ -1,3 +1,5 @@
+[![AppVeyor](https://ci.appveyor.com/api/projects/status/github/wangwenx190/dynamic-desktop?branch=master&svg=true)](https://ci.appveyor.com/project/wangwenx190/dynamic-desktop)
+
 ## Overview
 A small tool that can play videos on your desktop.
 
