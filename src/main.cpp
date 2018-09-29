@@ -139,7 +139,7 @@ int main(int argc, char *argv[])
         renderer.setOutAspectRatioMode(QtAV::VideoRenderer::RendererAspectRatio);
     else
         renderer.setOutAspectRatioMode(QtAV::VideoRenderer::VideoAspectRatio);
-    renderer.setWindowIcon(QIcon(QStringLiteral(":/icon.ico")));
+    renderer.setWindowIcon(QIcon(QStringLiteral(":/bee.ico")));
     renderer.setWindowTitle(QObject::tr("My wallpaper"));
     renderer.setAttribute(Qt::WA_NoSystemBackground);
     renderer.setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnBottomHint | Qt::WindowDoesNotAcceptFocus);
@@ -276,7 +276,7 @@ int main(int argc, char *argv[])
     QObject::connect(aboutAction, SIGNAL(triggered()), &aboutDialog, SLOT(show()));
     trayMenu.addAction(QObject::tr("Exit"), qApp, &QApplication::closeAllWindows);
     QSystemTrayIcon trayIcon;
-    trayIcon.setIcon(QIcon(QStringLiteral(":/icon.ico")));
+    trayIcon.setIcon(QIcon(QStringLiteral(":/bee.ico")));
     trayIcon.setToolTip(QStringLiteral("Dynamic Desktop"));
     trayIcon.setContextMenu(&trayMenu);
     trayIcon.show();

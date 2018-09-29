@@ -24,7 +24,7 @@
   </property>
   <property name="windowIcon">
    <iconset resource="../images.qrc">
-    <normaloff>:/icon.ico</normaloff>:/icon.ico</iconset>
+    <normaloff>:/bee.ico</normaloff>:/bee.ico</iconset>
   </property>
   <property name="styleSheet">
    <string notr="true">QWidget {
@@ -118,7 +118,7 @@ QCheckBox::indicator:unchecked {
 QCheckBox::indicator:checked {
 	border: 1px solid #008098;
 	background: #008098;
-	image: url(:/checked.svg);
+	image: url(:/checked.ico);
 }
 
 QLineEdit {
@@ -149,7 +149,7 @@ QComboBox::drop-down {
 }
 
 QComboBox::down-arrow {
-	image: url(:/down-arrow.svg);
+	image: url(:/down-arrow.ico);
 }
 
 QGroupBox {
@@ -181,7 +181,7 @@ QRadioButton::indicator:unchecked {
 
 QRadioButton::indicator:checked {
 	border: 1px solid #008098;
-	image: url(:/selected.svg);
+	image: url(:/selected.ico);
 }</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -254,7 +254,7 @@ QRadioButton::indicator:checked {
          <string/>
         </property>
         <property name="pixmap">
-         <pixmap resource="../images.qrc">:/icon.ico</pixmap>
+         <pixmap resource="../images.qrc">:/bee.ico</pixmap>
         </property>
         <property name="scaledContents">
          <bool>true</bool>
@@ -325,7 +325,7 @@ QRadioButton::indicator:checked {
         </property>
         <property name="icon">
          <iconset resource="../images.qrc">
-          <normaloff>:/minimize.svg</normaloff>:/minimize.svg</iconset>
+          <normaloff>:/minimize.ico</normaloff>:/minimize.ico</iconset>
         </property>
         <property name="flat">
          <bool>true</bool>
@@ -354,7 +354,7 @@ QRadioButton::indicator:checked {
         </property>
         <property name="icon">
          <iconset resource="../images.qrc">
-          <normaloff>:/maximize.svg</normaloff>:/maximize.svg</iconset>
+          <normaloff>:/maximize.ico</normaloff>:/maximize.ico</iconset>
         </property>
         <property name="flat">
          <bool>true</bool>
@@ -380,7 +380,7 @@ QRadioButton::indicator:checked {
         </property>
         <property name="icon">
          <iconset resource="../images.qrc">
-          <normaloff>:/close.svg</normaloff>:/close.svg</iconset>
+          <normaloff>:/close.ico</normaloff>:/close.ico</iconset>
         </property>
         <property name="flat">
          <bool>true</bool>
