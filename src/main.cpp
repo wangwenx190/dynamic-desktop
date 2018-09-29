@@ -126,8 +126,10 @@ int main(int argc, char *argv[])
     parser.addHelpOption();
     parser.addVersionOption();
     parser.process(app);
+#ifndef STATIC_BUILD
     if (QLibraryInfo::isDebugBuild())
         QMessageBox::warning(nullptr, QStringLiteral("Dynamic Desktop"), QObject::tr("WARNING: You are running a debug version of this tool!\nDo not continue running it if you are not a developer!"));
+#endif
     if (SettingsManager::getInstance()->getAutostart())
         SettingsManager::getInstance()->regAutostart();
     else
@@ -196,7 +198,8 @@ int main(int argc, char *argv[])
     QObject::connect(&player, &QtAV::AVPlayer::loaded,
         [=, &preferencesDialog, &player, &subtitle]
         {
-            if (subtitle.isEnabled() && SettingsManager::getInstance()->getSubtitleAutoLoad() && subtitle.file().isEmpty())
+            preferencesDialog.clearAllTracks();
+            if (SettingsManager::getInstance()->getSubtitle() && SettingsManager::getInstance()->getSubtitleAutoLoad() && subtitle.file().isEmpty())
             {
                 QStringList externalSubtitles = externalFilesToLoad(QFileInfo(player.file()), QStringLiteral("sub"));
                 if (!externalSubtitles.isEmpty())
@@ -209,7 +212,8 @@ int main(int argc, char *argv[])
             preferencesDialog.setAudioAreaEnabled(player.audio());
             preferencesDialog.updateVideoTracks(player.internalVideoTracks());
             preferencesDialog.updateAudioTracks(player.internalAudioTracks(), false);
-            preferencesDialog.updateAudioTracks(player.externalAudioTracks(), true);
+            if (SettingsManager::getInstance()->getAudioAutoLoad())
+                preferencesDialog.updateAudioTracks(player.externalAudioTracks(), true);
             preferencesDialog.updateSubtitleTracks(player.internalSubtitleTracks(), false);
         });
     QObject::connect(&player, &QtAV::AVPlayer::notifyIntervalChanged,
@@ -411,10 +415,21 @@ int main(int argc, char *argv[])
                 });
         });
     QObject::connect(&preferencesDialog, &PreferencesDialog::subtitleTrackChanged,
-        [=, &player](int id)
+        [=, &player, &subtitle](const QVariant &track)
         {
             if (!player.isLoaded())
                 return;
+            const QString newSubFile = track.toString();
+            if (QFileInfo::exists(newSubFile) && subtitle.file() != newSubFile)
+            {
+                QtConcurrent::run(
+                    [=, &subtitle]
+                    {
+                        subtitle.setFile(newSubFile);
+                    });
+                return;
+            }
+            int id = track.toInt();
             if (id == player.currentSubtitleStream())
                 return;
             QtConcurrent::run(

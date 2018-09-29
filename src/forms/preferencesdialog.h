@@ -22,7 +22,7 @@ signals:
     void pictureRatioChanged(bool);
     void videoTrackChanged(int);
     void audioTrackChanged(int);
-    void subtitleTrackChanged(int);
+    void subtitleTrackChanged(const QVariant &);
     void charsetChanged(const QString &);
     void subtitleAutoLoadChanged(bool);
     void subtitleEnabled(bool);
@@ -40,6 +40,7 @@ signals:
     void updateVideoTracks(const QVariantList &);
     void updateAudioTracks(const QVariantList &, bool);
     void updateSubtitleTracks(const QVariantList &, bool);
+    void clearAllTracks();
 
 public:
     explicit PreferencesDialog(QWidget *parent = nullptr);

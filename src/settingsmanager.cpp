@@ -102,15 +102,14 @@ QString SettingsManager::getUrl() const
     QString path = settings->value(QStringLiteral("dd/url"), QString()).toString();
     if (QFileInfo(path).isDir())
         return QString();
-    QUrl url(path);
-    if (url.isValid())
-        if (url.isLocalFile())
-            return url.toLocalFile();
-        else
-            return QUrl::fromPercentEncoding(url.toEncoded());
-    else if (QFileInfo::exists(path))
+    if (QFileInfo::exists(path))
         return path;
-    return QString();
+    QUrl url(path);
+    if (!url.isValid())
+        return QString();
+    if (url.isLocalFile())
+        return url.toLocalFile();
+    return QUrl::fromPercentEncoding(url.toEncoded());
 }
 
 bool SettingsManager::getMute() const

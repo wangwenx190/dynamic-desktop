@@ -25,6 +25,13 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
     setResizeableAreaWidth(5);
     setTitleBar(ui->widget_windowTitleBar);
     addIgnoreWidget(ui->label_windowTitle);
+    connect(this, &PreferencesDialog::clearAllTracks,
+        [=]
+        {
+            ui->comboBox_video_track->clear();
+            ui->comboBox_audio_track->clear();
+            ui->comboBox_subtitle_track->clear();
+        });
     connect(this, &PreferencesDialog::updateVideoTracks,
         [=](const QVariantList &videoTracks)
         {
@@ -68,14 +75,22 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
             for (auto& track : subtitleTracks)
             {
                 QVariantMap trackData = track.toMap();
-                int id = trackData[QStringLiteral("id")].toInt();
-                QString lang = trackData[QStringLiteral("language")].toString();
-                QString title = trackData[QStringLiteral("title")].toString();
-                QString txt = tr("ID: %0 | Title: %1 | Language: %2")
-                        .arg(id).arg(title).arg(lang);
                 if (!add)
+                {
+                    int id = trackData[QStringLiteral("id")].toInt();
+                    QString lang = trackData[QStringLiteral("language")].toString();
+                    QString title = trackData[QStringLiteral("title")].toString();
+                    QString txt = tr("ID: %0 | Title: %1 | Language: %2")
+                            .arg(id).arg(title).arg(lang);
                     ui->comboBox_subtitle_track->clear();
-                ui->comboBox_subtitle_track->addItem(txt, id);
+                    ui->comboBox_subtitle_track->addItem(txt, id);
+                }
+                else
+                {
+                    QString file = trackData[QStringLiteral("file")].toString();
+                    QString txt = tr("File: %0").arg(file);
+                    ui->comboBox_subtitle_track->addItem(txt, file);
+                }
             }
         });
     connect(this, &PreferencesDialog::updateVolumeArea,
@@ -380,7 +395,7 @@ void PreferencesDialog::saveSettings()
     }
     emit videoTrackChanged(ui->comboBox_video_track->currentData().toInt());
     emit audioTrackChanged(ui->comboBox_audio_track->currentData().toInt());
-    emit subtitleTrackChanged(ui->comboBox_subtitle_track->currentData().toInt());
+    emit subtitleTrackChanged(ui->comboBox_subtitle_track->currentData());
     if (ui->comboBox_subtitle_charset->currentData().toString() != SettingsManager::getInstance()->getCharset())
     {
         SettingsManager::getInstance()->setCharset(ui->comboBox_subtitle_charset->currentData().toString());
