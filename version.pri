@@ -16,5 +16,5 @@ win32 {
     QMAKE_TARGET_DESCRIPTION = A tool that make your desktop alive.
     QMAKE_TARGET_COMPANY     = wangwenx190
     QMAKE_TARGET_COPYRIGHT   = GPLv3
-    RC_ICONS                 = $$ROOT/src/resources/icon.ico
+    RC_ICONS                 = $$ROOT/src/images/bee.ico
 }

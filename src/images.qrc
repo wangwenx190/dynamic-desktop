@@ -1,12 +1,12 @@
 <RCC>
     <qresource prefix="/">
-        <file alias="icon.ico">resources/icon.ico</file>
-        <file alias="close.svg">resources/close.svg</file>
-        <file alias="maximize.svg">resources/maximize.svg</file>
-        <file alias="minimize.svg">resources/minimize.svg</file>
-        <file alias="restore.svg">resources/restore.svg</file>
-        <file alias="checked.svg">resources/checked.svg</file>
-        <file alias="down-arrow.svg">resources/down-arrow.svg</file>
-        <file alias="selected.svg">resources/selected.svg</file>
+        <file alias="bee.ico">images/bee.ico</file>
+        <file alias="close.ico">images/close.ico</file>
+        <file alias="maximize.ico">images/maximize.ico</file>
+        <file alias="minimize.ico">images/minimize.ico</file>
+        <file alias="restore.ico">images/restore.ico</file>
+        <file alias="checked.ico">images/checked.ico</file>
+        <file alias="down-arrow.ico">images/down-arrow.ico</file>
+        <file alias="selected.ico">images/selected.ico</file>
     </qresource>
 </RCC>
