@@ -12,6 +12,7 @@ only_commits:
     - '**/*.pri'
     - '**/*.qrc'
     - '**/*.ui'
+    - '**/*.yml'
 image: Visual Studio 2017
 shallow_clone: true
 matrix:
@@ -34,7 +35,7 @@ install:
   - md build
   - cd build
   - if exist depends rd /s /q depends
-  - appveyor DownloadFile "https://sourceforge.net/projects/qtav/files/depends/QtAV-depends-windows-x86%2Bx64.7z/download" -FileName qtavdepends.7z
+  - appveyor DownloadFile "https://sourceforge.net/projects/qtav/files/depends/QtAV-depends-windows-x86+x64.7z/download" -FileName qtavdepends.7z
   - 7z x qtavdepends.7z
   - del /f qtavdepends.7z
   - move QtAV-depends* depends
@@ -64,8 +65,6 @@ build_script:
   - nmake
   - cd ..
   - rd /s /q build
-on_failure:
-  - nmake distclean
 test: off
 artifacts:
   - path: version_ci.pri
