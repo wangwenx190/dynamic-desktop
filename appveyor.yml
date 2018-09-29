@@ -27,13 +27,14 @@ platform: x64
 configuration: Release
 init:
   - set QTDIR=C:\Qt\5.9\msvc2017_64
+  - set QTAVID=7ddf6db
   - call "%QTDIR%\bin\qtenv2.bat"
   - call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat" x64
   - cd /d "%APPVEYOR_BUILD_FOLDER%"
 install:
   - cd ci
   - call install.bat
-  - powershell patch.ps1
+  - powershell .\patch.ps1
   - cd ..
 before_build:
   - echo DD_VERSION = %APPVEYOR_BUILD_VERSION% > version_ci.pri
