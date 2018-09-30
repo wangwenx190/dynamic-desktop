@@ -116,9 +116,10 @@ int main(int argc, char *argv[])
         return 0;
     }
     HANDLE mutex = CreateMutex(nullptr, FALSE, TEXT("wangwenx190.DynamicDesktop.1000.AppMutex"));
-    if (GetLastError() == ERROR_ALREADY_EXISTS)
+    if ((mutex != nullptr) && (GetLastError() == ERROR_ALREADY_EXISTS))
     {
         QMessageBox::critical(nullptr, QStringLiteral("Dynamic Desktop"), QObject::tr("There is another instance running. Please do not run twice."));
+        ReleaseMutex(mutex);
         return 0;
     }
     QCommandLineParser parser;
@@ -499,11 +500,13 @@ int main(int argc, char *argv[])
     else
     {
         QMessageBox::critical(nullptr, QStringLiteral("Dynamic Desktop"), QObject::tr("Cannot get \"Program Manager\"'s handle. Application aborting."));
+        ReleaseMutex(mutex);
         CloseHandle(mutex);
         return 0;
     }
     int exec = QApplication::exec();
     ShowWindow(HWORKERW, SW_HIDE);
+    ReleaseMutex(mutex);
     CloseHandle(mutex);
     return exec;
 }
