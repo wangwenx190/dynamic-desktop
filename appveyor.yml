@@ -26,26 +26,38 @@ matrix:
 platform: x64
 configuration: Release
 init:
-  - set QTDIR=C:\Qt\5.9\msvc2017_64
-  - set QTAVID=7ddf6db
+  - set "QTDIR=C:\Qt\5.9\msvc2017_64"
+  - set "QTAVID=7ddf6db"
   - call "%QTDIR%\bin\qtenv2.bat"
   - call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat" x64
   - cd /d "%APPVEYOR_BUILD_FOLDER%"
 install:
   - cd ci
-  - call install.bat
-  - powershell .\patch.ps1
+  - if exist build rd /s /q build
+  - md build
+  - cd build
+  - call ..\install.bat
+  - powershell ..\patch.ps1
+  - cd ..
+  - rd /s /q build
   - cd ..
 before_build:
-  - echo DD_VERSION = %APPVEYOR_BUILD_VERSION% > version_ci.pri
-  - echo DD_COMMIT_ID = %APPVEYOR_REPO_COMMIT% >> version_ci.pri
-  - echo DD_COMMIT_TIME = %APPVEYOR_REPO_COMMIT_TIMESTAMP% >> version_ci.pri
+  - echo DD_VERSION = %APPVEYOR_BUILD_VERSION%>version_ci.pri
+  - echo DD_COMMIT_ID = %APPVEYOR_REPO_COMMIT%>>version_ci.pri
+  - echo DD_COMMIT_TIME = %APPVEYOR_REPO_COMMIT_TIMESTAMP%>>version_ci.pri
 build_script:
   - call build.bat
 test: off
 artifacts:
   - path: version_ci.pri
 deploy: off
+on_finish:
+  - cd ci
+  - if exist build rd /s /q build
+  - cd ..
+  - if exist build rd /s /q build
+  - if exist bin rd /s /q bin
+  - if exist bin64 rd /s /q bin64
 notifications:
   - provider: Email
     to:
