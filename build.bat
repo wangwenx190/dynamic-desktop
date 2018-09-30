@@ -7,7 +7,7 @@ md build
 cd build
 set _mkspec=
 set _config=
-if defined ci (
+if defined CI (
     set _mkspec=win32-msvc
     set _config=release
     goto start_build
