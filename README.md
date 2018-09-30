@@ -5,7 +5,7 @@ A small tool that can play videos on your desktop.
 
 ## Features
 - Relatively small
-- Multilingual support(translators needed)
+- Multilingual support(**translators needed**)
 - Supports almost all kinds of media files
 - Supports play online media streams
 - **Hardware Accelerated Decoding** support: **CUDA**, **D3D11** and **DXVA**
@@ -21,7 +21,7 @@ Microsoft Windows 7 ~ 10, both 32 bit and 64 bit systems.
 
 ## Important notes
 - Enable Windows Aero first
-- Make sure you have installed XAudio2(you can find it's installer in DirectX's installer files)
+- Win7 users only: make sure you have installed XAudio2
 - To experience **Hardware Accelerated Decoding** better, make sure this tool runs with your high performance GPU(on Optimus)
 - The CPU and memory usage will increase enormously if you are using software decoding
 - It would be nice if you update your graphics card driver to the latest version
