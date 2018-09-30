@@ -15,7 +15,7 @@
 #include <QMessageBox>
 #include <QTranslator>
 #include <QLocale>
-#ifndef STATIC_BUILD
+#ifndef STATIC
 #include <QLibraryInfo>
 #endif
 #include <QSysInfo>
@@ -99,7 +99,7 @@ int main(int argc, char *argv[])
     if (SettingsManager::getInstance()->getLocalize())
     {
         QString qmDir;
-#ifdef STATIC_BUILD
+#ifdef STATIC
         qmDir = QStringLiteral(":/i18n");
 #else
         qmDir = QLibraryInfo::location(QLibraryInfo::TranslationsPath);
@@ -127,7 +127,7 @@ int main(int argc, char *argv[])
     parser.addHelpOption();
     parser.addVersionOption();
     parser.process(app);
-#ifndef STATIC_BUILD
+#ifndef STATIC
     if (QLibraryInfo::isDebugBuild())
         QMessageBox::warning(nullptr, QStringLiteral("Dynamic Desktop"), QObject::tr("WARNING: You are running a debug version of this tool!\nDo not continue running it if you are not a developer!"));
 #endif
