@@ -58,6 +58,7 @@ on_finish:
   - if exist build rd /s /q build
   - cd ..
   - if exist build rd /s /q build
+  - tree /f
   - if exist bin rd /s /q bin
   - if exist bin64 rd /s /q bin64
 notifications:
