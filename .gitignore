@@ -51,3 +51,4 @@ CMakeLists.txt.user*
 *.rc
 Thumbs.db
 version_ci.pri
+.qmake.conf
