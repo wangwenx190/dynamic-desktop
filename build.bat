@@ -5,6 +5,13 @@ cd /d "%~dp0"
 if exist build rd /s /q build
 md build
 cd build
+set _mkspec=
+set _config=
+if defined ci (
+    set _mkspec=win32-msvc
+    set _config=release
+    goto start_build
+)
 set _mkspec=%1
 if defined _mkspec (
     set _mkspec=%_mkspec:~1,-1%
@@ -21,6 +28,8 @@ if defined _config (
 ) else (
     set _config=release
 )
+goto start_build
+:start_build
 qmake "%~dp0dynamic-desktop.pro" -spec %_mkspec% "CONFIG+=%_config%"
 set _buildtool=jom
 where %_buildtool%
