@@ -68,7 +68,7 @@ CONFIG(static_build) {
         $$[QT_INSTALL_BINS]/*ass.dll
     isEmpty(windeployqt): windeployqt = $$[QT_INSTALL_BINS]/windeployqt.exe
     exists("$${windeployqt}") {
-        qtavlibs.commands = $$quote(\"$${windeployqt}\" --plugindir \"$${BIN_DIR}/plugins\" --force --no-translations --compiler-runtime --angle --no-opengl-sw \"$${BIN_DIR}/$${TARGET}.exe\")
+        qtavlibs.commands = $$quote(\"$${windeployqt}\" --plugindir \"$${BIN_DIR}/plugins\" --force --no-translations --compiler-runtime --angle \"$${BIN_DIR}/$${TARGET}.exe\")
         qtavlibs.commands = $$join(qtavlibs.commands, $$escape_expand(\\n\\t))
     }
     INSTALLS += translations qtavlibs
