@@ -16,12 +16,8 @@ set _mkspec=%1
 if defined _mkspec (
     set _mkspec=%_mkspec:~1,-1%
 ) else (
-    where clang-cl
-    if %ERRORLEVEL% == 0 set _mkspec=win32-clang-msvc
-    where icl
-    if %ERRORLEVEL% == 0 set _mkspec=win32-icc
+    set _mkspec=win32-msvc
 )
-if /i "%_mkspec%" == "" set _mkspec=win32-msvc
 set _config=%2
 if defined _config (
     set _config=%_config:~1,-1%
