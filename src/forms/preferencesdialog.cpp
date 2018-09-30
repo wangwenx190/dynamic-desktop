@@ -35,72 +35,76 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
     connect(this, &PreferencesDialog::updateVideoTracks,
         [=](const QVariantList &videoTracks)
         {
-            if (videoTracks.isEmpty())
-                return;
-            for (auto& track : videoTracks)
+            if (!videoTracks.isEmpty())
             {
-                QVariantMap trackData = track.toMap();
-                int id = trackData[QStringLiteral("id")].toInt();
-                QString lang = trackData[QStringLiteral("language")].toString();
-                QString title = trackData[QStringLiteral("title")].toString();
-                QString txt = tr("ID: %0 | Title: %1 | Language: %2")
-                        .arg(id).arg(title).arg(lang);
-                ui->comboBox_video_track->clear();
-                ui->comboBox_video_track->addItem(txt, id);
-            }
-        });
-    connect(this, &PreferencesDialog::updateAudioTracks,
-        [=](const QVariantList &audioTracks, bool add)
-        {
-            if (audioTracks.isEmpty())
-                return;
-            for (auto& track : audioTracks)
-            {
-                QVariantMap trackData = track.toMap();
-                int id = trackData[QStringLiteral("id")].toInt();
-                QString lang = trackData[QStringLiteral("language")].toString();
-                QString title = trackData[QStringLiteral("title")].toString();
-                QString txt = tr("ID: %0 | Title: %1 | Language: %2")
-                        .arg(id).arg(title).arg(lang);
-                if (!add)
-                    ui->comboBox_audio_track->clear();
-                ui->comboBox_audio_track->addItem(txt, id);
-            }
-        });
-    connect(this, &PreferencesDialog::updateSubtitleTracks,
-        [=](const QVariantList &subtitleTracks, bool add)
-        {
-            if (subtitleTracks.isEmpty())
-                return;
-            for (auto& track : subtitleTracks)
-            {
-                QVariantMap trackData = track.toMap();
-                if (!add)
+                for (auto& track : videoTracks)
                 {
+                    QVariantMap trackData = track.toMap();
                     int id = trackData[QStringLiteral("id")].toInt();
                     QString lang = trackData[QStringLiteral("language")].toString();
                     QString title = trackData[QStringLiteral("title")].toString();
                     QString txt = tr("ID: %0 | Title: %1 | Language: %2")
                             .arg(id).arg(title).arg(lang);
-                    ui->comboBox_subtitle_track->clear();
-                    ui->comboBox_subtitle_track->addItem(txt, id);
+                    ui->comboBox_video_track->clear();
+                    ui->comboBox_video_track->addItem(txt, id);
                 }
-                else
+            }
+        });
+    connect(this, &PreferencesDialog::updateAudioTracks,
+        [=](const QVariantList &audioTracks, bool add)
+        {
+            if (!audioTracks.isEmpty())
+            {
+                for (auto& track : audioTracks)
                 {
-                    QString file = trackData[QStringLiteral("file")].toString();
-                    QString txt = tr("File: %0").arg(file);
-                    ui->comboBox_subtitle_track->addItem(txt, file);
+                    QVariantMap trackData = track.toMap();
+                    int id = trackData[QStringLiteral("id")].toInt();
+                    QString lang = trackData[QStringLiteral("language")].toString();
+                    QString title = trackData[QStringLiteral("title")].toString();
+                    QString txt = tr("ID: %0 | Title: %1 | Language: %2")
+                            .arg(id).arg(title).arg(lang);
+                    if (!add)
+                        ui->comboBox_audio_track->clear();
+                    ui->comboBox_audio_track->addItem(txt, id);
+                }
+            }
+        });
+    connect(this, &PreferencesDialog::updateSubtitleTracks,
+        [=](const QVariantList &subtitleTracks, bool add)
+        {
+            if (!subtitleTracks.isEmpty())
+            {
+                for (auto& track : subtitleTracks)
+                {
+                    QVariantMap trackData = track.toMap();
+                    if (!add)
+                    {
+                        int id = trackData[QStringLiteral("id")].toInt();
+                        QString lang = trackData[QStringLiteral("language")].toString();
+                        QString title = trackData[QStringLiteral("title")].toString();
+                        QString txt = tr("ID: %0 | Title: %1 | Language: %2")
+                                .arg(id).arg(title).arg(lang);
+                        ui->comboBox_subtitle_track->clear();
+                        ui->comboBox_subtitle_track->addItem(txt, id);
+                    }
+                    else
+                    {
+                        QString file = trackData[QStringLiteral("file")].toString();
+                        QString txt = tr("File: %0").arg(file);
+                        ui->comboBox_subtitle_track->addItem(txt, file);
+                    }
                 }
             }
         });
     connect(this, &PreferencesDialog::updateVolumeArea,
         [=]
         {
-            if (!audioAvailable)
-                return;
-            ui->checkBox_volume->setChecked(!SettingsManager::getInstance()->getMute());
-            ui->horizontalSlider_volume->setEnabled(ui->checkBox_volume->isChecked());
-            ui->horizontalSlider_volume->setValue(SettingsManager::getInstance()->getVolume());
+            if (audioAvailable)
+            {
+                ui->checkBox_volume->setChecked(!SettingsManager::getInstance()->getMute());
+                ui->horizontalSlider_volume->setEnabled(ui->checkBox_volume->isChecked());
+                ui->horizontalSlider_volume->setValue(SettingsManager::getInstance()->getVolume());
+            }
         });
     connect(this, &PreferencesDialog::setVolumeAreaEnabled,
         [=](bool enabled)
@@ -215,20 +219,21 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
     connect(ui->pushButton_url_input, &QPushButton::clicked,
         [=]
         {
-            bool ok;
+            bool ok = false;
             QString input = QInputDialog::getText(nullptr, tr("Please input a valid URL"), tr("URL"), QLineEdit::Normal, QStringLiteral("https://"), &ok);
-            if (!ok || input.isEmpty())
-                return;
-            QUrl url(input);
-            if (!url.isValid())
+            if (ok && !input.isEmpty())
             {
-                QMessageBox::warning(nullptr, QStringLiteral("Dynamic Desktop"), tr("\"%0\" is not a valid URL.").arg(input));
-                return;
+                QUrl url(input);
+                if (url.isValid())
+                {
+                    if (url.isLocalFile())
+                        ui->lineEdit_url->setText(url.toLocalFile());
+                    else
+                        ui->lineEdit_url->setText(url.url());
+                }
+                else
+                    QMessageBox::warning(nullptr, QStringLiteral("Dynamic Desktop"), tr("\"%0\" is not a valid URL.").arg(input));
             }
-            if (url.isLocalFile())
-                ui->lineEdit_url->setText(url.toLocalFile());
-            else
-                ui->lineEdit_url->setText(url.url());
         });
     connect(ui->checkBox_hwdec, &QCheckBox::stateChanged,
         [=]

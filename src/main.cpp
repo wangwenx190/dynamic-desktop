@@ -263,15 +263,16 @@ int main(int argc, char *argv[])
     QObject::connect(playAction, &QAction::triggered,
         [=, &renderer, &player]
         {
-            if (!player.isLoaded())
-                return;
-            if (renderer.isHidden())
-                renderer.show();
-            QtConcurrent::run(
-                [=, &player]
-                {
-                    player.play();
-                });
+            if (player.isLoaded())
+            {
+                if (renderer.isHidden())
+                    renderer.show();
+                QtConcurrent::run(
+                    [=, &player]
+                    {
+                        player.play();
+                    });
+            }
         });
     trayMenu.addAction(QObject::tr("Pause"), &player, SLOT(pause()));
     QAction *muteAction = trayMenu.addAction(QObject::tr("Mute"));
@@ -279,16 +280,17 @@ int main(int argc, char *argv[])
     QObject::connect(muteAction, &QAction::triggered,
         [=, &player, &preferencesDialog](bool checked)
         {
-            if (!player.audio())
-                return;
-            muteAction->setChecked(checked);
-            SettingsManager::getInstance()->setMute(checked);
-            preferencesDialog.updateVolumeArea();
-            QtConcurrent::run(
-                [=, &player]
-                {
-                    player.audio()->setMute(checked);
-                });
+            if (player.audio())
+            {
+                muteAction->setChecked(checked);
+                SettingsManager::getInstance()->setMute(checked);
+                preferencesDialog.updateVolumeArea();
+                QtConcurrent::run(
+                    [=, &player]
+                    {
+                        player.audio()->setMute(checked);
+                    });
+            }
         });
     trayMenu.addSeparator();
     QAction *aboutAction = trayMenu.addAction(QObject::tr("About"));
@@ -340,33 +342,32 @@ int main(int argc, char *argv[])
     QObject::connect(&preferencesDialog, &PreferencesDialog::urlChanged,
         [=, &player, &renderer](const QString &url)
         {
-            if (url.isEmpty())
-                return;
-            if (renderer.isHidden())
-                renderer.show();
-            QtConcurrent::run(
-                [=, &player]
-                {
-                    player.play(url);
-                });
+            if (!url.isEmpty())
+            {
+                if (renderer.isHidden())
+                    renderer.show();
+                QtConcurrent::run(
+                    [=, &player]
+                    {
+                        player.play(url);
+                    });
+            }
         });
     QObject::connect(&preferencesDialog, &PreferencesDialog::volumeChanged,
         [=, &player](unsigned int volume)
         {
-            if (!player.audio())
-                return;
-            QtConcurrent::run(
-                [=, &player]
-                {
-                    player.audio()->setVolume(static_cast<qreal>(volume / 10.0));
-                });
+            if (player.audio())
+                QtConcurrent::run(
+                    [=, &player]
+                    {
+                        player.audio()->setVolume(static_cast<qreal>(volume / 10.0));
+                    });
         });
     QObject::connect(&preferencesDialog, &PreferencesDialog::muteChanged,
         [=, &player](bool mute)
         {
-            if (!player.audio())
-                return;
-            muteAction->triggered(mute);
+            if (player.audio())
+                muteAction->triggered(mute);
         });
     QObject::connect(&preferencesDialog, &PreferencesDialog::autostartChanged,
         [=](bool enabled)
@@ -379,13 +380,12 @@ int main(int argc, char *argv[])
     QObject::connect(&preferencesDialog, &PreferencesDialog::seekBySlider,
         [=, &player](qint64 value)
         {
-            if (!player.isPlaying())
-                return;
-            QtConcurrent::run(
-                [=, &player]
-                {
-                    player.seek(value);
-                });
+            if (player.isPlaying())
+                QtConcurrent::run(
+                    [=, &player]
+                    {
+                        player.seek(value);
+                    });
         });
     QObject::connect(&preferencesDialog, &PreferencesDialog::pictureRatioChanged,
         [=, &renderer](bool fitDesktop)
@@ -406,67 +406,66 @@ int main(int argc, char *argv[])
     QObject::connect(&preferencesDialog, &PreferencesDialog::videoTrackChanged,
         [=, &player](int id)
         {
-            if (!player.isLoaded())
-                return;
-            SettingsManager::getInstance()->setCurrentVideoStream(id);
-            if (id == player.currentVideoStream())
-                return;
-            QtConcurrent::run(
-                [=, &player]
-                {
-                    player.setVideoStream(id);
-                });
+            if (player.isLoaded())
+            {
+                SettingsManager::getInstance()->setCurrentVideoStream(id);
+                if (id != player.currentVideoStream())
+                    QtConcurrent::run(
+                        [=, &player]
+                        {
+                            player.setVideoStream(id);
+                        });
+            }
         });
     QObject::connect(&preferencesDialog, &PreferencesDialog::audioTrackChanged,
         [=, &player](int id)
         {
-            if (!player.isLoaded())
-                return;
-            SettingsManager::getInstance()->setCurrentAudioStream(id);
-            if (id == player.currentAudioStream())
-                return;
-            QtConcurrent::run(
-                [=, &player]
-                {
-                    player.setAudioStream(id);
-                });
+            if (player.isLoaded())
+            {
+                SettingsManager::getInstance()->setCurrentAudioStream(id);
+                if (id != player.currentAudioStream())
+                    QtConcurrent::run(
+                        [=, &player]
+                        {
+                            player.setAudioStream(id);
+                        });
+            }
         });
     QObject::connect(&preferencesDialog, &PreferencesDialog::subtitleTrackChanged,
         [=, &player, &subtitle](const QVariant &track)
         {
-            if (!player.isLoaded())
-                return;
-            const QString newSubFile = track.toString();
-            SettingsManager::getInstance()->setCurrentSubtitleStream(newSubFile);
-            if (QFileInfo::exists(newSubFile) && subtitle.file() != newSubFile)
+            if (player.isLoaded())
             {
-                QtConcurrent::run(
-                    [=, &subtitle]
-                    {
-                        subtitle.setFile(newSubFile);
-                    });
-                return;
-            }
-            int id = track.toInt();
-            SettingsManager::getInstance()->setCurrentSubtitleStream(id);
-            if (id == player.currentSubtitleStream())
-                return;
-            QtConcurrent::run(
-                [=, &player]
+                const QString newSubFile = track.toString();
+                SettingsManager::getInstance()->setCurrentSubtitleStream(newSubFile);
+                if (QFileInfo::exists(newSubFile) && subtitle.file() != newSubFile)
+                    QtConcurrent::run(
+                        [=, &subtitle]
+                        {
+                            subtitle.setFile(newSubFile);
+                        });
+                else
                 {
-                    player.setSubtitleStream(id);
-                });
+                    int id = track.toInt();
+                    SettingsManager::getInstance()->setCurrentSubtitleStream(id);
+                    if (id != player.currentSubtitleStream())
+                        QtConcurrent::run(
+                            [=, &player]
+                            {
+                                player.setSubtitleStream(id);
+                            });
+                }
+            }
         });
     QObject::connect(&preferencesDialog, &PreferencesDialog::charsetChanged,
         [=, &subtitle](const QString &charset)
         {
-            if (!SettingsManager::getInstance()->getSubtitle())
-                return;
-            QtConcurrent::run(
-                [=, &subtitle]
-                {
-                    subtitle.setCodec(charset.toLatin1());
-                });
+            if (SettingsManager::getInstance()->getSubtitle())
+                QtConcurrent::run(
+                    [=, &subtitle]
+                    {
+                        subtitle.setCodec(charset.toLatin1());
+                    });
         });
     QObject::connect(&preferencesDialog, &PreferencesDialog::subtitleAutoLoadChanged,
         [=, &subtitle](bool autoload)
@@ -497,6 +496,12 @@ int main(int argc, char *argv[])
     hworkerw = getWorkerW(currentVersion < win10Version);
     if (hworkerw != nullptr)
         SetParent(hrenderer, hworkerw);
+    else
+    {
+        QMessageBox::critical(nullptr, QStringLiteral("Dynamic Desktop"), QObject::tr("Cannot get \"Program Manager\"'s handle. Application aborting."));
+        CloseHandle(mutex);
+        return 0;
+    }
     int exec = QApplication::exec();
     ShowWindow(HWORKERW, SW_HIDE);
     CloseHandle(mutex);

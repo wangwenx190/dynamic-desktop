@@ -9,57 +9,72 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/aboutdialog.ui" line="32"/>
+        <location filename="../forms/aboutdialog.ui" line="24"/>
+        <source>Get source code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../forms/aboutdialog.ui" line="31"/>
+        <source>Report suggestions or issues</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../forms/aboutdialog.ui" line="38"/>
+        <source>Get the latest release</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../forms/aboutdialog.ui" line="53"/>
         <source>Version</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/aboutdialog.ui" line="81"/>
+        <location filename="../forms/aboutdialog.ui" line="102"/>
         <source>Commit ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/aboutdialog.ui" line="124"/>
+        <location filename="../forms/aboutdialog.ui" line="145"/>
         <source>Commit time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/aboutdialog.ui" line="210"/>
+        <location filename="../forms/aboutdialog.ui" line="231"/>
         <source>Qt</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/aboutdialog.ui" line="253"/>
+        <location filename="../forms/aboutdialog.ui" line="274"/>
         <source>QtAV</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/aboutdialog.ui" line="296"/>
+        <location filename="../forms/aboutdialog.ui" line="317"/>
         <source>FFmpeg</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/aboutdialog.ui" line="339"/>
+        <location filename="../forms/aboutdialog.ui" line="360"/>
         <source>Compiler</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/aboutdialog.ui" line="382"/>
+        <location filename="../forms/aboutdialog.ui" line="403"/>
         <source>Architecture</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/aboutdialog.ui" line="167"/>
+        <location filename="../forms/aboutdialog.ui" line="188"/>
         <source>Build time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/aboutdialog.ui" line="419"/>
+        <location filename="../forms/aboutdialog.ui" line="440"/>
         <source>About QtAV</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/aboutdialog.ui" line="439"/>
+        <location filename="../forms/aboutdialog.ui" line="460"/>
         <source>OK</source>
         <translation type="unfinished"></translation>
     </message>
@@ -144,7 +159,7 @@
     </message>
     <message>
         <location filename="../forms/preferencesdialog.ui" line="445"/>
-        <location filename="../forms/preferencesdialog.cpp" line="219"/>
+        <location filename="../forms/preferencesdialog.cpp" line="223"/>
         <source>URL</source>
         <translation type="unfinished"></translation>
     </message>
@@ -235,57 +250,57 @@
     </message>
     <message>
         <location filename="../forms/preferencesdialog.cpp" line="46"/>
-        <location filename="../forms/preferencesdialog.cpp" line="63"/>
-        <location filename="../forms/preferencesdialog.cpp" line="83"/>
+        <location filename="../forms/preferencesdialog.cpp" line="64"/>
+        <location filename="../forms/preferencesdialog.cpp" line="85"/>
         <source>ID: %0 | Title: %1 | Language: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="91"/>
+        <location filename="../forms/preferencesdialog.cpp" line="93"/>
         <source>File: %0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="172"/>
+        <location filename="../forms/preferencesdialog.cpp" line="176"/>
         <source>Application restart is needed to apply this change.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="211"/>
+        <location filename="../forms/preferencesdialog.cpp" line="215"/>
         <source>Please select a media file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="211"/>
+        <location filename="../forms/preferencesdialog.cpp" line="215"/>
         <source>Videos (*.avi *.mp4 *.mkv *.flv);;Audios (*.mp3 *.flac *.ape *.wav);;Pictures (*.bmp *.jpg *.jpeg *.png *.gif);;All files (*)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="219"/>
+        <location filename="../forms/preferencesdialog.cpp" line="223"/>
         <source>Please input a valid URL</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="225"/>
+        <location filename="../forms/preferencesdialog.cpp" line="235"/>
         <source>&quot;%0&quot; is not a valid URL.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="241"/>
-        <location filename="../forms/preferencesdialog.cpp" line="247"/>
-        <location filename="../forms/preferencesdialog.cpp" line="253"/>
-        <location filename="../forms/preferencesdialog.cpp" line="259"/>
+        <location filename="../forms/preferencesdialog.cpp" line="246"/>
+        <location filename="../forms/preferencesdialog.cpp" line="252"/>
+        <location filename="../forms/preferencesdialog.cpp" line="258"/>
+        <location filename="../forms/preferencesdialog.cpp" line="264"/>
         <source>Restart this application to experience it.
 Make sure this application runs in your GPU&apos;s Optimus mode.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="261"/>
+        <location filename="../forms/preferencesdialog.cpp" line="266"/>
         <source>Auto detect</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="262"/>
+        <location filename="../forms/preferencesdialog.cpp" line="267"/>
         <source>System</source>
         <translation type="unfinished"></translation>
     </message>
@@ -329,23 +344,28 @@ Do not continue running it if you are not a developer!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="276"/>
+        <location filename="../main.cpp" line="277"/>
         <source>Pause</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="277"/>
+        <location filename="../main.cpp" line="278"/>
         <source>Mute</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="294"/>
+        <location filename="../main.cpp" line="296"/>
         <source>About</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="296"/>
+        <location filename="../main.cpp" line="298"/>
         <source>Exit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../main.cpp" line="501"/>
+        <source>Cannot get &quot;Program Manager&quot;&apos;s handle. Application aborting.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

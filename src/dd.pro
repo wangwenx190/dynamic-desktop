@@ -1,7 +1,4 @@
 !win32: error("This project only supports Win32 platform!")
-# minQtVersion is not recognized by newer Qt versions
-# However, versionAtLeast is not recognized by older Qt versions
-# !versionAtLeast(QT_VERSION, 5.6.3): error("Upgrade your Qt to at least 5.6.3!")
 isEmpty(ROOT): ROOT = $$PWD/..
 include($$ROOT/version.pri)
 include($$ROOT/optimization.pri)
@@ -37,25 +34,26 @@ TRANSLATIONS += \
 RESOURCES += images.qrc
 isEmpty(lupdate): lupdate = $$[QT_INSTALL_BINS]/lupdate.exe
 isEmpty(lrelease): lrelease = $$[QT_INSTALL_BINS]/lrelease.exe
-system("$${lupdate} -no-obsolete $${_PRO_FILE_}")
-system("$${lrelease} -nounfinished -removeidentical $${_PRO_FILE_}")
+exists(lupdate) {
+    system("$${lupdate} -no-obsolete $${_PRO_FILE_}")
+    system("$${lrelease} -nounfinished -removeidentical $${_PRO_FILE_}")
+}
 target.path = $$BIN_DIR
 INSTALLS += target
 CONFIG(static_build) {
     DEFINES += STATIC_BUILD
     RESOURCES += i18n.qrc
 } else {
-    isEmpty(windeployqt): windeployqt = $$[QT_INSTALL_BINS]/windeployqt.exe
     translations.path = $$BIN_DIR/translations
-    translations.commands += $$quote(\"$${lupdate}\" -no-obsolete \"$${_PRO_FILE_}\")
-    translations.commands += $$quote(\"$${lrelease}\" -nounfinished -removeidentical \"$${_PRO_FILE_}\")
-    translations.commands = $$join(translations.commands, $$escape_expand(\\n\\t))
     translations.files = \
         $$PWD/translations/dd_en.qm \
         $$PWD/translations/dd_zh_CN.qm
+    exists(lupdate) {
+        translations.commands += $$quote(\"$${lupdate}\" -no-obsolete \"$${_PRO_FILE_}\")
+        translations.commands += $$quote(\"$${lrelease}\" -nounfinished -removeidentical \"$${_PRO_FILE_}\")
+        translations.commands = $$join(translations.commands, $$escape_expand(\\n\\t))
+    }
     qtavlibs.path = $$BIN_DIR
-    qtavlibs.commands = $$quote(\"$${windeployqt}\" --plugindir \"$${BIN_DIR}/plugins\" --force --no-translations --compiler-runtime --angle --no-opengl-sw \"$${BIN_DIR}/$${TARGET}.exe\")
-    qtavlibs.commands = $$join(qtavlibs.commands, $$escape_expand(\\n\\t))
     qtavlibs.files = \
         $$[QT_INSTALL_BINS]/Qt*OpenGL.dll \
         $$[QT_INSTALL_BINS]/Qt*AV*.dll \
@@ -68,5 +66,10 @@ CONFIG(static_build) {
         $$[QT_INSTALL_BINS]/swresample*.dll \
         $$[QT_INSTALL_BINS]/swscale*.dll \
         $$[QT_INSTALL_BINS]/*ass.dll
+    isEmpty(windeployqt): windeployqt = $$[QT_INSTALL_BINS]/windeployqt.exe
+    exists(windeployqt) {
+        qtavlibs.commands = $$quote(\"$${windeployqt}\" --plugindir \"$${BIN_DIR}/plugins\" --force --no-translations --compiler-runtime --angle --no-opengl-sw \"$${BIN_DIR}/$${TARGET}.exe\")
+        qtavlibs.commands = $$join(qtavlibs.commands, $$escape_expand(\\n\\t))
+    }
     INSTALLS += translations qtavlibs
 }

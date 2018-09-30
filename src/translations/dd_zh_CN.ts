@@ -9,57 +9,72 @@
         <translation>关于</translation>
     </message>
     <message>
-        <location filename="../forms/aboutdialog.ui" line="32"/>
+        <location filename="../forms/aboutdialog.ui" line="24"/>
+        <source>Get source code</source>
+        <translation>获取源码</translation>
+    </message>
+    <message>
+        <location filename="../forms/aboutdialog.ui" line="31"/>
+        <source>Report suggestions or issues</source>
+        <translation>上报建议或问题</translation>
+    </message>
+    <message>
+        <location filename="../forms/aboutdialog.ui" line="38"/>
+        <source>Get the latest release</source>
+        <translation>获取最新版本</translation>
+    </message>
+    <message>
+        <location filename="../forms/aboutdialog.ui" line="53"/>
         <source>Version</source>
         <translation>版本</translation>
     </message>
     <message>
-        <location filename="../forms/aboutdialog.ui" line="81"/>
+        <location filename="../forms/aboutdialog.ui" line="102"/>
         <source>Commit ID</source>
         <translation>提交 ID</translation>
     </message>
     <message>
-        <location filename="../forms/aboutdialog.ui" line="124"/>
+        <location filename="../forms/aboutdialog.ui" line="145"/>
         <source>Commit time</source>
         <translation>提交时间</translation>
     </message>
     <message>
-        <location filename="../forms/aboutdialog.ui" line="210"/>
+        <location filename="../forms/aboutdialog.ui" line="231"/>
         <source>Qt</source>
         <translation>Qt</translation>
     </message>
     <message>
-        <location filename="../forms/aboutdialog.ui" line="253"/>
+        <location filename="../forms/aboutdialog.ui" line="274"/>
         <source>QtAV</source>
         <translation>QtAV</translation>
     </message>
     <message>
-        <location filename="../forms/aboutdialog.ui" line="296"/>
+        <location filename="../forms/aboutdialog.ui" line="317"/>
         <source>FFmpeg</source>
         <translation>FFmpeg</translation>
     </message>
     <message>
-        <location filename="../forms/aboutdialog.ui" line="339"/>
+        <location filename="../forms/aboutdialog.ui" line="360"/>
         <source>Compiler</source>
         <translation>编译器</translation>
     </message>
     <message>
-        <location filename="../forms/aboutdialog.ui" line="382"/>
+        <location filename="../forms/aboutdialog.ui" line="403"/>
         <source>Architecture</source>
         <translation>架构</translation>
     </message>
     <message>
-        <location filename="../forms/aboutdialog.ui" line="167"/>
+        <location filename="../forms/aboutdialog.ui" line="188"/>
         <source>Build time</source>
         <translation>构建时间</translation>
     </message>
     <message>
-        <location filename="../forms/aboutdialog.ui" line="419"/>
+        <location filename="../forms/aboutdialog.ui" line="440"/>
         <source>About QtAV</source>
         <translation>关于 QtAV</translation>
     </message>
     <message>
-        <location filename="../forms/aboutdialog.ui" line="439"/>
+        <location filename="../forms/aboutdialog.ui" line="460"/>
         <source>OK</source>
         <translation>确定</translation>
     </message>
@@ -144,7 +159,7 @@
     </message>
     <message>
         <location filename="../forms/preferencesdialog.ui" line="445"/>
-        <location filename="../forms/preferencesdialog.cpp" line="219"/>
+        <location filename="../forms/preferencesdialog.cpp" line="223"/>
         <source>URL</source>
         <translation>路径</translation>
     </message>
@@ -235,58 +250,58 @@
     </message>
     <message>
         <location filename="../forms/preferencesdialog.cpp" line="46"/>
-        <location filename="../forms/preferencesdialog.cpp" line="63"/>
-        <location filename="../forms/preferencesdialog.cpp" line="83"/>
+        <location filename="../forms/preferencesdialog.cpp" line="64"/>
+        <location filename="../forms/preferencesdialog.cpp" line="85"/>
         <source>ID: %0 | Title: %1 | Language: %2</source>
         <translation>ID：%0 | 标题：%1 | 语言：%2</translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="91"/>
+        <location filename="../forms/preferencesdialog.cpp" line="93"/>
         <source>File: %0</source>
         <translation>文件：%0</translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="172"/>
+        <location filename="../forms/preferencesdialog.cpp" line="176"/>
         <source>Application restart is needed to apply this change.</source>
         <translation>重启此应用程序以生效。</translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="211"/>
+        <location filename="../forms/preferencesdialog.cpp" line="215"/>
         <source>Please select a media file</source>
         <translation>请选择一个媒体文件</translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="211"/>
+        <location filename="../forms/preferencesdialog.cpp" line="215"/>
         <source>Videos (*.avi *.mp4 *.mkv *.flv);;Audios (*.mp3 *.flac *.ape *.wav);;Pictures (*.bmp *.jpg *.jpeg *.png *.gif);;All files (*)</source>
         <translation>视频 (*.avi *.mp4 *.mkv *.flv);;音频 (*.mp3 *.flac *.ape *.wav);;图片 (*.bmp *.jpg *.jpeg *.png *.gif);;所有文件 (*)</translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="219"/>
+        <location filename="../forms/preferencesdialog.cpp" line="223"/>
         <source>Please input a valid URL</source>
         <translation>请输入一个有效的网址</translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="225"/>
+        <location filename="../forms/preferencesdialog.cpp" line="235"/>
         <source>&quot;%0&quot; is not a valid URL.</source>
         <translation>“%0”不是一个有效的网址。</translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="241"/>
-        <location filename="../forms/preferencesdialog.cpp" line="247"/>
-        <location filename="../forms/preferencesdialog.cpp" line="253"/>
-        <location filename="../forms/preferencesdialog.cpp" line="259"/>
+        <location filename="../forms/preferencesdialog.cpp" line="246"/>
+        <location filename="../forms/preferencesdialog.cpp" line="252"/>
+        <location filename="../forms/preferencesdialog.cpp" line="258"/>
+        <location filename="../forms/preferencesdialog.cpp" line="264"/>
         <source>Restart this application to experience it.
 Make sure this application runs in your GPU&apos;s Optimus mode.</source>
         <translation>重新运行此程序以体验改变。
 请确保此程序是以您的图形处理器在高性能模式运行的。</translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="261"/>
+        <location filename="../forms/preferencesdialog.cpp" line="266"/>
         <source>Auto detect</source>
         <translation>自动检测</translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="262"/>
+        <location filename="../forms/preferencesdialog.cpp" line="267"/>
         <source>System</source>
         <translation>系统</translation>
     </message>
@@ -331,24 +346,29 @@ Do not continue running it if you are not a developer!</source>
         <translation>播放</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="276"/>
+        <location filename="../main.cpp" line="277"/>
         <source>Pause</source>
         <translation>暂停</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="277"/>
+        <location filename="../main.cpp" line="278"/>
         <source>Mute</source>
         <translation>静音</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="294"/>
+        <location filename="../main.cpp" line="296"/>
         <source>About</source>
         <translation>关于</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="296"/>
+        <location filename="../main.cpp" line="298"/>
         <source>Exit</source>
         <translation>退出</translation>
+    </message>
+    <message>
+        <location filename="../main.cpp" line="501"/>
+        <source>Cannot get &quot;Program Manager&quot;&apos;s handle. Application aborting.</source>
+        <translation>无法获取“Program Manager”的句柄。程序正在退出。</translation>
     </message>
 </context>
 </TS>

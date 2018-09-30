@@ -10,7 +10,7 @@ rd /s /q depends
 if exist av rd /s /q av
 md av
 cd av
-appveyor DownloadFile "https://sourceforge.net/projects/qtav/files/ci/QtAV-Qt5.9-VS2017x64-release-%QTAVID%.7z/download" -FileName qtavci.7z
+appveyor DownloadFile "https://sourceforge.net/projects/qtav/files/ci/QtAV-Qt%QTVER%-VS2017x64-release-%QTAVID%.7z/download" -FileName qtavci.7z
 7z x qtavci.7z > NUL
 xcopy /s /y /i include %QTDIR%\include > NUL
 copy /y lib\*Qt*AV*.lib %QTDIR%\lib > NUL

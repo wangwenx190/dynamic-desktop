@@ -37,6 +37,21 @@ AboutDialog::AboutDialog(QWidget *parent) :
             QtAV::about();
         });
     connect(ui->pushButton_ok, SIGNAL(clicked()), this, SLOT(close()));
+    connect(ui->pushButton_source, &QPushButton::clicked,
+        [=]
+        {
+            QDesktopServices::openUrl(QUrl(QStringLiteral("https://github.com/wangwenx190/dynamic-desktop")));
+        });
+    connect(ui->pushButton_issues, &QPushButton::clicked,
+        [=]
+        {
+            QDesktopServices::openUrl(QUrl(QStringLiteral("https://github.com/wangwenx190/dynamic-desktop/issues")));
+        });
+    connect(ui->pushButton_release, &QPushButton::clicked,
+        [=]
+        {
+            QDesktopServices::openUrl(QUrl(QStringLiteral("https://github.com/wangwenx190/dynamic-desktop/releases/latest")));
+        });
 }
 
 AboutDialog::~AboutDialog()
