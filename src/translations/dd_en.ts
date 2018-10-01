@@ -159,7 +159,7 @@
     </message>
     <message>
         <location filename="../forms/preferencesdialog.ui" line="445"/>
-        <location filename="../forms/preferencesdialog.cpp" line="230"/>
+        <location filename="../forms/preferencesdialog.cpp" line="232"/>
         <source>URL</source>
         <translation type="unfinished"></translation>
     </message>
@@ -254,68 +254,68 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="31"/>
+        <location filename="../forms/preferencesdialog.cpp" line="33"/>
         <source>Please select a subtitle file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="31"/>
+        <location filename="../forms/preferencesdialog.cpp" line="33"/>
         <source>Subtitles (*.ass *.ssa *.srt *.sup);;All files (*)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="53"/>
-        <location filename="../forms/preferencesdialog.cpp" line="71"/>
-        <location filename="../forms/preferencesdialog.cpp" line="92"/>
+        <location filename="../forms/preferencesdialog.cpp" line="55"/>
+        <location filename="../forms/preferencesdialog.cpp" line="73"/>
+        <location filename="../forms/preferencesdialog.cpp" line="94"/>
         <source>ID: %0 | Title: %1 | Language: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="100"/>
+        <location filename="../forms/preferencesdialog.cpp" line="102"/>
         <source>File: %0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="183"/>
+        <location filename="../forms/preferencesdialog.cpp" line="185"/>
         <source>Application restart is needed to apply this change.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="222"/>
+        <location filename="../forms/preferencesdialog.cpp" line="224"/>
         <source>Please select a media file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="222"/>
+        <location filename="../forms/preferencesdialog.cpp" line="224"/>
         <source>Videos (*.avi *.mp4 *.mkv *.flv);;Audios (*.mp3 *.flac *.ape *.wav);;Pictures (*.bmp *.jpg *.jpeg *.png *.gif);;All files (*)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="230"/>
+        <location filename="../forms/preferencesdialog.cpp" line="232"/>
         <source>Please input a valid URL</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="242"/>
+        <location filename="../forms/preferencesdialog.cpp" line="244"/>
         <source>&quot;%0&quot; is not a valid URL.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="253"/>
-        <location filename="../forms/preferencesdialog.cpp" line="259"/>
-        <location filename="../forms/preferencesdialog.cpp" line="265"/>
-        <location filename="../forms/preferencesdialog.cpp" line="271"/>
+        <location filename="../forms/preferencesdialog.cpp" line="255"/>
+        <location filename="../forms/preferencesdialog.cpp" line="261"/>
+        <location filename="../forms/preferencesdialog.cpp" line="267"/>
+        <location filename="../forms/preferencesdialog.cpp" line="273"/>
         <source>Restart this application to experience it.
 Make sure this application runs in your GPU&apos;s Optimus mode.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="273"/>
+        <location filename="../forms/preferencesdialog.cpp" line="275"/>
         <source>Auto detect</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="274"/>
+        <location filename="../forms/preferencesdialog.cpp" line="276"/>
         <source>System</source>
         <translation type="unfinished"></translation>
     </message>
