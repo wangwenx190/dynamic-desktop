@@ -26,6 +26,7 @@ signals:
     void charsetChanged(const QString &);
     void subtitleAutoLoadChanged(bool);
     void subtitleEnabled(bool);
+    void subtitleOpened(const QString &);
 
 signals:
     void refreshUi();

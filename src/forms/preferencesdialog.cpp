@@ -25,6 +25,15 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
     setResizeableAreaWidth(5);
     setTitleBar(ui->widget_windowTitleBar);
     addIgnoreWidget(ui->label_windowTitle);
+    connect(ui->pushButton_subtitle_open, &QPushButton::clicked,
+        [=]
+        {
+            QString lastDir = SettingsManager::getInstance()->getUrl();
+            lastDir = lastDir.isEmpty() ? QStringLiteral(".") : QFileInfo(lastDir).dir().absolutePath();
+            QString subtitlePath = QFileDialog::getOpenFileName(nullptr, tr("Please select a subtitle file"), lastDir, tr("Subtitles (*.ass *.ssa *.srt *.sup);;All files (*)"));
+            if (!subtitlePath.isEmpty())
+                emit this->subtitleOpened(subtitlePath);
+        });
     connect(this, &PreferencesDialog::clearAllTracks,
         [=]
         {
@@ -356,9 +365,6 @@ void PreferencesDialog::refreshUI()
     ui->checkBox_subtitle_autoLoadExternal->setChecked(SettingsManager::getInstance()->getSubtitleAutoLoad());
     ui->checkBox_displaySubtitle->setChecked(SettingsManager::getInstance()->getSubtitle());
     ui->checkBox_audio_autoLoadExternal->setChecked(SettingsManager::getInstance()->getAudioAutoLoad());
-    ui->comboBox_video_track->setCurrentIndex(ui->comboBox_video_track->findData(SettingsManager::getInstance()->getCurrentVideoStream()));
-    ui->comboBox_audio_track->setCurrentIndex(ui->comboBox_audio_track->findData(SettingsManager::getInstance()->getCurrentAudioStream()));
-    ui->comboBox_subtitle_track->setCurrentIndex(ui->comboBox_subtitle_track->findData(SettingsManager::getInstance()->getCurrentSubtitleStream()));
 }
 
 void PreferencesDialog::saveSettings()

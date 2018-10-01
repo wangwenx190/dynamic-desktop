@@ -159,7 +159,7 @@
     </message>
     <message>
         <location filename="../forms/preferencesdialog.ui" line="445"/>
-        <location filename="../forms/preferencesdialog.cpp" line="223"/>
+        <location filename="../forms/preferencesdialog.cpp" line="230"/>
         <source>URL</source>
         <translation>路径</translation>
     </message>
@@ -219,89 +219,104 @@
         <translation>显示字幕</translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.ui" line="732"/>
+        <location filename="../forms/preferencesdialog.ui" line="734"/>
         <source>Auto load external subtitle tracks</source>
         <translation>自动加载外部字幕轨道</translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.ui" line="747"/>
+        <location filename="../forms/preferencesdialog.ui" line="741"/>
+        <source>Open</source>
+        <translation>打开</translation>
+    </message>
+    <message>
+        <location filename="../forms/preferencesdialog.ui" line="758"/>
         <source>Subtitle track</source>
         <translation>字幕轨道</translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.ui" line="767"/>
+        <location filename="../forms/preferencesdialog.ui" line="778"/>
         <source>Charset</source>
         <translation>字符集</translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.ui" line="784"/>
+        <location filename="../forms/preferencesdialog.ui" line="795"/>
         <source>About</source>
         <translation>关于</translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.ui" line="804"/>
+        <location filename="../forms/preferencesdialog.ui" line="815"/>
         <source>OK</source>
         <translation>确定</translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.ui" line="811"/>
+        <location filename="../forms/preferencesdialog.ui" line="822"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="46"/>
-        <location filename="../forms/preferencesdialog.cpp" line="64"/>
-        <location filename="../forms/preferencesdialog.cpp" line="85"/>
+        <location filename="../forms/preferencesdialog.cpp" line="31"/>
+        <source>Please select a subtitle file</source>
+        <translation>请选择一个字幕文件</translation>
+    </message>
+    <message>
+        <location filename="../forms/preferencesdialog.cpp" line="31"/>
+        <source>Subtitles (*.ass *.ssa *.srt *.sup);;All files (*)</source>
+        <translation>字幕 (*.ass *.ssa *.srt *.sup);;所有文件 (*)</translation>
+    </message>
+    <message>
+        <location filename="../forms/preferencesdialog.cpp" line="53"/>
+        <location filename="../forms/preferencesdialog.cpp" line="71"/>
+        <location filename="../forms/preferencesdialog.cpp" line="92"/>
         <source>ID: %0 | Title: %1 | Language: %2</source>
         <translation>ID：%0 | 标题：%1 | 语言：%2</translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="93"/>
+        <location filename="../forms/preferencesdialog.cpp" line="100"/>
         <source>File: %0</source>
         <translation>文件：%0</translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="176"/>
+        <location filename="../forms/preferencesdialog.cpp" line="183"/>
         <source>Application restart is needed to apply this change.</source>
         <translation>重启此应用程序以生效。</translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="215"/>
+        <location filename="../forms/preferencesdialog.cpp" line="222"/>
         <source>Please select a media file</source>
         <translation>请选择一个媒体文件</translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="215"/>
+        <location filename="../forms/preferencesdialog.cpp" line="222"/>
         <source>Videos (*.avi *.mp4 *.mkv *.flv);;Audios (*.mp3 *.flac *.ape *.wav);;Pictures (*.bmp *.jpg *.jpeg *.png *.gif);;All files (*)</source>
         <translation>视频 (*.avi *.mp4 *.mkv *.flv);;音频 (*.mp3 *.flac *.ape *.wav);;图片 (*.bmp *.jpg *.jpeg *.png *.gif);;所有文件 (*)</translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="223"/>
+        <location filename="../forms/preferencesdialog.cpp" line="230"/>
         <source>Please input a valid URL</source>
         <translation>请输入一个有效的网址</translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="235"/>
+        <location filename="../forms/preferencesdialog.cpp" line="242"/>
         <source>&quot;%0&quot; is not a valid URL.</source>
         <translation>“%0”不是一个有效的网址。</translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="246"/>
-        <location filename="../forms/preferencesdialog.cpp" line="252"/>
-        <location filename="../forms/preferencesdialog.cpp" line="258"/>
-        <location filename="../forms/preferencesdialog.cpp" line="264"/>
+        <location filename="../forms/preferencesdialog.cpp" line="253"/>
+        <location filename="../forms/preferencesdialog.cpp" line="259"/>
+        <location filename="../forms/preferencesdialog.cpp" line="265"/>
+        <location filename="../forms/preferencesdialog.cpp" line="271"/>
         <source>Restart this application to experience it.
 Make sure this application runs in your GPU&apos;s Optimus mode.</source>
         <translation>重新运行此程序以体验改变。
 请确保此程序是以您的图形处理器在高性能模式运行的。</translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="266"/>
+        <location filename="../forms/preferencesdialog.cpp" line="273"/>
         <source>Auto detect</source>
         <translation>自动检测</translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="267"/>
+        <location filename="../forms/preferencesdialog.cpp" line="274"/>
         <source>System</source>
         <translation>系统</translation>
     </message>
@@ -366,7 +381,7 @@ Do not continue running it if you are not a developer!</source>
         <translation>退出</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="442"/>
+        <location filename="../main.cpp" line="441"/>
         <source>Cannot get &quot;Program Manager&quot;&apos;s handle. Application aborting.</source>
         <translation>无法获取“Program Manager”的句柄。程序正在退出。</translation>
     </message>

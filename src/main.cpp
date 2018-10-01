@@ -372,21 +372,15 @@ int main(int argc, char *argv[])
         [=, &player](int id)
         {
             if (player.isLoaded())
-            {
-                SettingsManager::getInstance()->setCurrentVideoStream(id);
                 if (id != player.currentVideoStream())
                     player.setVideoStream(id);
-            }
         });
     QObject::connect(&preferencesDialog, &PreferencesDialog::audioTrackChanged,
         [=, &player](int id)
         {
             if (player.isLoaded())
-            {
-                SettingsManager::getInstance()->setCurrentAudioStream(id);
                 if (id != player.currentAudioStream())
                     player.setAudioStream(id);
-            }
         });
     QObject::connect(&preferencesDialog, &PreferencesDialog::subtitleTrackChanged,
         [=, &player, &subtitle](const QVariant &track)
@@ -394,17 +388,22 @@ int main(int argc, char *argv[])
             if (player.isLoaded())
             {
                 const QString newSubFile = track.toString();
-                SettingsManager::getInstance()->setCurrentSubtitleStream(newSubFile);
                 if (QFileInfo::exists(newSubFile) && subtitle.file() != newSubFile)
                     subtitle.setFile(newSubFile);
                 else
                 {
                     int id = track.toInt();
-                    SettingsManager::getInstance()->setCurrentSubtitleStream(id);
                     if (id != player.currentSubtitleStream())
                         player.setSubtitleStream(id);
                 }
             }
+        });
+    QObject::connect(&preferencesDialog, &PreferencesDialog::subtitleOpened,
+        [=, &player, &subtitle](const QString &subPath)
+        {
+            if (player.isLoaded())
+                if (subtitle.file() != subPath)
+                    subtitle.setFile(subPath);
         });
     QObject::connect(&preferencesDialog, &PreferencesDialog::charsetChanged,
         [=, &subtitle](const QString &charset)
