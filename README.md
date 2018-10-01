@@ -20,11 +20,13 @@ A small tool that can play videos on your desktop.
 Microsoft Windows 7 ~ 10, both 32 bit and 64 bit systems.
 
 ## Important notes
+- Windows Vista and XP are not supported
 - Enable Windows Aero first
 - Win7 users only: make sure you have installed XAudio2
 - To experience **Hardware Accelerated Decoding** better, make sure this tool runs with your high performance GPU(on Optimus)
 - The CPU and memory usage will increase enormously if you are using software decoding
 - It would be nice if you update your graphics card driver to the latest version
+- It's not recommended to run this tool in virtual machines, because the graphics card drivers of virtual machines are usually out-dated and even not completed.
 
 ## Compilation
 - Download [Qt5](http://download.qt.io/archive/qt/) and install it.
