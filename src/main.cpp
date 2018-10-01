@@ -22,6 +22,7 @@
 #include <QVersionNumber>
 #include <QCommandLineParser>
 #include <QFileInfo>
+#include <QDir>
 
 //https://github.com/ThomasHuai/Wallpaper/blob/master/utils.cpp
 HWND HWORKERW = nullptr;
