@@ -99,7 +99,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
                     else
                     {
                         QString file = trackData[QStringLiteral("file")].toString();
-                        QString txt = tr("File: %0").arg(file);
+                        QString txt = tr("File: %0").arg(QFileInfo(file).fileName());
                         ui->comboBox_subtitle_track->addItem(txt, file);
                     }
                 }
