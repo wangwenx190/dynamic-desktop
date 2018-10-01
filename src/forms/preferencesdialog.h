@@ -11,7 +11,6 @@ class PreferencesDialog : public FramelessWindow
     Q_OBJECT
 
 signals:
-    void play();
     void pause();
     void muteChanged(bool);
     void volumeChanged(unsigned int);

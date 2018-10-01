@@ -27,6 +27,7 @@ Microsoft Windows 7 ~ 10, both 32 bit and 64 bit systems.
 - The CPU and memory usage will increase enormously if you are using software decoding
 - It would be nice if you update your graphics card driver to the latest version
 - It's not recommended to run this tool in virtual machines, because the graphics card drivers of virtual machines are usually out-dated and even not completed.
+- If there is no picture but sound in the video, please switch the hardware decoding algorithm or just use software decoding
 
 ## Compilation
 - Download [Qt5](http://download.qt.io/archive/qt/) and install it.

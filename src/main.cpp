@@ -157,46 +157,12 @@ int main(int argc, char *argv[])
     subtitle.setEngines(QStringList() << QStringLiteral("LibASS") << QStringLiteral("FFmpeg"));
     subtitle.setAutoLoad(SettingsManager::getInstance()->getSubtitleAutoLoad());
     subtitle.setEnabled(SettingsManager::getInstance()->getSubtitle());
-    if (SettingsManager::getInstance()->getHwdec())
-    {
-        QStringList decoders = SettingsManager::getInstance()->getDecoders();
-        if (!decoders.contains(QStringLiteral("FFmpeg")))
-            decoders << QStringLiteral("FFmpeg");
-        player.setVideoDecoderPriority(decoders);
-        if (decoders.contains(QStringLiteral("CUDA")))
-        {
-            QVariantHash cuda_opt;
-            cuda_opt[QStringLiteral("surfaces")] = 0;
-            cuda_opt[QStringLiteral("copyMode")] = QStringLiteral("ZeroCopy");
-            QVariantHash opt;
-            opt[QStringLiteral("CUDA")] = cuda_opt;
-            player.setOptionsForVideoCodec(opt);
-        }
-        if (decoders.contains(QStringLiteral("D3D11")))
-        {
-            QVariantHash d3d11_opt;
-            //d3d11_opt[QStringLiteral("???")] = ???;
-            d3d11_opt[QStringLiteral("copyMode")] = QStringLiteral("ZeroCopy");
-            QVariantHash opt;
-            opt[QStringLiteral("D3D11")] = d3d11_opt;
-            player.setOptionsForVideoCodec(opt);
-        }
-        if (decoders.contains(QStringLiteral("DXVA")))
-        {
-            QVariantHash dxva_opt;
-            //dxva_opt[QStringLiteral("???")] = ???;
-            dxva_opt[QStringLiteral("copyMode")] = QStringLiteral("ZeroCopy");
-            QVariantHash opt;
-            opt[QStringLiteral("DXVA")] = dxva_opt;
-            player.setOptionsForVideoCodec(opt);
-        }
-    }
     player.setRepeat(-1);
     PreferencesDialog preferencesDialog;
     AboutDialog aboutDialog;
-    QObject::connect(&player, SIGNAL(stopped()), &player, SLOT(play()));
+    //QObject::connect(&player, SIGNAL(stopped()), &player, SLOT(play()));
     QObject::connect(&player, SIGNAL(positionChanged(qint64)), &preferencesDialog, SIGNAL(updateVideoSlider(qint64)));
-    QObject::connect(&player, &QtAV::AVPlayer::loaded,
+    QObject::connect(&player, &QtAV::AVPlayer::started,
         [=, &preferencesDialog, &player, &subtitle]
         {
             preferencesDialog.clearAllTracks();
@@ -262,14 +228,9 @@ int main(int argc, char *argv[])
     trayMenu.addSeparator();
     QAction *playAction = trayMenu.addAction(QObject::tr("Play"));
     QObject::connect(playAction, &QAction::triggered,
-        [=, &renderer, &player]
+        [=, &preferencesDialog]
         {
-            if (player.isLoaded())
-            {
-                if (renderer.isHidden())
-                    renderer.show();
-                player.play();
-            }
+            preferencesDialog.urlChanged(QString());
         });
     trayMenu.addAction(QObject::tr("Pause"), &player, SLOT(pause()));
     QAction *muteAction = trayMenu.addAction(QObject::tr("Mute"));
@@ -307,14 +268,6 @@ int main(int argc, char *argv[])
         muteAction->setEnabled(false);
         preferencesDialog.setVolumeAreaEnabled(false);
     }
-    if (!SettingsManager::getInstance()->getUrl().isEmpty())
-    {
-        if (renderer.isHidden())
-            renderer.show();
-        player.play(SettingsManager::getInstance()->getUrl());
-    }
-    else
-        optionsAction->triggered();
     QObject::connect(&trayIcon, &QSystemTrayIcon::activated,
         [=](QSystemTrayIcon::ActivationReason reason)
         {
@@ -322,17 +275,50 @@ int main(int argc, char *argv[])
                 optionsAction->triggered();
         });
     QObject::connect(&preferencesDialog, SIGNAL(about()), aboutAction, SIGNAL(triggered()));
-    QObject::connect(&preferencesDialog, SIGNAL(play()), playAction, SIGNAL(triggered()));
     QObject::connect(&preferencesDialog, SIGNAL(pause()), &player, SLOT(pause()));
     QObject::connect(&preferencesDialog, &PreferencesDialog::urlChanged,
         [=, &player, &renderer](const QString &url)
         {
-            if (!url.isEmpty())
+            if (SettingsManager::getInstance()->getHwdec())
             {
-                if (renderer.isHidden())
-                    renderer.show();
-                player.play(url);
+                QStringList decoders = SettingsManager::getInstance()->getDecoders();
+                if (!decoders.contains(QStringLiteral("FFmpeg")))
+                    decoders << QStringLiteral("FFmpeg");
+                player.setVideoDecoderPriority(decoders);
+                if (decoders.contains(QStringLiteral("CUDA")))
+                {
+                    QVariantHash cuda_opt;
+                    cuda_opt[QStringLiteral("surfaces")] = 0;
+                    cuda_opt[QStringLiteral("copyMode")] = QStringLiteral("ZeroCopy");
+                    QVariantHash opt;
+                    opt[QStringLiteral("CUDA")] = cuda_opt;
+                    player.setOptionsForVideoCodec(opt);
+                }
+                if (decoders.contains(QStringLiteral("D3D11")))
+                {
+                    QVariantHash d3d11_opt;
+                    //d3d11_opt[QStringLiteral("???")] = ???;
+                    d3d11_opt[QStringLiteral("copyMode")] = QStringLiteral("ZeroCopy");
+                    QVariantHash opt;
+                    opt[QStringLiteral("D3D11")] = d3d11_opt;
+                    player.setOptionsForVideoCodec(opt);
+                }
+                if (decoders.contains(QStringLiteral("DXVA")))
+                {
+                    QVariantHash dxva_opt;
+                    //dxva_opt[QStringLiteral("???")] = ???;
+                    dxva_opt[QStringLiteral("copyMode")] = QStringLiteral("ZeroCopy");
+                    QVariantHash opt;
+                    opt[QStringLiteral("DXVA")] = dxva_opt;
+                    player.setOptionsForVideoCodec(opt);
+                }
             }
+            if (renderer.isHidden())
+                renderer.show();
+            if (!url.isEmpty())
+                player.play(url);
+            else
+                player.play();
         });
     QObject::connect(&preferencesDialog, &PreferencesDialog::volumeChanged,
         [=, &player](unsigned int volume)
@@ -427,6 +413,14 @@ int main(int argc, char *argv[])
         {
             subtitle.setEnabled(enabled);
         });
+    if (!SettingsManager::getInstance()->getUrl().isEmpty())
+    {
+        if (renderer.isHidden())
+            renderer.show();
+        preferencesDialog.urlChanged(SettingsManager::getInstance()->getUrl());
+    }
+    else
+        optionsAction->triggered();
     HWND hworkerw = nullptr;
     auto hrenderer = reinterpret_cast<HWND>(renderer.winId());
     QVersionNumber win10Version(10, 0, 10240); // Windows 10 Version 1507

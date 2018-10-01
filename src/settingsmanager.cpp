@@ -112,6 +112,14 @@ QString SettingsManager::getUrl() const
     return QUrl::fromPercentEncoding(url.toEncoded());
 }
 
+QString SettingsManager::lastDir() const
+{
+    QString url = getUrl();
+    if (QFileInfo::exists(url))
+        return QFileInfo(url).dir().absolutePath();
+    return QStringLiteral(".");
+}
+
 bool SettingsManager::getMute() const
 {
     return settings->value(QStringLiteral("dd/mute"), false).toBool();

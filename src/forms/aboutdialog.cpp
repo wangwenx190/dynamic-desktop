@@ -17,7 +17,7 @@ AboutDialog::AboutDialog(QWidget *parent) :
     ui->lineEdit_commit_time->setText(QStringLiteral(DD_COMMIT_TIME));
     ui->lineEdit_qt->setText(QStringLiteral(QT_VERSION_STR));
     ui->lineEdit_qtav->setText(QStringLiteral(QTAV_VERSION_STR));
-    ui->lineEdit_ffmpeg->setText(QStringLiteral("4.0.2-git"));
+    ui->lineEdit_ffmpeg->setText(QStringLiteral(FFMPEG_VERSION_STR));
     QString compiler;
 #ifdef __clang__
     compiler = QStringLiteral("Clang v%0.%1.%2").arg(__clang_major__).arg(__clang_minor__).arg(__clang_patchlevel__);

@@ -9,12 +9,12 @@
 - [ ] Support only playing audios
 - [ ] Support showing pictures on desktop
 - [ ] Auto update? (**maybe useless**)
-- [ ] Support selecting video/audio/subtitle tracks
-- [ ] Support auto load external audio/subtitle files
+- [x] Support selecting video/audio/subtitle tracks
+- [x] Support auto load external audio/subtitle files
 - [ ] Play videos seamlessly
 - [ ] Support Windows XP? (**insignificant, mostly not**)
 - [ ] Support playlist
-- [ ] Support changing video position
+- [x] Support changing video position
 - [ ] Trim Qt libraries to make them much smaller, but don't affect their performances
 - [ ] Keep the libraries, compilers and even the standards always up-to-date
 - [ ] Find bugs and fix them

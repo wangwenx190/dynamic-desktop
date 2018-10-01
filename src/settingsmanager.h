@@ -13,6 +13,7 @@ public:
 
     QStringList defaultDecoders() const;
     QStringList supportedMimeTypes() const;
+    QString lastDir() const;
 
     QString getUrl() const;
     bool getMute() const;

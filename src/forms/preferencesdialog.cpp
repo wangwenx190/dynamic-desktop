@@ -28,18 +28,14 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
     connect(ui->pushButton_audio_open, &QPushButton::clicked,
         [=]
         {
-            QString lastDir = SettingsManager::getInstance()->getUrl();
-            lastDir = lastDir.isEmpty() ? QStringLiteral(".") : QFileInfo(lastDir).dir().absolutePath();
-            QString audioPath = QFileDialog::getOpenFileName(nullptr, tr("Please select an audio file"), lastDir, tr("Audios (*.mka *.aac *.flac *.mp3 *.wav);;All files (*)"));
+            QString audioPath = QFileDialog::getOpenFileName(nullptr, tr("Please select an audio file"), SettingsManager::getInstance()->lastDir(), tr("Audios (*.mka *.aac *.flac *.mp3 *.wav);;All files (*)"));
             if (!audioPath.isEmpty())
                 emit this->audioOpened(audioPath);
         });
     connect(ui->pushButton_subtitle_open, &QPushButton::clicked,
         [=]
         {
-            QString lastDir = SettingsManager::getInstance()->getUrl();
-            lastDir = lastDir.isEmpty() ? QStringLiteral(".") : QFileInfo(lastDir).dir().absolutePath();
-            QString subtitlePath = QFileDialog::getOpenFileName(nullptr, tr("Please select a subtitle file"), lastDir, tr("Subtitles (*.ass *.ssa *.srt *.sup);;All files (*)"));
+            QString subtitlePath = QFileDialog::getOpenFileName(nullptr, tr("Please select a subtitle file"), SettingsManager::getInstance()->lastDir(), tr("Subtitles (*.ass *.ssa *.srt *.sup);;All files (*)"));
             if (!subtitlePath.isEmpty())
                 emit this->subtitleOpened(subtitlePath);
         });
@@ -215,7 +211,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
             if (ui->lineEdit_url->text() != SettingsManager::getInstance()->getUrl())
                 emit this->urlChanged(ui->lineEdit_url->text());
             else
-                emit this->play();
+                emit this->urlChanged(QString());
         });
     connect(ui->pushButton_pause, SIGNAL(clicked()), this, SIGNAL(pause()));
     connect(ui->pushButton_cancel, SIGNAL(clicked()), this, SLOT(close()));
@@ -229,9 +225,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
     connect(ui->pushButton_url_browse, &QPushButton::clicked,
         [=]
         {
-            QString lastDir = SettingsManager::getInstance()->getUrl();
-            lastDir = lastDir.isEmpty() ? QStringLiteral(".") : QFileInfo(lastDir).dir().absolutePath();
-            QString path = QFileDialog::getOpenFileName(nullptr, tr("Please select a media file"), lastDir, tr("Videos (*.avi *.mp4 *.mkv *.flv);;Audios (*.mp3 *.flac *.ape *.wav);;Pictures (*.bmp *.jpg *.jpeg *.png *.gif);;All files (*)"));
+            QString path = QFileDialog::getOpenFileName(nullptr, tr("Please select a media file"), SettingsManager::getInstance()->lastDir(), tr("Videos (*.avi *.mp4 *.mkv *.flv);;Audios (*.mp3 *.flac *.ape *.wav);;Pictures (*.bmp *.jpg *.jpeg *.png *.gif);;All files (*)"));
             if (!path.isEmpty())
                 ui->lineEdit_url->setText(QDir::toNativeSeparators(path));
         });
@@ -262,25 +256,25 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
             ui->checkBox_hwdec_d3d11->setEnabled(hwdecEnabled);
             ui->checkBox_hwdec_dxva->setEnabled(hwdecEnabled);
             if (this->isVisible() && this->isActiveWindow())
-                QMessageBox::information(nullptr, QStringLiteral("Dynamic Desktop"), tr("Restart this application to experience it.\nMake sure this application runs in your GPU's Optimus mode."));
+                QMessageBox::information(nullptr, QStringLiteral("Dynamic Desktop"), tr("Reopen this video or play another video to experience it.\nMake sure this application runs in your GPU's Optimus mode."));
         });
     connect(ui->checkBox_hwdec_cuda, &QCheckBox::stateChanged,
         [=]
         {
             if (this->isVisible() && this->isActiveWindow())
-                QMessageBox::information(nullptr, QStringLiteral("Dynamic Desktop"), tr("Restart this application to experience it.\nMake sure this application runs in your GPU's Optimus mode."));
+                QMessageBox::information(nullptr, QStringLiteral("Dynamic Desktop"), tr("Reopen this video or play another video to experience it.\nMake sure this application runs in your GPU's Optimus mode."));
         });
     connect(ui->checkBox_hwdec_d3d11, &QCheckBox::stateChanged,
         [=]
         {
             if (this->isVisible() && this->isActiveWindow())
-                QMessageBox::information(nullptr, QStringLiteral("Dynamic Desktop"), tr("Restart this application to experience it.\nMake sure this application runs in your GPU's Optimus mode."));
+                QMessageBox::information(nullptr, QStringLiteral("Dynamic Desktop"), tr("Reopen this video or play another video to experience it.\nMake sure this application runs in your GPU's Optimus mode."));
         });
     connect(ui->checkBox_hwdec_dxva, &QCheckBox::stateChanged,
         [=]
         {
             if (this->isVisible() && this->isActiveWindow())
-                QMessageBox::information(nullptr, QStringLiteral("Dynamic Desktop"), tr("Restart this application to experience it.\nMake sure this application runs in your GPU's Optimus mode."));
+                QMessageBox::information(nullptr, QStringLiteral("Dynamic Desktop"), tr("Reopen this video or play another video to experience it.\nMake sure this application runs in your GPU's Optimus mode."));
         });
     ui->comboBox_subtitle_charset->addItem(tr("Auto detect"), QStringLiteral("AutoDetect"));
     ui->comboBox_subtitle_charset->addItem(tr("System"), QStringLiteral("System"));
