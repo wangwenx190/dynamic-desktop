@@ -32,8 +32,8 @@ init:
   - set "QTAVID=7ddf6db"
   - call "%QTDIR%\bin\qtenv2.bat"
   - call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat" x64
-  - cd /d "%APPVEYOR_BUILD_FOLDER%"
 install:
+  - cd /d "%APPVEYOR_BUILD_FOLDER%"
   - cd ci
   - if exist build rd /s /q build
   - md build

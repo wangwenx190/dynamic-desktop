@@ -344,27 +344,27 @@ Do not continue running it if you are not a developer!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="278"/>
+        <location filename="../main.cpp" line="274"/>
         <source>Pause</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="279"/>
+        <location filename="../main.cpp" line="275"/>
         <source>Mute</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="297"/>
+        <location filename="../main.cpp" line="289"/>
         <source>About</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="299"/>
+        <location filename="../main.cpp" line="291"/>
         <source>Exit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="502"/>
+        <location filename="../main.cpp" line="442"/>
         <source>Cannot get &quot;Program Manager&quot;&apos;s handle. Application aborting.</source>
         <translation type="unfinished"></translation>
     </message>
