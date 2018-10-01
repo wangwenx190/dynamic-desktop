@@ -25,6 +25,15 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
     setResizeableAreaWidth(5);
     setTitleBar(ui->widget_windowTitleBar);
     addIgnoreWidget(ui->label_windowTitle);
+    connect(ui->pushButton_audio_open, &QPushButton::clicked,
+        [=]
+        {
+            QString lastDir = SettingsManager::getInstance()->getUrl();
+            lastDir = lastDir.isEmpty() ? QStringLiteral(".") : QFileInfo(lastDir).dir().absolutePath();
+            QString audioPath = QFileDialog::getOpenFileName(nullptr, tr("Please select an audio file"), lastDir, tr("Audios (*.mka *.aac *.flac *.mp3 *.wav);;All files (*)"));
+            if (!audioPath.isEmpty())
+                emit this->audioOpened(audioPath);
+        });
     connect(ui->pushButton_subtitle_open, &QPushButton::clicked,
         [=]
         {

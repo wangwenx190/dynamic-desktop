@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>829</width>
-    <height>635</height>
+    <width>892</width>
+    <height>648</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -678,11 +678,22 @@ QRadioButton::indicator:checked {
        </layout>
       </item>
       <item>
-       <widget class="QCheckBox" name="checkBox_audio_autoLoadExternal">
-        <property name="text">
-         <string>Auto load external audio tracks</string>
-        </property>
-       </widget>
+       <layout class="QHBoxLayout" name="horizontalLayout_15">
+        <item>
+         <widget class="QCheckBox" name="checkBox_audio_autoLoadExternal">
+          <property name="text">
+           <string>Auto load external audio tracks</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pushButton_audio_open">
+          <property name="text">
+           <string>Open</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </item>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_9">

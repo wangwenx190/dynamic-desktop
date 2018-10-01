@@ -27,6 +27,7 @@ signals:
     void subtitleAutoLoadChanged(bool);
     void subtitleEnabled(bool);
     void subtitleOpened(const QString &);
+    void audioOpened(const QString &);
 
 signals:
     void refreshUi();

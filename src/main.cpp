@@ -392,7 +392,7 @@ int main(int argc, char *argv[])
                     subtitle.setFile(newSubFile);
                 else
                 {
-                    int id = track.toInt();
+                    unsigned int id = track.toUInt();
                     if (id != player.currentSubtitleStream())
                         player.setSubtitleStream(id);
                 }
@@ -404,6 +404,12 @@ int main(int argc, char *argv[])
             if (player.isLoaded())
                 if (subtitle.file() != subPath)
                     subtitle.setFile(subPath);
+        });
+    QObject::connect(&preferencesDialog, &PreferencesDialog::audioOpened,
+        [=, &player](const QString &audioPath)
+        {
+            if (player.isLoaded() && player.audio())
+                setExternalAudio(audioPath);
         });
     QObject::connect(&preferencesDialog, &PreferencesDialog::charsetChanged,
         [=, &subtitle](const QString &charset)
