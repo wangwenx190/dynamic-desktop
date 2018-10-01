@@ -369,14 +369,14 @@ int main(int argc, char *argv[])
                 renderer.setOutAspectRatioMode(QtAV::VideoRenderer::VideoAspectRatio);
         });
     QObject::connect(&preferencesDialog, &PreferencesDialog::videoTrackChanged,
-        [=, &player](int id)
+        [=, &player](unsigned int id)
         {
             if (player.isLoaded())
                 if (id != player.currentVideoStream())
                     player.setVideoStream(id);
         });
     QObject::connect(&preferencesDialog, &PreferencesDialog::audioTrackChanged,
-        [=, &player](int id)
+        [=, &player](unsigned int id)
         {
             if (player.isLoaded())
                 if (id != player.currentAudioStream())

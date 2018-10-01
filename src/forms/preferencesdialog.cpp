@@ -46,15 +46,15 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
         {
             if (!videoTracks.isEmpty())
             {
+                ui->comboBox_video_track->clear();
                 for (auto& track : videoTracks)
                 {
                     QVariantMap trackData = track.toMap();
-                    int id = trackData[QStringLiteral("id")].toInt();
+                    unsigned int id = trackData[QStringLiteral("id")].toUInt();
                     QString lang = trackData[QStringLiteral("language")].toString();
                     QString title = trackData[QStringLiteral("title")].toString();
                     QString txt = tr("ID: %0 | Title: %1 | Language: %2")
                             .arg(id).arg(title).arg(lang);
-                    ui->comboBox_video_track->clear();
                     ui->comboBox_video_track->addItem(txt, id);
                 }
             }
@@ -64,16 +64,16 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
         {
             if (!audioTracks.isEmpty())
             {
+                if (!add)
+                    ui->comboBox_audio_track->clear();
                 for (auto& track : audioTracks)
                 {
                     QVariantMap trackData = track.toMap();
-                    int id = trackData[QStringLiteral("id")].toInt();
+                    unsigned int id = trackData[QStringLiteral("id")].toUInt();
                     QString lang = trackData[QStringLiteral("language")].toString();
                     QString title = trackData[QStringLiteral("title")].toString();
                     QString txt = tr("ID: %0 | Title: %1 | Language: %2")
                             .arg(id).arg(title).arg(lang);
-                    if (!add)
-                        ui->comboBox_audio_track->clear();
                     ui->comboBox_audio_track->addItem(txt, id);
                 }
             }
@@ -83,17 +83,18 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
         {
             if (!subtitleTracks.isEmpty())
             {
+                if (!add)
+                    ui->comboBox_subtitle_track->clear();
                 for (auto& track : subtitleTracks)
                 {
                     QVariantMap trackData = track.toMap();
                     if (!add)
                     {
-                        int id = trackData[QStringLiteral("id")].toInt();
+                        unsigned int id = trackData[QStringLiteral("id")].toUInt();
                         QString lang = trackData[QStringLiteral("language")].toString();
                         QString title = trackData[QStringLiteral("title")].toString();
                         QString txt = tr("ID: %0 | Title: %1 | Language: %2")
                                 .arg(id).arg(title).arg(lang);
-                        ui->comboBox_subtitle_track->clear();
                         ui->comboBox_subtitle_track->addItem(txt, id);
                     }
                     else
