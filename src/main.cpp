@@ -439,6 +439,7 @@ int main(int argc, char *argv[])
     else
     {
         QMessageBox::critical(nullptr, QStringLiteral("Dynamic Desktop"), QObject::tr("Cannot get \"Program Manager\"'s handle. Application aborting."));
+        ShowWindow(HWORKERW, SW_HIDE);
         ReleaseMutex(mutex);
         CloseHandle(mutex);
         return 0;
