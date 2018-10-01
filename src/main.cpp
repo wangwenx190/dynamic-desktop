@@ -409,7 +409,7 @@ int main(int argc, char *argv[])
         [=, &player](const QString &audioPath)
         {
             if (player.isLoaded() && player.audio())
-                setExternalAudio(audioPath);
+                player.setExternalAudio(audioPath);
         });
     QObject::connect(&preferencesDialog, &PreferencesDialog::charsetChanged,
         [=, &subtitle](const QString &charset)
