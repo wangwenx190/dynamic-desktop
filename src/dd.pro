@@ -9,7 +9,7 @@ contains(QT_ARCH, x86_64) {
     TARGET = $$join(TARGET,,,64)
 }
 CONFIG(debug, debug|release): TARGET = $$join(TARGET,,,d)
-QT += gui widgets avwidgets concurrent
+QT += gui widgets avwidgets
 TEMPLATE = app
 DEFINES += QT_DEPRECATED_WARNINGS QT_DISABLE_DEPRECATED_BEFORE=0x050603
 CONFIG *= c++11
@@ -55,16 +55,16 @@ CONFIG(static) {
     }
     qtavlibs.path = $$BIN_DIR
     qtavlibs.files = \
-        $$[QT_INSTALL_BINS]/Qt*OpenGL.dll \
-        $$[QT_INSTALL_BINS]/Qt*AV*.dll \
+        $$[QT_INSTALL_BINS]/Qt?OpenGL.dll \
+        $$[QT_INSTALL_BINS]/Qt?AV*.dll \
         $$[QT_INSTALL_BINS]/OpenAL32*.dll \
-        $$[QT_INSTALL_BINS]/avcodec*.dll \
-        $$[QT_INSTALL_BINS]/avdevice*.dll \
-        $$[QT_INSTALL_BINS]/avfilter*.dll \
-        $$[QT_INSTALL_BINS]/avformat*.dll \
-        $$[QT_INSTALL_BINS]/avutil*.dll \
-        $$[QT_INSTALL_BINS]/swresample*.dll \
-        $$[QT_INSTALL_BINS]/swscale*.dll \
+        $$[QT_INSTALL_BINS]/avcodec-*.dll \
+        $$[QT_INSTALL_BINS]/avdevice-*.dll \
+        $$[QT_INSTALL_BINS]/avfilter-*.dll \
+        $$[QT_INSTALL_BINS]/avformat-*.dll \
+        $$[QT_INSTALL_BINS]/avutil-*.dll \
+        $$[QT_INSTALL_BINS]/swresample-*.dll \
+        $$[QT_INSTALL_BINS]/swscale-*.dll \
         $$[QT_INSTALL_BINS]/*ass.dll
     isEmpty(windeployqt): windeployqt = $$[QT_INSTALL_BINS]/windeployqt.exe
     exists("$${windeployqt}") {

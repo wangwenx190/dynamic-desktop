@@ -20,7 +20,6 @@
 #endif
 #include <QSysInfo>
 #include <QVersionNumber>
-#include <QtConcurrent>
 #include <QCommandLineParser>
 #include <QFileInfo>
 
@@ -268,11 +267,7 @@ int main(int argc, char *argv[])
             {
                 if (renderer.isHidden())
                     renderer.show();
-                QtConcurrent::run(
-                    [=, &player]
-                    {
-                        player.play();
-                    });
+                player.play();
             }
         });
     trayMenu.addAction(QObject::tr("Pause"), &player, SLOT(pause()));
@@ -286,11 +281,7 @@ int main(int argc, char *argv[])
                 muteAction->setChecked(checked);
                 SettingsManager::getInstance()->setMute(checked);
                 preferencesDialog.updateVolumeArea();
-                QtConcurrent::run(
-                    [=, &player]
-                    {
-                        player.audio()->setMute(checked);
-                    });
+                player.audio()->setMute(checked);
             }
         });
     trayMenu.addSeparator();
@@ -304,12 +295,8 @@ int main(int argc, char *argv[])
     trayIcon.show();
     if (player.audio())
     {
-        QtConcurrent::run(
-            [=, &player]
-            {
-                player.audio()->setVolume(static_cast<qreal>(SettingsManager::getInstance()->getVolume() / 10.0));
-                player.audio()->setMute(SettingsManager::getInstance()->getMute());
-            });
+        player.audio()->setVolume(static_cast<qreal>(SettingsManager::getInstance()->getVolume() / 10.0));
+        player.audio()->setMute(SettingsManager::getInstance()->getMute());
         muteAction->setCheckable(true);
         muteAction->setChecked(SettingsManager::getInstance()->getMute());
     }
@@ -323,11 +310,7 @@ int main(int argc, char *argv[])
     {
         if (renderer.isHidden())
             renderer.show();
-        QtConcurrent::run(
-            [=, &player]
-            {
-                player.play(SettingsManager::getInstance()->getUrl());
-            });
+        player.play(SettingsManager::getInstance()->getUrl());
     }
     else
         optionsAction->triggered();
@@ -347,22 +330,14 @@ int main(int argc, char *argv[])
             {
                 if (renderer.isHidden())
                     renderer.show();
-                QtConcurrent::run(
-                    [=, &player]
-                    {
-                        player.play(url);
-                    });
+                player.play(url);
             }
         });
     QObject::connect(&preferencesDialog, &PreferencesDialog::volumeChanged,
         [=, &player](unsigned int volume)
         {
             if (player.audio())
-                QtConcurrent::run(
-                    [=, &player]
-                    {
-                        player.audio()->setVolume(static_cast<qreal>(volume / 10.0));
-                    });
+                player.audio()->setVolume(static_cast<qreal>(volume / 10.0));
         });
     QObject::connect(&preferencesDialog, &PreferencesDialog::muteChanged,
         [=, &player](bool mute)
@@ -382,27 +357,15 @@ int main(int argc, char *argv[])
         [=, &player](qint64 value)
         {
             if (player.isPlaying())
-                QtConcurrent::run(
-                    [=, &player]
-                    {
-                        player.seek(value);
-                    });
+                player.seek(value);
         });
     QObject::connect(&preferencesDialog, &PreferencesDialog::pictureRatioChanged,
         [=, &renderer](bool fitDesktop)
         {
             if (fitDesktop)
-                QtConcurrent::run(
-                    [=, &renderer]
-                    {
-                        renderer.setOutAspectRatioMode(QtAV::VideoRenderer::RendererAspectRatio);
-                    });
+                renderer.setOutAspectRatioMode(QtAV::VideoRenderer::RendererAspectRatio);
             else
-                QtConcurrent::run(
-                    [=, &renderer]
-                    {
-                        renderer.setOutAspectRatioMode(QtAV::VideoRenderer::VideoAspectRatio);
-                    });
+                renderer.setOutAspectRatioMode(QtAV::VideoRenderer::VideoAspectRatio);
         });
     QObject::connect(&preferencesDialog, &PreferencesDialog::videoTrackChanged,
         [=, &player](int id)
@@ -411,11 +374,7 @@ int main(int argc, char *argv[])
             {
                 SettingsManager::getInstance()->setCurrentVideoStream(id);
                 if (id != player.currentVideoStream())
-                    QtConcurrent::run(
-                        [=, &player]
-                        {
-                            player.setVideoStream(id);
-                        });
+                    player.setVideoStream(id);
             }
         });
     QObject::connect(&preferencesDialog, &PreferencesDialog::audioTrackChanged,
@@ -425,11 +384,7 @@ int main(int argc, char *argv[])
             {
                 SettingsManager::getInstance()->setCurrentAudioStream(id);
                 if (id != player.currentAudioStream())
-                    QtConcurrent::run(
-                        [=, &player]
-                        {
-                            player.setAudioStream(id);
-                        });
+                    player.setAudioStream(id);
             }
         });
     QObject::connect(&preferencesDialog, &PreferencesDialog::subtitleTrackChanged,
@@ -440,21 +395,13 @@ int main(int argc, char *argv[])
                 const QString newSubFile = track.toString();
                 SettingsManager::getInstance()->setCurrentSubtitleStream(newSubFile);
                 if (QFileInfo::exists(newSubFile) && subtitle.file() != newSubFile)
-                    QtConcurrent::run(
-                        [=, &subtitle]
-                        {
-                            subtitle.setFile(newSubFile);
-                        });
+                    subtitle.setFile(newSubFile);
                 else
                 {
                     int id = track.toInt();
                     SettingsManager::getInstance()->setCurrentSubtitleStream(id);
                     if (id != player.currentSubtitleStream())
-                        QtConcurrent::run(
-                            [=, &player]
-                            {
-                                player.setSubtitleStream(id);
-                            });
+                        player.setSubtitleStream(id);
                 }
             }
         });
@@ -462,20 +409,12 @@ int main(int argc, char *argv[])
         [=, &subtitle](const QString &charset)
         {
             if (SettingsManager::getInstance()->getSubtitle())
-                QtConcurrent::run(
-                    [=, &subtitle]
-                    {
-                        subtitle.setCodec(charset.toLatin1());
-                    });
+                subtitle.setCodec(charset.toLatin1());
         });
     QObject::connect(&preferencesDialog, &PreferencesDialog::subtitleAutoLoadChanged,
         [=, &subtitle](bool autoload)
         {
-            QtConcurrent::run(
-                [=, &subtitle]
-                {
-                    subtitle.setAutoLoad(autoload);
-                });
+            subtitle.setAutoLoad(autoload);
         });
     QObject::connect(&preferencesDialog, &PreferencesDialog::subtitleEnabled,
         [=, &subtitle](bool enabled)
