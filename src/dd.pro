@@ -36,7 +36,7 @@ isEmpty(lupdate): lupdate = $$[QT_INSTALL_BINS]/lupdate.exe
 isEmpty(lrelease): lrelease = $$[QT_INSTALL_BINS]/lrelease.exe
 exists("$${lupdate}") {
     system("$${lupdate} -no-obsolete $${_PRO_FILE_}")
-    system("$${lrelease} -compress -nounfinished -removeidentical $${_PRO_FILE_}")
+    system("$${lrelease} -nounfinished -removeidentical $${_PRO_FILE_}")
 }
 target.path = $$BIN_DIR
 INSTALLS += target
@@ -50,7 +50,7 @@ CONFIG(static_dd) {
         $$PWD/translations/dd_zh_CN.qm
     exists("$${lupdate}") {
         translations.commands += $$quote(\"$${lupdate}\" -no-obsolete \"$${_PRO_FILE_}\")
-        translations.commands += $$quote(\"$${lrelease}\" -compress -nounfinished -removeidentical \"$${_PRO_FILE_}\")
+        translations.commands += $$quote(\"$${lrelease}\" -nounfinished -removeidentical \"$${_PRO_FILE_}\")
         translations.commands = $$join(translations.commands, $$escape_expand(\\n\\t))
     }
     qtavlibs.path = $$BIN_DIR
@@ -68,7 +68,7 @@ CONFIG(static_dd) {
         $$[QT_INSTALL_BINS]/*ass.dll
     isEmpty(windeployqt): windeployqt = $$[QT_INSTALL_BINS]/windeployqt.exe
     exists("$${windeployqt}") {
-        qtavlibs.commands = $$quote(\"$${windeployqt}\" --plugindir \"$${BIN_DIR}/plugins\" --force --no-translations --no-system-d3d-compiler --no-compiler-runtime --no-angle --no-opengl-sw \"$${BIN_DIR}/$${TARGET}.exe\")
+        qtavlibs.commands = $$quote(\"$${windeployqt}\" --plugindir \"$${BIN_DIR}/plugins\" --force --no-translations --compiler-runtime --angle --list source \"$${BIN_DIR}/$${TARGET}.exe\")
         qtavlibs.commands = $$join(qtavlibs.commands, $$escape_expand(\\n\\t))
     }
     INSTALLS += translations qtavlibs
