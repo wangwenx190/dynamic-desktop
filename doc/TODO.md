@@ -27,3 +27,5 @@
 - [ ] Use Windows Service to make this tool startup faster?
 - [ ] Support command line arguments
 - [ ] Support themes/skins
+- [ ] Detect runtime QtAV and FFmpeg version
+- [ ] Add options: Desktop OpenGL, ANGLE, software

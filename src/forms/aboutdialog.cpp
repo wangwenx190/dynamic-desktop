@@ -1,8 +1,7 @@
 ﻿#include "aboutdialog.h"
 #include "ui_aboutdialog.h"
 
-#include <QtAVWidgets>
-#include <QtAV/version.h>
+#include <QtAV>
 #include <QSysInfo>
 #include <QDesktopServices>
 #include <QUrl>
@@ -16,7 +15,7 @@ AboutDialog::AboutDialog(QWidget *parent) :
     ui->lineEdit_commit_id->setText(QStringLiteral(DD_COMMIT_ID));
     ui->lineEdit_commit_time->setText(QStringLiteral(DD_COMMIT_TIME));
     ui->lineEdit_qt->setText(QStringLiteral(QT_VERSION_STR));
-    ui->lineEdit_qtav->setText(QStringLiteral(QTAV_VERSION_STR));
+    ui->lineEdit_qtav->setText(QtAV_Version_String_Long());
     ui->lineEdit_ffmpeg->setText(QStringLiteral(FFMPEG_VERSION_STR));
     QString compiler;
 #ifdef __clang__
@@ -34,7 +33,7 @@ AboutDialog::AboutDialog(QWidget *parent) :
     connect(ui->pushButton_aboutQtAV, &QPushButton::clicked,
         [=]
         {
-            QtAV::about();
+            //QtAV::about();
         });
     connect(ui->pushButton_ok, SIGNAL(clicked()), this, SLOT(close()));
     connect(ui->pushButton_source, &QPushButton::clicked,
