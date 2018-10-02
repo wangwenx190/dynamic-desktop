@@ -40,8 +40,8 @@ exists("$${lupdate}") {
 }
 target.path = $$BIN_DIR
 INSTALLS += target
-CONFIG(static) {
-    DEFINES += STATIC
+CONFIG(static_dd) {
+    DEFINES += BUILD_DD_STATIC
     RESOURCES += i18n.qrc
 } else {
     translations.path = $$BIN_DIR/translations

@@ -1,5 +1,5 @@
 :: usage: call build.bat "mkspec" "config"
-:: eg: call build.bat "win32-icc" "release static small ltcg"
+:: eg: call build.bat "win32-icc" "release static_dd small ltcg"
 :: IMPORTANT: Double quotation marks are indispensable
 cd /d "%~dp0"
 if exist build rd /s /q build

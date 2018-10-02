@@ -15,7 +15,7 @@
 #include <QMessageBox>
 #include <QTranslator>
 #include <QLocale>
-#ifndef STATIC
+#ifndef BUILD_DD_STATIC
 #include <QLibraryInfo>
 #endif
 #include <QSysInfo>
@@ -127,7 +127,7 @@ int main(int argc, char *argv[])
     parser.addHelpOption();
     parser.addVersionOption();
     parser.process(app);
-#ifndef STATIC
+#ifndef BUILD_DD_STATIC
     if (QLibraryInfo::isDebugBuild())
         QMessageBox::warning(nullptr, QStringLiteral("Dynamic Desktop"), QObject::tr("WARNING: You are running a debug version of this tool!\nDo not continue running it if you are not a developer!"));
 #endif
