@@ -25,23 +25,18 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
     setResizeableAreaWidth(5);
     setTitleBar(ui->widget_windowTitleBar);
     addIgnoreWidget(ui->label_windowTitle);
-    connect(this, &PreferencesDialog::blockingSignals,
-        [=](bool block)
-        {
-            blocking = block;
-        });
     connect(ui->pushButton_audio_open, &QPushButton::clicked,
         [=]
         {
             QString audioPath = QFileDialog::getOpenFileName(nullptr, tr("Please select an audio file"), SettingsManager::getInstance()->lastDir(), tr("Audios (*.mka *.aac *.flac *.mp3 *.wav);;All files (*)"));
-            if (!audioPath.isEmpty() && !blocking)
+            if (!audioPath.isEmpty())
                 emit this->audioOpened(audioPath);
         });
     connect(ui->pushButton_subtitle_open, &QPushButton::clicked,
         [=]
         {
             QString subtitlePath = QFileDialog::getOpenFileName(nullptr, tr("Please select a subtitle file"), SettingsManager::getInstance()->lastDir(), tr("Subtitles (*.ass *.ssa *.srt *.sup);;All files (*)"));
-            if (!subtitlePath.isEmpty() && !blocking)
+            if (!subtitlePath.isEmpty())
                 emit this->subtitleOpened(subtitlePath);
         });
     connect(this, &PreferencesDialog::clearAllTracks,
@@ -140,8 +135,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
                 vol = 99;
             if (vol < 0)
                 vol = 0;
-            if (!blocking)
-                emit this->volumeChanged(static_cast<unsigned int>(vol));
+            emit this->volumeChanged(static_cast<unsigned int>(vol));
         });
     connect(ui->horizontalSlider_volume, &QSlider::sliderPressed,
         [=]
@@ -151,8 +145,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
                 value = 99;
             if (value < 0)
                 value = 0;
-            if (!blocking)
-                emit this->volumeChanged(static_cast<unsigned int>(value));
+            emit this->volumeChanged(static_cast<unsigned int>(value));
         });
     connect(this, &PreferencesDialog::setAudioAreaEnabled,
         [=](bool audioAvailable)
@@ -168,14 +161,12 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
     connect(ui->horizontalSlider_video_position, &QSlider::sliderMoved,
         [=](int value)
         {
-            if (!blocking)
-                emit this->seekBySlider(static_cast<qint64>(value * sliderUnit));
+            emit this->seekBySlider(static_cast<qint64>(value * sliderUnit));
         });
     connect(ui->horizontalSlider_video_position, &QSlider::sliderPressed,
         [=]
         {
-            if (!blocking)
-                emit this->seekBySlider(static_cast<qint64>(ui->horizontalSlider_video_position->value() * sliderUnit));
+            emit this->seekBySlider(static_cast<qint64>(ui->horizontalSlider_video_position->value() * sliderUnit));
         });
     connect(this, &PreferencesDialog::updateVideoSliderRange,
         [=](qint64 duration)
@@ -218,13 +209,9 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
         [=]
         {
             if (ui->lineEdit_url->text() != SettingsManager::getInstance()->getUrl())
-                if (!blocking)
-                {
-                    emit this->urlChanged(ui->lineEdit_url->text());
-                }
+                emit this->urlChanged(ui->lineEdit_url->text());
             else
-                if (!blocking)
-                    emit this->urlChanged(QString());
+                emit this->urlChanged(QString());
         });
     connect(ui->pushButton_pause, SIGNAL(clicked()), this, SIGNAL(pause()));
     connect(ui->pushButton_cancel, SIGNAL(clicked()), this, SLOT(close()));
@@ -389,31 +376,26 @@ void PreferencesDialog::saveSettings()
     if (ui->lineEdit_url->text() != SettingsManager::getInstance()->getUrl())
     {
         SettingsManager::getInstance()->setUrl(ui->lineEdit_url->text());
-        if (!blocking)
-            emit urlChanged(SettingsManager::getInstance()->getUrl());
+        emit urlChanged(SettingsManager::getInstance()->getUrl());
     }
     else
-        if (!blocking)
-        {
-            emit videoTrackChanged(ui->comboBox_video_track->currentData().toUInt());
-            emit audioTrackChanged(ui->comboBox_audio_track->currentData().toUInt());
-            emit subtitleTrackChanged(ui->comboBox_subtitle_track->currentData());
-        }
+    {
+        emit videoTrackChanged(ui->comboBox_video_track->currentData().toUInt());
+        emit audioTrackChanged(ui->comboBox_audio_track->currentData().toUInt());
+        emit subtitleTrackChanged(ui->comboBox_subtitle_track->currentData());
+    }
     if (ui->checkBox_volume->isChecked() != !SettingsManager::getInstance()->getMute())
     {
         SettingsManager::getInstance()->setMute(!ui->checkBox_volume->isChecked());
-        if (!blocking)
-            emit muteChanged(SettingsManager::getInstance()->getMute());
+        emit muteChanged(SettingsManager::getInstance()->getMute());
     }
     if (ui->horizontalSlider_volume->value() != SettingsManager::getInstance()->getVolume())
     {
         SettingsManager::getInstance()->setVolume(ui->horizontalSlider_volume->value());
-        if (!blocking)
-            emit volumeChanged(SettingsManager::getInstance()->getVolume());
+        emit volumeChanged(SettingsManager::getInstance()->getVolume());
     }
     SettingsManager::getInstance()->setAutostart(ui->checkBox_autoStart->isChecked());
-    if (!blocking)
-        emit autostartChanged(SettingsManager::getInstance()->getAutostart());
+    emit autostartChanged(SettingsManager::getInstance()->getAutostart());
     QStringList decoders;
     if (ui->checkBox_hwdec_cuda->isChecked())
         decoders << QStringLiteral("CUDA");
@@ -433,26 +415,22 @@ void PreferencesDialog::saveSettings()
     if (ui->radioButton_ratio_fitDesktop->isChecked() != SettingsManager::getInstance()->getFitDesktop())
     {
         SettingsManager::getInstance()->setFitDesktop(ui->radioButton_ratio_fitDesktop->isChecked());
-        if (!blocking)
-            emit pictureRatioChanged(SettingsManager::getInstance()->getFitDesktop());
+        emit pictureRatioChanged(SettingsManager::getInstance()->getFitDesktop());
     }
     if (ui->comboBox_subtitle_charset->currentData().toString() != SettingsManager::getInstance()->getCharset())
     {
         SettingsManager::getInstance()->setCharset(ui->comboBox_subtitle_charset->currentData().toString());
-        if (!blocking)
-            emit charsetChanged(SettingsManager::getInstance()->getCharset());
+        emit charsetChanged(SettingsManager::getInstance()->getCharset());
     }
     if (ui->checkBox_subtitle_autoLoadExternal->isChecked() != SettingsManager::getInstance()->getSubtitleAutoLoad())
     {
         SettingsManager::getInstance()->setSubtitleAutoLoad(ui->checkBox_subtitle_autoLoadExternal->isChecked());
-        if (!blocking)
-            emit subtitleAutoLoadChanged(SettingsManager::getInstance()->getSubtitleAutoLoad());
+        emit subtitleAutoLoadChanged(SettingsManager::getInstance()->getSubtitleAutoLoad());
     }
     if (ui->checkBox_displaySubtitle->isChecked() != SettingsManager::getInstance()->getSubtitle())
     {
         SettingsManager::getInstance()->setSubtitle(ui->checkBox_displaySubtitle->isChecked());
-        if (!blocking)
-            emit subtitleEnabled(SettingsManager::getInstance()->getSubtitle());
+        emit subtitleEnabled(SettingsManager::getInstance()->getSubtitle());
     }
     SettingsManager::getInstance()->setAudioAutoLoad(ui->checkBox_audio_autoLoadExternal->isChecked());
 }

@@ -54,15 +54,6 @@ test: off
 artifacts:
   - path: version_ci.pri
 deploy: off
-on_finish:
-  - cd ci
-  - if exist build rd /s /q build
-  - cd ..
-  - if exist build rd /s /q build
-  - if exist bin tree /f bin
-  - if exist bin rd /s /q bin
-  - if exist bin64 tree /f bin64
-  - if exist bin64 rd /s /q bin64
 notifications:
   - provider: Email
     to:

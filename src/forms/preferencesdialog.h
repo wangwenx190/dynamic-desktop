@@ -42,7 +42,6 @@ signals:
     void updateAudioTracks(const QVariantList &, bool);
     void updateSubtitleTracks(const QVariantList &, bool);
     void clearAllTracks();
-    void blockingSignals(bool);
 
 public:
     explicit PreferencesDialog(QWidget *parent = nullptr);
@@ -60,6 +59,6 @@ private slots:
 
 private:
     Ui::PreferencesDialog *ui;
-    bool closing = false, audioAvailable = true, blocking = false;
+    bool closing = false, audioAvailable = true;
     unsigned int sliderUnit = 1000;
 };
