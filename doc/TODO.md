@@ -6,16 +6,24 @@
 - [ ] More translations (**translators needed**)
 - [ ] Support showing web pages on desktop? (**useless, probably not**)
 - [ ] Support showing executables on desktop? (**useless, probably not**)
-- [ ] Support only playing audios
-- [ ] Support showing pictures on desktop
+- [ ] Play audios as background music without showing any pictures
+- [ ] Show pictures on desktop
 - [ ] Auto update? (**maybe useless**)
 - [x] Support selecting video/audio/subtitle tracks
 - [x] Support auto load external audio/subtitle files
 - [ ] Play videos seamlessly
-- [ ] Support Windows XP? (**insignificant, mostly not**)
+- [ ] Support Windows Vista and XP? (**insignificant, mostly not**)
 - [ ] Support playlist
 - [x] Support changing video position
 - [ ] Trim Qt libraries to make them much smaller, but don't affect their performances
 - [ ] Keep the libraries, compilers and even the standards always up-to-date
 - [ ] Find bugs and fix them
-- [ ] Support different renderers? (**I think OpenGL is enough**)
+- [ ] Support different renderers? (**OpenGL is enough?**)
+- [ ] Auto pause or stop when some windows are maximized or fullscreened (**maybe useless, because pause or stop won't decrease CPU and memory usage**)
+- [ ] Auto mute when users are listening to music/watching videos/playing games
+- [ ] Add more options? Frame rate, picture quality ... etc?
+- [ ] Show more detailed information? Duration, artist, title, chapters ... etc?
+- [ ] Auto download subtitles?
+- [ ] Use Windows Service to make this tool startup faster?
+- [ ] Support command line arguments
+- [ ] Support themes/skins
