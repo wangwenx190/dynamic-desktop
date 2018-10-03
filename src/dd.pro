@@ -49,20 +49,18 @@ CONFIG(static_dd) {
         skins.qrc
 } else {
     skins.path = $$BIN_DIR/skins
-    skins.files = $$PWD/skins/*.css
+    skins.files = $$PWD/stylesheets/*.css
     translations.path = $$BIN_DIR/translations
-    translations.files = \
-        $$PWD/translations/dd_en.qm \
-        $$PWD/translations/dd_zh_CN.qm
+    translations.files = $$PWD/translations/dd_*.qm
     exists("$${lupdate}") {
         translations.commands += $$quote(\"$${lupdate}\" -no-obsolete \"$${_PRO_FILE_}\")
         translations.commands += $$quote(\"$${lrelease}\" -nounfinished -removeidentical \"$${_PRO_FILE_}\")
         translations.commands = $$join(translations.commands, $$escape_expand(\\n\\t))
     }
-    qtavlibs.path = $$BIN_DIR
-    qtavlibs.files = \
+    libs.path = $$BIN_DIR
+    libs.files = \
         $$[QT_INSTALL_BINS]/Qt?OpenGL.dll \
-        $$[QT_INSTALL_BINS]/Qt?AV*.dll \
+        $$[QT_INSTALL_BINS]/QtAV*.dll \
         $$[QT_INSTALL_BINS]/avcodec-*.dll \
         $$[QT_INSTALL_BINS]/avdevice-*.dll \
         $$[QT_INSTALL_BINS]/avfilter-*.dll \
@@ -77,8 +75,13 @@ CONFIG(static_dd) {
         $$[QT_INSTALL_BINS]/swscale-*.dll
     isEmpty(windeployqt): windeployqt = $$[QT_INSTALL_BINS]/windeployqt.exe
     exists("$${windeployqt}") {
-        qtavlibs.commands = $$quote(\"$${windeployqt}\" --plugindir \"$${BIN_DIR}/plugins\" --force --no-translations --compiler-runtime --angle --list source \"$${BIN_DIR}/$${TARGET}.exe\")
-        qtavlibs.commands = $$join(qtavlibs.commands, $$escape_expand(\\n\\t))
+        libs.commands = $$quote(\"$${windeployqt}\" --plugindir \"$${BIN_DIR}/plugins\" --force --no-translations --compiler-runtime --angle --list source \"$${BIN_DIR}/$${TARGET}.exe\")
+        libs.commands = $$join(libs.commands, $$escape_expand(\\n\\t))
     }
-    INSTALLS += skins translations qtavlibs
+    plugins.path = $$BIN_DIR/plugins/platforms
+    plugins.files = \
+        $$[QT_INSTALL_PLUGINS]/platforms/qdirect2d.dll \
+        $$[QT_INSTALL_PLUGINS]/platforms/qminimal.dll \
+        $$[QT_INSTALL_PLUGINS]/platforms/qoffscreen.dll
+    INSTALLS += libs plugins translations skins
 }

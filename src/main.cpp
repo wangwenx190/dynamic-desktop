@@ -22,8 +22,10 @@
 #include <QSysInfo>
 #include <QVersionNumber>
 #include <QCommandLineParser>
+#include <QCommandLineOption>
 #include <QFileInfo>
 #include <QDir>
+#include <QWidget>
 
 //https://github.com/ThomasHuai/Wallpaper/blob/master/utils.cpp
 HWND HWORKERW = nullptr;
@@ -76,7 +78,7 @@ QStringList externalFilesToLoad(const QFileInfo &originalMediaFile, const QStrin
                 if (fi.suffix().toLower() == QLatin1String("ass")
                         || fi.suffix().toLower() == QLatin1String("ssa")
                         || fi.suffix().toLower() == QLatin1String("srt")
-                        || fi.suffix().toLower() == QLatin1String("sup"))
+                        || fi.suffix().toLower() == QLatin1String("sub"))
                     newFileList.append(QDir::toNativeSeparators(fi.absoluteFilePath()));
             }
             else if (fileType.toLower() == QLatin1String("audio"))
@@ -120,7 +122,7 @@ int main(int argc, char *argv[])
     if (currentVersion < win7Version)
     {
         QMessageBox::critical(nullptr, QStringLiteral("Dynamic Desktop"), QObject::tr("This application only supports Windows 7 and newer."));
-        return 0;
+        return -1;
     }
     HANDLE mutex = CreateMutex(nullptr, FALSE, TEXT("wangwenx190.DynamicDesktop.1000.AppMutex"));
     if ((mutex != nullptr) && (GetLastError() == ERROR_ALREADY_EXISTS))
@@ -133,7 +135,39 @@ int main(int argc, char *argv[])
     parser.setApplicationDescription(QObject::tr("A tool that make your desktop alive."));
     parser.addHelpOption();
     parser.addVersionOption();
+    QCommandLineOption rendererOption(QStringLiteral("renderer"),
+                                      QApplication::translate("main", "Set rendering engine. It can be opengl/gl/qt/gdi/d2d. Default is gl. Case sensitive."),
+                                      QApplication::translate("main", "renderer"));
+    parser.addOption(rendererOption);
+    QCommandLineOption urlOption(QStringLiteral("url"),
+                                 QApplication::translate("main", "Play the given url. It can be a local file or a valid web url. Default is empty."),
+                                 QApplication::translate("main", "url"));
+    parser.addOption(urlOption);
+    QCommandLineOption volumeOption(QStringLiteral("volume"),
+                                    QApplication::translate("main", "Set volume. It must be a positive integer between 0 and 99. Default is 9."),
+                                    QApplication::translate("main", "volume"));
+    parser.addOption(volumeOption);
     parser.process(app);
+    QString rendererOptionValue = parser.value(rendererOption);
+    if (!rendererOptionValue.isEmpty())
+        if (rendererOptionValue == QStringLiteral("opengl"))
+            SettingsManager::getInstance()->setRenderer(QtAV::VideoRendererId_OpenGLWidget);
+        else if (rendererOptionValue == QStringLiteral("gl"))
+            SettingsManager::getInstance()->setRenderer(QtAV::VideoRendererId_GLWidget2);
+        else if (rendererOptionValue == QStringLiteral("qt"))
+            SettingsManager::getInstance()->setRenderer(QtAV::VideoRendererId_Widget);
+        else if (rendererOptionValue == QStringLiteral("gdi"))
+            SettingsManager::getInstance()->setRenderer(QtAV::VideoRendererId_GDI);
+        else if (rendererOptionValue == QStringLiteral("d2d"))
+            SettingsManager::getInstance()->setRenderer(QtAV::VideoRendererId_Direct2D);
+        else
+            SettingsManager::getInstance()->setRenderer(QtAV::VideoRendererId_GLWidget2);
+    QString urlOptionValue = parser.value(urlOption);
+    if (!urlOptionValue.isEmpty())
+        SettingsManager::getInstance()->setUrl(urlOptionValue);
+    QString volumeOptionValue = parser.value(volumeOption);
+    if (!volumeOptionValue.isEmpty())
+        SettingsManager::getInstance()->setVolume(volumeOptionValue.toUInt());
     SkinManager::getInstance()->setSkin(SettingsManager::getInstance()->getSkin());
 #ifndef BUILD_DD_STATIC
     if (QLibraryInfo::isDebugBuild())
@@ -143,24 +177,48 @@ int main(int argc, char *argv[])
         SettingsManager::getInstance()->regAutostart();
     else
         SettingsManager::getInstance()->unregAutostart();
-    QtAV::GLWidgetRenderer2 renderer;
-    renderer.forcePreferredPixelFormat(true);
-    renderer.setQuality(QtAV::VideoRenderer::QualityFastest);
-    if (SettingsManager::getInstance()->getFitDesktop())
-        renderer.setOutAspectRatioMode(QtAV::VideoRenderer::RendererAspectRatio);
+    QtAV::VideoRenderer *renderer = QtAV::VideoRenderer::create(SettingsManager::getInstance()->getRenderer());
+    if (!renderer || !renderer->isAvailable() || !renderer->widget())
+    {
+        QMessageBox::critical(nullptr, QStringLiteral("Dynamic Desktop"), QObject::tr("Current renderer is not available on your platform!"));
+        ReleaseMutex(mutex);
+        CloseHandle(mutex);
+        return -1;
+    }
+    const QtAV::VideoDecoderId vid = renderer->id();
+    if (vid == QtAV::VideoRendererId_GLWidget
+            || vid == QtAV::VideoRendererId_GLWidget2
+            || vid == QtAV::VideoRendererId_OpenGLWidget)
+        renderer->forcePreferredPixelFormat(true);
     else
-        renderer.setOutAspectRatioMode(QtAV::VideoRenderer::VideoAspectRatio);
-    renderer.setWindowIcon(QIcon(QStringLiteral(":/bee.ico")));
-    renderer.setWindowTitle(QObject::tr("My wallpaper"));
-    renderer.setAttribute(Qt::WA_NoSystemBackground);
-    renderer.setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnBottomHint | Qt::WindowDoesNotAcceptFocus);
-    QRect screenGeometry = QApplication::desktop()->screenGeometry(&renderer);
-    renderer.setGeometry(screenGeometry);
+        renderer->forcePreferredPixelFormat(false);
+    QString videoQuality = SettingsManager::getInstance()->getVideoQuality();
+    if (videoQuality == QStringLiteral("default"))
+        renderer->setQuality(QtAV::VideoRenderer::QualityDefault);
+    else if (videoQuality == QStringLiteral("best"))
+        renderer->setQuality(QtAV::VideoRenderer::QualityBest);
+    else
+        renderer->setQuality(QtAV::VideoRenderer::QualityFastest);
+    if (SettingsManager::getInstance()->getFitDesktop())
+        renderer->setOutAspectRatioMode(QtAV::VideoRenderer::RendererAspectRatio);
+    else
+        renderer->setOutAspectRatioMode(QtAV::VideoRenderer::VideoAspectRatio);
+    QWidget *mainWindow = renderer->widget();
+    mainWindow->setWindowFlags(Qt::FramelessWindowHint);
+    QRect screenGeometry = QApplication::desktop()->screenGeometry(mainWindow);
+    if (vid == QtAV::VideoRendererId_Direct2D)
+    {
+        // Why is Direct2D window too large?
+        mainWindow->resize(screenGeometry.size() / mainWindow->devicePixelRatioF());
+        mainWindow->move(0, 0);
+    }
+    else
+        mainWindow->setGeometry(screenGeometry);
     QtAV::AVPlayer player;
-    player.setRenderer(&renderer);
+    player.setRenderer(renderer);
     QtAV::SubtitleFilter subtitle;
     subtitle.setPlayer(&player);
-    subtitle.installTo(&renderer);
+    subtitle.installTo(renderer);
     subtitle.setCodec(SettingsManager::getInstance()->getCharset().toLatin1());
     subtitle.setEngines(QStringList() << QStringLiteral("LibASS") << QStringLiteral("FFmpeg"));
     subtitle.setAutoLoad(SettingsManager::getInstance()->getSubtitleAutoLoad());
@@ -300,7 +358,7 @@ int main(int argc, char *argv[])
     QObject::connect(&preferencesDialog, SIGNAL(about()), aboutAction, SIGNAL(triggered()));
     QObject::connect(&preferencesDialog, SIGNAL(pause()), &player, SLOT(pause()));
     QObject::connect(&preferencesDialog, &PreferencesDialog::urlChanged,
-        [=, &player, &renderer](const QString &url)
+        [=, &player](const QString &url)
         {
             if (SettingsManager::getInstance()->getHwdec())
             {
@@ -336,8 +394,8 @@ int main(int argc, char *argv[])
                     player.setOptionsForVideoCodec(opt);
                 }
             }
-            if (renderer.isHidden())
-                renderer.show();
+            if (mainWindow->isHidden())
+                mainWindow->show();
             if (!url.isEmpty())
                 player.play(url);
             else
@@ -370,12 +428,12 @@ int main(int argc, char *argv[])
                 player.seek(value);
         });
     QObject::connect(&preferencesDialog, &PreferencesDialog::pictureRatioChanged,
-        [=, &renderer](bool fitDesktop)
+        [=](bool fitDesktop)
         {
             if (fitDesktop)
-                renderer.setOutAspectRatioMode(QtAV::VideoRenderer::RendererAspectRatio);
+                renderer->setOutAspectRatioMode(QtAV::VideoRenderer::RendererAspectRatio);
             else
-                renderer.setOutAspectRatioMode(QtAV::VideoRenderer::VideoAspectRatio);
+                renderer->setOutAspectRatioMode(QtAV::VideoRenderer::VideoAspectRatio);
         });
     QObject::connect(&preferencesDialog, &PreferencesDialog::videoTrackChanged,
         [=, &player](unsigned int id)
@@ -439,7 +497,8 @@ int main(int argc, char *argv[])
     QObject::connect(&preferencesDialog, &PreferencesDialog::skinChanged,
         [=](const QString &skin)
         {
-            SkinManager::getInstance()->setSkin(skin);
+            if (SkinManager::getInstance()->currentSkinName() != skin)
+                SkinManager::getInstance()->setSkin(skin);
         });
     QObject::connect(&preferencesDialog, &PreferencesDialog::languageChanged,
         [=, &ddTranslator, &preferencesDialog](const QString &lang)
@@ -448,18 +507,84 @@ int main(int argc, char *argv[])
             QString langFile = QStringLiteral("dd_%0.qm").arg(lang);
             if (ddTranslator.load(langFile, qmDir))
                 QApplication::installTranslator(&ddTranslator);
-            //preferencesDialog.translateUi();
+            preferencesDialog.retranslateUI();
+        });
+    QObject::connect(&preferencesDialog, &PreferencesDialog::rendererChanged,
+        [=, &subtitle, &player](QtAV::VideoRendererId rendererId) mutable
+        {
+            if (rendererId != renderer->id())
+            {
+                QtAV::VideoRenderer *newRenderer = QtAV::VideoRenderer::create(rendererId);
+                if (!newRenderer || !newRenderer->isAvailable() || !newRenderer->widget())
+                    QMessageBox::critical(nullptr, QStringLiteral("Dynamic Desktop"), QObject::tr("Current renderer is not available on your platform!"));
+                else
+                {
+                    newRenderer->widget()->setWindowFlags(Qt::FramelessWindowHint);
+                    if (rendererId == QtAV::VideoRendererId_Direct2D)
+                    {
+                        // Why is Direct2D window too large?
+                        newRenderer->widget()->resize(screenGeometry.size() / newRenderer->widget()->devicePixelRatioF());
+                        newRenderer->widget()->move(0, 0);
+                    }
+                    else
+                        newRenderer->widget()->setGeometry(screenGeometry);
+                    newRenderer->widget()->show();
+                    subtitle.uninstall();
+                    subtitle.installTo(newRenderer);
+                    player.setRenderer(newRenderer);
+                    const QtAV::VideoRendererId videoRendererId = newRenderer->id();
+                    if (videoRendererId == QtAV::VideoRendererId_GLWidget
+                                || videoRendererId == QtAV::VideoRendererId_GLWidget2
+                                || videoRendererId == QtAV::VideoRendererId_OpenGLWidget)
+                        newRenderer->forcePreferredPixelFormat(true);
+                    else
+                        newRenderer->forcePreferredPixelFormat(false);
+                    if (SettingsManager::getInstance()->getFitDesktop())
+                        newRenderer->setOutAspectRatioMode(QtAV::VideoRenderer::RendererAspectRatio);
+                    else
+                        newRenderer->setOutAspectRatioMode(QtAV::VideoRenderer::VideoAspectRatio);
+                    HWND hwnd = nullptr;
+                    if (renderer->widget())
+                    {
+                        hwnd = GetParent(reinterpret_cast<HWND>(renderer->widget()->winId()));
+                        if (renderer->widget()->testAttribute(Qt::WA_DeleteOnClose))
+                            renderer->widget()->close();
+                        else
+                        {
+                            renderer->widget()->close();
+                            delete renderer->widget();
+                        }
+                    }
+                    if (hwnd == nullptr)
+                    {
+                        QVersionNumber win10Version(10, 0, 10240);
+                        hwnd = getWorkerW(currentVersion < win10Version);
+                    }
+                    if (hwnd != nullptr)
+                        SetParent(reinterpret_cast<HWND>(newRenderer->widget()->winId()), hwnd);
+                    renderer = newRenderer;
+                    mainWindow = newRenderer->widget();
+                }
+            }
+        });
+    QObject::connect(&preferencesDialog, &PreferencesDialog::videoQualityChanged,
+        [=](const QString &quality)
+        {
+            if (quality == QStringLiteral("default"))
+                renderer->setQuality(QtAV::VideoRenderer::QualityDefault);
+            else if (quality == QStringLiteral("best"))
+                renderer->setQuality(QtAV::VideoRenderer::QualityBest);
+            else
+                renderer->setQuality(QtAV::VideoRenderer::QualityFastest);
         });
     if (!SettingsManager::getInstance()->getUrl().isEmpty())
     {
-        if (renderer.isHidden())
-            renderer.show();
+        if (mainWindow->isHidden())
+            mainWindow->show();
         preferencesDialog.urlChanged(SettingsManager::getInstance()->getUrl());
     }
     else
         optionsAction->triggered();
-    HWND hworkerw = nullptr;
-    auto hrenderer = reinterpret_cast<HWND>(renderer.winId());
     QVersionNumber win10Version(10, 0, 10240); // Windows 10 Version 1507
     // How to place our window under desktop icons:
     // Use "Program Manager" as our parent window in Win7/8/8.1.
@@ -470,17 +595,9 @@ int main(int argc, char *argv[])
     // also block our desktop icons, however using
     // "WorkerW" as our parent window will not result
     // in this problem, I don't know why. It's strange.
-    hworkerw = getWorkerW(currentVersion < win10Version);
-    if (hworkerw != nullptr)
-        SetParent(hrenderer, hworkerw);
-    else
-    {
-        QMessageBox::critical(nullptr, QStringLiteral("Dynamic Desktop"), QObject::tr("Cannot get \"Program Manager\"'s handle. Application aborting."));
-        ShowWindow(HWORKERW, SW_HIDE);
-        ReleaseMutex(mutex);
-        CloseHandle(mutex);
-        return 0;
-    }
+    HWND hwnd = getWorkerW(currentVersion < win10Version);
+    if (hwnd != nullptr)
+        SetParent(reinterpret_cast<HWND>(mainWindow->winId()), hwnd);
     int exec = QApplication::exec();
     ShowWindow(HWORKERW, SW_HIDE);
     ReleaseMutex(mutex);

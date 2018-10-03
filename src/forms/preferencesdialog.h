@@ -2,6 +2,9 @@
 
 #include "framelesswindow.h"
 
+#include <QtAV>
+#include <QtAVWidgets>
+
 namespace Ui {
 class PreferencesDialog;
 }
@@ -29,7 +32,8 @@ signals:
     void audioOpened(const QString &);
     void skinChanged(const QString &);
     void languageChanged(const QString &);
-    void rendererChanged(int);
+    void rendererChanged(QtAV::VideoRendererId);
+    void videoQualityChanged(const QString &);
 
 signals:
     void refreshUi();
@@ -45,6 +49,7 @@ signals:
     void updateAudioTracks(const QVariantList &, bool);
     void updateSubtitleTracks(const QVariantList &, bool);
     void clearAllTracks();
+    void retranslateUI();
 
 public:
     explicit PreferencesDialog(QWidget *parent = nullptr);

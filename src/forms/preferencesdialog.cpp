@@ -15,8 +15,6 @@
 #include <QMimeData>
 #include <QTextCodec>
 #include <QLibraryInfo>
-#include <QtAV>
-#include <QtAVWidgets>
 
 PreferencesDialog::PreferencesDialog(QWidget *parent) :
     FramelessWindow(parent),
@@ -28,6 +26,14 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
     setResizeableAreaWidth(5);
     setTitleBar(ui->widget_windowTitleBar);
     addIgnoreWidget(ui->label_windowTitle);
+    ui->comboBox_video_quality->addItem(tr("Fastest"), QStringLiteral("fastest"));
+    ui->comboBox_video_quality->addItem(tr("Best"), QStringLiteral("best"));
+    ui->comboBox_video_quality->addItem(tr("Default"), QStringLiteral("default"));
+    connect(this, &PreferencesDialog::retranslateUI,
+        [=]
+        {
+            ui->retranslateUi(this);
+        });
     ui->comboBox_video_renderer->addItem(QStringLiteral("OpenGLWidget"), QtAV::VideoRendererId_OpenGLWidget);
     ui->comboBox_video_renderer->addItem(QStringLiteral("QGLWidget2"), QtAV::VideoRendererId_GLWidget2);
     ui->comboBox_video_renderer->addItem(QStringLiteral("Widget"), QtAV::VideoRendererId_Widget);
@@ -75,7 +81,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
     connect(ui->pushButton_subtitle_open, &QPushButton::clicked,
         [=]
         {
-            QString subtitlePath = QFileDialog::getOpenFileName(nullptr, tr("Please select a subtitle file"), SettingsManager::getInstance()->lastDir(), tr("Subtitles (*.ass *.ssa *.srt *.sup);;All files (*)"));
+            QString subtitlePath = QFileDialog::getOpenFileName(nullptr, tr("Please select a subtitle file"), SettingsManager::getInstance()->lastDir(), tr("Subtitles (*.ass *.ssa *.srt *.sub);;All files (*)"));
             if (!subtitlePath.isEmpty())
                 emit this->subtitleOpened(subtitlePath);
         });
@@ -405,6 +411,7 @@ void PreferencesDialog::refreshUI()
     ui->comboBox_skin->setCurrentIndex(ui->comboBox_skin->findData(SettingsManager::getInstance()->getSkin()));
     ui->comboBox_language->setCurrentIndex(ui->comboBox_language->findData(SettingsManager::getInstance()->getLanguage()));
     ui->comboBox_video_renderer->setCurrentIndex(ui->comboBox_video_renderer->findData(SettingsManager::getInstance()->getRenderer()));
+    ui->comboBox_video_quality->setCurrentIndex(ui->comboBox_video_quality->findData(SettingsManager::getInstance()->getVideoQuality()));
 }
 
 void PreferencesDialog::saveSettings()
@@ -481,5 +488,10 @@ void PreferencesDialog::saveSettings()
     {
         SettingsManager::getInstance()->setRenderer(ui->comboBox_video_renderer->currentData().toInt());
         emit rendererChanged(SettingsManager::getInstance()->getRenderer());
+    }
+    if (ui->comboBox_video_quality->currentData().toString() != SettingsManager::getInstance()->getVideoQuality())
+    {
+        SettingsManager::getInstance()->setVideoQuality(ui->comboBox_video_quality->currentData().toString());
+        emit videoQualityChanged(SettingsManager::getInstance()->getVideoQuality());
     }
 }

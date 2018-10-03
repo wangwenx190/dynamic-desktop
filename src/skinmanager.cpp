@@ -55,6 +55,8 @@ bool SkinManager::setSkin(const QString &skin)
         if (str.isEmpty())
             return false;
         qApp->setStyleSheet(str);
+        curSkinPath = filePath;
+        curSkinName = QFileInfo(curSkinPath).fileName();
         return true;
     }
     return false;
