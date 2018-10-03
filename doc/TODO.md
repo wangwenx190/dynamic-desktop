@@ -20,13 +20,13 @@
 - [ ] Find bugs and fix them
 - [ ] Support different renderers? (**OpenGL is enough?**)
 - [ ] Auto pause or stop when some windows are maximized or fullscreened (**maybe useless, because pause or stop won't decrease CPU and memory usage**)
-- [ ] Auto mute when users are listening to music/watching videos/playing games
+- [ ] Auto mute when users are listening to music/watching videos/playing games (**HELP NEEDED!**)
 - [ ] Add more options? Frame rate, picture quality ... etc?
 - [ ] Show more detailed information? Duration, artist, title, chapters ... etc?
 - [ ] Auto download subtitles?
 - [ ] Use Windows Service to make this tool startup faster?
 - [ ] Support command line arguments
-- [ ] Support themes/skins
+- [ ] Support changing skins during running
 - [ ] Detect runtime QtAV and FFmpeg version
 - [ ] Add options: Desktop OpenGL, ANGLE, software
 - [ ] Support changing language during running

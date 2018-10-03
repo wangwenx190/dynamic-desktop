@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include "framelesswindow.h"
 
@@ -27,6 +27,9 @@ signals:
     void subtitleEnabled(bool);
     void subtitleOpened(const QString &);
     void audioOpened(const QString &);
+    void skinChanged(const QString &);
+    void languageChanged(const QString &);
+    void rendererChanged(int);
 
 signals:
     void refreshUi();

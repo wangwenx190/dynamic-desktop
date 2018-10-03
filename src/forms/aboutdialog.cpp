@@ -1,10 +1,11 @@
-﻿#include "aboutdialog.h"
+#include "aboutdialog.h"
 #include "ui_aboutdialog.h"
 
 #include <QtAV>
 #include <QSysInfo>
 #include <QDesktopServices>
 #include <QUrl>
+#include <QCoreApplication>
 
 AboutDialog::AboutDialog(QWidget *parent) :
     QWidget(parent),
@@ -15,7 +16,7 @@ AboutDialog::AboutDialog(QWidget *parent) :
     ui->lineEdit_commit_id->setText(QStringLiteral(DD_COMMIT_ID));
     ui->lineEdit_commit_time->setText(QStringLiteral(DD_COMMIT_TIME));
     ui->lineEdit_qt->setText(QStringLiteral(QT_VERSION_STR));
-    ui->lineEdit_qtav->setText(QtAV_Version_String_Long());
+    ui->lineEdit_qtav->setText(QtAV_Version_String());
     ui->lineEdit_ffmpeg->setText(QStringLiteral(FFMPEG_VERSION_STR));
     QString compiler;
 #ifdef __clang__
@@ -30,10 +31,10 @@ AboutDialog::AboutDialog(QWidget *parent) :
     ui->lineEdit_compiler->setText(compiler);
     ui->lineEdit_arch->setText(QSysInfo::buildCpuArchitecture());
     ui->lineEdit_build_time->setText(QStringLiteral("%0 %1").arg(QStringLiteral(__DATE__)).arg(QStringLiteral(__TIME__)));
-    connect(ui->pushButton_aboutQtAV, &QPushButton::clicked,
+    connect(ui->pushButton_aboutQt, &QPushButton::clicked,
         [=]
         {
-            //QtAV::about();
+            qApp->aboutQt();
         });
     connect(ui->pushButton_ok, SIGNAL(clicked()), this, SLOT(close()));
     connect(ui->pushButton_source, &QPushButton::clicked,

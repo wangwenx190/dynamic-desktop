@@ -435,9 +435,9 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <widget class="QPushButton" name="pushButton_aboutQtAV">
+      <widget class="QPushButton" name="pushButton_aboutQt">
        <property name="text">
-        <string>About QtAV</string>
+        <string>About Qt</string>
        </property>
       </widget>
      </item>

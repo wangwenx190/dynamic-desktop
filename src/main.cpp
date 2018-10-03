@@ -1,6 +1,7 @@
-﻿#include "forms/preferencesdialog.h"
+#include "forms/preferencesdialog.h"
 #include "forms/aboutdialog.h"
 #include "settingsmanager.h"
+#include "skinmanager.h"
 
 #include <Windows.h>
 
@@ -96,15 +97,21 @@ int main(int argc, char *argv[])
     QCoreApplication::setOrganizationName(QStringLiteral("wangwenx190"));
     QCoreApplication::setOrganizationDomain(QStringLiteral("wangwenx190.github.io"));
     QTranslator ddTranslator;
-    if (SettingsManager::getInstance()->getLocalize())
-    {
-        QString qmDir;
 #ifdef STATIC
-        qmDir = QStringLiteral(":/i18n");
+    QString qmDir = QStringLiteral(":/i18n");
 #else
-        qmDir = QLibraryInfo::location(QLibraryInfo::TranslationsPath);
+    QString qmDir = QLibraryInfo::location(QLibraryInfo::TranslationsPath);
 #endif
+    QString language = SettingsManager::getInstance()->getLanguage();
+    if (language == QStringLiteral("auto"))
+    {
         if (ddTranslator.load(QLocale(), QStringLiteral("dd"), QStringLiteral("_"), qmDir))
+            QApplication::installTranslator(&ddTranslator);
+    }
+    else
+    {
+        language = QStringLiteral("dd_%0.qm").arg(language);
+        if (ddTranslator.load(language, qmDir))
             QApplication::installTranslator(&ddTranslator);
     }
     int suffixIndex;
@@ -127,6 +134,7 @@ int main(int argc, char *argv[])
     parser.addHelpOption();
     parser.addVersionOption();
     parser.process(app);
+    SkinManager::getInstance()->setSkin(SettingsManager::getInstance()->getSkin());
 #ifndef BUILD_DD_STATIC
     if (QLibraryInfo::isDebugBuild())
         QMessageBox::warning(nullptr, QStringLiteral("Dynamic Desktop"), QObject::tr("WARNING: You are running a debug version of this tool!\nDo not continue running it if you are not a developer!"));
@@ -427,6 +435,20 @@ int main(int argc, char *argv[])
         [=, &subtitle](bool enabled)
         {
             subtitle.setEnabled(enabled);
+        });
+    QObject::connect(&preferencesDialog, &PreferencesDialog::skinChanged,
+        [=](const QString &skin)
+        {
+            SkinManager::getInstance()->setSkin(skin);
+        });
+    QObject::connect(&preferencesDialog, &PreferencesDialog::languageChanged,
+        [=, &ddTranslator, &preferencesDialog](const QString &lang)
+        {
+            QApplication::removeTranslator(&ddTranslator);
+            QString langFile = QStringLiteral("dd_%0.qm").arg(lang);
+            if (ddTranslator.load(langFile, qmDir))
+                QApplication::installTranslator(&ddTranslator);
+            //preferencesDialog.translateUi();
         });
     if (!SettingsManager::getInstance()->getUrl().isEmpty())
     {

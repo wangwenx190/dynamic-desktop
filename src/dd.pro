@@ -19,13 +19,15 @@ HEADERS += \
     forms/preferencesdialog.h \
     settingsmanager.h \
     framelesswindow.h \
-    forms/aboutdialog.h
+    forms/aboutdialog.h \
+    skinmanager.h
 SOURCES += \
     main.cpp \
     forms/preferencesdialog.cpp \
     settingsmanager.cpp \
     framelesswindow.cpp \
-    forms/aboutdialog.cpp
+    forms/aboutdialog.cpp \
+    skinmanager.cpp
 FORMS += forms/preferencesdialog.ui \
     forms/aboutdialog.ui
 TRANSLATIONS += \
@@ -42,8 +44,12 @@ target.path = $$BIN_DIR
 INSTALLS += target
 CONFIG(static_dd) {
     DEFINES += BUILD_DD_STATIC
-    RESOURCES += i18n.qrc
+    RESOURCES += \
+        i18n.qrc \
+        skins.qrc
 } else {
+    skins.path = $$BIN_DIR/skins
+    skins.files = $$PWD/skins/*.css
     translations.path = $$BIN_DIR/translations
     translations.files = \
         $$PWD/translations/dd_en.qm \
@@ -57,19 +63,22 @@ CONFIG(static_dd) {
     qtavlibs.files = \
         $$[QT_INSTALL_BINS]/Qt?OpenGL.dll \
         $$[QT_INSTALL_BINS]/Qt?AV*.dll \
-        $$[QT_INSTALL_BINS]/OpenAL32*.dll \
         $$[QT_INSTALL_BINS]/avcodec-*.dll \
         $$[QT_INSTALL_BINS]/avdevice-*.dll \
         $$[QT_INSTALL_BINS]/avfilter-*.dll \
         $$[QT_INSTALL_BINS]/avformat-*.dll \
+        $$[QT_INSTALL_BINS]/avresample-*.dll \
         $$[QT_INSTALL_BINS]/avutil-*.dll \
+        $$[QT_INSTALL_BINS]/ass.dll \
+        $$[QT_INSTALL_BINS]/libass.dll \
+        $$[QT_INSTALL_BINS]/OpenAL32*.dll \
+        $$[QT_INSTALL_BINS]/postproc-*.dll \
         $$[QT_INSTALL_BINS]/swresample-*.dll \
-        $$[QT_INSTALL_BINS]/swscale-*.dll \
-        $$[QT_INSTALL_BINS]/*ass.dll
+        $$[QT_INSTALL_BINS]/swscale-*.dll
     isEmpty(windeployqt): windeployqt = $$[QT_INSTALL_BINS]/windeployqt.exe
     exists("$${windeployqt}") {
         qtavlibs.commands = $$quote(\"$${windeployqt}\" --plugindir \"$${BIN_DIR}/plugins\" --force --no-translations --compiler-runtime --angle --list source \"$${BIN_DIR}/$${TARGET}.exe\")
         qtavlibs.commands = $$join(qtavlibs.commands, $$escape_expand(\\n\\t))
     }
-    INSTALLS += translations qtavlibs
+    INSTALLS += skins translations qtavlibs
 }

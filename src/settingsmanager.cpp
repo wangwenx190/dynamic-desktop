@@ -1,4 +1,4 @@
-﻿#include "settingsmanager.h"
+#include "settingsmanager.h"
 
 #include <QCoreApplication>
 #include <QDir>
@@ -150,11 +150,6 @@ QStringList SettingsManager::getDecoders() const
     return settings->value(QStringLiteral("dd/decoders"), defaultDecoders()).toStringList();
 }
 
-bool SettingsManager::getLocalize() const
-{
-    return settings->value(QStringLiteral("dd/localize"), true).toBool();
-}
-
 bool SettingsManager::getFitDesktop() const
 {
     return settings->value(QStringLiteral("dd/fit"), true).toBool();
@@ -178,6 +173,21 @@ bool SettingsManager::getSubtitleAutoLoad() const
 bool SettingsManager::getAudioAutoLoad() const
 {
     return settings->value(QStringLiteral("dd/audioautoload"), true).toBool();
+}
+
+QString SettingsManager::getSkin() const
+{
+    return settings->value(QStringLiteral("dd/skin"), QStringLiteral("default")).toString();
+}
+
+QString SettingsManager::getLanguage() const
+{
+    return settings->value(QStringLiteral("dd/language"), QStringLiteral("auto")).toString();
+}
+
+QtAV::VideoRendererId SettingsManager::getRenderer() const
+{
+    return settings->value(QStringLiteral("dd/renderer"), QtAV::VideoRendererId_GLWidget2).toInt();
 }
 
 void SettingsManager::setUrl(const QString &url)
@@ -213,11 +223,6 @@ void SettingsManager::setDecoders(const QStringList &decoders)
     settings->setValue(QStringLiteral("dd/decoders"), decoders);
 }
 
-void SettingsManager::setLocalize(bool enable)
-{
-    settings->setValue(QStringLiteral("dd/localize"), enable);
-}
-
 void SettingsManager::setFitDesktop(bool fit)
 {
     settings->setValue(QStringLiteral("dd/fit"), fit);
@@ -241,6 +246,21 @@ void SettingsManager::setSubtitleAutoLoad(bool autoload)
 void SettingsManager::setAudioAutoLoad(bool autoload)
 {
     settings->setValue(QStringLiteral("dd/audioautoload"), autoload);
+}
+
+void SettingsManager::setSkin(const QString &skin)
+{
+    settings->setValue(QStringLiteral("dd/skin"), skin);
+}
+
+void SettingsManager::setLanguage(const QString &lang)
+{
+    settings->setValue(QStringLiteral("dd/language"), lang);
+}
+
+void SettingsManager::setRenderer(QtAV::VideoRendererId vid)
+{
+    settings->setValue(QStringLiteral("dd/renderer"), vid);
 }
 
 SettingsManager::SettingsManager()

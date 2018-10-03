@@ -1,0 +1,156 @@
+QWidget {
+	font-family: 12px "Noto Sans", "FreeSans";
+	background: #1A1A1A;
+	color: whitesmoke;
+}
+
+QPushButton {
+	background: #454A4D;
+	border: 1px solid #000;
+	border-radius: 2px;
+	color: whitesmoke;
+	min-width: 76px;
+	min-height: 17px;
+	padding: 4px 6px;
+}
+
+QPushButton:focus {
+	border: 1px solid #008098;
+	outline: none;
+}
+
+QPushButton:pressed {
+	background: #2E3133;
+}
+
+QPushButton:disabled {
+	background: transparent;
+	border: 1px solid #454A4D;
+	color: #6F6F6F;
+}
+
+QPushButton#pushButton_minimize {
+	background: none;
+	border: 0px;
+	border-radius: 0px;
+	color: none;
+	min-width: 8px;
+	min-height: 8px;
+}
+
+QPushButton#pushButton_maximize {
+	background: none;
+	border: 0px;
+	border-radius: 0px;
+	color: none;
+	min-width: 8px;
+	min-height: 8px;
+}
+
+QPushButton#pushButton_close {
+	background: none;
+	border: 0px;
+	border-radius: 0px;
+	color: none;
+	min-width: 8px;
+	min-height: 8px;
+}
+
+QSlider::groove:horizontal {
+	background: #5A5A5A;
+	height: 1px;
+}
+
+QSlider::sub-page:horizontal {
+	background: #008098;
+}
+
+QSlider::handle:horizontal {
+	background: whitesmoke;
+	border: 2px solid #1A1A1A;
+	border-radius: 7px;
+	margin: -7px 0;
+	width: 12px;
+}
+
+QCheckBox::indicator {
+	width: 11px;
+	height: 11px;
+	border: 1px solid #008098;
+	border-radius: 2px;
+}
+
+QCheckBox::indicator:unchecked {
+	border: 1px solid whitesmoke;
+	background: #1A1A1A;
+	image: none;
+}
+
+QCheckBox::indicator:checked {
+	border: 1px solid #008098;
+	background: #008098;
+	image: url(:/checked.ico);
+}
+
+QLineEdit {
+	background: #000;
+	border: 1px solid #454A4D;
+	padding: 2px;
+}
+
+QLineEdit:focus {
+	border: 1px solid #008098;
+}
+
+QComboBox {
+	background: #454A4D;
+	border: 1px solid #000;
+	border-radius: 2px;
+	padding: 2px;
+}
+
+QComboBox:focus {
+	border: 1px solid #008098;
+}
+
+QComboBox::drop-down {
+	background: #008098;
+	border-top-right-radius: 2px;
+	border-bottom-right-radius: 2px;
+}
+
+QComboBox::down-arrow {
+	image: url(:/down-arrow.ico);
+}
+
+QGroupBox {
+	border: 1px solid #454A4D;
+	border-radius: 2px;
+	margin-top: 0.5em;
+}
+
+QGroupBox::title {
+	subcontrol-origin: margin;
+	subcontrol-position: top center;
+	background: #454A4D;
+	border: 1px solid #454A4D;
+	border-radius: 2px;
+	padding: 0 2px;
+}
+
+QRadioButton::indicator {
+	width: 6px;
+	height: 6px;
+	border-radius: 5px;
+	padding: 2px;
+}
+
+QRadioButton::indicator:unchecked {
+	border: 1px solid whitesmoke;
+	image: none;
+}
+
+QRadioButton::indicator:checked {
+	border: 1px solid #008098;
+	image: url(:/selected.ico);
+}

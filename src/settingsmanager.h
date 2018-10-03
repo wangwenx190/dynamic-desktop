@@ -1,6 +1,8 @@
-﻿#pragma once
+#pragma once
 
 #include <QSettings>
+#include <QtAV>
+#include <QtAVWidgets>
 
 class SettingsManager
 {
@@ -21,12 +23,14 @@ public:
     bool getAutostart() const;
     bool getHwdec() const;
     QStringList getDecoders() const;
-    bool getLocalize() const;
     bool getFitDesktop() const;
     bool getSubtitle() const;
     QString getCharset() const;
     bool getSubtitleAutoLoad() const;
     bool getAudioAutoLoad() const;
+    QString getSkin() const;
+    QString getLanguage() const;
+    QtAV::VideoRendererId getRenderer() const;
 
     void setUrl(const QString &url);
     void setMute(bool mute);
@@ -34,12 +38,14 @@ public:
     void setAutostart(bool enable);
     void setHwdec(bool enable);
     void setDecoders(const QStringList &decoders);
-    void setLocalize(bool enable);
     void setFitDesktop(bool fit);
     void setSubtitle(bool show);
     void setCharset(const QString &charset);
     void setSubtitleAutoLoad(bool autoload);
     void setAudioAutoLoad(bool autoload);
+    void setSkin(const QString &skin);
+    void setLanguage(const QString &lang);
+    void setRenderer(QtAV::VideoRendererId vid);
 
 private:
     SettingsManager();
