@@ -29,3 +29,4 @@
 - [ ] Support themes/skins
 - [ ] Detect runtime QtAV and FFmpeg version
 - [ ] Add options: Desktop OpenGL, ANGLE, software
+- [ ] Support changing language during running
