@@ -3,6 +3,8 @@
 ## Overview
 A small tool that can play videos on your desktop.
 
+**Suggestions are welcome. And I'll be very happy if anyone reports any issue to me.**
+
 ## Features
 - Relatively small
 - Multilingual support(**translators needed**)
