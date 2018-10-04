@@ -30,3 +30,5 @@
 - [ ] Detect runtime QtAV and FFmpeg version
 - [ ] Add options: Desktop OpenGL, ANGLE, software
 - [x] Support changing language during running
+- [ ] Bug reporter? (**maybe useless, we have github**)
+- [ ] Output detailed log to local file
