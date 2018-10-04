@@ -3,7 +3,7 @@
 ## Overview
 A small tool that can play videos on your desktop. Only for Microsoft Windows 7 ~ 10(with GUI desktop). It may have some limitations because it's just a media player, putting it's window under your desktop icons. Maybe Wallpaper Engine's principle is totally different with this tool.
 
-I created this tool only to play my favorite animation clips on my desktop, so I will never make it just like Wallpaper Engine. This tool will stay simple and will only play videos. It doesn't have as many functions as Wallpaper Engine, but that's indeed what I want. Although this tool has the ability to show executables and web pages on your desktop, but I don't want to add this kind of functions. However, if you really need it, you can fork this repository and do it yourself.
+I created this tool only to play my favorite animation clips on my desktop, so I will never make it just like Wallpaper Engine. This tool will stay simple and will only play videos. It doesn't have as many functions as Wallpaper Engine has, but that's indeed what I want. Although this tool has the ability to show executables and web pages on your desktop, I don't want to add this kind of functions. However, if you really need it, you can fork this repository and do it yourself.
 
 **Suggestions are welcome. And I'll be very happy if anyone reports any issue to me.**
 
@@ -26,15 +26,15 @@ I created this tool only to play my favorite animation clips on my desktop, so I
 Microsoft Windows 7 ~ 10(with GUI desktop), both 32 bit and 64 bit systems.
 
 ## Important notes
-- Windows Vista and XP are not supported
-- Enable Windows Aero first
-- Win7 users only: make sure you have installed XAudio2(Win 8/8.1/10 have installed it already by default)
-- To experience Hardware Accelerated Decoding better, make sure this tool runs with your high performance GPU(on Optimus)
-- The CPU and memory usage will increase enormously if you are using software decoding
-- It would be nice if you update your graphics card driver to the latest version
-- It's not recommended to run this tool in virtual machines, because the graphics card drivers of virtual machines are usually out-dated and even not completed
-- If there is no picture but sound, please switch the hardware decoding algorithm or just use software decoding. Because hardware decoding has many limitations while software decoding has not
-- It's not recommended to change rendering engine again and again while it's playing videos, otherwise this tool is very likely to crash and I'm not able to help you in this kind of situation
+- Windows Vista and XP are not supported.
+- This tool won't run if Windows Aero is disabled.
+- Win7 users only: make sure you have installed XAudio2(Win 8/8.1/10 have installed it already by default).
+- To experience *Hardware Accelerated Decoding* better, make sure this tool runs with your high performance GPU(on Optimus).
+- The CPU and memory usage will increase enormously if you are using software decoding and that's normal, all media players will, don't worry.
+- It would be very nice if you update your graphics card driver to the latest version.
+- It's not recommended to run this tool in virtual machines, because the graphics card drivers of virtual machines are usually out-dated and even not completed.
+- If there is no picture but sound, please switch the hardware decoding algorithm or just use software decoding. Because hardware decoding has many limitations while software decoding has not. In one word, **IF YOU ENCOUNTER WITH ANY STRANGE PHENOMENA, TURN OFF HARDWARE DECODING**.
+- It's not recommended to change rendering engine again and again while it's playing videos, otherwise this tool is very likely to crash and I'm not able to help you in this kind of situation.
 
 ## Compilation
 - Download [Qt5](http://download.qt.io/archive/qt/) and install it.
