@@ -1,4 +1,4 @@
-## Cod of Conduct
+## Code of Conduct
 See [CODE_OF_CONDUCT.md](/CODE_OF_CONDUCT.md) for more information.
 
 ## Rules you should follow
