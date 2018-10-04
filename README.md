@@ -1,7 +1,9 @@
 [![AppVeyor](https://ci.appveyor.com/api/projects/status/github/wangwenx190/dynamic-desktop?branch=master&svg=true)](https://ci.appveyor.com/project/wangwenx190/dynamic-desktop)
 
 ## Overview
-A small tool that can play videos on your desktop.
+A small tool that can play videos on your desktop. Only for Microsoft Windows 7 ~ 10(with GUI desktop). It may have some limitations because it's just a media player, putting it's window under your desktop icons. Maybe Wallpaper Engine's principle is totally different with this tool.
+
+I created this tool only to play my favorite animation clips on my desktop, so I will never make it just like Wallpaper Engine. This tool will stay simple and will only play videos. It doesn't have as many functions as Wallpaper Engine, but that's indeed what I want. Although this tool has the ability to show executables and web pages on your desktop, but I don't want to add this kind of functions. However, if you really need it, you can fork this repository and do it yourself.
 
 **Suggestions are welcome. And I'll be very happy if anyone reports any issue to me.**
 
@@ -14,32 +16,36 @@ A small tool that can play videos on your desktop.
 - Low CPU and memory usage
 - High performance
 - High video quality
-- Do not need any run-time libraries
+- HiDPI support
+- Multiscreen support
+- Abundant options
 - Pure green: no need to install, no write to registry and no files left in your system
 - No ads, free of charge, open source, etc...
 
 ## Supported platforms
-Microsoft Windows 7 ~ 10, both 32 bit and 64 bit systems.
+Microsoft Windows 7 ~ 10(with GUI desktop), both 32 bit and 64 bit systems.
 
 ## Important notes
 - Windows Vista and XP are not supported
 - Enable Windows Aero first
 - Win7 users only: make sure you have installed XAudio2
-- To experience **Hardware Accelerated Decoding** better, make sure this tool runs with your high performance GPU(on Optimus)
+- To experience Hardware Accelerated Decoding better, make sure this tool runs with your high performance GPU(on Optimus)
 - The CPU and memory usage will increase enormously if you are using software decoding
 - It would be nice if you update your graphics card driver to the latest version
-- It's not recommended to run this tool in virtual machines, because the graphics card drivers of virtual machines are usually out-dated and even not completed.
-- If there is no picture but sound, please switch the hardware decoding algorithm or just use software decoding
+- It's not recommended to run this tool in virtual machines, because the graphics card drivers of virtual machines are usually out-dated and even not completed
+- If there is no picture but sound, please switch the hardware decoding algorithm or just use software decoding. Because hardware decoding has many limitations while software decoding has not
+- It's not recommended to change rendering engine again and again while it's playing videos, otherwise this tool is very likely to crash and I'm not able to help you in this kind of situation
 
 ## Compilation
 - Download [Qt5](http://download.qt.io/archive/qt/) and install it.
 - Download [QtAV](https://github.com/wang-bin/QtAV)'s prebuilt SDK and install it, or build yourself.
 - Download [FFmpeg](https://github.com/wang-bin/avbuild)'s prebuilt binaries or build yourself.
-- Open "dynamic-desktop.pro" and start compiling or call "build.bat". It's quite easy.
+- Open "dynamic-desktop.pro" and start compiling or call "build.bat". But remember to call "vcvarsall.bat" and add Qt's directories to your path variables before calling "build.bat".
 
 ## Licenses
+- [**Wallpaper Engine**](https://store.steampowered.com/app/431960/Wallpaper_Engine/) from Steam gives me the original idea to make this tool. Thanks to WE's author(s)!
 - Main train of thought comes from https://github.com/ThomasHuai/Wallpaper , some codes are also copied from https://github.com/ThomasHuai/Wallpaper/blob/master/utils.cpp and https://github.com/ThomasHuai/Wallpaper/blob/master/wallpaper.cpp , thanks to [**ThomasHuai**](https://github.com/ThomasHuai)!
-- Special thanks to [wang bin](https://github.com/wang-bin) for his awesome [QtAV](https://github.com/wang-bin/QtAV)!
+- Special thanks to [**wang bin**](https://github.com/wang-bin) for his awesome [QtAV](https://github.com/wang-bin/QtAV)!
 - Most frameless window codes are copied from https://github.com/Bringer-of-Light/Qt-Nice-Frameless-Window , thanks to [Bringer-of-Light](https://github.com/Bringer-of-Light)
 - Most style sheets of Preferences Dialog are copied from https://github.com/u8sand/Baka-MPlayer , thanks to [Daniel Clarke](https://github.com/u8sand)
 - [src/images/bee.ico](/src/images/bee.ico): downloaded from https://www.easyicon.net/
