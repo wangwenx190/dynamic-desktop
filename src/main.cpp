@@ -208,7 +208,7 @@ int main(int argc, char *argv[])
     QRect screenGeometry = QApplication::desktop()->screenGeometry(mainWindow);
     if (vid == QtAV::VideoRendererId_Direct2D)
     {
-        // Why is Direct2D window too large?
+        // Why is Direct2D image too large?
         mainWindow->resize(screenGeometry.size() / mainWindow->devicePixelRatioF());
         mainWindow->move(0, 0);
     }
@@ -394,6 +394,8 @@ int main(int argc, char *argv[])
                     player.setOptionsForVideoCodec(opt);
                 }
             }
+            else
+                player.setVideoDecoderPriority(QStringList() << QStringLiteral("FFmpeg"));
             if (mainWindow->isHidden())
                 mainWindow->show();
             if (!url.isEmpty())
@@ -522,7 +524,7 @@ int main(int argc, char *argv[])
                     newRenderer->widget()->setWindowFlags(Qt::FramelessWindowHint);
                     if (rendererId == QtAV::VideoRendererId_Direct2D)
                     {
-                        // Why is Direct2D window too large?
+                        // Why is Direct2D image too large?
                         newRenderer->widget()->resize(screenGeometry.size() / newRenderer->widget()->devicePixelRatioF());
                         newRenderer->widget()->move(0, 0);
                     }
