@@ -386,37 +386,37 @@ Do not continue running it if you are not a developer!</source>
     </message>
     <message>
         <location filename="../main.cpp" line="183"/>
-        <location filename="../main.cpp" line="521"/>
+        <location filename="../main.cpp" line="529"/>
         <source>Current renderer is not available on your platform!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="295"/>
+        <location filename="../main.cpp" line="297"/>
         <source>Preferences</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="310"/>
+        <location filename="../main.cpp" line="312"/>
         <source>Play</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="316"/>
+        <location filename="../main.cpp" line="318"/>
         <source>Pause</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="317"/>
+        <location filename="../main.cpp" line="325"/>
         <source>Mute</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="331"/>
+        <location filename="../main.cpp" line="339"/>
         <source>About</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="333"/>
+        <location filename="../main.cpp" line="341"/>
         <source>Exit</source>
         <translation type="unfinished"></translation>
     </message>

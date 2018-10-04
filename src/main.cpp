@@ -204,8 +204,9 @@ int main(int argc, char *argv[])
     else
         renderer->setOutAspectRatioMode(QtAV::VideoRenderer::VideoAspectRatio);
     QWidget *mainWindow = renderer->widget();
-    mainWindow->setWindowFlags(Qt::FramelessWindowHint);
-    QRect screenGeometry = QApplication::desktop()->screenGeometry(mainWindow);
+    const Qt::WindowFlags rendererWindowFlags = Qt::FramelessWindowHint | Qt::WindowStaysOnBottomHint /*| Qt::WindowTransparentForInput*/ | Qt::WindowDoesNotAcceptFocus | Qt::MaximizeUsingFullscreenGeometryHint;
+    mainWindow->setWindowFlags(rendererWindowFlags);
+    const QRect screenGeometry = QApplication::desktop()->screenGeometry(mainWindow);
     if (vid == QtAV::VideoRendererId_Direct2D)
     {
         // Why is Direct2D image too large?
@@ -214,6 +215,8 @@ int main(int argc, char *argv[])
     }
     else
         mainWindow->setGeometry(screenGeometry);
+    mainWindow->setWindowIcon(QIcon(QStringLiteral(":/bee.ico")));
+    mainWindow->setWindowTitle(QStringLiteral("Dynamic Desktop"));
     QtAV::AVPlayer player;
     player.setRenderer(renderer);
     QtAV::SubtitleFilter subtitle;
@@ -226,9 +229,8 @@ int main(int argc, char *argv[])
     player.setRepeat(-1);
     PreferencesDialog preferencesDialog;
     AboutDialog aboutDialog;
-    //QObject::connect(&player, SIGNAL(stopped()), &player, SLOT(play()));
     QObject::connect(&player, SIGNAL(positionChanged(qint64)), &preferencesDialog, SIGNAL(updateVideoSlider(qint64)));
-    QObject::connect(&player, &QtAV::AVPlayer::started,
+    QObject::connect(&player, &QtAV::AVPlayer::loaded,
         [=, &preferencesDialog, &player, &subtitle]
         {
             preferencesDialog.clearAllTracks();
@@ -313,7 +315,13 @@ int main(int argc, char *argv[])
         {
             preferencesDialog.urlChanged(QString());
         });
-    trayMenu.addAction(QObject::tr("Pause"), &player, SLOT(pause()));
+    QAction *pauseAction = trayMenu.addAction(QObject::tr("Pause"));
+    QObject::connect(pauseAction, &QAction::triggered,
+        [=, &player]
+        {
+            if (player.isPlaying())
+                player.pause();
+        });
     QAction *muteAction = trayMenu.addAction(QObject::tr("Mute"));
     muteAction->setCheckable(true);
     QObject::connect(muteAction, &QAction::triggered,
@@ -356,7 +364,7 @@ int main(int argc, char *argv[])
                 optionsAction->triggered();
         });
     QObject::connect(&preferencesDialog, SIGNAL(about()), aboutAction, SIGNAL(triggered()));
-    QObject::connect(&preferencesDialog, SIGNAL(pause()), &player, SLOT(pause()));
+    QObject::connect(&preferencesDialog, SIGNAL(pause()), pauseAction, SIGNAL(triggered()));
     QObject::connect(&preferencesDialog, &PreferencesDialog::urlChanged,
         [=, &player](const QString &url)
         {
@@ -400,8 +408,8 @@ int main(int argc, char *argv[])
                 mainWindow->show();
             if (!url.isEmpty())
                 player.play(url);
-            else
-                player.play();
+            else if (player.isPaused())
+                player.pause(false);
         });
     QObject::connect(&preferencesDialog, &PreferencesDialog::volumeChanged,
         [=, &player](unsigned int volume)
@@ -521,7 +529,7 @@ int main(int argc, char *argv[])
                     QMessageBox::critical(nullptr, QStringLiteral("Dynamic Desktop"), QObject::tr("Current renderer is not available on your platform!"));
                 else
                 {
-                    newRenderer->widget()->setWindowFlags(Qt::FramelessWindowHint);
+                    newRenderer->widget()->setWindowFlags(rendererWindowFlags);
                     if (rendererId == QtAV::VideoRendererId_Direct2D)
                     {
                         // Why is Direct2D image too large?
@@ -530,6 +538,8 @@ int main(int argc, char *argv[])
                     }
                     else
                         newRenderer->widget()->setGeometry(screenGeometry);
+                    newRenderer->widget()->setWindowIcon(QIcon(QStringLiteral(":/bee.ico")));
+                    newRenderer->widget()->setWindowTitle(QStringLiteral("Dynamic Desktop"));
                     newRenderer->widget()->show();
                     subtitle.uninstall();
                     subtitle.installTo(newRenderer);

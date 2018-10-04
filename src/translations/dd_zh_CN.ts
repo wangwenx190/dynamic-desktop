@@ -388,37 +388,37 @@ Do not continue running it if you are not a developer!</source>
     </message>
     <message>
         <location filename="../main.cpp" line="183"/>
-        <location filename="../main.cpp" line="521"/>
+        <location filename="../main.cpp" line="529"/>
         <source>Current renderer is not available on your platform!</source>
         <translation>当前渲染引擎在您的平台上不可用！</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="295"/>
+        <location filename="../main.cpp" line="297"/>
         <source>Preferences</source>
         <translation>首选项</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="310"/>
+        <location filename="../main.cpp" line="312"/>
         <source>Play</source>
         <translation>播放</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="316"/>
+        <location filename="../main.cpp" line="318"/>
         <source>Pause</source>
         <translation>暂停</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="317"/>
+        <location filename="../main.cpp" line="325"/>
         <source>Mute</source>
         <translation>静音</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="331"/>
+        <location filename="../main.cpp" line="339"/>
         <source>About</source>
         <translation>关于</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="333"/>
+        <location filename="../main.cpp" line="341"/>
         <source>Exit</source>
         <translation>退出</translation>
     </message>
