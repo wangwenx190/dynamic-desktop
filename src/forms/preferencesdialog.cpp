@@ -14,7 +14,9 @@
 #include <QMimeDatabase>
 #include <QMimeData>
 #include <QTextCodec>
+#ifndef BUILD_DD_STATIC
 #include <QLibraryInfo>
+#endif
 
 PreferencesDialog::PreferencesDialog(QWidget *parent) :
     FramelessWindow(parent),

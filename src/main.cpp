@@ -99,7 +99,7 @@ int main(int argc, char *argv[])
     QCoreApplication::setOrganizationName(QStringLiteral("wangwenx190"));
     QCoreApplication::setOrganizationDomain(QStringLiteral("wangwenx190.github.io"));
     QTranslator ddTranslator;
-#ifdef STATIC
+#ifdef BUILD_DD_STATIC
     QString qmDir = QStringLiteral(":/i18n");
 #else
     QString qmDir = QLibraryInfo::location(QLibraryInfo::TranslationsPath);
@@ -177,6 +177,8 @@ int main(int argc, char *argv[])
         SettingsManager::getInstance()->regAutostart();
     else
         SettingsManager::getInstance()->unregAutostart();
+    QtAV::setFFmpegLogLevel("warn");
+    QtAV::setLogLevel(QtAV::LogAll);
     QtAV::VideoRenderer *renderer = QtAV::VideoRenderer::create(SettingsManager::getInstance()->getRenderer());
     if (!renderer || !renderer->isAvailable() || !renderer->widget())
     {
