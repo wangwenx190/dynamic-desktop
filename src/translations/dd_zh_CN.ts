@@ -365,60 +365,60 @@ Make sure this application runs in your GPU&apos;s Optimus mode.</source>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../main.cpp" line="124"/>
+        <location filename="../main.cpp" line="199"/>
         <source>This application only supports Windows 7 and newer.</source>
         <translation>此应用程序仅支持 Windows 7 及更新的系统。</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="130"/>
+        <location filename="../main.cpp" line="205"/>
         <source>There is another instance running. Please do not run twice.</source>
         <translation>另一个实例已经在运行。请勿重复运行。</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="135"/>
+        <location filename="../main.cpp" line="210"/>
         <source>A tool that make your desktop alive.</source>
         <translation>一个能使您的桌面更加丰富多彩的工具。</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="174"/>
+        <location filename="../main.cpp" line="249"/>
         <source>WARNING: You are running a debug version of this tool!
 Do not continue running it if you are not a developer!</source>
         <translation>警告：您运行的是此应用程序的调试版本！
 如果您不是开发者，请不要继续运行！</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="185"/>
-        <location filename="../main.cpp" line="531"/>
+        <location filename="../main.cpp" line="260"/>
+        <location filename="../main.cpp" line="623"/>
         <source>Current renderer is not available on your platform!</source>
         <translation>当前渲染引擎在您的平台上不可用！</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="299"/>
+        <location filename="../main.cpp" line="372"/>
         <source>Preferences</source>
         <translation>首选项</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="314"/>
+        <location filename="../main.cpp" line="390"/>
         <source>Play</source>
         <translation>播放</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="320"/>
+        <location filename="../main.cpp" line="396"/>
         <source>Pause</source>
         <translation>暂停</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="327"/>
+        <location filename="../main.cpp" line="403"/>
         <source>Mute</source>
         <translation>静音</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="341"/>
+        <location filename="../main.cpp" line="417"/>
         <source>About</source>
         <translation>关于</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="343"/>
+        <location filename="../main.cpp" line="434"/>
         <source>Exit</source>
         <translation>退出</translation>
     </message>
@@ -426,32 +426,32 @@ Do not continue running it if you are not a developer!</source>
 <context>
     <name>main</name>
     <message>
-        <location filename="../main.cpp" line="140"/>
+        <location filename="../main.cpp" line="215"/>
         <source>renderer</source>
         <translation>渲染引擎</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="143"/>
+        <location filename="../main.cpp" line="218"/>
         <source>Play the given url. It can be a local file or a valid web url. Default is empty.</source>
         <translation>播放给定的路径。它可以是一个本地的文件或一个有效的网址。默认为空。</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="147"/>
+        <location filename="../main.cpp" line="222"/>
         <source>Set volume. It must be a positive integer between 0 and 99. Default is 9.</source>
         <translation>设置音量。它必须是一个0到99之间的正整数。默认为9。</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="144"/>
+        <location filename="../main.cpp" line="219"/>
         <source>url</source>
         <translation>路径</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="139"/>
+        <location filename="../main.cpp" line="214"/>
         <source>Set rendering engine. It can be opengl/gl/qt/gdi/d2d. Default is gl. Case sensitive.</source>
         <translation>设置渲染引擎。值可为opengl/gl/qt/gdi/d2d。默认为gl。大小写敏感。</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="148"/>
+        <location filename="../main.cpp" line="223"/>
         <source>volume</source>
         <translation>音量</translation>
     </message>

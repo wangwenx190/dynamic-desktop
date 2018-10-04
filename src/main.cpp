@@ -28,9 +28,9 @@
 #include <QWidget>
 
 //https://github.com/ThomasHuai/Wallpaper/blob/master/utils.cpp
-HWND HWORKERW = nullptr;
+static HWND HWORKERW = nullptr;
 
-BOOL CALLBACK EnumWindowsProc(HWND hwnd, LPARAM lParam)
+BOOL CALLBACK EnumWindowsProc(_In_ HWND hwnd, _In_ LPARAM lParam)
 {
     Q_UNUSED(lParam)
     HWND defview = FindWindowEx(hwnd, nullptr, TEXT("SHELLDLL_DefView"), nullptr);
@@ -55,6 +55,65 @@ HWND getWorkerW(bool legacyMode = false)
     EnumWindows(EnumWindowsProc, 0);
     ShowWindow(HWORKERW, legacyMode ? SW_HIDE : SW_SHOW);
     return legacyMode ? hwnd : HWORKERW;
+}
+
+static HANDLE mutex = nullptr;
+
+void Exit(int resultCode = 0)
+{
+    if (mutex != nullptr)
+    {
+        ReleaseMutex(mutex);
+        CloseHandle(mutex);
+    }
+    if (HWORKERW != nullptr)
+        ShowWindow(HWORKERW, SW_HIDE);
+    exit(resultCode);
+}
+
+void fileLogger(QtMsgType type, const QMessageLogContext &context, const QString &msg)
+{
+    static QMutex mutex;
+    mutex.lock();
+    QString msgType;
+    switch (type)
+    {
+    case QtDebugMsg:
+        msgType = QStringLiteral("DEBUG");
+        break;
+    case QtInfoMsg:
+        msgType = QStringLiteral("INFORMATION");
+        break;
+    case QtWarningMsg:
+        msgType = QStringLiteral("WARNING");
+        break;
+    case QtCriticalMsg:
+        msgType = QStringLiteral("CRITICAL");
+        break;
+    case QtFatalMsg:
+        msgType = QStringLiteral("FATAL");
+        break;
+    /*case QtSystemMsg:
+        msgType = QStringLiteral("SYSTEM");
+        break;*/
+    default:
+        msgType = QStringLiteral("DEBUG");
+        break;
+    }
+    QString messageStr = QStringLiteral("%0\t%1\t%2\t%3\t%4")
+                .arg(msgType).arg(msg).arg(context.file).arg(context.line).arg(context.function);
+    QString logPath = QApplication::applicationFilePath();
+    if (logPath.endsWith(QStringLiteral(".exe"), Qt::CaseInsensitive))
+        logPath = logPath.remove(logPath.lastIndexOf(QLatin1Char('.')), 4);
+    logPath += QStringLiteral(".log");
+    QFile file(logPath);
+    if (file.open(QFile::WriteOnly | QFile::Append | QFile::Text))
+    {
+        QTextStream ts(&file);
+        ts << messageStr << QLatin1Char('\n');
+        file.close();
+    }
+    mutex.unlock();
 }
 
 QStringList externalFilesToLoad(const QFileInfo &originalMediaFile, const QString &fileType)
@@ -88,8 +147,24 @@ QStringList externalFilesToLoad(const QFileInfo &originalMediaFile, const QStrin
     return newFileList;
 }
 
+void moveToCenter(QWidget *window)
+{
+    if (!window)
+        return;
+    unsigned int screenWidth = QApplication::desktop()->screenGeometry(window).width();
+    unsigned int screenHeight = QApplication::desktop()->screenGeometry(window).height();
+    unsigned int windowWidth = window->width();
+    unsigned int windowHeight = window->height();
+    unsigned int newX = (screenWidth - windowWidth) / 2;
+    unsigned int newY = (screenHeight - windowHeight) / 2;
+    window->move(newX, newY);
+}
+
 int main(int argc, char *argv[])
 {
+#ifndef _DEBUG
+    qInstallMessageHandler(fileLogger);
+#endif
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
     QApplication app(argc, argv);
@@ -122,9 +197,9 @@ int main(int argc, char *argv[])
     if (currentVersion < win7Version)
     {
         QMessageBox::critical(nullptr, QStringLiteral("Dynamic Desktop"), QObject::tr("This application only supports Windows 7 and newer."));
-        return -1;
+        Exit(-1);
     }
-    HANDLE mutex = CreateMutex(nullptr, FALSE, TEXT("wangwenx190.DynamicDesktop.1000.AppMutex"));
+    mutex = CreateMutex(nullptr, FALSE, TEXT("wangwenx190.DynamicDesktop.1000.AppMutex"));
     if ((mutex != nullptr) && (GetLastError() == ERROR_ALREADY_EXISTS))
     {
         QMessageBox::critical(nullptr, QStringLiteral("Dynamic Desktop"), QObject::tr("There is another instance running. Please do not run twice."));
@@ -178,14 +253,12 @@ int main(int argc, char *argv[])
     else
         SettingsManager::getInstance()->unregAutostart();
     QtAV::setFFmpegLogLevel("warn");
-    QtAV::setLogLevel(QtAV::LogAll);
+    QtAV::setLogLevel(QtAV::LogDebug);
     QtAV::VideoRenderer *renderer = QtAV::VideoRenderer::create(SettingsManager::getInstance()->getRenderer());
     if (!renderer || !renderer->isAvailable() || !renderer->widget())
     {
         QMessageBox::critical(nullptr, QStringLiteral("Dynamic Desktop"), QObject::tr("Current renderer is not available on your platform!"));
-        ReleaseMutex(mutex);
-        CloseHandle(mutex);
-        return -1;
+        Exit(-1);
     }
     const QtAV::VideoDecoderId vid = renderer->id();
     if (vid == QtAV::VideoRendererId_GLWidget
@@ -301,7 +374,10 @@ int main(int argc, char *argv[])
         [=, &preferencesDialog]
         {
             if (preferencesDialog.isHidden())
+            {
+                moveToCenter(&preferencesDialog);
                 preferencesDialog.show();
+            }
             if (!preferencesDialog.isActiveWindow())
                 preferencesDialog.setWindowState(preferencesDialog.windowState() & ~Qt::WindowMinimized);
             if (!preferencesDialog.isActiveWindow())
@@ -339,7 +415,22 @@ int main(int argc, char *argv[])
         });
     trayMenu.addSeparator();
     QAction *aboutAction = trayMenu.addAction(QObject::tr("About"));
-    QObject::connect(aboutAction, SIGNAL(triggered()), &aboutDialog, SLOT(show()));
+    QObject::connect(aboutAction, &QAction::triggered,
+        [=, &aboutDialog]
+        {
+            if (aboutDialog.isHidden())
+            {
+                moveToCenter(&aboutDialog);
+                aboutDialog.show();
+            }
+            if (!aboutDialog.isActiveWindow())
+                aboutDialog.setWindowState(aboutDialog.windowState() & ~Qt::WindowMinimized);
+            if (!aboutDialog.isActiveWindow())
+            {
+                aboutDialog.raise();
+                aboutDialog.activateWindow();
+            }
+        });
     trayMenu.addAction(QObject::tr("Exit"), qApp, &QApplication::closeAllWindows);
     QSystemTrayIcon trayIcon;
     trayIcon.setIcon(QIcon(QStringLiteral(":/bee.ico")));
@@ -528,7 +619,10 @@ int main(int argc, char *argv[])
             {
                 QtAV::VideoRenderer *newRenderer = QtAV::VideoRenderer::create(rendererId);
                 if (!newRenderer || !newRenderer->isAvailable() || !newRenderer->widget())
+                {
                     QMessageBox::critical(nullptr, QStringLiteral("Dynamic Desktop"), QObject::tr("Current renderer is not available on your platform!"));
+                    Exit(-1);
+                }
                 else
                 {
                     newRenderer->widget()->setWindowFlags(rendererWindowFlags);
