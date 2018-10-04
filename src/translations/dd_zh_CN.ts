@@ -388,7 +388,7 @@ Do not continue running it if you are not a developer!</source>
     </message>
     <message>
         <location filename="../main.cpp" line="183"/>
-        <location filename="../main.cpp" line="519"/>
+        <location filename="../main.cpp" line="521"/>
         <source>Current renderer is not available on your platform!</source>
         <translation>当前渲染引擎在您的平台上不可用！</translation>
     </message>
