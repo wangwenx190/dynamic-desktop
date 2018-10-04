@@ -28,7 +28,7 @@ Microsoft Windows 7 ~ 10(with GUI desktop), both 32 bit and 64 bit systems.
 ## Important notes
 - Windows Vista and XP are not supported
 - Enable Windows Aero first
-- Win7 users only: make sure you have installed XAudio2
+- Win7 users only: make sure you have installed XAudio2(Win 8/8.1/10 have installed it already by default)
 - To experience Hardware Accelerated Decoding better, make sure this tool runs with your high performance GPU(on Optimus)
 - The CPU and memory usage will increase enormously if you are using software decoding
 - It would be nice if you update your graphics card driver to the latest version
@@ -41,6 +41,10 @@ Microsoft Windows 7 ~ 10(with GUI desktop), both 32 bit and 64 bit systems.
 - Download [QtAV](https://github.com/wang-bin/QtAV)'s prebuilt SDK and install it, or build yourself.
 - Download [FFmpeg](https://github.com/wang-bin/avbuild)'s prebuilt binaries or build yourself.
 - Open "dynamic-desktop.pro" and start compiling or call "build.bat". But remember to call "vcvarsall.bat" and add Qt's directories to your path variables before calling "build.bat".
+
+**IMPORTANT NOTE**
+
+You can also use Intel C++ Compiler(ICC), Clang or MinGW to compile it, just remember to set up environment variables. Cross compile on other platforms may also work, but it will never run on platforms other than MS Windows.
 
 ## Licenses
 - [**Wallpaper Engine**](https://store.steampowered.com/app/431960/Wallpaper_Engine/) from Steam gives me the original idea to make this tool. Thanks to WE's author(s)!
