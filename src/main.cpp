@@ -226,9 +226,9 @@ int main(int argc, char *argv[])
                                  QApplication::translate("main", "Play the given url. It can be a local file or a valid web url. Default is empty."),
                                  QApplication::translate("main", "url"));
     parser.addOption(urlOption);
-    QCommandLineOption keepRatioOption(QStringLiteral("keepratio"),
+    /*QCommandLineOption keepRatioOption(QStringLiteral("keepratio"),
                                         QApplication::translate("main", "Make the output image keep original video aspect ratio instead of fitting the whole renderer window."));
-    parser.addOption(keepRatioOption);
+    parser.addOption(keepRatioOption);*/
     QCommandLineOption videoQualityOption(QStringLiteral("quality"),
                                           QApplication::translate("main", "Set the quality of the output image. It can be default/best/fastest. Default is fastest. Case insensitive."),
                                           QApplication::translate("main", "Image quality"));
@@ -254,9 +254,9 @@ int main(int argc, char *argv[])
     if (!urlOptionValue.isEmpty())
         if (urlOptionValue != SettingsManager::getInstance()->getUrl())
             SettingsManager::getInstance()->setUrl(urlOptionValue);
-    bool keepRatioOptionValue = parser.isSet(keepRatioOption);
+    /*bool keepRatioOptionValue = parser.isSet(keepRatioOption);
     if (keepRatioOptionValue != !SettingsManager::getInstance()->getFitDesktop())
-        SettingsManager::getInstance()->setFitDesktop(keepRatioOptionValue);
+        SettingsManager::getInstance()->setFitDesktop(!keepRatioOptionValue);*/
     QString videoQualityOptionValue = parser.value(videoQualityOption).toLower();
     if (!videoQualityOptionValue.isEmpty())
         if (((videoQualityOptionValue == QStringLiteral("default")) &&

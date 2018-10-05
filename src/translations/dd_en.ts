@@ -479,11 +479,6 @@ Do not continue running it if you are not a developer!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="230"/>
-        <source>Make the output image keep original video aspect ratio instead of fitting the whole renderer window.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../main.cpp" line="242"/>
         <source>volume</source>
         <translation type="unfinished"></translation>

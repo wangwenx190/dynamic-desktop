@@ -481,11 +481,6 @@ Do not continue running it if you are not a developer!</source>
         <translation>路径</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="230"/>
-        <source>Make the output image keep original video aspect ratio instead of fitting the whole renderer window.</source>
-        <translation>使输出的图像保持其原始画面比例，而不是充满整个渲染窗口。</translation>
-    </message>
-    <message>
         <location filename="../main.cpp" line="242"/>
         <source>volume</source>
         <translation>音量</translation>
