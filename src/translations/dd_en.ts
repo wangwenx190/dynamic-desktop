@@ -386,37 +386,37 @@ Do not continue running it if you are not a developer!</source>
     </message>
     <message>
         <location filename="../main.cpp" line="311"/>
-        <location filename="../main.cpp" line="678"/>
+        <location filename="../main.cpp" line="685"/>
         <source>Current renderer is not available on your platform!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="424"/>
+        <location filename="../main.cpp" line="431"/>
         <source>Preferences</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="442"/>
+        <location filename="../main.cpp" line="449"/>
         <source>Play</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="448"/>
+        <location filename="../main.cpp" line="455"/>
         <source>Pause</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="455"/>
+        <location filename="../main.cpp" line="462"/>
         <source>Mute</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="469"/>
+        <location filename="../main.cpp" line="476"/>
         <source>About</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="486"/>
+        <location filename="../main.cpp" line="493"/>
         <source>Exit</source>
         <translation type="unfinished"></translation>
     </message>
@@ -454,11 +454,6 @@ Do not continue running it if you are not a developer!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="230"/>
-        <source>Make the output image fit renderer window instead of keeping it&apos;s original aspect ratio.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../main.cpp" line="233"/>
         <source>Set the quality of the output image. It can be default/best/fastest. Default is fastest. Case insensitive.</source>
         <translation type="unfinished"></translation>
@@ -481,6 +476,11 @@ Do not continue running it if you are not a developer!</source>
     <message>
         <location filename="../main.cpp" line="227"/>
         <source>url</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../main.cpp" line="230"/>
+        <source>Make the output image keep original video aspect ratio instead of fitting the whole renderer window.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

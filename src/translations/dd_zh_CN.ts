@@ -388,37 +388,37 @@ Do not continue running it if you are not a developer!</source>
     </message>
     <message>
         <location filename="../main.cpp" line="311"/>
-        <location filename="../main.cpp" line="678"/>
+        <location filename="../main.cpp" line="685"/>
         <source>Current renderer is not available on your platform!</source>
         <translation>当前渲染引擎在您的平台上不可用！</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="424"/>
+        <location filename="../main.cpp" line="431"/>
         <source>Preferences</source>
         <translation>首选项</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="442"/>
+        <location filename="../main.cpp" line="449"/>
         <source>Play</source>
         <translation>播放</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="448"/>
+        <location filename="../main.cpp" line="455"/>
         <source>Pause</source>
         <translation>暂停</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="455"/>
+        <location filename="../main.cpp" line="462"/>
         <source>Mute</source>
         <translation>静音</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="469"/>
+        <location filename="../main.cpp" line="476"/>
         <source>About</source>
         <translation>关于</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="486"/>
+        <location filename="../main.cpp" line="493"/>
         <source>Exit</source>
         <translation>退出</translation>
     </message>
@@ -456,11 +456,6 @@ Do not continue running it if you are not a developer!</source>
         <translation>皮肤文件名</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="230"/>
-        <source>Make the output image fit renderer window instead of keeping it&apos;s original aspect ratio.</source>
-        <translation>使输出的图像充满整个渲染窗口，而不是让它保持原有的画面比例。</translation>
-    </message>
-    <message>
         <location filename="../main.cpp" line="233"/>
         <source>Set the quality of the output image. It can be default/best/fastest. Default is fastest. Case insensitive.</source>
         <translation>设置输出图像的质量。它的值可为 default/best/fastest。默认为 fastest。大小写不敏感。</translation>
@@ -484,6 +479,11 @@ Do not continue running it if you are not a developer!</source>
         <location filename="../main.cpp" line="227"/>
         <source>url</source>
         <translation>路径</translation>
+    </message>
+    <message>
+        <location filename="../main.cpp" line="230"/>
+        <source>Make the output image keep original video aspect ratio instead of fitting the whole renderer window.</source>
+        <translation>使输出的图像保持其原始画面比例，而不是充满整个渲染窗口。</translation>
     </message>
     <message>
         <location filename="../main.cpp" line="242"/>

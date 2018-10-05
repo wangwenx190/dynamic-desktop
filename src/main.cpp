@@ -226,9 +226,9 @@ int main(int argc, char *argv[])
                                  QApplication::translate("main", "Play the given url. It can be a local file or a valid web url. Default is empty."),
                                  QApplication::translate("main", "url"));
     parser.addOption(urlOption);
-    QCommandLineOption fitDesktopOption(QStringLiteral("fit"),
-                                        QApplication::translate("main", "Make the output image fit renderer window instead of keeping it's original aspect ratio."));
-    parser.addOption(fitDesktopOption);
+    QCommandLineOption keepRatioOption(QStringLiteral("keepratio"),
+                                        QApplication::translate("main", "Make the output image keep original video aspect ratio instead of fitting the whole renderer window."));
+    parser.addOption(keepRatioOption);
     QCommandLineOption videoQualityOption(QStringLiteral("quality"),
                                           QApplication::translate("main", "Set the quality of the output image. It can be default/best/fastest. Default is fastest. Case insensitive."),
                                           QApplication::translate("main", "Image quality"));
@@ -254,9 +254,9 @@ int main(int argc, char *argv[])
     if (!urlOptionValue.isEmpty())
         if (urlOptionValue != SettingsManager::getInstance()->getUrl())
             SettingsManager::getInstance()->setUrl(urlOptionValue);
-    bool fitDesktopOptionValue = parser.isSet(fitDesktopOption);
-    if (fitDesktopOptionValue != SettingsManager::getInstance()->getFitDesktop())
-        SettingsManager::getInstance()->setFitDesktop(fitDesktopOptionValue);
+    bool keepRatioOptionValue = parser.isSet(keepRatioOption);
+    if (keepRatioOptionValue != !SettingsManager::getInstance()->getFitDesktop())
+        SettingsManager::getInstance()->setFitDesktop(keepRatioOptionValue);
     QString videoQualityOptionValue = parser.value(videoQualityOption).toLower();
     if (!videoQualityOptionValue.isEmpty())
         if (((videoQualityOptionValue == QStringLiteral("default")) &&
@@ -331,9 +331,10 @@ int main(int argc, char *argv[])
         renderer->setOutAspectRatioMode(QtAV::VideoRenderer::VideoAspectRatio);
     QWidget *mainWindow = renderer->widget();
     const Qt::WindowFlags rendererWindowFlags = Qt::FramelessWindowHint | Qt::WindowStaysOnBottomHint /*| Qt::WindowTransparentForInput*/ | Qt::WindowDoesNotAcceptFocus | Qt::MaximizeUsingFullscreenGeometryHint;
-    mainWindow->setWindowFlags(rendererWindowFlags);
     const QRect screenGeometry = QApplication::desktop()->screenGeometry(mainWindow);
     if (!windowMode)
+    {
+        mainWindow->setWindowFlags(rendererWindowFlags);
         if (vid == QtAV::VideoRendererId_Direct2D)
         {
             // Why is Direct2D image too large?
@@ -342,6 +343,12 @@ int main(int argc, char *argv[])
         }
         else
             mainWindow->setGeometry(screenGeometry);
+    }
+    else
+    {
+        mainWindow->resize(QSize(1280, 720));
+        moveToCenter(mainWindow);
+    }
     mainWindow->setWindowIcon(QIcon(QStringLiteral(":/bee.ico")));
     mainWindow->setWindowTitle(QStringLiteral("Dynamic Desktop"));
     QtAV::AVPlayer player;
@@ -680,8 +687,9 @@ int main(int argc, char *argv[])
                 }
                 else
                 {
-                    newRenderer->widget()->setWindowFlags(rendererWindowFlags);
                     if (!windowMode)
+                    {
+                        newRenderer->widget()->setWindowFlags(rendererWindowFlags);
                         if (rendererId == QtAV::VideoRendererId_Direct2D)
                         {
                             // Why is Direct2D image too large?
@@ -690,6 +698,12 @@ int main(int argc, char *argv[])
                         }
                         else
                             newRenderer->widget()->setGeometry(screenGeometry);
+                    }
+                    else
+                    {
+                        newRenderer->widget()->resize(QSize(1280, 720));
+                        moveToCenter(newRenderer->widget());
+                    }
                     newRenderer->widget()->setWindowIcon(QIcon(QStringLiteral(":/bee.ico")));
                     newRenderer->widget()->setWindowTitle(QStringLiteral("Dynamic Desktop"));
                     newRenderer->widget()->show();
