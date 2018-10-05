@@ -14,8 +14,8 @@
    <string>About</string>
   </property>
   <property name="windowIcon">
-   <iconset>
-    <normaloff>:/icon.ico</normaloff>:/icon.ico</iconset>
+   <iconset resource="../images.qrc">
+    <normaloff>:/bee.ico</normaloff>:/bee.ico</iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -465,6 +465,8 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../images.qrc"/>
+ </resources>
  <connections/>
 </ui>

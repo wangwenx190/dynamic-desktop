@@ -486,7 +486,7 @@
            </sizepolicy>
           </property>
           <property name="text">
-           <string>Video quality</string>
+           <string>Output image quality</string>
           </property>
          </widget>
         </item>

@@ -160,6 +160,8 @@ void moveToCenter(QWidget *window)
     window->move(newX, newY);
 }
 
+static bool windowMode = false;
+
 int main(int argc, char *argv[])
 {
 #ifndef _DEBUG
@@ -210,39 +212,88 @@ int main(int argc, char *argv[])
     parser.setApplicationDescription(QObject::tr("A tool that make your desktop alive."));
     parser.addHelpOption();
     parser.addVersionOption();
-    QCommandLineOption rendererOption(QStringLiteral("renderer"),
-                                      QApplication::translate("main", "Set rendering engine. It can be opengl/gl/qt/gdi/d2d. Default is gl. Case sensitive."),
-                                      QApplication::translate("main", "renderer"));
-    parser.addOption(rendererOption);
+    QCommandLineOption windowModeOption(QStringLiteral("window"),
+                                        QApplication::translate("main", "Show a normal window instead of placing it under the desktop icons."));
+    parser.addOption(windowModeOption);
+    QCommandLineOption autoStartOption(QStringLiteral("autostart"),
+                                       QApplication::translate("main", "Make this tool auto start."));
+    parser.addOption(autoStartOption);
+    QCommandLineOption skinOption(QStringLiteral("skin"),
+                                  QApplication::translate("main", "Set skin. The value is the file name of the skin file, excluding the file extension. If it's not under the \"skins\" folder, please give the absolute path of the file."),
+                                  QApplication::translate("main", "Skin file name"));
+    parser.addOption(skinOption);
     QCommandLineOption urlOption(QStringLiteral("url"),
                                  QApplication::translate("main", "Play the given url. It can be a local file or a valid web url. Default is empty."),
                                  QApplication::translate("main", "url"));
     parser.addOption(urlOption);
+    QCommandLineOption fitDesktopOption(QStringLiteral("fit"),
+                                        QApplication::translate("main", "Make the output image fit renderer window instead of keeping it's original aspect ratio."));
+    parser.addOption(fitDesktopOption);
+    QCommandLineOption videoQualityOption(QStringLiteral("quality"),
+                                          QApplication::translate("main", "Set the quality of the output image. It can be default/best/fastest. Default is fastest. Case insensitive."),
+                                          QApplication::translate("main", "Image quality"));
+    parser.addOption(videoQualityOption);
+    QCommandLineOption rendererOption(QStringLiteral("renderer"),
+                                      QApplication::translate("main", "Set rendering engine. It can be opengl/gl/qt/gdi/d2d. Default is gl. Case insensitive."),
+                                      QApplication::translate("main", "renderer"));
+    parser.addOption(rendererOption);
     QCommandLineOption volumeOption(QStringLiteral("volume"),
                                     QApplication::translate("main", "Set volume. It must be a positive integer between 0 and 99. Default is 9."),
                                     QApplication::translate("main", "volume"));
     parser.addOption(volumeOption);
     parser.process(app);
-    QString rendererOptionValue = parser.value(rendererOption);
-    if (!rendererOptionValue.isEmpty())
-        if (rendererOptionValue == QStringLiteral("opengl"))
-            SettingsManager::getInstance()->setRenderer(QtAV::VideoRendererId_OpenGLWidget);
-        else if (rendererOptionValue == QStringLiteral("gl"))
-            SettingsManager::getInstance()->setRenderer(QtAV::VideoRendererId_GLWidget2);
-        else if (rendererOptionValue == QStringLiteral("qt"))
-            SettingsManager::getInstance()->setRenderer(QtAV::VideoRendererId_Widget);
-        else if (rendererOptionValue == QStringLiteral("gdi"))
-            SettingsManager::getInstance()->setRenderer(QtAV::VideoRendererId_GDI);
-        else if (rendererOptionValue == QStringLiteral("d2d"))
-            SettingsManager::getInstance()->setRenderer(QtAV::VideoRendererId_Direct2D);
-        else
-            SettingsManager::getInstance()->setRenderer(QtAV::VideoRendererId_GLWidget2);
+    windowMode = parser.isSet(windowModeOption);
+    bool autoStartOptionValue = parser.isSet(autoStartOption);
+    if (autoStartOptionValue != SettingsManager::getInstance()->getAutostart())
+        SettingsManager::getInstance()->setAutostart(autoStartOptionValue);
+    QString skinOptionValue = parser.value(skinOption);
+    if (!skinOptionValue.isEmpty())
+        if (skinOptionValue != SettingsManager::getInstance()->getSkin())
+            SettingsManager::getInstance()->setSkin(skinOptionValue);
     QString urlOptionValue = parser.value(urlOption);
     if (!urlOptionValue.isEmpty())
-        SettingsManager::getInstance()->setUrl(urlOptionValue);
+        if (urlOptionValue != SettingsManager::getInstance()->getUrl())
+            SettingsManager::getInstance()->setUrl(urlOptionValue);
+    bool fitDesktopOptionValue = parser.isSet(fitDesktopOption);
+    if (fitDesktopOptionValue != SettingsManager::getInstance()->getFitDesktop())
+        SettingsManager::getInstance()->setFitDesktop(fitDesktopOptionValue);
+    QString videoQualityOptionValue = parser.value(videoQualityOption).toLower();
+    if (!videoQualityOptionValue.isEmpty())
+        if (((videoQualityOptionValue == QStringLiteral("default")) &&
+                (videoQualityOptionValue != SettingsManager::getInstance()->getVideoQuality())) ||
+                ((videoQualityOptionValue == QStringLiteral("best")) &&
+                 (videoQualityOptionValue != SettingsManager::getInstance()->getVideoQuality())) ||
+                ((videoQualityOptionValue == QStringLiteral("fastest")) &&
+                 (videoQualityOptionValue != SettingsManager::getInstance()->getVideoQuality())))
+            SettingsManager::getInstance()->setVideoQuality(videoQualityOptionValue);
+    QString rendererOptionValue = parser.value(rendererOption).toLower();
+    if (!rendererOptionValue.isEmpty())
+        if ((rendererOptionValue == QStringLiteral("opengl")) &&
+                (SettingsManager::getInstance()->getRenderer() != QtAV::VideoRendererId_OpenGLWidget))
+            SettingsManager::getInstance()->setRenderer(QtAV::VideoRendererId_OpenGLWidget);
+        else if ((rendererOptionValue == QStringLiteral("gl")) &&
+                 (SettingsManager::getInstance()->getRenderer() != QtAV::VideoRendererId_GLWidget2))
+            SettingsManager::getInstance()->setRenderer(QtAV::VideoRendererId_GLWidget2);
+        else if ((rendererOptionValue == QStringLiteral("qt")) &&
+                 (SettingsManager::getInstance()->getRenderer() != QtAV::VideoRendererId_Widget))
+            SettingsManager::getInstance()->setRenderer(QtAV::VideoRendererId_Widget);
+        else if ((rendererOptionValue == QStringLiteral("gdi")) &&
+                 (SettingsManager::getInstance()->getRenderer() != QtAV::VideoRendererId_GDI))
+            SettingsManager::getInstance()->setRenderer(QtAV::VideoRendererId_GDI);
+        else if ((rendererOptionValue == QStringLiteral("d2d")) &&
+                 (SettingsManager::getInstance()->getRenderer() != QtAV::VideoRendererId_Direct2D))
+            SettingsManager::getInstance()->setRenderer(QtAV::VideoRendererId_Direct2D);
     QString volumeOptionValue = parser.value(volumeOption);
     if (!volumeOptionValue.isEmpty())
-        SettingsManager::getInstance()->setVolume(volumeOptionValue.toUInt());
+    {
+        int volumeOptionValueInt = volumeOptionValue.toInt();
+        if (volumeOptionValueInt < 0)
+            volumeOptionValueInt = 0;
+        if (volumeOptionValueInt > 99)
+            volumeOptionValueInt = 99;
+        if (static_cast<unsigned int>(volumeOptionValueInt) != SettingsManager::getInstance()->getVolume())
+            SettingsManager::getInstance()->setVolume(static_cast<unsigned int>(volumeOptionValueInt));
+    }
     SkinManager::getInstance()->setSkin(SettingsManager::getInstance()->getSkin());
 #ifndef BUILD_DD_STATIC
     if (QLibraryInfo::isDebugBuild())
@@ -253,7 +304,7 @@ int main(int argc, char *argv[])
     else
         SettingsManager::getInstance()->unregAutostart();
     QtAV::setFFmpegLogLevel("warn");
-    QtAV::setLogLevel(QtAV::LogDebug);
+    QtAV::setLogLevel(QtAV::LogAll);
     QtAV::VideoRenderer *renderer = QtAV::VideoRenderer::create(SettingsManager::getInstance()->getRenderer());
     if (!renderer || !renderer->isAvailable() || !renderer->widget())
     {
@@ -282,14 +333,15 @@ int main(int argc, char *argv[])
     const Qt::WindowFlags rendererWindowFlags = Qt::FramelessWindowHint | Qt::WindowStaysOnBottomHint /*| Qt::WindowTransparentForInput*/ | Qt::WindowDoesNotAcceptFocus | Qt::MaximizeUsingFullscreenGeometryHint;
     mainWindow->setWindowFlags(rendererWindowFlags);
     const QRect screenGeometry = QApplication::desktop()->screenGeometry(mainWindow);
-    if (vid == QtAV::VideoRendererId_Direct2D)
-    {
-        // Why is Direct2D image too large?
-        mainWindow->resize(screenGeometry.size() / mainWindow->devicePixelRatioF());
-        mainWindow->move(0, 0);
-    }
-    else
-        mainWindow->setGeometry(screenGeometry);
+    if (!windowMode)
+        if (vid == QtAV::VideoRendererId_Direct2D)
+        {
+            // Why is Direct2D image too large?
+            mainWindow->resize(screenGeometry.size() / mainWindow->devicePixelRatioF());
+            mainWindow->move(0, 0);
+        }
+        else
+            mainWindow->setGeometry(screenGeometry);
     mainWindow->setWindowIcon(QIcon(QStringLiteral(":/bee.ico")));
     mainWindow->setWindowTitle(QStringLiteral("Dynamic Desktop"));
     QtAV::AVPlayer player;
@@ -500,7 +552,10 @@ int main(int argc, char *argv[])
             if (mainWindow->isHidden())
                 mainWindow->show();
             if (!url.isEmpty())
+            {
                 player.play(url);
+                mainWindow->setWindowTitle(QFileInfo(url).fileName());
+            }
             else if (player.isPaused())
                 player.pause(false);
         });
@@ -626,14 +681,15 @@ int main(int argc, char *argv[])
                 else
                 {
                     newRenderer->widget()->setWindowFlags(rendererWindowFlags);
-                    if (rendererId == QtAV::VideoRendererId_Direct2D)
-                    {
-                        // Why is Direct2D image too large?
-                        newRenderer->widget()->resize(screenGeometry.size() / newRenderer->widget()->devicePixelRatioF());
-                        newRenderer->widget()->move(0, 0);
-                    }
-                    else
-                        newRenderer->widget()->setGeometry(screenGeometry);
+                    if (!windowMode)
+                        if (rendererId == QtAV::VideoRendererId_Direct2D)
+                        {
+                            // Why is Direct2D image too large?
+                            newRenderer->widget()->resize(screenGeometry.size() / newRenderer->widget()->devicePixelRatioF());
+                            newRenderer->widget()->move(0, 0);
+                        }
+                        else
+                            newRenderer->widget()->setGeometry(screenGeometry);
                     newRenderer->widget()->setWindowIcon(QIcon(QStringLiteral(":/bee.ico")));
                     newRenderer->widget()->setWindowTitle(QStringLiteral("Dynamic Desktop"));
                     newRenderer->widget()->show();
@@ -654,6 +710,7 @@ int main(int argc, char *argv[])
                     HWND hwnd = nullptr;
                     if (renderer->widget())
                     {
+                        newRenderer->widget()->setWindowTitle(renderer->widget()->windowTitle());
                         hwnd = GetParent(reinterpret_cast<HWND>(renderer->widget()->winId()));
                         if (renderer->widget()->testAttribute(Qt::WA_DeleteOnClose))
                             renderer->widget()->close();
@@ -668,7 +725,7 @@ int main(int argc, char *argv[])
                         QVersionNumber win10Version(10, 0, 10240);
                         hwnd = getWorkerW(currentVersion < win10Version);
                     }
-                    if (hwnd != nullptr)
+                    if ((hwnd != nullptr) && !windowMode)
                         SetParent(reinterpret_cast<HWND>(newRenderer->widget()->winId()), hwnd);
                     renderer = newRenderer;
                     mainWindow = newRenderer->widget();
@@ -704,7 +761,7 @@ int main(int argc, char *argv[])
     // "WorkerW" as our parent window will not result
     // in this problem, I don't know why. It's strange.
     HWND hwnd = getWorkerW(currentVersion < win10Version);
-    if (hwnd != nullptr)
+    if ((hwnd != nullptr) && !windowMode)
         SetParent(reinterpret_cast<HWND>(mainWindow->winId()), hwnd);
     int exec = QApplication::exec();
     ShowWindow(HWORKERW, SW_HIDE);

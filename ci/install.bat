@@ -1,3 +1,4 @@
+@echo off
 if exist qtavdepends.7z del /f qtavdepends.7z
 appveyor DownloadFile "https://sourceforge.net/projects/qtav/files/depends/QtAV-depends-windows-x86+x64.7z/download" -FileName qtavdepends.7z
 if exist depends rd /s /q depends

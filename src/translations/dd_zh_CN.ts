@@ -133,11 +133,6 @@
         <translation>充满桌面</translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.ui" line="489"/>
-        <source>Video quality</source>
-        <translation>画面质量</translation>
-    </message>
-    <message>
         <location filename="../forms/preferencesdialog.cpp" line="33"/>
         <source>Default</source>
         <translation>默认</translation>
@@ -212,6 +207,11 @@
         <location filename="../forms/preferencesdialog.ui" line="445"/>
         <source>Picture ratio</source>
         <translation>画面比例</translation>
+    </message>
+    <message>
+        <location filename="../forms/preferencesdialog.ui" line="489"/>
+        <source>Output image quality</source>
+        <translation>输出图像质量</translation>
     </message>
     <message>
         <location filename="../forms/preferencesdialog.ui" line="549"/>
@@ -365,60 +365,60 @@ Make sure this application runs in your GPU&apos;s Optimus mode.</source>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../main.cpp" line="199"/>
+        <location filename="../main.cpp" line="201"/>
         <source>This application only supports Windows 7 and newer.</source>
         <translation>此应用程序仅支持 Windows 7 及更新的系统。</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="205"/>
+        <location filename="../main.cpp" line="207"/>
         <source>There is another instance running. Please do not run twice.</source>
         <translation>另一个实例已经在运行。请勿重复运行。</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="210"/>
+        <location filename="../main.cpp" line="212"/>
         <source>A tool that make your desktop alive.</source>
         <translation>一个能使您的桌面更加丰富多彩的工具。</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="249"/>
+        <location filename="../main.cpp" line="300"/>
         <source>WARNING: You are running a debug version of this tool!
 Do not continue running it if you are not a developer!</source>
         <translation>警告：您运行的是此应用程序的调试版本！
 如果您不是开发者，请不要继续运行！</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="260"/>
-        <location filename="../main.cpp" line="623"/>
+        <location filename="../main.cpp" line="311"/>
+        <location filename="../main.cpp" line="678"/>
         <source>Current renderer is not available on your platform!</source>
         <translation>当前渲染引擎在您的平台上不可用！</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="372"/>
+        <location filename="../main.cpp" line="424"/>
         <source>Preferences</source>
         <translation>首选项</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="390"/>
+        <location filename="../main.cpp" line="442"/>
         <source>Play</source>
         <translation>播放</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="396"/>
+        <location filename="../main.cpp" line="448"/>
         <source>Pause</source>
         <translation>暂停</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="403"/>
+        <location filename="../main.cpp" line="455"/>
         <source>Mute</source>
         <translation>静音</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="417"/>
+        <location filename="../main.cpp" line="469"/>
         <source>About</source>
         <translation>关于</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="434"/>
+        <location filename="../main.cpp" line="486"/>
         <source>Exit</source>
         <translation>退出</translation>
     </message>
@@ -426,32 +426,67 @@ Do not continue running it if you are not a developer!</source>
 <context>
     <name>main</name>
     <message>
-        <location filename="../main.cpp" line="215"/>
+        <location filename="../main.cpp" line="238"/>
         <source>renderer</source>
         <translation>渲染引擎</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="218"/>
+        <location filename="../main.cpp" line="226"/>
         <source>Play the given url. It can be a local file or a valid web url. Default is empty.</source>
         <translation>播放给定的路径。它可以是一个本地的文件或一个有效的网址。默认为空。</translation>
     </message>
     <message>
+        <location filename="../main.cpp" line="216"/>
+        <source>Show a normal window instead of placing it under the desktop icons.</source>
+        <translation>显示一个正常的窗口，而不是把它放到桌面图标的下方。</translation>
+    </message>
+    <message>
+        <location filename="../main.cpp" line="219"/>
+        <source>Make this tool auto start.</source>
+        <translation>让这个应用程序开机自启。</translation>
+    </message>
+    <message>
         <location filename="../main.cpp" line="222"/>
+        <source>Set skin. The value is the file name of the skin file, excluding the file extension. If it&apos;s not under the &quot;skins&quot; folder, please give the absolute path of the file.</source>
+        <translation>设置皮肤。它的值是皮肤文件的文件名，不带后缀名。如果它不在“skins”文件夹下，请使用完整的绝对路径。</translation>
+    </message>
+    <message>
+        <location filename="../main.cpp" line="223"/>
+        <source>Skin file name</source>
+        <translation>皮肤文件名</translation>
+    </message>
+    <message>
+        <location filename="../main.cpp" line="230"/>
+        <source>Make the output image fit renderer window instead of keeping it&apos;s original aspect ratio.</source>
+        <translation>使输出的图像充满整个渲染窗口，而不是让它保持原有的画面比例。</translation>
+    </message>
+    <message>
+        <location filename="../main.cpp" line="233"/>
+        <source>Set the quality of the output image. It can be default/best/fastest. Default is fastest. Case insensitive.</source>
+        <translation>设置输出图像的质量。它的值可为 default/best/fastest。默认为 fastest。大小写不敏感。</translation>
+    </message>
+    <message>
+        <location filename="../main.cpp" line="234"/>
+        <source>Image quality</source>
+        <translation>图像质量</translation>
+    </message>
+    <message>
+        <location filename="../main.cpp" line="237"/>
+        <source>Set rendering engine. It can be opengl/gl/qt/gdi/d2d. Default is gl. Case insensitive.</source>
+        <translation>设置渲染引擎。它的值可为 opengl/gl/qt/gdi/d2d。默认为 gl。大小写不敏感。</translation>
+    </message>
+    <message>
+        <location filename="../main.cpp" line="241"/>
         <source>Set volume. It must be a positive integer between 0 and 99. Default is 9.</source>
         <translation>设置音量。它必须是一个0到99之间的正整数。默认为9。</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="219"/>
+        <location filename="../main.cpp" line="227"/>
         <source>url</source>
         <translation>路径</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="214"/>
-        <source>Set rendering engine. It can be opengl/gl/qt/gdi/d2d. Default is gl. Case sensitive.</source>
-        <translation>设置渲染引擎。值可为opengl/gl/qt/gdi/d2d。默认为gl。大小写敏感。</translation>
-    </message>
-    <message>
-        <location filename="../main.cpp" line="223"/>
+        <location filename="../main.cpp" line="242"/>
         <source>volume</source>
         <translation>音量</translation>
     </message>

@@ -133,11 +133,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.ui" line="489"/>
-        <source>Video quality</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../forms/preferencesdialog.cpp" line="33"/>
         <source>Default</source>
         <translation type="unfinished"></translation>
@@ -211,6 +206,11 @@
     <message>
         <location filename="../forms/preferencesdialog.ui" line="445"/>
         <source>Picture ratio</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../forms/preferencesdialog.ui" line="489"/>
+        <source>Output image quality</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -364,59 +364,59 @@ Make sure this application runs in your GPU&apos;s Optimus mode.</source>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../main.cpp" line="199"/>
+        <location filename="../main.cpp" line="201"/>
         <source>This application only supports Windows 7 and newer.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="205"/>
+        <location filename="../main.cpp" line="207"/>
         <source>There is another instance running. Please do not run twice.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="210"/>
+        <location filename="../main.cpp" line="212"/>
         <source>A tool that make your desktop alive.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="249"/>
+        <location filename="../main.cpp" line="300"/>
         <source>WARNING: You are running a debug version of this tool!
 Do not continue running it if you are not a developer!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="260"/>
-        <location filename="../main.cpp" line="623"/>
+        <location filename="../main.cpp" line="311"/>
+        <location filename="../main.cpp" line="678"/>
         <source>Current renderer is not available on your platform!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="372"/>
+        <location filename="../main.cpp" line="424"/>
         <source>Preferences</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="390"/>
+        <location filename="../main.cpp" line="442"/>
         <source>Play</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="396"/>
+        <location filename="../main.cpp" line="448"/>
         <source>Pause</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="403"/>
+        <location filename="../main.cpp" line="455"/>
         <source>Mute</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="417"/>
+        <location filename="../main.cpp" line="469"/>
         <source>About</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="434"/>
+        <location filename="../main.cpp" line="486"/>
         <source>Exit</source>
         <translation type="unfinished"></translation>
     </message>
@@ -424,32 +424,67 @@ Do not continue running it if you are not a developer!</source>
 <context>
     <name>main</name>
     <message>
-        <location filename="../main.cpp" line="215"/>
+        <location filename="../main.cpp" line="238"/>
         <source>renderer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="218"/>
+        <location filename="../main.cpp" line="226"/>
         <source>Play the given url. It can be a local file or a valid web url. Default is empty.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="222"/>
-        <source>Set volume. It must be a positive integer between 0 and 99. Default is 9.</source>
+        <location filename="../main.cpp" line="216"/>
+        <source>Show a normal window instead of placing it under the desktop icons.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../main.cpp" line="219"/>
-        <source>url</source>
+        <source>Make this tool auto start.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="214"/>
-        <source>Set rendering engine. It can be opengl/gl/qt/gdi/d2d. Default is gl. Case sensitive.</source>
+        <location filename="../main.cpp" line="222"/>
+        <source>Set skin. The value is the file name of the skin file, excluding the file extension. If it&apos;s not under the &quot;skins&quot; folder, please give the absolute path of the file.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../main.cpp" line="223"/>
+        <source>Skin file name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../main.cpp" line="230"/>
+        <source>Make the output image fit renderer window instead of keeping it&apos;s original aspect ratio.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../main.cpp" line="233"/>
+        <source>Set the quality of the output image. It can be default/best/fastest. Default is fastest. Case insensitive.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../main.cpp" line="234"/>
+        <source>Image quality</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../main.cpp" line="237"/>
+        <source>Set rendering engine. It can be opengl/gl/qt/gdi/d2d. Default is gl. Case insensitive.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../main.cpp" line="241"/>
+        <source>Set volume. It must be a positive integer between 0 and 99. Default is 9.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../main.cpp" line="227"/>
+        <source>url</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../main.cpp" line="242"/>
         <source>volume</source>
         <translation type="unfinished"></translation>
     </message>

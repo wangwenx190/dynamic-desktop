@@ -1,6 +1,9 @@
-:: usage: call build.bat "mkspec" "config"
-:: eg: call build.bat "win32-icc" "release static_dd small ltcg"
-:: IMPORTANT: Double quotation marks are indispensable
+:: Usage: call build.bat "mkspec" "config"
+:: Eg: call build.bat "win32-icc" "release static_dd small ltcg"
+:: IMPORTANT: Double quotation marks are indispensable and
+:: remember to call "vcvarsall.bat" and add Qt's directories
+:: to your environment variables!
+@echo off
 cd /d "%~dp0"
 if exist build rd /s /q build
 md build
