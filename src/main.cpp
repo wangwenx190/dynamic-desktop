@@ -706,7 +706,6 @@ int main(int argc, char *argv[])
                     }
                     newRenderer->widget()->setWindowIcon(QIcon(QStringLiteral(":/bee.ico")));
                     newRenderer->widget()->setWindowTitle(QStringLiteral("Dynamic Desktop"));
-                    newRenderer->widget()->show();
                     subtitle.uninstall();
                     subtitle.installTo(newRenderer);
                     player.setRenderer(newRenderer);
@@ -725,7 +724,12 @@ int main(int argc, char *argv[])
                     if (renderer->widget())
                     {
                         newRenderer->widget()->setWindowTitle(renderer->widget()->windowTitle());
-                        hwnd = GetParent(reinterpret_cast<HWND>(renderer->widget()->winId()));
+                        if (renderer->widget()->geometry() != screenGeometry)
+                            newRenderer->widget()->setGeometry(renderer->widget()->geometry());
+                        if (newRenderer->widget()->isHidden())
+                            newRenderer->widget()->show();
+                        if (!windowMode)
+                            hwnd = GetParent(reinterpret_cast<HWND>(renderer->widget()->winId()));
                         if (renderer->widget()->testAttribute(Qt::WA_DeleteOnClose))
                             renderer->widget()->close();
                         else
@@ -734,7 +738,9 @@ int main(int argc, char *argv[])
                             delete renderer->widget();
                         }
                     }
-                    if (hwnd == nullptr)
+                    else if (newRenderer->widget()->isHidden())
+                        newRenderer->widget()->show();
+                    if ((hwnd == nullptr) && !windowMode)
                     {
                         QVersionNumber win10Version(10, 0, 10240);
                         hwnd = getWorkerW(currentVersion < win10Version);
@@ -764,19 +770,22 @@ int main(int argc, char *argv[])
     }
     else
         optionsAction->triggered();
-    QVersionNumber win10Version(10, 0, 10240); // Windows 10 Version 1507
-    // How to place our window under desktop icons:
-    // Use "Program Manager" as our parent window in Win7/8/8.1.
-    // Use "WorkerW" as our parent window in Win10.
-    // Use "Program Manager" as our parent window in
-    // Win10 is also OK, but our window will come
-    // to front if we press "Win + Tab" and it will
-    // also block our desktop icons, however using
-    // "WorkerW" as our parent window will not result
-    // in this problem, I don't know why. It's strange.
-    HWND hwnd = getWorkerW(currentVersion < win10Version);
-    if ((hwnd != nullptr) && !windowMode)
-        SetParent(reinterpret_cast<HWND>(mainWindow->winId()), hwnd);
+    if (!windowMode)
+    {
+        QVersionNumber win10Version(10, 0, 10240); // Windows 10 Version 1507
+        // How to place our window under desktop icons:
+        // Use "Program Manager" as our parent window in Win7/8/8.1.
+        // Use "WorkerW" as our parent window in Win10.
+        // Use "Program Manager" as our parent window in
+        // Win10 is also OK, but our window will come
+        // to front if we press "Win + Tab" and it will
+        // also block our desktop icons, however using
+        // "WorkerW" as our parent window will not result
+        // in this problem, I don't know why. It's strange.
+        HWND hwnd = getWorkerW(currentVersion < win10Version);
+        if (hwnd != nullptr)
+            SetParent(reinterpret_cast<HWND>(mainWindow->winId()), hwnd);
+    }
     int exec = QApplication::exec();
     ShowWindow(HWORKERW, SW_HIDE);
     ReleaseMutex(mutex);
