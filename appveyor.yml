@@ -33,7 +33,6 @@ init:
   - call "%QTDIR%\bin\qtenv2.bat"
   - call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat" x64
 install:
-  - cd /d "%APPVEYOR_BUILD_FOLDER%"
   - cd ci
   - if exist build rd /s /q build
   - md build
@@ -45,12 +44,14 @@ install:
   - cd ..
 build_script:
   - call build.bat
-test: off
-on_success:
+after_build:
+  - if exist bin64\dd64.exe (
   - echo DD_VERSION         = %APPVEYOR_BUILD_VERSION%>version_ci.pri
   - echo DD_COMMIT_ID       = %APPVEYOR_REPO_COMMIT%>>version_ci.pri
   - echo DD_COMMIT_TIME     = %APPVEYOR_REPO_COMMIT_TIMESTAMP%>>version_ci.pri
   - echo FFMPEG_VERSION_STR = git-unknown>>version_ci.pri
+  - )
+test: off
 artifacts:
   - path: version_ci.pri
 deploy: off
