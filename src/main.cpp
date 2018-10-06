@@ -26,6 +26,7 @@
 #include <QFileInfo>
 #include <QDir>
 #include <QWidget>
+#include <QStandardPaths>
 
 //https://github.com/ThomasHuai/Wallpaper/blob/master/utils.cpp
 static HWND HWORKERW = nullptr;
@@ -102,8 +103,12 @@ void fileLogger(QtMsgType type, const QMessageLogContext &context, const QString
     }
     QString messageStr = QStringLiteral("%0\t%1\t%2\t%3\t%4")
                 .arg(msgType).arg(msg).arg(context.file).arg(context.line).arg(context.function);
-    QString logPath = QApplication::applicationDirPath();
+    QString logPath = QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation);
+#ifdef WIN64
+    logPath += QDir::separator() + QStringLiteral("debug64.log");
+#else
     logPath += QDir::separator() + QStringLiteral("debug.log");
+#endif
     QFile file(logPath);
     if (file.open(QFile::WriteOnly | QFile::Append | QFile::Text))
     {

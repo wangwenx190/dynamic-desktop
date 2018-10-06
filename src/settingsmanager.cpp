@@ -5,6 +5,7 @@
 #include <QFileInfo>
 #include <QMimeDatabase>
 #include <QCoreApplication>
+#include <QStandardPaths>
 
 SettingsManager *SettingsManager::getInstance()
 {
@@ -295,7 +296,7 @@ void SettingsManager::setD3DVersion(const QString &d3dVersion)
 
 SettingsManager::SettingsManager()
 {
-    QString iniPath = QCoreApplication::applicationDirPath();
+    QString iniPath = QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation);
     iniPath += QDir::separator() + QStringLiteral("config.ini");
     settings = new QSettings(iniPath, QSettings::IniFormat);
 }
