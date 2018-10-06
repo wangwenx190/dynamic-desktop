@@ -102,7 +102,9 @@ void fileLogger(QtMsgType type, const QMessageLogContext &context, const QString
     }
     QString messageStr = QStringLiteral("%0\t%1\t%2\t%3\t%4")
                 .arg(msgType).arg(msg).arg(context.file).arg(context.line).arg(context.function);
-    QFile file(QStringLiteral("debug.log"));
+    QString logPath = QApplication::applicationDirPath();
+    logPath += QDir::separator() + QStringLiteral("debug.log");
+    QFile file(logPath);
     if (file.open(QFile::WriteOnly | QFile::Append | QFile::Text))
     {
         QTextStream ts(&file);

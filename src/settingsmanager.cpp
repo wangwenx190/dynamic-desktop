@@ -295,7 +295,9 @@ void SettingsManager::setD3DVersion(const QString &d3dVersion)
 
 SettingsManager::SettingsManager()
 {
-    settings = new QSettings(QStringLiteral("config.ini"), QSettings::IniFormat);
+    QString iniPath = QCoreApplication::applicationDirPath();
+    iniPath += QDir::separator() + QStringLiteral("config.ini");
+    settings = new QSettings(iniPath, QSettings::IniFormat);
 }
 
 SettingsManager::~SettingsManager()
