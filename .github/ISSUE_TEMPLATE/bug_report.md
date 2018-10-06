@@ -22,7 +22,7 @@ A clear and concise description of what actually happen.
 
 **Log file**
 
-See `dd.log`(32 bit) or `dd64.log`(64 bit) besides the executable file. If the content of the log file is too long, please upload the file itself instead of just paste it here.
+See `debug.log` besides the executable file. If the content of the log file is too long, please upload the file itself instead of just paste it here.
 
 **Screenshots**
 
