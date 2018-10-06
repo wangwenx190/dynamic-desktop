@@ -216,9 +216,6 @@ int main(int argc, char *argv[])
     QCommandLineOption windowModeOption(QStringLiteral("window"),
                                         QApplication::translate("main", "Show a normal window instead of placing it under the desktop icons."));
     parser.addOption(windowModeOption);
-    QCommandLineOption autoStartOption(QStringLiteral("autostart"),
-                                       QApplication::translate("main", "Make this tool auto start."));
-    parser.addOption(autoStartOption);
     QCommandLineOption skinOption(QStringLiteral("skin"),
                                   QApplication::translate("main", "Set skin. The value is the file name of the skin file, excluding the file extension. If it's not under the \"skins\" folder, please give the absolute path of the file."),
                                   QApplication::translate("main", "Skin file name"));
@@ -244,9 +241,6 @@ int main(int argc, char *argv[])
     parser.addOption(volumeOption);
     parser.process(app);
     windowMode = parser.isSet(windowModeOption);
-    bool autoStartOptionValue = parser.isSet(autoStartOption);
-    if (autoStartOptionValue != SettingsManager::getInstance()->getAutostart())
-        SettingsManager::getInstance()->setAutostart(autoStartOptionValue);
     QString skinOptionValue = parser.value(skinOption);
     if (!skinOptionValue.isEmpty())
         if (skinOptionValue != SettingsManager::getInstance()->getSkin())

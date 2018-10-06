@@ -142,7 +142,7 @@ bool SettingsManager::getAutostart() const
 
 bool SettingsManager::getHwdec() const
 {
-    return settings->value(QStringLiteral("dd/hwdec"), true).toBool();
+    return settings->value(QStringLiteral("dd/hwdec"), false).toBool();
 }
 
 QStringList SettingsManager::getDecoders() const
