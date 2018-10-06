@@ -335,14 +335,8 @@ int main(int argc, char *argv[])
     if (!windowMode)
     {
         mainWindow->setWindowFlags(rendererWindowFlags);
-        if (vid == QtAV::VideoRendererId_Direct2D)
-        {
-            // Why is Direct2D image too large?
-            mainWindow->resize(screenGeometry.size() / mainWindow->devicePixelRatioF());
-            mainWindow->move(0, 0);
-        }
-        else
-            mainWindow->setGeometry(screenGeometry);
+        // Why is Direct2D image too large?
+        mainWindow->setGeometry(screenGeometry);
     }
     else
     {
@@ -690,14 +684,8 @@ int main(int argc, char *argv[])
                     if (!windowMode)
                     {
                         newRenderer->widget()->setWindowFlags(rendererWindowFlags);
-                        if (rendererId == QtAV::VideoRendererId_Direct2D)
-                        {
-                            // Why is Direct2D image too large?
-                            newRenderer->widget()->resize(screenGeometry.size() / newRenderer->widget()->devicePixelRatioF());
-                            newRenderer->widget()->move(0, 0);
-                        }
-                        else
-                            newRenderer->widget()->setGeometry(screenGeometry);
+                        // Why is Direct2D image too large?
+                        newRenderer->widget()->setGeometry(screenGeometry);
                     }
                     else
                     {
