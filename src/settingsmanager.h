@@ -32,6 +32,8 @@ public:
     QString getLanguage() const;
     QtAV::VideoRendererId getRenderer() const;
     QString getVideoQuality() const;
+    QString getOpenGLType() const;
+    QString getD3DVersion() const;
 
     void setUrl(const QString &url);
     void setMute(bool mute);
@@ -48,6 +50,8 @@ public:
     void setLanguage(const QString &lang);
     void setRenderer(QtAV::VideoRendererId vid);
     void setVideoQuality(const QString &quality);
+    void setOpenGLType(const QString &glType);
+    void setD3DVersion(const QString &d3dVersion);
 
 private:
     SettingsManager();

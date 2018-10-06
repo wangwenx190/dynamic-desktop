@@ -28,6 +28,14 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
     setResizeableAreaWidth(5);
     setTitleBar(ui->widget_windowTitleBar);
     addIgnoreWidget(ui->label_windowTitle);
+    ui->comboBox_opengl_type->addItem(QStringLiteral("OpenGLES"), QStringLiteral("es"));
+    ui->comboBox_opengl_type->addItem(QStringLiteral("Desktop"), QStringLiteral("desktop"));
+    ui->comboBox_opengl_type->addItem(QStringLiteral("Software"), QStringLiteral("sw"));
+    ui->comboBox_opengl_type->addItem(QStringLiteral("Auto"), QStringLiteral("auto"));
+    ui->comboBox_d3d_version->addItem(QStringLiteral("D3D11"), QStringLiteral("d3d11"));
+    ui->comboBox_d3d_version->addItem(QStringLiteral("D3D9"), QStringLiteral("d3d9"));
+    ui->comboBox_d3d_version->addItem(QStringLiteral("WARP"), QStringLiteral("warp"));
+    ui->comboBox_d3d_version->addItem(QStringLiteral("Auto"), QStringLiteral("auto"));
     ui->comboBox_video_quality->addItem(tr("Fastest"), QStringLiteral("fastest"));
     ui->comboBox_video_quality->addItem(tr("Best"), QStringLiteral("best"));
     ui->comboBox_video_quality->addItem(tr("Default"), QStringLiteral("default"));
@@ -414,6 +422,8 @@ void PreferencesDialog::refreshUI()
     ui->comboBox_language->setCurrentIndex(ui->comboBox_language->findData(SettingsManager::getInstance()->getLanguage()));
     ui->comboBox_video_renderer->setCurrentIndex(ui->comboBox_video_renderer->findData(SettingsManager::getInstance()->getRenderer()));
     ui->comboBox_video_quality->setCurrentIndex(ui->comboBox_video_quality->findData(SettingsManager::getInstance()->getVideoQuality()));
+    ui->comboBox_d3d_version->setCurrentIndex(ui->comboBox_d3d_version->findData(SettingsManager::getInstance()->getD3DVersion()));
+    ui->comboBox_opengl_type->setCurrentIndex(ui->comboBox_opengl_type->findData(SettingsManager::getInstance()->getOpenGLType()));
 }
 
 void PreferencesDialog::saveSettings()
@@ -495,5 +505,18 @@ void PreferencesDialog::saveSettings()
     {
         SettingsManager::getInstance()->setVideoQuality(ui->comboBox_video_quality->currentData().toString());
         emit videoQualityChanged(SettingsManager::getInstance()->getVideoQuality());
+    }
+    bool infoUser = false;
+    if (ui->comboBox_opengl_type->currentData().toString() != SettingsManager::getInstance()->getOpenGLType())
+    {
+        SettingsManager::getInstance()->setOpenGLType(ui->comboBox_opengl_type->currentData().toString());
+        QMessageBox::information(nullptr, QStringLiteral("Dynamic Desktop"), tr("You changed OpenGL type or Direct3D version, application restart is needed."));
+        infoUser = true;
+    }
+    if (ui->comboBox_d3d_version->currentData().toString() != SettingsManager::getInstance()->getD3DVersion())
+    {
+        SettingsManager::getInstance()->setD3DVersion(ui->comboBox_d3d_version->currentData().toString());
+        if (!infoUser)
+            QMessageBox::information(nullptr, QStringLiteral("Dynamic Desktop"), tr("You changed OpenGL type or Direct3D version, application restart is needed."));
     }
 }

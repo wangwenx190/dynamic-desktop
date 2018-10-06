@@ -102,11 +102,7 @@ void fileLogger(QtMsgType type, const QMessageLogContext &context, const QString
     }
     QString messageStr = QStringLiteral("%0\t%1\t%2\t%3\t%4")
                 .arg(msgType).arg(msg).arg(context.file).arg(context.line).arg(context.function);
-    QString logPath = QApplication::applicationFilePath();
-    if (logPath.endsWith(QStringLiteral(".exe"), Qt::CaseInsensitive))
-        logPath = logPath.remove(logPath.lastIndexOf(QLatin1Char('.')), 4);
-    logPath += QStringLiteral(".log");
-    QFile file(logPath);
+    QFile file(QStringLiteral("debug.log"));
     if (file.open(QFile::WriteOnly | QFile::Append | QFile::Text))
     {
         QTextStream ts(&file);
@@ -169,6 +165,36 @@ int main(int argc, char *argv[])
 #endif
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
+    QCoreApplication::setAttribute(Qt::AA_DontCreateNativeWidgetSiblings);
+    const QString glType = SettingsManager::getInstance()->getOpenGLType().toLower();
+    if (glType == QStringLiteral("desktop"))
+    {
+        // Use OpenGL in your system (the system-provided opengl32.dll)
+        // Efficient but cannot use Zero-Copy, not recommended
+        QCoreApplication::setAttribute(Qt::AA_UseDesktopOpenGL);
+        //qputenv("QT_OPENGL", "desktop");
+    }
+    else if (glType == QStringLiteral("sw"))
+    {
+        // Use software rasterizer (opengl32sw.dll in current directory)
+        // Very slow and the dll is very large, not recommended
+        QCoreApplication::setAttribute(Qt::AA_UseSoftwareOpenGL);
+        //qputenv("QT_OPENGL", "software");
+    }
+    else if (glType == QStringLiteral("es"))
+    {
+        // Use ANGLE (libEGL.dll and libGLESv2.dll in current directory)
+        // Efficient and can use Zero-Copy, default and recommended
+        QCoreApplication::setAttribute(Qt::AA_UseOpenGLES);
+        //qputenv("QT_OPENGL", "angle");
+        const QString d3dVersion = SettingsManager::getInstance()->getD3DVersion().toLower();
+        if (d3dVersion == QStringLiteral("d3d11"))
+            qputenv("QT_ANGLE_PLATFORM", "d3d11");
+        else if (d3dVersion == QStringLiteral("d3d9"))
+            qputenv("QT_ANGLE_PLATFORM", "d3d9");
+        else if (d3dVersion == QStringLiteral("warp"))
+            qputenv("QT_ANGLE_PLATFORM", "warp");
+    }
     QApplication app(argc, argv);
     QCoreApplication::setApplicationName(QStringLiteral("Dynamic Desktop"));
     QApplication::setApplicationDisplayName(QStringLiteral("Dynamic Desktop"));
@@ -330,7 +356,7 @@ int main(int argc, char *argv[])
     else
         renderer->setOutAspectRatioMode(QtAV::VideoRenderer::VideoAspectRatio);
     QWidget *mainWindow = renderer->widget();
-    const Qt::WindowFlags rendererWindowFlags = Qt::FramelessWindowHint | Qt::WindowStaysOnBottomHint /*| Qt::WindowTransparentForInput*/ | Qt::WindowDoesNotAcceptFocus | Qt::MaximizeUsingFullscreenGeometryHint;
+    const Qt::WindowFlags rendererWindowFlags = Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::WindowDoesNotAcceptFocus;
     const QRect screenGeometry = QApplication::desktop()->screenGeometry(mainWindow);
     if (!windowMode)
     {
@@ -583,7 +609,7 @@ int main(int argc, char *argv[])
     QObject::connect(&preferencesDialog, &PreferencesDialog::seekBySlider,
         [=, &player](qint64 value)
         {
-            if (player.isPlaying())
+            if (player.isLoaded())
                 player.seek(value);
         });
     QObject::connect(&preferencesDialog, &PreferencesDialog::pictureRatioChanged,

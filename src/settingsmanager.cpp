@@ -1,10 +1,10 @@
 #include "settingsmanager.h"
 
-#include <QCoreApplication>
 #include <QDir>
 #include <QUrl>
 #include <QFileInfo>
 #include <QMimeDatabase>
+#include <QCoreApplication>
 
 SettingsManager *SettingsManager::getInstance()
 {
@@ -195,6 +195,16 @@ QString SettingsManager::getVideoQuality() const
     return settings->value(QStringLiteral("dd/quality"), QStringLiteral("fastest")).toString();
 }
 
+QString SettingsManager::getOpenGLType() const
+{
+    return settings->value(QStringLiteral("dd/opengl"), QStringLiteral("es")).toString();
+}
+
+QString SettingsManager::getD3DVersion() const
+{
+    return settings->value(QStringLiteral("dd/d3d"), QStringLiteral("d3d11")).toString();
+}
+
 void SettingsManager::setUrl(const QString &url)
 {
     settings->setValue(QStringLiteral("dd/url"), url);
@@ -273,13 +283,19 @@ void SettingsManager::setVideoQuality(const QString &quality)
     settings->setValue(QStringLiteral("dd/quality"), quality);
 }
 
+void SettingsManager::setOpenGLType(const QString &glType)
+{
+    settings->setValue(QStringLiteral("dd/opengl"), glType);
+}
+
+void SettingsManager::setD3DVersion(const QString &d3dVersion)
+{
+    settings->setValue(QStringLiteral("dd/d3d"), d3dVersion);
+}
+
 SettingsManager::SettingsManager()
 {
-    QString iniPath = QCoreApplication::applicationFilePath();
-    if (iniPath.endsWith(QStringLiteral(".exe"), Qt::CaseInsensitive))
-        iniPath = iniPath.remove(iniPath.lastIndexOf(QLatin1Char('.')), 4);
-    iniPath += QStringLiteral(".ini");
-    settings = new QSettings(iniPath, QSettings::IniFormat);
+    settings = new QSettings(QStringLiteral("config.ini"), QSettings::IniFormat);
 }
 
 SettingsManager::~SettingsManager()
