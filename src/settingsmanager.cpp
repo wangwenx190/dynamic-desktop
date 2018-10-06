@@ -297,7 +297,15 @@ void SettingsManager::setD3DVersion(const QString &d3dVersion)
 SettingsManager::SettingsManager()
 {
     QString iniPath = QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation);
-    iniPath += QDir::separator() + QStringLiteral("config.ini");
+    // If we use this before QApplication is constructed,
+    // organizationName() and applicationName() will be
+    // empty, so we add them manually.
+    if (!iniPath.contains(QStringLiteral("wangwenx190"), Qt::CaseInsensitive))
+        iniPath += QStringLiteral("/wangwenx190/Dynamic Desktop");
+    iniPath += QStringLiteral("/dd-config.ini");
+    // QSettings has the permission to write
+    // in "%APPDATA%" folder while QFile has not.
+    // Very strange. Qt bug?
     settings = new QSettings(iniPath, QSettings::IniFormat);
 }
 

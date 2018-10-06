@@ -104,11 +104,19 @@ void fileLogger(QtMsgType type, const QMessageLogContext &context, const QString
     QString messageStr = QStringLiteral("%0\t%1\t%2\t%3\t%4")
                 .arg(msgType).arg(msg).arg(context.file).arg(context.line).arg(context.function);
     QString logPath = QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation);
+    // If we use this before QApplication is constructed,
+    // organizationName() and applicationName() will be
+    // empty, so we add them manually.
+    if (!logPath.contains(QStringLiteral("wangwenx190"), Qt::CaseInsensitive))
+        logPath += QStringLiteral("/wangwenx190/Dynamic Desktop");
 #ifdef WIN64
-    logPath += QDir::separator() + QStringLiteral("debug64.log");
+    logPath += QStringLiteral("/dd-debug64.log");
 #else
-    logPath += QDir::separator() + QStringLiteral("debug.log");
+    logPath += QStringLiteral("/dd-debug.log");
 #endif
+    // QFile do not have the permission to write
+    // in "%APPDATA%" folder while QSettings has,
+    // why? Qt bug or feature?
     QFile file(logPath);
     if (file.open(QFile::WriteOnly | QFile::Append | QFile::Text))
     {
