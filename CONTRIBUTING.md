@@ -1,7 +1,7 @@
 ## Code of Conduct
 See [CODE_OF_CONDUCT.md](/CODE_OF_CONDUCT.md) for more information.
 
-## Rules you should follow
+## Code style (unfinished)
 - Header and source files' encoding have to be UTF-8(with or without BOM), .pro .pri .qrc .conf files' encoding have to be UTF-8(without BOM)
 - lower case file names
 - do not have spaces in file names

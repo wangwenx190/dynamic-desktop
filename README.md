@@ -34,7 +34,7 @@ Microsoft Windows 7 ~ 10(with GUI desktop), both 32 bit and 64 bit systems.
 - It would be very nice if you update your graphics card driver to the latest version.
 - It's not recommended to run this tool in virtual machines, because the graphics card drivers of virtual machines are usually out-dated and even not completed.
 - If there is no picture but sound, please switch the hardware decoding algorithm or just use software decoding. Because hardware decoding has many limitations while software decoding has not. In one word, **IF YOU ENCOUNTER WITH ANY STRANGE PHENOMENA, TURN OFF HARDWARE DECODING**.
-- It's not recommended to change rendering engine again and again while it's playing videos, otherwise this tool is very likely to crash and I'm not able to help you in this kind of situation.
+- It's not recommended to change rendering engine again and again while it is playing videos, otherwise this tool is very likely to crash and I'm not able to help you in this kind of situation.
 
 ## Compilation
 - Download [Qt5](http://download.qt.io/archive/qt/) and install it.
@@ -45,6 +45,9 @@ Microsoft Windows 7 ~ 10(with GUI desktop), both 32 bit and 64 bit systems.
 **IMPORTANT NOTE**
 
 You can also use Intel C++ Compiler(ICC), Clang or MinGW to compile it, just remember to set up environment variables. Cross compile on other platforms may also work, but it will never run on platforms other than MS Windows.
+
+## Contributing
+See [CONTRIBUTING.md](/CONTRIBUTING.md) for more information.
 
 ## Licenses
 - [**Wallpaper Engine**](https://store.steampowered.com/app/431960/Wallpaper_Engine/) from Steam gives me the original idea to make this tool. Thanks to WE's author(s)!

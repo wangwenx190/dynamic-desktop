@@ -43,14 +43,14 @@ install:
   - cd ..
   - rd /s /q build
   - cd ..
-before_build:
+build_script:
+  - call build.bat
+test: off
+on_success:
   - echo DD_VERSION         = %APPVEYOR_BUILD_VERSION%>version_ci.pri
   - echo DD_COMMIT_ID       = %APPVEYOR_REPO_COMMIT%>>version_ci.pri
   - echo DD_COMMIT_TIME     = %APPVEYOR_REPO_COMMIT_TIMESTAMP%>>version_ci.pri
   - echo FFMPEG_VERSION_STR = git-unknown>>version_ci.pri
-build_script:
-  - call build.bat
-test: off
 artifacts:
   - path: version_ci.pri
 deploy: off
