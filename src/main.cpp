@@ -26,7 +26,6 @@
 #include <QFileInfo>
 #include <QDir>
 #include <QWidget>
-#include <QStandardPaths>
 
 //https://github.com/ThomasHuai/Wallpaper/blob/master/utils.cpp
 static HWND HWORKERW = nullptr;
@@ -103,20 +102,8 @@ void fileLogger(QtMsgType type, const QMessageLogContext &context, const QString
     }
     QString messageStr = QStringLiteral("%0\t%1\t%2\t%3\t%4")
                 .arg(msgType).arg(msg).arg(context.file).arg(context.line).arg(context.function);
-    QString logPath = QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation);
-    // If we use this before QApplication is constructed,
-    // organizationName() and applicationName() will be
-    // empty, so we add them manually.
-    if (!logPath.contains(QStringLiteral("wangwenx190"), Qt::CaseInsensitive))
-        logPath += QStringLiteral("/wangwenx190/Dynamic Desktop");
-#ifdef WIN64
-    logPath += QStringLiteral("/dd-debug64.log");
-#else
-    logPath += QStringLiteral("/dd-debug.log");
-#endif
-    // QFile do not have the permission to write
-    // in "%APPDATA%" folder while QSettings has,
-    // why? Qt bug or feature?
+    QString logPath = QCoreApplication::applicationDirPath();
+    logPath += QStringLiteral("/debug.log");
     QFile file(logPath);
     if (file.open(QFile::WriteOnly | QFile::Append | QFile::Text))
     {
@@ -175,47 +162,20 @@ static bool windowMode = false;
 
 int main(int argc, char *argv[])
 {
-#ifndef _DEBUG
-    qInstallMessageHandler(fileLogger);
-#endif
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
     QCoreApplication::setAttribute(Qt::AA_DontCreateNativeWidgetSiblings);
-    const QString glType = SettingsManager::getInstance()->getOpenGLType().toLower();
-    if (glType == QStringLiteral("desktop"))
-    {
-        // Use OpenGL in your system (the system-provided opengl32.dll)
-        // Efficient but cannot use Zero-Copy, not recommended
-        QCoreApplication::setAttribute(Qt::AA_UseDesktopOpenGL);
-        //qputenv("QT_OPENGL", "desktop");
-    }
-    else if (glType == QStringLiteral("sw"))
-    {
-        // Use software rasterizer (opengl32sw.dll in current directory)
-        // Very slow and the dll is very large, not recommended
-        QCoreApplication::setAttribute(Qt::AA_UseSoftwareOpenGL);
-        //qputenv("QT_OPENGL", "software");
-    }
-    else if (glType == QStringLiteral("es"))
-    {
-        // Use ANGLE (libEGL.dll and libGLESv2.dll in current directory)
-        // Efficient and can use Zero-Copy, default and recommended
-        QCoreApplication::setAttribute(Qt::AA_UseOpenGLES);
-        //qputenv("QT_OPENGL", "angle");
-        const QString d3dVersion = SettingsManager::getInstance()->getD3DVersion().toLower();
-        if (d3dVersion == QStringLiteral("d3d11"))
-            qputenv("QT_ANGLE_PLATFORM", "d3d11");
-        else if (d3dVersion == QStringLiteral("d3d9"))
-            qputenv("QT_ANGLE_PLATFORM", "d3d9");
-        else if (d3dVersion == QStringLiteral("warp"))
-            qputenv("QT_ANGLE_PLATFORM", "warp");
-    }
+    QCoreApplication::setAttribute(Qt::AA_UseOpenGLES);
+    qputenv("QT_ANGLE_PLATFORM", "d3d11");
     QApplication app(argc, argv);
     QCoreApplication::setApplicationName(QStringLiteral("Dynamic Desktop"));
     QApplication::setApplicationDisplayName(QStringLiteral("Dynamic Desktop"));
     QCoreApplication::setApplicationVersion(QStringLiteral(DD_VERSION));
     QCoreApplication::setOrganizationName(QStringLiteral("wangwenx190"));
     QCoreApplication::setOrganizationDomain(QStringLiteral("wangwenx190.github.io"));
+#ifndef _DEBUG
+    qInstallMessageHandler(fileLogger);
+#endif
     QTranslator ddTranslator;
 #ifdef BUILD_DD_STATIC
     QString qmDir = QStringLiteral(":/i18n");

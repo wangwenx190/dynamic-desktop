@@ -5,7 +5,6 @@
 #include <QFileInfo>
 #include <QMimeDatabase>
 #include <QCoreApplication>
-#include <QStandardPaths>
 
 SettingsManager *SettingsManager::getInstance()
 {
@@ -196,16 +195,6 @@ QString SettingsManager::getVideoQuality() const
     return settings->value(QStringLiteral("dd/quality"), QStringLiteral("fastest")).toString();
 }
 
-QString SettingsManager::getOpenGLType() const
-{
-    return settings->value(QStringLiteral("dd/opengl"), QStringLiteral("es")).toString();
-}
-
-QString SettingsManager::getD3DVersion() const
-{
-    return settings->value(QStringLiteral("dd/d3d"), QStringLiteral("d3d11")).toString();
-}
-
 void SettingsManager::setUrl(const QString &url)
 {
     settings->setValue(QStringLiteral("dd/url"), url);
@@ -284,28 +273,10 @@ void SettingsManager::setVideoQuality(const QString &quality)
     settings->setValue(QStringLiteral("dd/quality"), quality);
 }
 
-void SettingsManager::setOpenGLType(const QString &glType)
-{
-    settings->setValue(QStringLiteral("dd/opengl"), glType);
-}
-
-void SettingsManager::setD3DVersion(const QString &d3dVersion)
-{
-    settings->setValue(QStringLiteral("dd/d3d"), d3dVersion);
-}
-
 SettingsManager::SettingsManager()
 {
-    QString iniPath = QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation);
-    // If we use this before QApplication is constructed,
-    // organizationName() and applicationName() will be
-    // empty, so we add them manually.
-    if (!iniPath.contains(QStringLiteral("wangwenx190"), Qt::CaseInsensitive))
-        iniPath += QStringLiteral("/wangwenx190/Dynamic Desktop");
-    iniPath += QStringLiteral("/dd-config.ini");
-    // QSettings has the permission to write
-    // in "%APPDATA%" folder while QFile has not.
-    // Very strange. Qt bug?
+    QString iniPath = QCoreApplication::applicationDirPath();
+    iniPath += QStringLiteral("/config.ini");
     settings = new QSettings(iniPath, QSettings::IniFormat);
 }
 
