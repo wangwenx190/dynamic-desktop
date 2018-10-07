@@ -74,13 +74,8 @@ CONFIG(static_dd) {
         $$[QT_INSTALL_BINS]/swscale-*.dll
     isEmpty(windeployqt): windeployqt = $$[QT_INSTALL_BINS]/windeployqt.exe
     exists("$${windeployqt}") {
-        libs.commands = $$quote(\"$${windeployqt}\" --plugindir \"$${BIN_DIR}/plugins\" --force --no-translations --compiler-runtime --angle --no-opengl-sw -opengl --no-svg --list source \"$${BIN_DIR}/$${TARGET}.exe\")
+        libs.commands = $$quote(\"$${windeployqt}\" --plugindir \"$${BIN_DIR}/plugins\" --force --no-translations --no-system-d3d-compiler --compiler-runtime --no-angle --no-opengl-sw -opengl --no-svg --list source \"$${BIN_DIR}/$${TARGET}.exe\")
         libs.commands = $$join(libs.commands, $$escape_expand(\\n\\t))
     }
-    plugins.path = $$BIN_DIR/plugins/platforms
-    plugins.files = \
-        $$[QT_INSTALL_PLUGINS]/platforms/qdirect2d.dll \
-        $$[QT_INSTALL_PLUGINS]/platforms/qminimal.dll \
-        $$[QT_INSTALL_PLUGINS]/platforms/qoffscreen.dll
-    INSTALLS += libs plugins translations skins
+    INSTALLS += libs translations skins
 }
