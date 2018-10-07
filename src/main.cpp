@@ -166,22 +166,6 @@ int main(int argc, char *argv[])
         mainWindow.setWindowFlags(rendererWindowFlags);
         // Why is Direct2D image too large?
         mainWindow.setGeometry(screenGeometry);
-    }
-    else
-    {
-        mainWindow.resize(QSize(1280, 720));
-        Utils::moveToCenter(&mainWindow);
-    }
-    if (!SettingsManager::getInstance()->getUrl().isEmpty())
-    {
-        if (mainWindow.isHidden())
-            mainWindow.show();
-        mainWindow.play(SettingsManager::getInstance()->getUrl());
-    }
-    else
-        mainWindow.showOptions();
-    if (!windowMode)
-    {
         QVersionNumber win10Version(10, 0, 10240); // Windows 10 Version 1507
         // How to place our window under desktop icons:
         // Use "Program Manager" as our parent window in Win7/8/8.1.
@@ -196,5 +180,18 @@ int main(int argc, char *argv[])
         if (hwnd != nullptr)
             SetParent(reinterpret_cast<HWND>(mainWindow.winId()), hwnd);
     }
+    else
+    {
+        mainWindow.resize(QSize(1280, 720));
+        Utils::moveToCenter(&mainWindow);
+    }
+    if (!SettingsManager::getInstance()->getUrl().isEmpty())
+    {
+        if (mainWindow.isHidden())
+            mainWindow.show();
+        mainWindow.play(SettingsManager::getInstance()->getUrl());
+    }
+    else
+        mainWindow.showOptions();
     Utils::Exit(QApplication::exec());
 }

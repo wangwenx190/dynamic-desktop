@@ -5,11 +5,16 @@
 
 #include <QMessageBox>
 #include <QApplication>
-#include <QTimer>
 
 MainWindow::MainWindow(QWidget *parent) : QWidget(parent)
 {
-    QTimer::singleShot(0, this, SLOT(init()));
+    init();
+}
+
+MainWindow::~MainWindow()
+{
+    delete aboutDialog;
+    delete preferencesDialog;
 }
 
 void MainWindow::init()
@@ -25,14 +30,14 @@ void MainWindow::init()
     subtitle->setEngines(QStringList() << QStringLiteral("LibASS") << QStringLiteral("FFmpeg"));
     subtitle->setAutoLoad(SettingsManager::getInstance()->getSubtitleAutoLoad());
     subtitle->setEnabled(SettingsManager::getInstance()->getSubtitle());
-    QtAV::VideoRenderer *videoRenderer = QtAV::VideoRenderer::create(SettingsManager::getInstance()->getRenderer());
-    setRenderer(videoRenderer);
+    QtAV::VideoRenderer *vo = QtAV::VideoRenderer::create(SettingsManager::getInstance()->getRenderer());
+    setRenderer(vo);
     setImageQuality();
     setImageRatio();
     setWindowIcon(QIcon(QStringLiteral(":/bee.ico")));
     setWindowTitle(QStringLiteral("Dynamic Desktop"));
-    preferencesDialog = new PreferencesDialog(this);
-    aboutDialog = new AboutDialog(this);
+    preferencesDialog = new PreferencesDialog();
+    aboutDialog = new AboutDialog();
     connect(player, SIGNAL(positionChanged(qint64)), preferencesDialog, SIGNAL(updateVideoSlider(qint64)));
     connect(player, SIGNAL(loaded()), this, SLOT(updateControlPanel()));
     trayMenu = new QMenu(this);
@@ -278,7 +283,7 @@ void MainWindow::setImageRatio()
 void MainWindow::showAboutDialog()
 {
     if (!aboutDialog)
-        aboutDialog = new AboutDialog(this);
+        aboutDialog = new AboutDialog();
     if (aboutDialog->isHidden())
     {
         Utils::moveToCenter(aboutDialog);
@@ -296,7 +301,7 @@ void MainWindow::showAboutDialog()
 void MainWindow::showPreferencesDialog()
 {
     if (!preferencesDialog)
-        preferencesDialog = new PreferencesDialog(this);
+        preferencesDialog = new PreferencesDialog();
     if (preferencesDialog->isHidden())
     {
         Utils::moveToCenter(preferencesDialog);
