@@ -197,7 +197,7 @@ void MainWindow::init()
                 setRenderer(newRenderer);
             }
         });
-    connect(preferencesDialog, &PreferencesDialog::videoQualityChanged,
+    connect(preferencesDialog, &PreferencesDialog::imageQualityChanged,
         [=](const QString &quality)
         {
             setImageQuality(quality);
@@ -262,7 +262,7 @@ void MainWindow::setImageQuality(const QString &quality)
 
 void MainWindow::setImageQuality()
 {
-    setImageQuality(SettingsManager::getInstance()->getVideoQuality());
+    setImageQuality(SettingsManager::getInstance()->getImageQuality());
 }
 
 void MainWindow::setImageRatio(bool fit)

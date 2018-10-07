@@ -176,12 +176,12 @@
         <translation>默认</translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="32"/>
+        <location filename="../forms/preferencesdialog.cpp" line="31"/>
         <source>Best</source>
         <translation>最好</translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="31"/>
+        <location filename="../forms/preferencesdialog.cpp" line="32"/>
         <source>Fastest</source>
         <translation>最快</translation>
     </message>

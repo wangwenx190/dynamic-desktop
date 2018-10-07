@@ -32,7 +32,7 @@ signals:
     void audioOpened(const QString &);
     void skinChanged(const QString &);
     void rendererChanged(QtAV::VideoRendererId);
-    void videoQualityChanged(const QString &);
+    void imageQualityChanged(const QString &);
 
 signals:
     void refreshUi();

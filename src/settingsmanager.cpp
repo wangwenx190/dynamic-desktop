@@ -190,9 +190,9 @@ QtAV::VideoRendererId SettingsManager::getRenderer() const
     return settings->value(QStringLiteral("dd/renderer"), QtAV::VideoRendererId_GLWidget2).toInt();
 }
 
-QString SettingsManager::getVideoQuality() const
+QString SettingsManager::getImageQuality() const
 {
-    return settings->value(QStringLiteral("dd/quality"), QStringLiteral("fastest")).toString();
+    return settings->value(QStringLiteral("dd/quality"), QStringLiteral("best")).toString().toLower();
 }
 
 void SettingsManager::setUrl(const QString &url)
@@ -268,7 +268,7 @@ void SettingsManager::setRenderer(QtAV::VideoRendererId vid)
     settings->setValue(QStringLiteral("dd/renderer"), vid);
 }
 
-void SettingsManager::setVideoQuality(const QString &quality)
+void SettingsManager::setImageQuality(const QString &quality)
 {
     settings->setValue(QStringLiteral("dd/quality"), quality);
 }

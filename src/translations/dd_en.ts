@@ -176,12 +176,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="32"/>
+        <location filename="../forms/preferencesdialog.cpp" line="31"/>
         <source>Best</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="31"/>
+        <location filename="../forms/preferencesdialog.cpp" line="32"/>
         <source>Fastest</source>
         <translation type="unfinished"></translation>
     </message>

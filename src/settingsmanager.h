@@ -31,7 +31,7 @@ public:
     QString getSkin() const;
     QString getLanguage() const;
     QtAV::VideoRendererId getRenderer() const;
-    QString getVideoQuality() const;
+    QString getImageQuality() const;
 
     void setUrl(const QString &url);
     void setMute(bool mute);
@@ -47,7 +47,7 @@ public:
     void setSkin(const QString &skin);
     void setLanguage(const QString &lang);
     void setRenderer(QtAV::VideoRendererId vid);
-    void setVideoQuality(const QString &quality);
+    void setImageQuality(const QString &quality);
 
 private:
     SettingsManager();

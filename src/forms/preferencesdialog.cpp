@@ -28,9 +28,9 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
     setResizeableAreaWidth(5);
     setTitleBar(ui->widget_windowTitleBar);
     addIgnoreWidget(ui->label_windowTitle);
-    ui->comboBox_video_quality->addItem(tr("Fastest"), QStringLiteral("fastest"));
-    ui->comboBox_video_quality->addItem(tr("Best"), QStringLiteral("best"));
-    ui->comboBox_video_quality->addItem(tr("Default"), QStringLiteral("default"));
+    ui->comboBox_image_quality->addItem(tr("Best"), QStringLiteral("best"));
+    ui->comboBox_image_quality->addItem(tr("Fastest"), QStringLiteral("fastest"));
+    ui->comboBox_image_quality->addItem(tr("Default"), QStringLiteral("default"));
     ui->comboBox_video_renderer->addItem(QStringLiteral("OpenGLWidget"), QtAV::VideoRendererId_OpenGLWidget);
     ui->comboBox_video_renderer->addItem(QStringLiteral("QGLWidget2"), QtAV::VideoRendererId_GLWidget2);
     ui->comboBox_video_renderer->addItem(QStringLiteral("Widget"), QtAV::VideoRendererId_Widget);
@@ -408,7 +408,7 @@ void PreferencesDialog::refreshUI()
     ui->comboBox_skin->setCurrentIndex(ui->comboBox_skin->findData(SettingsManager::getInstance()->getSkin()));
     ui->comboBox_language->setCurrentIndex(ui->comboBox_language->findData(SettingsManager::getInstance()->getLanguage()));
     ui->comboBox_video_renderer->setCurrentIndex(ui->comboBox_video_renderer->findData(SettingsManager::getInstance()->getRenderer()));
-    ui->comboBox_video_quality->setCurrentIndex(ui->comboBox_video_quality->findData(SettingsManager::getInstance()->getVideoQuality()));
+    ui->comboBox_image_quality->setCurrentIndex(ui->comboBox_image_quality->findData(SettingsManager::getInstance()->getImageQuality()));
 }
 
 void PreferencesDialog::saveSettings()
@@ -486,9 +486,9 @@ void PreferencesDialog::saveSettings()
         SettingsManager::getInstance()->setRenderer(ui->comboBox_video_renderer->currentData().toInt());
         emit rendererChanged(SettingsManager::getInstance()->getRenderer());
     }
-    if (ui->comboBox_video_quality->currentData().toString() != SettingsManager::getInstance()->getVideoQuality())
+    if (ui->comboBox_image_quality->currentData().toString() != SettingsManager::getInstance()->getImageQuality())
     {
-        SettingsManager::getInstance()->setVideoQuality(ui->comboBox_video_quality->currentData().toString());
-        emit videoQualityChanged(SettingsManager::getInstance()->getVideoQuality());
+        SettingsManager::getInstance()->setImageQuality(ui->comboBox_image_quality->currentData().toString());
+        emit imageQualityChanged(SettingsManager::getInstance()->getImageQuality());
     }
 }

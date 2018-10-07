@@ -87,10 +87,10 @@ int main(int argc, char *argv[])
     /*QCommandLineOption keepRatioOption(QStringLiteral("keepratio"),
                                         QApplication::translate("main", "Make the output image keep original video aspect ratio instead of fitting the whole renderer window."));
     parser.addOption(keepRatioOption);*/
-    QCommandLineOption videoQualityOption(QStringLiteral("quality"),
+    QCommandLineOption imageQualityOption(QStringLiteral("quality"),
                                           QApplication::translate("main", "Set the quality of the output image. It can be default/best/fastest. Default is fastest. Case insensitive."),
                                           QApplication::translate("main", "Image quality"));
-    parser.addOption(videoQualityOption);
+    parser.addOption(imageQualityOption);
     QCommandLineOption rendererOption(QStringLiteral("renderer"),
                                       QApplication::translate("main", "Set rendering engine. It can be opengl/gl/qt/gdi/d2d. Default is gl. Case insensitive."),
                                       QApplication::translate("main", "renderer"));
@@ -112,15 +112,13 @@ int main(int argc, char *argv[])
     /*bool keepRatioOptionValue = parser.isSet(keepRatioOption);
     if (keepRatioOptionValue != !SettingsManager::getInstance()->getFitDesktop())
         SettingsManager::getInstance()->setFitDesktop(!keepRatioOptionValue);*/
-    QString videoQualityOptionValue = parser.value(videoQualityOption).toLower();
-    if (!videoQualityOptionValue.isEmpty())
-        if (((videoQualityOptionValue == QStringLiteral("default")) &&
-                (videoQualityOptionValue != SettingsManager::getInstance()->getVideoQuality())) ||
-                ((videoQualityOptionValue == QStringLiteral("best")) &&
-                 (videoQualityOptionValue != SettingsManager::getInstance()->getVideoQuality())) ||
-                ((videoQualityOptionValue == QStringLiteral("fastest")) &&
-                 (videoQualityOptionValue != SettingsManager::getInstance()->getVideoQuality())))
-            SettingsManager::getInstance()->setVideoQuality(videoQualityOptionValue);
+    QString imageQualityOptionValue = parser.value(imageQualityOption).toLower();
+    if (!imageQualityOptionValue.isEmpty())
+        if (((imageQualityOptionValue == QStringLiteral("default")) ||
+                (imageQualityOptionValue == QStringLiteral("best")) ||
+                (imageQualityOptionValue == QStringLiteral("fastest"))) &&
+                (imageQualityOptionValue != SettingsManager::getInstance()->getImageQuality()))
+            SettingsManager::getInstance()->setImageQuality(imageQualityOptionValue);
     QString rendererOptionValue = parser.value(rendererOption).toLower();
     if (!rendererOptionValue.isEmpty())
         if ((rendererOptionValue == QStringLiteral("opengl")) &&
