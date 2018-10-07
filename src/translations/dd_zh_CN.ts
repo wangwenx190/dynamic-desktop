@@ -82,39 +82,39 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../mainwindow.cpp" line="44"/>
+        <location filename="../mainwindow.cpp" line="39"/>
         <source>Preferences</source>
-        <translation type="unfinished">首选项</translation>
+        <translation>首选项</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="46"/>
+        <location filename="../mainwindow.cpp" line="41"/>
         <source>Play</source>
-        <translation type="unfinished">播放</translation>
+        <translation>播放</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="47"/>
+        <location filename="../mainwindow.cpp" line="42"/>
         <source>Pause</source>
-        <translation type="unfinished">暂停</translation>
+        <translation>暂停</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="48"/>
+        <location filename="../mainwindow.cpp" line="43"/>
         <source>Mute</source>
-        <translation type="unfinished">静音</translation>
+        <translation>静音</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="62"/>
+        <location filename="../mainwindow.cpp" line="57"/>
         <source>About</source>
-        <translation type="unfinished">关于</translation>
+        <translation>关于</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="63"/>
+        <location filename="../mainwindow.cpp" line="58"/>
         <source>Exit</source>
-        <translation type="unfinished">退出</translation>
+        <translation>退出</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="215"/>
+        <location filename="../mainwindow.cpp" line="210"/>
         <source>Current renderer is not available on your platform!</source>
-        <translation type="unfinished">当前渲染引擎在您的平台上不可用！</translation>
+        <translation>当前渲染引擎在您的平台上不可用！</translation>
     </message>
 </context>
 <context>
@@ -402,7 +402,7 @@ Make sure this application runs in your GPU&apos;s Optimus mode.</source>
     <message>
         <location filename="../forms/preferencesdialog.cpp" line="477"/>
         <source>You have changed the UI translation. Application restart is needed.</source>
-        <translation type="unfinished"></translation>
+        <translation>您已更改界面翻译，请重新打开此程序以生效。</translation>
     </message>
 </context>
 <context>

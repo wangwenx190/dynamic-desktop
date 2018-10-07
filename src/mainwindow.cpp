@@ -5,16 +5,11 @@
 
 #include <QMessageBox>
 #include <QApplication>
+#include <QTimer>
 
 MainWindow::MainWindow(QWidget *parent) : QWidget(parent)
 {
-    init();
-}
-
-MainWindow::~MainWindow()
-{
-    delete aboutDialog;
-    delete preferencesDialog;
+    QTimer::singleShot(0, this, SLOT(init()));
 }
 
 void MainWindow::init()
@@ -36,8 +31,8 @@ void MainWindow::init()
     setImageRatio();
     setWindowIcon(QIcon(QStringLiteral(":/bee.ico")));
     setWindowTitle(QStringLiteral("Dynamic Desktop"));
-    preferencesDialog = new PreferencesDialog();
-    aboutDialog = new AboutDialog();
+    preferencesDialog = new PreferencesDialog(this);
+    aboutDialog = new AboutDialog(this);
     connect(player, SIGNAL(positionChanged(qint64)), preferencesDialog, SIGNAL(updateVideoSlider(qint64)));
     connect(player, SIGNAL(loaded()), this, SLOT(updateControlPanel()));
     trayMenu = new QMenu(this);
@@ -283,7 +278,7 @@ void MainWindow::setImageRatio()
 void MainWindow::showAboutDialog()
 {
     if (!aboutDialog)
-        aboutDialog = new AboutDialog();
+        aboutDialog = new AboutDialog(this);
     if (aboutDialog->isHidden())
     {
         Utils::moveToCenter(aboutDialog);
@@ -301,7 +296,7 @@ void MainWindow::showAboutDialog()
 void MainWindow::showPreferencesDialog()
 {
     if (!preferencesDialog)
-        preferencesDialog = new PreferencesDialog();
+        preferencesDialog = new PreferencesDialog(this);
     if (preferencesDialog->isHidden())
     {
         Utils::moveToCenter(preferencesDialog);
