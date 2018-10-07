@@ -1,4 +1,4 @@
-[![AppVeyor](https://ci.appveyor.com/api/projects/status/github/wangwenx190/dynamic-desktop?branch=master&svg=true)](https://ci.appveyor.com/project/wangwenx190/dynamic-desktop)
+[![AppVeyor](https://ci.appveyor.com/api/projects/status/github/wangwenx190/dynamic-desktop?branch=develop&svg=true)](https://ci.appveyor.com/project/wangwenx190/dynamic-desktop)
 
 ## Overview
 A small tool that can play videos on your desktop. Only for Microsoft Windows 7 ~ 10(with GUI desktop). It may have some limitations because it's just a media player, putting it's window under your desktop icons. Maybe Wallpaper Engine's principle is totally different with this tool.

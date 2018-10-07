@@ -1,7 +1,4 @@
 version: 1.0.0.{build}
-branches:
-  only:
-    - master
 skip_tags: true
 only_commits:
   files:
@@ -13,18 +10,9 @@ only_commits:
     - '**/*.qrc'
     - '**/*.ui'
     - '**/*.yml'
-image: Visual Studio 2017
 shallow_clone: true
 matrix:
   fast_finish: true
-  allow_failures:
-    - platform: x64
-      configuration: Release
-  exclude:
-    - platform: x86
-    - configuration: Debug
-platform: x64
-configuration: Release
 init:
   - set "CI=AppVeyor"
   - set "QTVER=5.9"
@@ -51,10 +39,4 @@ test: off
 artifacts:
   - path: version_ci.pri
 deploy: off
-notifications:
-  - provider: Email
-    to:
-      - '{{commitAuthorEmail}}'
-    on_build_success: false
-    on_build_failure: true
-    on_build_status_changed: false
+notifications: off
