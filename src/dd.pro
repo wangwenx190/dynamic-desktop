@@ -20,14 +20,18 @@ HEADERS += \
     settingsmanager.h \
     framelesswindow.h \
     forms/aboutdialog.h \
-    skinmanager.h
+    skinmanager.h \
+    utils.h \
+    mainwindow.h
 SOURCES += \
     main.cpp \
     forms/preferencesdialog.cpp \
     settingsmanager.cpp \
     framelesswindow.cpp \
     forms/aboutdialog.cpp \
-    skinmanager.cpp
+    skinmanager.cpp \
+    utils.cpp \
+    mainwindow.cpp
 FORMS += forms/preferencesdialog.ui \
     forms/aboutdialog.ui
 TRANSLATIONS += \

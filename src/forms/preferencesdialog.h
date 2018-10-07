@@ -31,7 +31,6 @@ signals:
     void subtitleOpened(const QString &);
     void audioOpened(const QString &);
     void skinChanged(const QString &);
-    void languageChanged(const QString &);
     void rendererChanged(QtAV::VideoRendererId);
     void videoQualityChanged(const QString &);
 
@@ -49,7 +48,6 @@ signals:
     void updateAudioTracks(const QVariantList &, bool);
     void updateSubtitleTracks(const QVariantList &, bool);
     void clearAllTracks();
-    void retranslateUI();
 
 public:
     explicit PreferencesDialog(QWidget *parent = nullptr);

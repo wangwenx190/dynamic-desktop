@@ -31,11 +31,6 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
     ui->comboBox_video_quality->addItem(tr("Fastest"), QStringLiteral("fastest"));
     ui->comboBox_video_quality->addItem(tr("Best"), QStringLiteral("best"));
     ui->comboBox_video_quality->addItem(tr("Default"), QStringLiteral("default"));
-    connect(this, &PreferencesDialog::retranslateUI,
-        [=]
-        {
-            ui->retranslateUi(this);
-        });
     ui->comboBox_video_renderer->addItem(QStringLiteral("OpenGLWidget"), QtAV::VideoRendererId_OpenGLWidget);
     ui->comboBox_video_renderer->addItem(QStringLiteral("QGLWidget2"), QtAV::VideoRendererId_GLWidget2);
     ui->comboBox_video_renderer->addItem(QStringLiteral("Widget"), QtAV::VideoRendererId_Widget);
@@ -479,7 +474,7 @@ void PreferencesDialog::saveSettings()
     if (ui->comboBox_language->currentData().toString() != SettingsManager::getInstance()->getLanguage())
     {
         SettingsManager::getInstance()->setLanguage(ui->comboBox_language->currentData().toString());
-        emit languageChanged(SettingsManager::getInstance()->getLanguage());
+        QMessageBox::information(nullptr, QStringLiteral("Dynamic Desktop"), tr("You have changed the UI translation. Application restart is needed."));
     }
     if (ui->comboBox_skin->currentData().toString() != SettingsManager::getInstance()->getSkin())
     {
