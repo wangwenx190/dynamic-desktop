@@ -40,4 +40,3 @@ test: off
 artifacts:
   - path: version_ci.pri
 deploy: off
-notifications: off
