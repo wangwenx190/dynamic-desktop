@@ -39,13 +39,7 @@ HWND getWorkerW(bool legacyMode)
 
 void Exit(int resultCode)
 {
-    if (mutex != nullptr)
-    {
-        ReleaseMutex(mutex);
-        CloseHandle(mutex);
-    }
-    if (HWORKERW != nullptr)
-        ShowWindow(HWORKERW, SW_HIDE);
+    Exit();
     exit(resultCode);
 }
 
@@ -134,6 +128,23 @@ void moveToCenter(QWidget *window)
     unsigned int newX = (screenWidth - windowWidth) / 2;
     unsigned int newY = (screenHeight - windowHeight) / 2;
     window->move(newX, newY);
+}
+
+void Exit()
+{
+    if (mutex != nullptr)
+    {
+        ReleaseMutex(mutex);
+        CloseHandle(mutex);
+    }
+    if (HWORKERW != nullptr)
+        ShowWindow(HWORKERW, SW_HIDE);
+}
+
+int ExitProgram(int resultCode)
+{
+    Exit();
+    return resultCode;
 }
 
 }

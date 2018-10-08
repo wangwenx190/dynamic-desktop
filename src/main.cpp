@@ -191,5 +191,5 @@ int main(int argc, char *argv[])
     }
     else
         mainWindow.showOptions();
-    Utils::Exit(QApplication::exec());
+    return Utils::ExitProgram(QApplication::exec());
 }

@@ -15,6 +15,7 @@ MainWindow::~MainWindow()
 {
     delete aboutDialog;
     delete preferencesDialog;
+    delete trayIcon;
 }
 
 void MainWindow::init()
@@ -374,7 +375,7 @@ void MainWindow::play()
     if (!player)
         return;
     if (player->isPaused())
-        player->play();
+        player->pause(false);
 }
 
 void MainWindow::pause()
