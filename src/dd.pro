@@ -22,7 +22,8 @@ HEADERS += \
     forms/aboutdialog.h \
     skinmanager.h \
     utils.h \
-    mainwindow.h
+    mainwindow.h \
+    slider.h
 SOURCES += \
     main.cpp \
     forms/preferencesdialog.cpp \
@@ -31,7 +32,8 @@ SOURCES += \
     forms/aboutdialog.cpp \
     skinmanager.cpp \
     utils.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    slider.cpp
 FORMS += forms/preferencesdialog.ui \
     forms/aboutdialog.ui
 TRANSLATIONS += \

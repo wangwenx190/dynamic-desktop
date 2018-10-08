@@ -551,7 +551,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QSlider" name="horizontalSlider_video_position">
+         <widget class="Slider" name="horizontalSlider_video_position">
           <property name="enabled">
            <bool>false</bool>
           </property>
@@ -587,7 +587,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QSlider" name="horizontalSlider_volume">
+         <widget class="Slider" name="horizontalSlider_volume">
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>
@@ -762,6 +762,11 @@
    <extends>QWidget</extends>
    <header>framelesswindow.h</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>Slider</class>
+   <extends>QSlider</extends>
+   <header>slider.h</header>
   </customwidget>
  </customwidgets>
  <resources>

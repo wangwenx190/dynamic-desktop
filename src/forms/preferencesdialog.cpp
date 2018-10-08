@@ -36,6 +36,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
     ui->comboBox_video_renderer->addItem(QStringLiteral("Widget"), QtAV::VideoRendererId_Widget);
     ui->comboBox_video_renderer->addItem(QStringLiteral("GDI"), QtAV::VideoRendererId_GDI);
     ui->comboBox_video_renderer->addItem(QStringLiteral("Direct2D"), QtAV::VideoRendererId_Direct2D);
+    ui->comboBox_skin->addItem(tr("<Blank>"), QStringLiteral("none"));
 #ifndef BUILD_DD_STATIC
     QString skinDirPath = QApplication::applicationDirPath() + QDir::separator() + QStringLiteral("skins");
 #else
@@ -66,7 +67,9 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
             ui->comboBox_language->addItem(locale.nativeLanguageName(), lang);
         }
         if (ui->comboBox_language->count() > 0)
-            ui->comboBox_language->insertItem(0, tr("auto"), QStringLiteral("auto"));
+            ui->comboBox_language->insertItem(0, tr("Auto"), QStringLiteral("auto"));
+        else
+            ui->comboBox_language->setEnabled(false);
     }
     connect(ui->pushButton_audio_open, &QPushButton::clicked,
         [=]
@@ -205,11 +208,6 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
         [=](int value)
         {
             emit this->seekBySlider(static_cast<qint64>(value * sliderUnit));
-        });
-    connect(ui->horizontalSlider_video_position, &QSlider::sliderPressed,
-        [=]
-        {
-            emit this->seekBySlider(static_cast<qint64>(ui->horizontalSlider_video_position->value() * sliderUnit));
         });
     connect(this, &PreferencesDialog::updateVideoSliderRange,
         [=](qint64 duration)

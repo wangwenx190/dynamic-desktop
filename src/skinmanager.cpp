@@ -32,6 +32,11 @@ bool SkinManager::setSkin(const QString &skin)
 {
     if (skin.isEmpty())
         return false;
+    if (skin.toLower() == QStringLiteral("none"))
+    {
+        qApp->setStyleSheet(QString());
+        return true;
+    }
     QString filePath;
     if (skin.contains(QStringLiteral("/")) || skin.contains(QStringLiteral("\\")))
         filePath = skin;
