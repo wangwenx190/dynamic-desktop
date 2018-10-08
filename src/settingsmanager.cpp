@@ -177,7 +177,7 @@ bool SettingsManager::getAudioAutoLoad() const
 
 QString SettingsManager::getSkin() const
 {
-    return settings->value(QStringLiteral("dd/skin"), QStringLiteral("default")).toString();
+    return settings->value(QStringLiteral("dd/skin"), QStringLiteral("Default")).toString();
 }
 
 QString SettingsManager::getLanguage() const
