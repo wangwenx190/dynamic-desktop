@@ -28,6 +28,13 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
     setResizeableAreaWidth(5);
     setTitleBar(ui->widget_windowTitleBar);
     addIgnoreWidget(ui->label_windowTitle);
+    taskbarButton = new QWinTaskbarButton(this);
+    taskbarButton->setWindow(windowHandle());
+    taskbarProgress = taskbarButton->progress();
+    taskbarProgress->setRange(0, 99);
+    taskbarProgress->show();
+    connect(ui->horizontalSlider_video_position, SIGNAL(valueChanged(int)), taskbarProgress, SLOT(setValue(int)));
+    connect(ui->horizontalSlider_video_position, SIGNAL(rangeChanged(int, int)), taskbarProgress, SLOT(setRange(int, int)));
     ui->comboBox_video_track->setEnabled(false);
     ui->comboBox_audio_track->setEnabled(false);
     ui->comboBox_subtitle_track->setEnabled(false);
@@ -265,8 +272,16 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
                 emit this->urlChanged(ui->lineEdit_url->text());
             else
                 emit this->urlChanged(QString());
+            if (!taskbarProgress->isVisible())
+                taskbarProgress->show();
+            taskbarProgress->resume();
         });
-    connect(ui->pushButton_pause, SIGNAL(clicked()), this, SIGNAL(pause()));
+    connect(ui->pushButton_pause, &QPushButton::clicked,
+        [=]
+        {
+            taskbarProgress->pause();
+            emit this->pause();
+        });
     connect(ui->pushButton_cancel, SIGNAL(clicked()), this, SLOT(close()));
     connect(ui->pushButton_ok, &QPushButton::clicked,
         [=]

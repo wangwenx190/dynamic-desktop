@@ -357,11 +357,13 @@ void MainWindow::updateControlPanel()
         }
         else if (SettingsManager::getInstance()->getSubtitleAutoLoad())
         {
-            subtitle->setEnabled(true);
             QStringList externalSubtitles = Utils::externalFilesToLoad(QFileInfo(player->file()), QStringLiteral("sub"));
             if (!externalSubtitles.isEmpty())
+            {
+                subtitle->setEnabled(true);
                 if (subtitle->file() != externalSubtitles.constFirst())
                     subtitle->setFile(externalSubtitles.constFirst());
+            }
         }
     }
 }

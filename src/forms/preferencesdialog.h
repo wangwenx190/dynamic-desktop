@@ -4,6 +4,8 @@
 
 #include <QtAV>
 #include <QtAVWidgets>
+#include <QWinTaskbarProgress>
+#include <QWinTaskbarButton>
 
 namespace Ui {
 class PreferencesDialog;
@@ -66,4 +68,6 @@ private:
     Ui::PreferencesDialog *ui;
     bool closing = false, audioAvailable = true;
     unsigned int sliderUnit = 1000;
+    QWinTaskbarButton *taskbarButton = nullptr;
+    QWinTaskbarProgress *taskbarProgress = nullptr;
 };
