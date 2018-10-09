@@ -2,10 +2,17 @@
 #include "utils.h"
 #include "settingsmanager.h"
 #include "skinmanager.h"
+#include "forms/aboutdialog.h"
+#include "forms/preferencesdialog.h"
 
 #include <QMessageBox>
 #include <QApplication>
 #include <QtConcurrent>
+#include <QVBoxLayout>
+#include <QMenu>
+#include <QSystemTrayIcon>
+#include <QtAV>
+#include <QtAVWidgets>
 
 MainWindow::MainWindow(QWidget *parent) : QWidget(parent)
 {
@@ -106,14 +113,6 @@ void MainWindow::init()
             if (player->audio())
                 if (player->audio()->isMute() != mute)
                     muteAction->triggered(mute);
-        });
-    connect(preferencesDialog, &PreferencesDialog::autostartChanged,
-        [=](bool enabled)
-        {
-            if (enabled)
-                SettingsManager::getInstance()->regAutostart();
-            else
-                SettingsManager::getInstance()->unregAutostart();
         });
     connect(preferencesDialog, &PreferencesDialog::seekBySlider,
         [=](qint64 value)

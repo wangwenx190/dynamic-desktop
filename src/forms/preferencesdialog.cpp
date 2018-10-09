@@ -3,6 +3,8 @@
 
 #include "settingsmanager.h"
 
+#include <QWinTaskbarButton>
+#include <QWinTaskbarProgress>
 #include <QFileDialog>
 #include <QInputDialog>
 #include <QFileInfo>
@@ -411,8 +413,10 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
     connect(ui->checkBox_autoStart, &QCheckBox::stateChanged,
         [=]
         {
-            SettingsManager::getInstance()->setAutostart(ui->checkBox_autoStart->isChecked());
-            emit this->autostartChanged(SettingsManager::getInstance()->getAutostart());
+            if (ui->checkBox_autoStart->isChecked() && !SettingsManager::getInstance()->isAutoStart())
+                SettingsManager::getInstance()->setAutoStart(true);
+            else if (!ui->checkBox_autoStart->isChecked() && SettingsManager::getInstance()->isAutoStart())
+                SettingsManager::getInstance()->setAutoStart(false);
         });
     connect(ui->radioButton_ratio_fitDesktop, &QRadioButton::clicked,
         [=]
@@ -513,7 +517,7 @@ void PreferencesDialog::refreshUI()
         ui->horizontalSlider_volume->setEnabled(ui->checkBox_volume->isChecked());
         ui->horizontalSlider_volume->setValue(SettingsManager::getInstance()->getVolume());
     }
-    ui->checkBox_autoStart->setChecked(SettingsManager::getInstance()->getAutostart());
+    ui->checkBox_autoStart->setChecked(SettingsManager::getInstance()->isAutoStart());
     QStringList decoders = SettingsManager::getInstance()->getDecoders();
     ui->checkBox_hwdec_cuda->setChecked(decoders.contains(QStringLiteral("CUDA")));
     ui->checkBox_hwdec_d3d11->setChecked(decoders.contains(QStringLiteral("D3D11")));

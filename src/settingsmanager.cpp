@@ -12,23 +12,26 @@ SettingsManager *SettingsManager::getInstance()
     return &settingsManager;
 }
 
-void SettingsManager::unregAutostart()
+bool SettingsManager::isAutoStart()
 {
     const QString key = QStringLiteral("HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run");
     QSettings set(key, QSettings::NativeFormat);
-    if (set.contains(QStringLiteral("Dynamic Desktop")))
-        set.remove(QStringLiteral("Dynamic Desktop"));
+    return set.contains(QStringLiteral("Dynamic Desktop"));
 }
 
-bool SettingsManager::regAutostart()
+bool SettingsManager::setAutoStart(bool enable)
 {
-    unregAutostart();
     const QString key = QStringLiteral("HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run");
     QSettings set(key, QSettings::NativeFormat);
     if (set.status() != QSettings::NoError)
         return false;
-    QString value = QLatin1Char('"') + QCoreApplication::applicationFilePath() + QLatin1Char('"');
-    set.setValue(QStringLiteral("Dynamic Desktop"), QDir::toNativeSeparators(value));
+    if (enable && !isAutoStart())
+    {
+        QString value = QLatin1Char('"') + QCoreApplication::applicationFilePath() + QLatin1Char('"');
+        set.setValue(QStringLiteral("Dynamic Desktop"), QDir::toNativeSeparators(value));
+    }
+    else if (!enable && isAutoStart())
+        set.remove(QStringLiteral("Dynamic Desktop"));
     return true;
 }
 
@@ -135,11 +138,6 @@ unsigned int SettingsManager::getVolume() const
     return static_cast<unsigned int>(vol);
 }
 
-bool SettingsManager::getAutostart() const
-{
-    return settings->value(QStringLiteral("dd/autostart"), false).toBool();
-}
-
 bool SettingsManager::getHwdec() const
 {
     return settings->value(QStringLiteral("dd/hwdec"), false).toBool();
@@ -211,11 +209,6 @@ void SettingsManager::setVolume(unsigned int volume)
     if (vol > 99)
         vol = 99;
     settings->setValue(QStringLiteral("dd/volume"), vol);
-}
-
-void SettingsManager::setAutostart(bool enable)
-{
-    settings->setValue(QStringLiteral("dd/autostart"), enable);
 }
 
 void SettingsManager::setHwdec(bool enable)

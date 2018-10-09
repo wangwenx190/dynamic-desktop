@@ -1,9 +1,10 @@
-﻿#pragma once
+#pragma once
 
 #include <QWidget>
 
-namespace Ui {
-class AboutDialog;
+namespace Ui
+{
+    class AboutDialog;
 }
 
 class AboutDialog : public QWidget

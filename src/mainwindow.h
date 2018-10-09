@@ -1,14 +1,22 @@
 #pragma once
 
-#include "forms/aboutdialog.h"
-#include "forms/preferencesdialog.h"
-
 #include <QWidget>
-#include <QtAV>
-#include <QtAVWidgets>
-#include <QVBoxLayout>
-#include <QMenu>
-#include <QSystemTrayIcon>
+
+QT_BEGIN_NAMESPACE
+QT_FORWARD_DECLARE_CLASS(QVBoxLayout)
+QT_FORWARD_DECLARE_CLASS(QMenu)
+QT_FORWARD_DECLARE_CLASS(QSystemTrayIcon)
+QT_END_NAMESPACE
+
+namespace QtAV
+{
+    QT_FORWARD_DECLARE_CLASS(AVPlayer)
+    QT_FORWARD_DECLARE_CLASS(SubtitleFilter)
+    QT_FORWARD_DECLARE_CLASS(VideoRenderer)
+}
+
+QT_FORWARD_DECLARE_CLASS(AboutDialog)
+QT_FORWARD_DECLARE_CLASS(PreferencesDialog)
 
 class MainWindow : public QWidget
 {

@@ -2,13 +2,17 @@
 
 #include "framelesswindow.h"
 
+QT_BEGIN_NAMESPACE
+QT_FORWARD_DECLARE_CLASS(QWinTaskbarButton)
+QT_FORWARD_DECLARE_CLASS(QWinTaskbarProgress)
+QT_END_NAMESPACE
+
 #include <QtAV>
 #include <QtAVWidgets>
-#include <QWinTaskbarProgress>
-#include <QWinTaskbarButton>
 
-namespace Ui {
-class PreferencesDialog;
+namespace Ui
+{
+    class PreferencesDialog;
 }
 
 class PreferencesDialog : public FramelessWindow
@@ -20,7 +24,6 @@ signals:
     void muteChanged(bool);
     void volumeChanged(unsigned int);
     void urlChanged(const QString &);
-    void autostartChanged(bool);
     void about();
     void seekBySlider(qint64);
     void pictureRatioChanged(bool);

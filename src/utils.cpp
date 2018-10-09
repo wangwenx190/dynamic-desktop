@@ -5,6 +5,7 @@
 #include <QTextStream>
 #include <QDir>
 #include <QDesktopWidget>
+#include <QFileInfo>
 
 namespace Utils
 {
