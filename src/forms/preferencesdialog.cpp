@@ -28,6 +28,9 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
     setResizeableAreaWidth(5);
     setTitleBar(ui->widget_windowTitleBar);
     addIgnoreWidget(ui->label_windowTitle);
+    ui->comboBox_video_track->setEnabled(false);
+    ui->comboBox_audio_track->setEnabled(false);
+    ui->comboBox_subtitle_track->setEnabled(false);
     ui->comboBox_image_quality->addItem(tr("Best"), QStringLiteral("best"));
     ui->comboBox_image_quality->addItem(tr("Fastest"), QStringLiteral("fastest"));
     ui->comboBox_image_quality->addItem(tr("Default"), QStringLiteral("default"));
@@ -36,7 +39,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
     ui->comboBox_video_renderer->addItem(QStringLiteral("Widget"), QtAV::VideoRendererId_Widget);
     ui->comboBox_video_renderer->addItem(QStringLiteral("GDI"), QtAV::VideoRendererId_GDI);
     ui->comboBox_video_renderer->addItem(QStringLiteral("Direct2D"), QtAV::VideoRendererId_Direct2D);
-    ui->comboBox_skin->addItem(tr("<Blank>"), QStringLiteral("none"));
+    ui->comboBox_skin->addItem(tr("<None>"), QStringLiteral("none"));
 #ifndef BUILD_DD_STATIC
     QString skinDirPath = QApplication::applicationDirPath() + QDir::separator() + QStringLiteral("skins");
 #else
@@ -67,7 +70,10 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
             ui->comboBox_language->addItem(locale.nativeLanguageName(), lang);
         }
         if (ui->comboBox_language->count() > 0)
+        {
             ui->comboBox_language->insertItem(0, tr("Auto"), QStringLiteral("auto"));
+            ui->comboBox_language->setEnabled(true);
+        }
         else
             ui->comboBox_language->setEnabled(false);
     }
@@ -109,6 +115,10 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
                     ui->comboBox_video_track->addItem(txt, id);
                 }
             }
+            if (ui->comboBox_video_track->count() > 0)
+                ui->comboBox_video_track->setEnabled(true);
+            else
+                ui->comboBox_video_track->setEnabled(false);
         });
     connect(this, &PreferencesDialog::updateAudioTracks,
         [=](const QVariantList &audioTracks, bool add)
@@ -128,6 +138,10 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
                     ui->comboBox_audio_track->addItem(txt, id);
                 }
             }
+            if (ui->comboBox_audio_track->count() > 0)
+                ui->comboBox_audio_track->setEnabled(true);
+            else
+                ui->comboBox_audio_track->setEnabled(false);
         });
     connect(this, &PreferencesDialog::updateSubtitleTracks,
         [=](const QVariantList &subtitleTracks, bool add)
@@ -156,6 +170,10 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
                     }
                 }
             }
+            if (ui->comboBox_subtitle_track->count() > 0)
+                ui->comboBox_subtitle_track->setEnabled(true);
+            else
+                ui->comboBox_subtitle_track->setEnabled(false);
         });
     connect(this, &PreferencesDialog::updateVolumeArea,
         [=]
@@ -399,14 +417,19 @@ void PreferencesDialog::refreshUI()
     }
     ui->radioButton_ratio_fitDesktop->setChecked(SettingsManager::getInstance()->getFitDesktop());
     ui->radioButton_ratio_videoAspectRatio->setChecked(!ui->radioButton_ratio_fitDesktop->isChecked());
-    ui->comboBox_subtitle_charset->setCurrentIndex(ui->comboBox_subtitle_charset->findData(SettingsManager::getInstance()->getCharset()));
+    int i = ui->comboBox_subtitle_charset->findData(SettingsManager::getInstance()->getCharset());
+    ui->comboBox_subtitle_charset->setCurrentIndex(i > -1 ? i : 0);
     ui->checkBox_subtitle_autoLoadExternal->setChecked(SettingsManager::getInstance()->getSubtitleAutoLoad());
     ui->checkBox_displaySubtitle->setChecked(SettingsManager::getInstance()->getSubtitle());
     ui->checkBox_audio_autoLoadExternal->setChecked(SettingsManager::getInstance()->getAudioAutoLoad());
-    ui->comboBox_skin->setCurrentIndex(ui->comboBox_skin->findData(SettingsManager::getInstance()->getSkin()));
-    ui->comboBox_language->setCurrentIndex(ui->comboBox_language->findData(SettingsManager::getInstance()->getLanguage()));
-    ui->comboBox_video_renderer->setCurrentIndex(ui->comboBox_video_renderer->findData(SettingsManager::getInstance()->getRenderer()));
-    ui->comboBox_image_quality->setCurrentIndex(ui->comboBox_image_quality->findData(SettingsManager::getInstance()->getImageQuality()));
+    i = ui->comboBox_skin->findData(SettingsManager::getInstance()->getSkin());
+    ui->comboBox_skin->setCurrentIndex(i > -1 ? i : 0);
+    i = ui->comboBox_language->findData(SettingsManager::getInstance()->getLanguage());
+    ui->comboBox_language->setCurrentIndex(i > -1 ? i : 0);
+    i = ui->comboBox_video_renderer->findData(SettingsManager::getInstance()->getRenderer());
+    ui->comboBox_video_renderer->setCurrentIndex(i > -1 ? i : 0);
+    i = ui->comboBox_image_quality->findData(SettingsManager::getInstance()->getImageQuality());
+    ui->comboBox_image_quality->setCurrentIndex(i > -1 ? i : 0);
 }
 
 void PreferencesDialog::saveSettings()

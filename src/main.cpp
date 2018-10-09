@@ -26,7 +26,6 @@ int main(int argc, char *argv[])
     QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
     QCoreApplication::setAttribute(Qt::AA_DontCreateNativeWidgetSiblings);
     QCoreApplication::setAttribute(Qt::AA_UseOpenGLES);
-    qputenv("QT_ANGLE_PLATFORM", "d3d11");
     QApplication app(argc, argv);
     QCoreApplication::setApplicationName(QStringLiteral("Dynamic Desktop"));
     QApplication::setApplicationDisplayName(QStringLiteral("Dynamic Desktop"));

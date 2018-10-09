@@ -39,7 +39,6 @@ signals:
     void updateVideoSlider(qint64);
     void updateVideoSliderUnit(int);
     void updateVideoSliderRange(qint64);
-    void setVideoAreaEnabled(bool);
     void setSeekAreaEnabled(bool);
     void setAudioAreaEnabled(bool);
     void setVolumeAreaEnabled(bool);
