@@ -46,9 +46,11 @@ TRANSLATIONS += \
 RESOURCES += images.qrc
 isEmpty(lupdate): lupdate = $$[QT_INSTALL_BINS]/lupdate.exe
 isEmpty(lrelease): lrelease = $$[QT_INSTALL_BINS]/lrelease.exe
+lrelease_params = -nounfinished -removeidentical
+CONFIG(small): lrelease_params = $${lrelease_params} -compress
 exists("$${lupdate}") {
     system("$${lupdate} -no-obsolete $${_PRO_FILE_}")
-    system("$${lrelease} -nounfinished -removeidentical $${_PRO_FILE_}")
+    system("$${lrelease} $${lrelease_params} $${_PRO_FILE_}")
 }
 target.path = $$BIN_DIR
 INSTALLS += target
@@ -64,7 +66,7 @@ CONFIG(static_dd) {
     translations.files = $$PWD/translations/dd_*.qm
     exists("$${lupdate}") {
         translations.commands += $$quote(\"$${lupdate}\" -no-obsolete \"$${_PRO_FILE_}\")
-        translations.commands += $$quote(\"$${lrelease}\" -nounfinished -removeidentical \"$${_PRO_FILE_}\")
+        translations.commands += $$quote(\"$${lrelease}\" $${lrelease_params} \"$${_PRO_FILE_}\")
         translations.commands = $$join(translations.commands, $$escape_expand(\\n\\t))
     }
     libs.path = $$BIN_DIR

@@ -53,6 +53,9 @@ signals:
     void updateAudioTracks(const QVariantList &, bool);
     void updateSubtitleTracks(const QVariantList &, bool);
     void clearAllTracks();
+    void setVolumeToolTip(const QString &);
+    void setVideoPositionText(const QString &);
+    void setVideoDurationText(const QString &);
 
 public:
     explicit PreferencesDialog(QWidget *parent = nullptr);

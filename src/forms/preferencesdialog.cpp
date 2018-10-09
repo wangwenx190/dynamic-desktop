@@ -469,6 +469,27 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
             if (ui->checkBox_audio_autoLoadExternal->isChecked() != SettingsManager::getInstance()->getAudioAutoLoad())
                 SettingsManager::getInstance()->setAudioAutoLoad(ui->checkBox_audio_autoLoadExternal->isChecked());
         });
+    connect(this, &PreferencesDialog::setVolumeToolTip,
+        [=](const QString &text)
+        {
+            if (!text.isEmpty())
+            {
+                ui->checkBox_volume->setToolTip(text);
+                ui->horizontalSlider_volume->setToolTip(text);
+            }
+        });
+    connect(this, &PreferencesDialog::setVideoPositionText,
+        [=](const QString &text)
+        {
+            if (!text.isEmpty())
+                ui->label_video_position->setText(text);
+        });
+    connect(this, &PreferencesDialog::setVideoDurationText,
+        [=](const QString &text)
+        {
+            if (!text.isEmpty())
+                ui->label_video_duration->setText(text);
+        });
     refreshUI();
 }
 

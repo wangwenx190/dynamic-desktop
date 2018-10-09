@@ -82,37 +82,42 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../mainwindow.cpp" line="53"/>
+        <location filename="../mainwindow.cpp" line="54"/>
         <source>Preferences</source>
         <translation>首选项</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="55"/>
+        <location filename="../mainwindow.cpp" line="56"/>
         <source>Play</source>
         <translation>播放</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="56"/>
+        <location filename="../mainwindow.cpp" line="57"/>
         <source>Pause</source>
         <translation>暂停</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="57"/>
+        <location filename="../mainwindow.cpp" line="58"/>
         <source>Mute</source>
         <translation>静音</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="71"/>
+        <location filename="../mainwindow.cpp" line="72"/>
         <source>About</source>
         <translation>关于</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="72"/>
+        <location filename="../mainwindow.cpp" line="73"/>
         <source>Exit</source>
         <translation>退出</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="216"/>
+        <location filename="../mainwindow.cpp" line="97"/>
+        <source>Volume: %0</source>
+        <translation>音量：%0</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="225"/>
         <source>Current renderer is not available on your platform!</source>
         <translation>当前渲染引擎在您的平台上不可用！</translation>
     </message>
@@ -196,12 +201,12 @@
         <translation>视频轨道</translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.ui" line="603"/>
+        <location filename="../forms/preferencesdialog.ui" line="610"/>
         <source>Auto load external audio tracks</source>
         <translation>自动加载外部音轨</translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.ui" line="627"/>
+        <location filename="../forms/preferencesdialog.ui" line="634"/>
         <source>Audio track</source>
         <translation>音频轨道</translation>
     </message>
@@ -252,22 +257,17 @@
         <translation>输出图像质量</translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.ui" line="549"/>
-        <source>Position</source>
-        <translation>播放进度</translation>
-    </message>
-    <message>
-        <location filename="../forms/preferencesdialog.ui" line="577"/>
+        <location filename="../forms/preferencesdialog.ui" line="584"/>
         <source>Audio</source>
         <translation>音频</translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.ui" line="585"/>
+        <location filename="../forms/preferencesdialog.ui" line="592"/>
         <source>Volume</source>
         <translation>音量</translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.ui" line="744"/>
+        <location filename="../forms/preferencesdialog.ui" line="751"/>
         <source>Close</source>
         <translation>关闭</translation>
     </message>
@@ -282,38 +282,44 @@
         <translation>暂停</translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.ui" line="648"/>
+        <location filename="../forms/preferencesdialog.ui" line="549"/>
+        <location filename="../forms/preferencesdialog.ui" line="566"/>
+        <source>00:00:00</source>
+        <translation>00:00:00</translation>
+    </message>
+    <message>
+        <location filename="../forms/preferencesdialog.ui" line="655"/>
         <source>Subtitle</source>
         <translation>字幕</translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.ui" line="654"/>
+        <location filename="../forms/preferencesdialog.ui" line="661"/>
         <source>Display subtitle</source>
         <translation>显示字幕</translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.ui" line="663"/>
+        <location filename="../forms/preferencesdialog.ui" line="670"/>
         <source>Auto load external subtitle tracks</source>
         <translation>自动加载外部字幕轨道</translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.ui" line="610"/>
-        <location filename="../forms/preferencesdialog.ui" line="670"/>
+        <location filename="../forms/preferencesdialog.ui" line="617"/>
+        <location filename="../forms/preferencesdialog.ui" line="677"/>
         <source>Open</source>
         <translation>打开</translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.ui" line="687"/>
+        <location filename="../forms/preferencesdialog.ui" line="694"/>
         <source>Subtitle track</source>
         <translation>字幕轨道</translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.ui" line="707"/>
+        <location filename="../forms/preferencesdialog.ui" line="714"/>
         <source>Charset</source>
         <translation>字符集</translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.ui" line="724"/>
+        <location filename="../forms/preferencesdialog.ui" line="731"/>
         <source>About</source>
         <translation>关于</translation>
     </message>
@@ -381,7 +387,7 @@
         <translation>“%0”不是一个有效的网址。</translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="576"/>
+        <location filename="../forms/preferencesdialog.cpp" line="597"/>
         <source>Reopen this video or play another video to experience it.
 Make sure this application runs in your GPU&apos;s Optimus mode.</source>
         <translation>重新打开这个视频或播放另一个视频来体验此项改变。

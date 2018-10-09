@@ -546,7 +546,7 @@
            </sizepolicy>
           </property>
           <property name="text">
-           <string>Position</string>
+           <string>00:00:00</string>
           </property>
          </widget>
         </item>
@@ -557,6 +557,13 @@
           </property>
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_video_duration">
+          <property name="text">
+           <string>00:00:00</string>
           </property>
          </widget>
         </item>

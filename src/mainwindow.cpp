@@ -14,6 +14,8 @@
 #include <QtAV>
 #include <QtAVWidgets>
 
+const qreal kVolumeInterval = 0.04;
+
 MainWindow::MainWindow(QWidget *parent) : QWidget(parent)
 {
     init();
@@ -47,8 +49,7 @@ void MainWindow::init()
     setWindowTitle(QStringLiteral("Dynamic Desktop"));
     preferencesDialog = new PreferencesDialog();
     aboutDialog = new AboutDialog();
-    connect(player, SIGNAL(positionChanged(qint64)), preferencesDialog, SIGNAL(updateVideoSlider(qint64)));
-    connect(player, SIGNAL(loaded()), this, SLOT(updateControlPanel()));
+    connect(player, SIGNAL(started()), this, SLOT(onStartPlay()));
     trayMenu = new QMenu(this);
     trayMenu->addAction(tr("Preferences"), this, SLOT(showPreferencesDialog()));
     trayMenu->addSeparator();
@@ -75,19 +76,6 @@ void MainWindow::init()
     trayIcon->setToolTip(QStringLiteral("Dynamic Desktop"));
     trayIcon->setContextMenu(trayMenu);
     trayIcon->show();
-    if (player->audio())
-    {
-        player->audio()->setVolume(static_cast<qreal>(SettingsManager::getInstance()->getVolume() / 10.0));
-        player->audio()->setMute(SettingsManager::getInstance()->getMute());
-        muteAction->setCheckable(true);
-        muteAction->setChecked(SettingsManager::getInstance()->getMute());
-    }
-    else
-    {
-        muteAction->setCheckable(false);
-        muteAction->setEnabled(false);
-        preferencesDialog->setVolumeAreaEnabled(false);
-    }
     connect(trayIcon, &QSystemTrayIcon::activated,
         [=](QSystemTrayIcon::ActivationReason reason)
         {
@@ -100,11 +88,13 @@ void MainWindow::init()
     connect(preferencesDialog, &PreferencesDialog::volumeChanged,
         [=](unsigned int volume)
         {
-            if (player->audio())
+            QtAV::AudioOutput *ao = player ? player->audio() : nullptr;
+            if (ao)
             {
-                auto newVolume = static_cast<qreal>(volume / 10.0);
-                if (player->audio()->volume() != newVolume)
-                    player->audio()->setVolume(newVolume);
+                qreal newVolume = static_cast<qreal>(volume) * kVolumeInterval;
+                if ((static_cast<unsigned int>(ao->volume() / kVolumeInterval) - volume) >= static_cast<unsigned int>(0.1 / kVolumeInterval))
+                    ao->setVolume(newVolume);
+                preferencesDialog->setVolumeToolTip(tr("Volume: %0").arg(QString::number(newVolume)));
             }
         });
     connect(preferencesDialog, &PreferencesDialog::muteChanged,
@@ -203,6 +193,25 @@ void MainWindow::init()
         {
             setImageQuality(quality);
         });
+    connect(player, &QtAV::AVPlayer::positionChanged,
+        [=](qint64 pos)
+        {
+            preferencesDialog->updateVideoSlider(pos);
+            preferencesDialog->setVideoPositionText(QTime(0, 0, 0).addMSecs(pos).toString(QStringLiteral("HH:mm:ss")));
+        });
+    if (player->audio())
+    {
+        preferencesDialog->volumeChanged(SettingsManager::getInstance()->getVolume());
+        player->audio()->setMute(SettingsManager::getInstance()->getMute());
+        muteAction->setCheckable(true);
+        muteAction->setChecked(SettingsManager::getInstance()->getMute());
+    }
+    else
+    {
+        muteAction->setCheckable(false);
+        muteAction->setEnabled(false);
+        preferencesDialog->setVolumeAreaEnabled(false);
+    }
     connect(this, SIGNAL(showOptions()), this, SLOT(showPreferencesDialog()));
     connect(this, SIGNAL(play(const QString &)), this, SLOT(urlChanged(const QString &)));
 }
@@ -317,7 +326,7 @@ void MainWindow::showPreferencesDialog()
     }
 }
 
-void MainWindow::updateControlPanel()
+void MainWindow::onStartPlay()
 {
     if (!preferencesDialog || !player || !subtitle)
         return;
@@ -329,6 +338,7 @@ void MainWindow::updateControlPanel()
     preferencesDialog->setAudioAreaEnabled(player->audio());
     preferencesDialog->updateVideoTracks(player->internalVideoTracks());
     preferencesDialog->updateAudioTracks(player->internalAudioTracks(), false);
+    preferencesDialog->setVideoDurationText(QTime(0, 0, 0).addMSecs(player->mediaStopPosition()).toString(QStringLiteral("HH:mm:ss")));
     if (SettingsManager::getInstance()->getAudioAutoLoad())
         preferencesDialog->updateAudioTracks(player->externalAudioTracks(), true);
     preferencesDialog->updateSubtitleTracks(player->internalSubtitleTracks(), false);

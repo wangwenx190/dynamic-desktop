@@ -38,7 +38,7 @@ private slots:
     void setImageRatio();
     void showAboutDialog();
     void showPreferencesDialog();
-    void updateControlPanel();
+    void onStartPlay();
     void play();
     void pause();
     void stop();
