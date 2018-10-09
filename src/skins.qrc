@@ -1,5 +1,5 @@
 <RCC>
     <qresource prefix="/skins">
-        <file alias="default.css">stylesheets/default.css</file>
+        <file alias="Default.css">stylesheets/Default.css</file>
     </qresource>
 </RCC>

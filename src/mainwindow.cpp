@@ -5,6 +5,7 @@
 
 #include <QMessageBox>
 #include <QApplication>
+#include <QtConcurrent>
 
 MainWindow::MainWindow(QWidget *parent) : QWidget(parent)
 {
@@ -118,7 +119,7 @@ void MainWindow::init()
         [=](qint64 value)
         {
             if (player->isLoaded() && player->isSeekable())
-                player->seek(value);
+                QtConcurrent::run([=]{ player->seek(value); });
         });
     connect(preferencesDialog, SIGNAL(pictureRatioChanged(bool)), this, SLOT(setImageRatio(bool)));
     connect(preferencesDialog, &PreferencesDialog::videoTrackChanged,
@@ -437,7 +438,7 @@ void MainWindow::urlChanged(const QString &url)
         show();
     if (!url.isEmpty())
     {
-        player->play(url);
+        QtConcurrent::run([=]{ player->play(url); });
         setWindowTitle(QFileInfo(url).fileName());
     }
     else

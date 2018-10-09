@@ -37,7 +37,6 @@ signals:
     void imageQualityChanged(const QString &);
 
 signals:
-    void refreshUi();
     void updateVideoSlider(qint64);
     void updateVideoSliderUnit(int);
     void updateVideoSliderRange(qint64);
@@ -55,18 +54,18 @@ public:
     ~PreferencesDialog() override;
 
 protected:
-    void showEvent(QShowEvent *event) override;
     void changeEvent(QEvent *event) override;
     void dragEnterEvent(QDragEnterEvent *event) override;
     void dropEvent(QDropEvent *event) override;
 
 private slots:
     void refreshUI();
-    void saveSettings();
+    void setDecoders();
+    void setRatio();
 
 private:
     Ui::PreferencesDialog *ui;
-    bool closing = false, audioAvailable = true;
+    bool audioAvailable = true;
     unsigned int sliderUnit = 1000;
     QWinTaskbarButton *taskbarButton = nullptr;
     QWinTaskbarProgress *taskbarProgress = nullptr;

@@ -34,4 +34,6 @@
 - [x] Output detailed log to local file
 - [ ] Support favorite playlists
 - [ ] Support UWP?
-- [ ] Show progress and status on taskbar
+- [x] Show progress and status on taskbar
+- [ ] Add more skins
+- [x] Save and preview settings right after any change happens

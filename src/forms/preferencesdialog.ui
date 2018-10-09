@@ -739,16 +739,9 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton_ok">
-       <property name="text">
-        <string>OK</string>
-       </property>
-      </widget>
-     </item>
-     <item>
       <widget class="QPushButton" name="pushButton_cancel">
        <property name="text">
-        <string>Cancel</string>
+        <string>Close</string>
        </property>
       </widget>
      </item>
