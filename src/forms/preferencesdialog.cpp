@@ -1,10 +1,11 @@
 #include "preferencesdialog.h"
 #include "ui_preferencesdialog.h"
-
 #include "settingsmanager.h"
 
+#ifdef QT_HAS_WINEXTRAS
 #include <QWinTaskbarButton>
 #include <QWinTaskbarProgress>
+#endif
 #include <QFileDialog>
 #include <QInputDialog>
 #include <QFileInfo>
@@ -30,6 +31,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
     setResizeableAreaWidth(5);
     setTitleBar(ui->widget_windowTitleBar);
     addIgnoreWidget(ui->label_windowTitle);
+#ifdef QT_HAS_WINEXTRAS
     taskbarButton = new QWinTaskbarButton(this);
     taskbarButton->setWindow(windowHandle());
     taskbarProgress = taskbarButton->progress();
@@ -37,6 +39,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
     taskbarProgress->show();
     connect(ui->horizontalSlider_video_position, SIGNAL(valueChanged(int)), taskbarProgress, SLOT(setValue(int)));
     connect(ui->horizontalSlider_video_position, SIGNAL(rangeChanged(int, int)), taskbarProgress, SLOT(setRange(int, int)));
+#endif
     ui->comboBox_video_track->setEnabled(false);
     ui->comboBox_audio_track->setEnabled(false);
     ui->comboBox_subtitle_track->setEnabled(false);
@@ -278,14 +281,18 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
                 emit this->urlChanged(ui->lineEdit_url->text());
             else
                 emit this->urlChanged(QString());
+#ifdef QT_HAS_WINEXTRAS
             if (!taskbarProgress->isVisible())
                 taskbarProgress->show();
             taskbarProgress->resume();
+#endif
         });
     connect(ui->pushButton_pause, &QPushButton::clicked,
         [=]
         {
+#ifdef QT_HAS_WINEXTRAS
             taskbarProgress->pause();
+#endif
             emit this->pause();
         });
     connect(ui->pushButton_cancel, SIGNAL(clicked()), this, SLOT(close()));

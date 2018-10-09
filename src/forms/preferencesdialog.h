@@ -2,10 +2,12 @@
 
 #include "framelesswindow.h"
 
+#ifdef QT_HAS_WINEXTRAS
 QT_BEGIN_NAMESPACE
 QT_FORWARD_DECLARE_CLASS(QWinTaskbarButton)
 QT_FORWARD_DECLARE_CLASS(QWinTaskbarProgress)
 QT_END_NAMESPACE
+#endif
 
 #include <QtAV>
 #include <QtAVWidgets>
@@ -70,6 +72,8 @@ private:
     Ui::PreferencesDialog *ui;
     bool audioAvailable = true;
     unsigned int sliderUnit = 1000;
+#ifdef QT_HAS_WINEXTRAS
     QWinTaskbarButton *taskbarButton = nullptr;
     QWinTaskbarProgress *taskbarProgress = nullptr;
+#endif
 };
