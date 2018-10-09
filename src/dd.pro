@@ -70,7 +70,8 @@ CONFIG(static_dd) {
     libs.path = $$BIN_DIR
     libs.files = \
         $$[QT_INSTALL_BINS]/Qt?Concurrent.dll \
-        $$[QT_INSTALL_BINS]/QtAV*.dll \
+        $$[QT_INSTALL_BINS]/QtAV?.dll \
+        $$[QT_INSTALL_BINS]/QtAVWidgets?.dll \
         $$[QT_INSTALL_BINS]/avcodec-*.dll \
         $$[QT_INSTALL_BINS]/avdevice-*.dll \
         $$[QT_INSTALL_BINS]/avfilter-*.dll \
