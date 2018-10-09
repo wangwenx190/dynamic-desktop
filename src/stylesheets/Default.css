@@ -1,3 +1,8 @@
+/*
+Author: Daniel Clarke(https://github.com/u8sand)
+Comment: Originally copied from https://github.com/u8sand/Baka-MPlayer and I made some changes to it.
+Date: 2018/10/09
+*/
 QWidget {
 	font-family: 12px "Noto Sans", "FreeSans";
 	background: #1A1A1A;
