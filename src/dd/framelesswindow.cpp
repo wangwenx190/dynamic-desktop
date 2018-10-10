@@ -61,7 +61,7 @@ void FramelessWindow::setTitleBar(QWidget* titlebar)
 {
     m_titlebar = titlebar;
     if (!titlebar) return;
-    connect(titlebar, SIGNAL(destroyed(QObject*)), this, SLOT(onTitleBarDestroyed()));
+    connect(titlebar, &QWidget::destroyed, this, &FramelessWindow::onTitleBarDestroyed);
 }
 
 void FramelessWindow::onTitleBarDestroyed()

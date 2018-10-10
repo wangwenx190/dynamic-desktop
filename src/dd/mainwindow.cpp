@@ -49,12 +49,12 @@ void MainWindow::init()
     setWindowTitle(QStringLiteral("Dynamic Desktop"));
     preferencesDialog = new PreferencesDialog();
     aboutDialog = new AboutDialog();
-    connect(player, SIGNAL(started()), this, SLOT(onStartPlay()));
+    connect(player, &QtAV::AVPlayer::started, this, &MainWindow::onStartPlay);
     trayMenu = new QMenu(this);
-    trayMenu->addAction(tr("Preferences"), this, SLOT(showPreferencesDialog()));
+    trayMenu->addAction(tr("Preferences"), this, &MainWindow::showPreferencesDialog);
     trayMenu->addSeparator();
-    trayMenu->addAction(tr("Play"), this, SLOT(play()));
-    trayMenu->addAction(tr("Pause"), this, SLOT(pause()));
+    trayMenu->addAction(tr("Play"), this, static_cast<void(MainWindow::*)(void)>(&MainWindow::play));
+    trayMenu->addAction(tr("Pause"), this, &MainWindow::pause);
     QAction *muteAction = trayMenu->addAction(tr("Mute"));
     muteAction->setCheckable(true);
     connect(muteAction, &QAction::triggered,
@@ -69,7 +69,7 @@ void MainWindow::init()
             }
         });
     trayMenu->addSeparator();
-    trayMenu->addAction(tr("About"), this, SLOT(showAboutDialog()));
+    trayMenu->addAction(tr("About"), this, &MainWindow::showAboutDialog);
     trayMenu->addAction(tr("Exit"), qApp, &QApplication::closeAllWindows);
     trayIcon = new QSystemTrayIcon(this);
     trayIcon->setIcon(QIcon(QStringLiteral(":/bee.ico")));
@@ -82,9 +82,9 @@ void MainWindow::init()
             if (reason != QSystemTrayIcon::Context)
                 showPreferencesDialog();
         });
-    connect(preferencesDialog, SIGNAL(about()), this, SLOT(showAboutDialog()));
-    connect(preferencesDialog, SIGNAL(pause()), this, SLOT(pause()));
-    connect(preferencesDialog, SIGNAL(urlChanged(const QString &)), this, SLOT(urlChanged(const QString &)));
+    connect(preferencesDialog, &PreferencesDialog::about, this, &MainWindow::showAboutDialog);
+    connect(preferencesDialog, &PreferencesDialog::pause, this, &MainWindow::pause);
+    connect(preferencesDialog, &PreferencesDialog::urlChanged, this, &MainWindow::urlChanged);
     connect(preferencesDialog, &PreferencesDialog::volumeChanged,
         [=](unsigned int volume)
         {
@@ -110,7 +110,7 @@ void MainWindow::init()
             if (player->isLoaded() && player->isSeekable())
                 QtConcurrent::run([=]{ player->seek(value); });
         });
-    connect(preferencesDialog, SIGNAL(pictureRatioChanged(bool)), this, SLOT(setImageRatio(bool)));
+    connect(preferencesDialog, &PreferencesDialog::pictureRatioChanged, this, static_cast<void(MainWindow::*)(bool)>(&MainWindow::setImageRatio));
     connect(preferencesDialog, &PreferencesDialog::videoTrackChanged,
         [=](unsigned int id)
         {
@@ -212,8 +212,8 @@ void MainWindow::init()
         muteAction->setEnabled(false);
         preferencesDialog->setVolumeAreaEnabled(false);
     }
-    connect(this, SIGNAL(showOptions()), this, SLOT(showPreferencesDialog()));
-    connect(this, SIGNAL(play(const QString &)), this, SLOT(urlChanged(const QString &)));
+    connect(this, &MainWindow::showOptions, this, &MainWindow::showPreferencesDialog);
+    connect(this, static_cast<void(MainWindow::*)(const QString &)>(&MainWindow::play), this, &MainWindow::urlChanged);
 }
 
 bool MainWindow::setRenderer(QtAV::VideoRenderer *videoRenderer)

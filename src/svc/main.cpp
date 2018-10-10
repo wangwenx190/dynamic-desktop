@@ -46,7 +46,7 @@ void DDSvc::start()
     ReleaseMutex(mutex);
     CloseHandle(mutex);
     if (QFileInfo::exists(path))
-        launchSession1Process(path);
+        launchSession1Process(QDir::toNativeSeparators(path));
     qApp->quit();
 }
 
@@ -71,7 +71,7 @@ bool DDSvc::launchSession1Process(const QString &path)
     if (CreateEnvironmentBlock(&lpEnvironment, hDuplicatedToken, FALSE) == FALSE)
         return false;
     if (CreateProcessAsUser(hDuplicatedToken,
-                            reinterpret_cast<const wchar_t *>(path.utf16()),
+                            reinterpret_cast<const wchar_t *>(QDir::toNativeSeparators(path).utf16()),
                             nullptr, nullptr, nullptr, FALSE,
                             NORMAL_PRIORITY_CLASS | CREATE_NEW_CONSOLE | CREATE_UNICODE_ENVIRONMENT,
                             lpEnvironment,

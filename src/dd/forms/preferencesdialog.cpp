@@ -20,6 +20,7 @@
 #ifndef BUILD_DD_STATIC
 #include <QLibraryInfo>
 #endif
+#include <QTimer>
 
 PreferencesDialog::PreferencesDialog(QWidget *parent) :
     FramelessWindow(parent),
@@ -181,8 +182,8 @@ void PreferencesDialog::initUI()
 void PreferencesDialog::initConnections()
 {
 #ifdef QT_HAS_WINEXTRAS
-    connect(ui->horizontalSlider_video_position, SIGNAL(valueChanged(int)), taskbarProgress, SLOT(setValue(int)));
-    connect(ui->horizontalSlider_video_position, SIGNAL(rangeChanged(int, int)), taskbarProgress, SLOT(setRange(int, int)));
+    connect(ui->horizontalSlider_video_position, &QSlider::valueChanged, taskbarProgress, &QWinTaskbarProgress::setValue);
+    connect(ui->horizontalSlider_video_position, &QSlider::rangeChanged, taskbarProgress, &QWinTaskbarProgress::setRange);
 #endif
     connect(ui->pushButton_audio_open, &QPushButton::clicked,
         [=]
@@ -343,9 +344,9 @@ void PreferencesDialog::initConnections()
         {
             ui->horizontalSlider_video_position->setValue(static_cast<int>(position / sliderUnit));
         });
-    connect(ui->pushButton_about, SIGNAL(clicked()), this, SIGNAL(about()));
-    connect(ui->pushButton_minimize, SIGNAL(clicked()), this, SLOT(showMinimized()));
-    connect(ui->pushButton_close, SIGNAL(clicked()), this, SLOT(close()));
+    connect(ui->pushButton_about, &QPushButton::clicked, this, &PreferencesDialog::about);
+    connect(ui->pushButton_minimize, &QPushButton::clicked, this, &PreferencesDialog::showMinimized);
+    connect(ui->pushButton_close, &QPushButton::clicked, this, &PreferencesDialog::close);
     connect(ui->pushButton_maximize, &QPushButton::clicked,
         [=]
         {
@@ -354,7 +355,7 @@ void PreferencesDialog::initConnections()
             else
                 this->showMaximized();
         });
-    connect(ui->checkBox_volume, &QCheckBox::stateChanged,
+    connect(ui->checkBox_volume, &QCheckBox::clicked,
         [=]
         {
             ui->horizontalSlider_volume->setEnabled(ui->checkBox_volume->isChecked());
@@ -385,7 +386,7 @@ void PreferencesDialog::initConnections()
 #endif
             emit this->pause();
         });
-    connect(ui->pushButton_cancel, SIGNAL(clicked()), this, SLOT(close()));
+    connect(ui->pushButton_cancel, &QPushButton::clicked, this, &PreferencesDialog::close);
     connect(ui->pushButton_url_browse, &QPushButton::clicked,
         [=]
         {
@@ -412,7 +413,7 @@ void PreferencesDialog::initConnections()
                     QMessageBox::warning(nullptr, QStringLiteral("Dynamic Desktop"), tr("\"%0\" is not a valid URL.").arg(input));
             }
         });
-    connect(ui->checkBox_hwdec, &QCheckBox::stateChanged,
+    connect(ui->checkBox_hwdec, &QCheckBox::clicked,
         [=]
         {
             bool hwdecEnabled = ui->checkBox_hwdec->isChecked();
@@ -421,17 +422,17 @@ void PreferencesDialog::initConnections()
             ui->checkBox_hwdec_dxva->setEnabled(hwdecEnabled);
             this->setDecoders();
         });
-    connect(ui->checkBox_hwdec_cuda, &QCheckBox::stateChanged,
+    connect(ui->checkBox_hwdec_cuda, &QCheckBox::clicked,
         [=]
         {
             this->setDecoders();
         });
-    connect(ui->checkBox_hwdec_d3d11, &QCheckBox::stateChanged,
+    connect(ui->checkBox_hwdec_d3d11, &QCheckBox::clicked,
         [=]
         {
             this->setDecoders();
         });
-    connect(ui->checkBox_hwdec_dxva, &QCheckBox::stateChanged,
+    connect(ui->checkBox_hwdec_dxva, &QCheckBox::clicked,
         [=]
         {
             this->setDecoders();
@@ -507,14 +508,18 @@ void PreferencesDialog::initConnections()
                 emit this->urlChanged(SettingsManager::getInstance()->getUrl());
             }
         });
-    connect(ui->checkBox_autoStart, &QCheckBox::stateChanged,
+    connect(ui->checkBox_autoStart, &QCheckBox::clicked,
         [=]
         {
             if (ui->checkBox_autoStart->isChecked() && !SettingsManager::getInstance()->isAutoStart())
                 SettingsManager::getInstance()->setAutoStart(true);
             else if (!ui->checkBox_autoStart->isChecked() && SettingsManager::getInstance()->isAutoStart())
                 SettingsManager::getInstance()->setAutoStart(false);
-            ui->checkBox_autoStart->setChecked(SettingsManager::getInstance()->isAutoStart());
+            QTimer::singleShot(2500,
+                [=]
+                {
+                    ui->checkBox_autoStart->setChecked(SettingsManager::getInstance()->isAutoStart());
+                });
         });
     connect(ui->radioButton_ratio_fitDesktop, &QRadioButton::clicked,
         [=]
@@ -536,7 +541,7 @@ void PreferencesDialog::initConnections()
                 emit this->charsetChanged(SettingsManager::getInstance()->getCharset());
             }
         });
-    connect(ui->checkBox_subtitle_autoLoadExternal, &QCheckBox::stateChanged,
+    connect(ui->checkBox_subtitle_autoLoadExternal, &QCheckBox::clicked,
         [=]
         {
             if (ui->checkBox_subtitle_autoLoadExternal->isChecked() != SettingsManager::getInstance()->getSubtitleAutoLoad())
@@ -545,7 +550,7 @@ void PreferencesDialog::initConnections()
                 emit this->subtitleAutoLoadChanged(SettingsManager::getInstance()->getSubtitleAutoLoad());
             }
         });
-    connect(ui->checkBox_displaySubtitle, &QCheckBox::stateChanged,
+    connect(ui->checkBox_displaySubtitle, &QCheckBox::clicked,
         [=]
         {
             if (ui->checkBox_displaySubtitle->isChecked() != SettingsManager::getInstance()->getSubtitle())
@@ -554,7 +559,7 @@ void PreferencesDialog::initConnections()
                 emit this->subtitleEnabled(SettingsManager::getInstance()->getSubtitle());
             }
         });
-    connect(ui->checkBox_audio_autoLoadExternal, &QCheckBox::stateChanged,
+    connect(ui->checkBox_audio_autoLoadExternal, &QCheckBox::clicked,
         [=]
         {
             if (ui->checkBox_audio_autoLoadExternal->isChecked() != SettingsManager::getInstance()->getAudioAutoLoad())
@@ -581,6 +586,7 @@ void PreferencesDialog::initConnections()
             if (!text.isEmpty())
                 ui->label_video_duration->setText(text);
         });
+    connect(ui->pushButton_check_update, &QPushButton::clicked, this, &PreferencesDialog::requestUpdate);
 }
 
 void PreferencesDialog::setDecoders()

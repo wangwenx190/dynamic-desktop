@@ -739,6 +739,13 @@
       </widget>
      </item>
      <item>
+      <widget class="QPushButton" name="pushButton_check_update">
+       <property name="text">
+        <string>Check update</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <spacer name="horizontalSpacer">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>

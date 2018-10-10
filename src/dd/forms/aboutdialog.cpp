@@ -36,7 +36,7 @@ AboutDialog::AboutDialog(QWidget *parent) :
         {
             qApp->aboutQt();
         });
-    connect(ui->pushButton_ok, SIGNAL(clicked()), this, SLOT(close()));
+    connect(ui->pushButton_ok, &QPushButton::clicked, this, &AboutDialog::close);
     connect(ui->pushButton_source, &QPushButton::clicked,
         [=]
         {
