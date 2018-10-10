@@ -67,7 +67,8 @@ protected:
     void dropEvent(QDropEvent *event) override;
 
 private slots:
-    void refreshUI();
+    void initUI();
+    void initConnections();
     void setDecoders();
     void setRatio();
 

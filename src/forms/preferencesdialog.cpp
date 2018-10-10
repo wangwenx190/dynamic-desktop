@@ -31,14 +31,61 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
     setResizeableAreaWidth(5);
     setTitleBar(ui->widget_windowTitleBar);
     addIgnoreWidget(ui->label_windowTitle);
+    initUI();
+    initConnections();
+}
+
+PreferencesDialog::~PreferencesDialog()
+{
+    delete ui;
+}
+
+void PreferencesDialog::changeEvent(QEvent *event)
+{
+    if (event->type() == QEvent::WindowStateChange)
+        if (windowState() == Qt::WindowMaximized)
+            ui->pushButton_maximize->setIcon(QIcon(QStringLiteral(":/restore.ico")));
+        else
+            ui->pushButton_maximize->setIcon(QIcon(QStringLiteral(":/maximize.ico")));
+    FramelessWindow::changeEvent(event);
+}
+
+static bool canHandleDrop(const QDragEnterEvent *event)
+{
+    const QList<QUrl> urls = event->mimeData()->urls();
+    if (urls.empty()) return false;
+    QMimeDatabase mimeDatabase;
+    return SettingsManager::getInstance()->supportedMimeTypes().
+        contains(mimeDatabase.mimeTypeForUrl(urls.constFirst()).name());
+}
+
+void PreferencesDialog::dragEnterEvent(QDragEnterEvent *event)
+{
+    event->setAccepted(canHandleDrop(event));
+    FramelessWindow::dragEnterEvent(event);
+}
+
+void PreferencesDialog::dropEvent(QDropEvent *event)
+{
+    event->accept();
+    QUrl url = event->mimeData()->urls().constFirst();
+    QString path;
+    if (url.isLocalFile())
+        path = QDir::toNativeSeparators(url.toLocalFile());
+    else
+        path = url.url();
+    ui->lineEdit_url->setText(path);
+    FramelessWindow::dropEvent(event);
+}
+
+void PreferencesDialog::initUI()
+{
 #ifdef QT_HAS_WINEXTRAS
     taskbarButton = new QWinTaskbarButton(this);
     taskbarButton->setWindow(windowHandle());
     taskbarProgress = taskbarButton->progress();
     taskbarProgress->setRange(0, 99);
     taskbarProgress->show();
-    connect(ui->horizontalSlider_video_position, SIGNAL(valueChanged(int)), taskbarProgress, SLOT(setValue(int)));
-    connect(ui->horizontalSlider_video_position, SIGNAL(rangeChanged(int, int)), taskbarProgress, SLOT(setRange(int, int)));
 #endif
     ui->comboBox_video_track->setEnabled(false);
     ui->comboBox_audio_track->setEnabled(false);
@@ -94,6 +141,49 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
         ui->comboBox_language->addItem(tr("<None>"), QStringLiteral("en"));
         ui->comboBox_language->setEnabled(false);
     }
+    ui->lineEdit_url->setText(SettingsManager::getInstance()->getUrl());
+    if (audioAvailable)
+    {
+        ui->checkBox_volume->setChecked(!SettingsManager::getInstance()->getMute());
+        ui->horizontalSlider_volume->setEnabled(ui->checkBox_volume->isChecked());
+        ui->horizontalSlider_volume->setValue(SettingsManager::getInstance()->getVolume());
+    }
+    ui->checkBox_autoStart->setChecked(SettingsManager::getInstance()->isAutoStart());
+    QStringList decoders = SettingsManager::getInstance()->getDecoders();
+    ui->checkBox_hwdec_cuda->setChecked(decoders.contains(QStringLiteral("CUDA")));
+    ui->checkBox_hwdec_d3d11->setChecked(decoders.contains(QStringLiteral("D3D11")));
+    ui->checkBox_hwdec_dxva->setChecked(decoders.contains(QStringLiteral("DXVA")));
+    bool hwdecEnabled = (ui->checkBox_hwdec_cuda->isChecked()
+            || ui->checkBox_hwdec_d3d11->isChecked()
+            || ui->checkBox_hwdec_dxva->isChecked())
+            && SettingsManager::getInstance()->getHwdec();
+    ui->checkBox_hwdec->setChecked(hwdecEnabled);
+    ui->checkBox_hwdec_cuda->setEnabled(hwdecEnabled);
+    ui->checkBox_hwdec_d3d11->setEnabled(hwdecEnabled);
+    ui->checkBox_hwdec_dxva->setEnabled(hwdecEnabled);
+    ui->radioButton_ratio_fitDesktop->setChecked(SettingsManager::getInstance()->getFitDesktop());
+    ui->radioButton_ratio_videoAspectRatio->setChecked(!ui->radioButton_ratio_fitDesktop->isChecked());
+    int i = ui->comboBox_subtitle_charset->findData(SettingsManager::getInstance()->getCharset());
+    ui->comboBox_subtitle_charset->setCurrentIndex(i > -1 ? i : 0);
+    ui->checkBox_subtitle_autoLoadExternal->setChecked(SettingsManager::getInstance()->getSubtitleAutoLoad());
+    ui->checkBox_displaySubtitle->setChecked(SettingsManager::getInstance()->getSubtitle());
+    ui->checkBox_audio_autoLoadExternal->setChecked(SettingsManager::getInstance()->getAudioAutoLoad());
+    i = ui->comboBox_skin->findData(SettingsManager::getInstance()->getSkin());
+    ui->comboBox_skin->setCurrentIndex(i > -1 ? i : 0);
+    i = ui->comboBox_language->findData(SettingsManager::getInstance()->getLanguage());
+    ui->comboBox_language->setCurrentIndex(i > -1 ? i : 0);
+    i = ui->comboBox_video_renderer->findData(SettingsManager::getInstance()->getRenderer());
+    ui->comboBox_video_renderer->setCurrentIndex(i > -1 ? i : 0);
+    i = ui->comboBox_image_quality->findData(SettingsManager::getInstance()->getImageQuality());
+    ui->comboBox_image_quality->setCurrentIndex(i > -1 ? i : 0);
+}
+
+void PreferencesDialog::initConnections()
+{
+#ifdef QT_HAS_WINEXTRAS
+    connect(ui->horizontalSlider_video_position, SIGNAL(valueChanged(int)), taskbarProgress, SLOT(setValue(int)));
+    connect(ui->horizontalSlider_video_position, SIGNAL(rangeChanged(int, int)), taskbarProgress, SLOT(setRange(int, int)));
+#endif
     connect(ui->pushButton_audio_open, &QPushButton::clicked,
         [=]
         {
@@ -490,89 +580,6 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
             if (!text.isEmpty())
                 ui->label_video_duration->setText(text);
         });
-    refreshUI();
-}
-
-PreferencesDialog::~PreferencesDialog()
-{
-    delete ui;
-}
-
-void PreferencesDialog::changeEvent(QEvent *event)
-{
-    if (event->type() == QEvent::WindowStateChange)
-        if (windowState() == Qt::WindowMaximized)
-            ui->pushButton_maximize->setIcon(QIcon(QStringLiteral(":/restore.ico")));
-        else
-            ui->pushButton_maximize->setIcon(QIcon(QStringLiteral(":/maximize.ico")));
-    FramelessWindow::changeEvent(event);
-}
-
-static bool canHandleDrop(const QDragEnterEvent *event)
-{
-    const QList<QUrl> urls = event->mimeData()->urls();
-    if (urls.empty()) return false;
-    QMimeDatabase mimeDatabase;
-    return SettingsManager::getInstance()->supportedMimeTypes().
-        contains(mimeDatabase.mimeTypeForUrl(urls.constFirst()).name());
-}
-
-void PreferencesDialog::dragEnterEvent(QDragEnterEvent *event)
-{
-    event->setAccepted(canHandleDrop(event));
-    FramelessWindow::dragEnterEvent(event);
-}
-
-void PreferencesDialog::dropEvent(QDropEvent *event)
-{
-    event->accept();
-    QUrl url = event->mimeData()->urls().constFirst();
-    QString path;
-    if (url.isLocalFile())
-        path = QDir::toNativeSeparators(url.toLocalFile());
-    else
-        path = url.url();
-    ui->lineEdit_url->setText(path);
-    FramelessWindow::dropEvent(event);
-}
-
-void PreferencesDialog::refreshUI()
-{
-    ui->lineEdit_url->setText(SettingsManager::getInstance()->getUrl());
-    if (audioAvailable)
-    {
-        ui->checkBox_volume->setChecked(!SettingsManager::getInstance()->getMute());
-        ui->horizontalSlider_volume->setEnabled(ui->checkBox_volume->isChecked());
-        ui->horizontalSlider_volume->setValue(SettingsManager::getInstance()->getVolume());
-    }
-    ui->checkBox_autoStart->setChecked(SettingsManager::getInstance()->isAutoStart());
-    QStringList decoders = SettingsManager::getInstance()->getDecoders();
-    ui->checkBox_hwdec_cuda->setChecked(decoders.contains(QStringLiteral("CUDA")));
-    ui->checkBox_hwdec_d3d11->setChecked(decoders.contains(QStringLiteral("D3D11")));
-    ui->checkBox_hwdec_dxva->setChecked(decoders.contains(QStringLiteral("DXVA")));
-    bool hwdecEnabled = (ui->checkBox_hwdec_cuda->isChecked()
-            || ui->checkBox_hwdec_d3d11->isChecked()
-            || ui->checkBox_hwdec_dxva->isChecked())
-            && SettingsManager::getInstance()->getHwdec();
-    ui->checkBox_hwdec->setChecked(hwdecEnabled);
-    ui->checkBox_hwdec_cuda->setEnabled(hwdecEnabled);
-    ui->checkBox_hwdec_d3d11->setEnabled(hwdecEnabled);
-    ui->checkBox_hwdec_dxva->setEnabled(hwdecEnabled);
-    ui->radioButton_ratio_fitDesktop->setChecked(SettingsManager::getInstance()->getFitDesktop());
-    ui->radioButton_ratio_videoAspectRatio->setChecked(!ui->radioButton_ratio_fitDesktop->isChecked());
-    int i = ui->comboBox_subtitle_charset->findData(SettingsManager::getInstance()->getCharset());
-    ui->comboBox_subtitle_charset->setCurrentIndex(i > -1 ? i : 0);
-    ui->checkBox_subtitle_autoLoadExternal->setChecked(SettingsManager::getInstance()->getSubtitleAutoLoad());
-    ui->checkBox_displaySubtitle->setChecked(SettingsManager::getInstance()->getSubtitle());
-    ui->checkBox_audio_autoLoadExternal->setChecked(SettingsManager::getInstance()->getAudioAutoLoad());
-    i = ui->comboBox_skin->findData(SettingsManager::getInstance()->getSkin());
-    ui->comboBox_skin->setCurrentIndex(i > -1 ? i : 0);
-    i = ui->comboBox_language->findData(SettingsManager::getInstance()->getLanguage());
-    ui->comboBox_language->setCurrentIndex(i > -1 ? i : 0);
-    i = ui->comboBox_video_renderer->findData(SettingsManager::getInstance()->getRenderer());
-    ui->comboBox_video_renderer->setCurrentIndex(i > -1 ? i : 0);
-    i = ui->comboBox_image_quality->findData(SettingsManager::getInstance()->getImageQuality());
-    ui->comboBox_image_quality->setCurrentIndex(i > -1 ? i : 0);
 }
 
 void PreferencesDialog::setDecoders()
@@ -591,8 +598,6 @@ void PreferencesDialog::setDecoders()
     decoders << QStringLiteral("FFmpeg");
     if (decoders != SettingsManager::getInstance()->getDecoders())
         SettingsManager::getInstance()->setDecoders(decoders);
-    if (ui->checkBox_hwdec->isChecked() != SettingsManager::getInstance()->getHwdec())
-        SettingsManager::getInstance()->setHwdec(ui->checkBox_hwdec->isChecked());
     if (isVisible() && isActiveWindow())
         QMessageBox::information(nullptr, QStringLiteral("Dynamic Desktop"), tr("Reopen this video or play another video to experience it.\nMake sure this application runs in your GPU's Optimus mode."));
 }
