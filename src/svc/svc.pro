@@ -2,7 +2,7 @@ isEmpty(ROOT): ROOT = $$PWD/../..
 include($$ROOT/version.pri)
 QMAKE_TARGET_PRODUCT     = Dynamic Desktop Service
 QMAKE_TARGET_DESCRIPTION = Dynamic Desktop Helper Service
-RC_ICONS                 = image/gear.ico
+RC_ICONS                 = images/gear.ico
 include($$ROOT/optimization.pri)
 TARGET = ddsvc
 BIN_DIR = $$ROOT/bin
