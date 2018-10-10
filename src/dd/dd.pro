@@ -1,5 +1,4 @@
-!win32: error("This project only supports Win32 platform!")
-isEmpty(ROOT): ROOT = $$PWD/..
+isEmpty(ROOT): ROOT = $$PWD/../..
 include($$ROOT/version.pri)
 include($$ROOT/optimization.pri)
 TARGET = dd
@@ -15,10 +14,13 @@ qtHaveModule(winextras) {
     DEFINES += QT_HAS_WINEXTRAS
 }
 TEMPLATE = app
-DEFINES += QT_DEPRECATED_WARNINGS QT_DISABLE_DEPRECATED_BEFORE=0x050603
+DEFINES += \
+    QT_DEPRECATED_WARNINGS \
+    QT_DISABLE_DEPRECATED_BEFORE=0x050603
 CONFIG *= c++11
-CONFIG -= app_bundle
-LIBS += -lUser32 -lDwmapi
+LIBS += \
+    -lUser32 \
+    -lDwmapi
 HEADERS += \
     forms/preferencesdialog.h \
     settingsmanager.h \
@@ -38,7 +40,8 @@ SOURCES += \
     utils.cpp \
     mainwindow.cpp \
     slider.cpp
-FORMS += forms/preferencesdialog.ui \
+FORMS += \
+    forms/preferencesdialog.ui \
     forms/aboutdialog.ui
 TRANSLATIONS += \
     translations/dd_en.ts \

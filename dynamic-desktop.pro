@@ -1,2 +1,6 @@
+!win32: error("This project only supports Win32 platform!")
 TEMPLATE = subdirs
-SUBDIRS += src/dd.pro
+CONFIG += ordered
+SUBDIRS += \
+    src/svc \
+    src/dd

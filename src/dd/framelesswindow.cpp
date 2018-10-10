@@ -1,4 +1,4 @@
-﻿#include "framelesswindow.h"
+#include "framelesswindow.h"
 
 #ifdef Q_OS_WIN
 #include <windows.h>
@@ -30,8 +30,6 @@ void FramelessWindow::setResizeable(bool resizeable)
         setWindowFlags(windowFlags() | Qt::WindowMaximizeButtonHint);
 //        setWindowFlag(Qt::WindowMaximizeButtonHint);
 
-        //此行代码可以带回Aero效果，同时也带回了标题栏和边框,在nativeEvent()会再次去掉标题栏
-        //
         //this line will get titlebar/thick frame/Aero back, which is exactly what we want
         //we will get rid of titlebar and thick frame again in nativeEvent() later
         auto hwnd = reinterpret_cast<HWND>(this->winId());
@@ -46,8 +44,6 @@ void FramelessWindow::setResizeable(bool resizeable)
         ::SetWindowLong(hwnd, GWL_STYLE, style & ~WS_MAXIMIZEBOX & ~WS_CAPTION);
     }
 
-    //保留一个像素的边框宽度，否则系统不会绘制边框阴影
-    //
     //we better left 1 piexl width of border untouch, so OS can draw nice shadow around it
     const MARGINS shadow = { 1, 1, 1, 1 };
     DwmExtendFrameIntoClientArea(HWND(winId()), &shadow);
@@ -165,7 +161,7 @@ bool FramelessWindow::nativeEvent(const QByteArray &eventType, void *message, lo
                 }
             }
         }
-        if (0!=*result) return true;
+        if (0 != *result) return true;
 
         //*result still equals 0, that means the cursor locate OUTSIDE the frame area
         //but it may locate in titlebar area

@@ -1,5 +1,6 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/7n23thxiormp6oar/branch/develop?svg=true)](https://ci.appveyor.com/project/wangwenx190/dynamic-desktop/branch/develop)
 [![Github All Releases](https://img.shields.io/github/downloads/wangwenx190/dynamic-desktop/total.svg)](https://github.com/wangwenx190/dynamic-desktop/releases/latest)
+[![Bugs](https://img.shields.io/github/issues/wangwenx190/dynamic-desktop/bug.svg)](https://github.com/wangwenx190/dynamic-desktop/issues?utf8=✓&q=is%3Aissue+is%3Aopen+label%3Abug)
 
 ## Overview
 A small tool that can play videos on your desktop. Only for Microsoft Windows 7 ~ 10(with GUI desktop). It may have some limitations because it's just a media player, putting it's window under your desktop icons. Maybe Wallpaper Engine's principle is totally different with this tool.
@@ -53,11 +54,12 @@ See [CONTRIBUTING.md](/CONTRIBUTING.md) for more information.
 
 ## Licenses
 - [**Wallpaper Engine**](https://store.steampowered.com/app/431960/Wallpaper_Engine/) from Steam gives me the original idea to make this tool. Thanks to WE's author(s)!
-- Main train of thought comes from https://github.com/ThomasHuai/Wallpaper , some codes are also copied from https://github.com/ThomasHuai/Wallpaper/blob/master/utils.cpp and https://github.com/ThomasHuai/Wallpaper/blob/master/wallpaper.cpp , thanks to [**ThomasHuai**](https://github.com/ThomasHuai)!
+- Main train of thought comes from https://github.com/ThomasHuai/Wallpaper , some code is also copied from https://github.com/ThomasHuai/Wallpaper/blob/master/utils.cpp and https://github.com/ThomasHuai/Wallpaper/blob/master/wallpaper.cpp , thanks to [**ThomasHuai**](https://github.com/ThomasHuai)!
 - Special thanks to [**wang bin**](https://github.com/wang-bin) for his awesome [QtAV](https://github.com/wang-bin/QtAV)!
-- Most frameless window codes are copied from https://github.com/Bringer-of-Light/Qt-Nice-Frameless-Window , thanks to [Bringer-of-Light](https://github.com/Bringer-of-Light)
-- Most style sheets of Preferences Dialog are copied from https://github.com/u8sand/Baka-MPlayer , thanks to [Daniel Clarke](https://github.com/u8sand)
-- [src/images/bee.ico](/src/images/bee.ico): downloaded from https://www.easyicon.net/
-- [src/images/minimize.ico](/src/images/minimize.ico), [src/images/maximize.ico](/src/images/maximize.ico), [src/images/restore.ico](/src/images/restore.ico), [src/images/close.ico](/src/images/close.ico): original svg files downloaded from http://www.iconfont.cn/ , and I converted them to ico files manually
-- [src/images/checked.ico](/src/images/checked.ico), [src/images/down-arrow.ico](/src/images/down-arrow.ico), [src/images/selected.ico](/src/images/selected.ico): original svg files copied from https://github.com/u8sand/Baka-MPlayer , and I converted them to ico files manually
+- Most frameless window code is copied from https://github.com/Bringer-of-Light/Qt-Nice-Frameless-Window , thanks to [Bringer-of-Light](https://github.com/Bringer-of-Light)
+- Most Windows Service code is copied from https://github.com/qtproject/qt-solutions , thanks to the Qt Company
+- Most style sheet code of Preferences Dialog is copied from https://github.com/u8sand/Baka-MPlayer , thanks to [Daniel Clarke](https://github.com/u8sand)
+- [src/dd/images/bee.ico](/src/dd/images/bee.ico): downloaded from https://www.easyicon.net/
+- [src/dd/images/minimize.ico](/src/dd/images/minimize.ico), [src/dd/images/maximize.ico](/src/dd/images/maximize.ico), [src/dd/images/restore.ico](/src/dd/images/restore.ico), [src/dd/images/close.ico](/src/dd/images/close.ico): original svg files downloaded from http://www.iconfont.cn/ , and I converted them to ico files manually
+- [src/dd/images/checked.ico](/src/dd/images/checked.ico), [src/dd/images/down-arrow.ico](/src/dd/images/down-arrow.ico), [src/dd/images/selected.ico](/src/dd/images/selected.ico): original svg files copied from https://github.com/u8sand/Baka-MPlayer , and I converted them to ico files manually
 - Dynamic Desktop: [GPLv3](/LICENSE.md)
