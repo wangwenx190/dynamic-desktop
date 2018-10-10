@@ -14,10 +14,5 @@ DEFINES += \
     DD_COMMIT_ID=\\\"$${DD_COMMIT_ID}\\\" \
     DD_COMMIT_TIME=\\\"$${DD_COMMIT_TIME}\\\" \
     FFMPEG_VERSION_STR=\\\"$${FFMPEG_VERSION_STR}\\\"
-win32 {
-    QMAKE_TARGET_PRODUCT     = Dynamic Desktop
-    QMAKE_TARGET_DESCRIPTION = A tool that make your desktop alive.
-    QMAKE_TARGET_COMPANY     = wangwenx190
-    QMAKE_TARGET_COPYRIGHT   = GPLv3
-    RC_ICONS                 = $$ROOT/src/dd/images/bee.ico
-}
+QMAKE_TARGET_COMPANY   = wangwenx190
+QMAKE_TARGET_COPYRIGHT = GPLv3

@@ -59,7 +59,7 @@ See [CONTRIBUTING.md](/CONTRIBUTING.md) for more information.
 - Most frameless window code is copied from https://github.com/Bringer-of-Light/Qt-Nice-Frameless-Window , thanks to [Bringer-of-Light](https://github.com/Bringer-of-Light)
 - Most Windows Service code is copied from https://github.com/qtproject/qt-solutions , thanks to the Qt Company
 - Most style sheet code of Preferences Dialog is copied from https://github.com/u8sand/Baka-MPlayer , thanks to [Daniel Clarke](https://github.com/u8sand)
-- [src/dd/images/bee.ico](/src/dd/images/bee.ico): downloaded from https://www.easyicon.net/
+- [src/dd/images/bee.ico](/src/dd/images/bee.ico), [src/svc/gear.ico](/src/svc/gear.ico): downloaded from https://www.easyicon.net/
 - [src/dd/images/minimize.ico](/src/dd/images/minimize.ico), [src/dd/images/maximize.ico](/src/dd/images/maximize.ico), [src/dd/images/restore.ico](/src/dd/images/restore.ico), [src/dd/images/close.ico](/src/dd/images/close.ico): original svg files downloaded from http://www.iconfont.cn/ , and I converted them to ico files manually
 - [src/dd/images/checked.ico](/src/dd/images/checked.ico), [src/dd/images/down-arrow.ico](/src/dd/images/down-arrow.ico), [src/dd/images/selected.ico](/src/dd/images/selected.ico): original svg files copied from https://github.com/u8sand/Baka-MPlayer , and I converted them to ico files manually
 - Dynamic Desktop: [GPLv3](/LICENSE.md)

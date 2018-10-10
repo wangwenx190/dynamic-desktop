@@ -1,5 +1,8 @@
 isEmpty(ROOT): ROOT = $$PWD/../..
 include($$ROOT/version.pri)
+QMAKE_TARGET_PRODUCT     = Dynamic Desktop
+QMAKE_TARGET_DESCRIPTION = A tool that make your desktop alive
+RC_ICONS                 = images/bee.ico
 include($$ROOT/optimization.pri)
 TARGET = dd
 BIN_DIR = $$ROOT/bin
