@@ -11,7 +11,7 @@ public:
 
 public:
     bool setAutoStart(bool enable = true);
-    bool isAutoStart();
+    bool isAutoStart(const QString &name = QStringLiteral("Dynamic Desktop Service"));
 
     QStringList defaultDecoders() const;
     QStringList supportedMimeTypes() const;

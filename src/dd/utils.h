@@ -15,10 +15,11 @@ namespace Utils
 
     HWND getProgman();
     HWND getWorkerW(bool legacyMode);
-    void Exit();
-    void Exit(int resultCode);
-    int ExitProgram(int resultCode);
+    void preExit();
+    void Exit(int resultCode = 0);
+    int ExitProgram(int resultCode = 0);
     void fileLogger(QtMsgType type, const QMessageLogContext &context, const QString &msg);
     QStringList externalFilesToLoad(const QFileInfo &originalMediaFile, const QString &fileType);
     void moveToCenter(QWidget *window);
+    bool adminRun(const QString &path, const QString &params);
 }

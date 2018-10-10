@@ -387,7 +387,7 @@
         <translation>“%0”不是一个有效的网址。</translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="602"/>
+        <location filename="../forms/preferencesdialog.cpp" line="603"/>
         <source>Reopen this video or play another video to experience it.
 Make sure this application runs in your GPU&apos;s Optimus mode.</source>
         <translation>重新打开这个视频或播放另一个视频来体验此项改变。

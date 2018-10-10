@@ -40,7 +40,7 @@ HWND getWorkerW(bool legacyMode)
 
 void Exit(int resultCode)
 {
-    Exit();
+    preExit();
     exit(resultCode);
 }
 
@@ -131,7 +131,7 @@ void moveToCenter(QWidget *window)
     window->move(newX, newY);
 }
 
-void Exit()
+void preExit()
 {
     if (mutex != nullptr)
     {
@@ -144,8 +144,22 @@ void Exit()
 
 int ExitProgram(int resultCode)
 {
-    Exit();
+    preExit();
     return resultCode;
+}
+
+bool adminRun(const QString &path, const QString &params)
+{
+    if (path.isEmpty())
+        return false;
+    if (!QFileInfo::exists(path))
+        return false;
+    SHELLEXECUTEINFO execInfo{ sizeof(SHELLEXECUTEINFO) };
+    execInfo.lpVerb = TEXT("runas");
+    execInfo.lpFile = reinterpret_cast<const wchar_t *>(QDir::toNativeSeparators(path).utf16());
+    execInfo.nShow = SW_HIDE;
+    execInfo.lpParameters = params.isEmpty() ? nullptr : reinterpret_cast<const wchar_t *>(params.utf16());
+    return ShellExecuteEx(&execInfo);
 }
 
 }

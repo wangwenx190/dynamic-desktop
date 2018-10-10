@@ -1,4 +1,4 @@
-#include "qtservice.h"
+#include <qtservice.h>
 
 #include <Windows.h>
 #include <wtsapi32.h>
@@ -41,7 +41,7 @@ void DDSvc::start()
     if ((mutex != nullptr) && (GetLastError() == ERROR_ALREADY_EXISTS))
     {
         ReleaseMutex(mutex);
-        return;
+        qApp->quit();
     }
     ReleaseMutex(mutex);
     CloseHandle(mutex);
@@ -70,9 +70,13 @@ bool DDSvc::launchSession1Process(const QString &path)
     LPVOID lpEnvironment = nullptr;
     if (CreateEnvironmentBlock(&lpEnvironment, hDuplicatedToken, FALSE) == FALSE)
         return false;
-    if (CreateProcessAsUser(hDuplicatedToken, reinterpret_cast<const wchar_t *>(path.utf16()), nullptr, nullptr, nullptr, FALSE,
+    if (CreateProcessAsUser(hDuplicatedToken,
+                            reinterpret_cast<const wchar_t *>(path.utf16()),
+                            nullptr, nullptr, nullptr, FALSE,
                             NORMAL_PRIORITY_CLASS | CREATE_NEW_CONSOLE | CREATE_UNICODE_ENVIRONMENT,
-                            lpEnvironment, reinterpret_cast<const wchar_t *>(dir.utf16()), &si, &pi) == FALSE)
+                            lpEnvironment,
+                            reinterpret_cast<const wchar_t *>(dir.utf16()),
+                            &si, &pi) == FALSE)
         return false;
     CloseHandle(pi.hProcess);
     CloseHandle(pi.hThread);

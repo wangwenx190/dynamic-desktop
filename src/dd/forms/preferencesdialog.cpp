@@ -514,6 +514,7 @@ void PreferencesDialog::initConnections()
                 SettingsManager::getInstance()->setAutoStart(true);
             else if (!ui->checkBox_autoStart->isChecked() && SettingsManager::getInstance()->isAutoStart())
                 SettingsManager::getInstance()->setAutoStart(false);
+            ui->checkBox_autoStart->setChecked(SettingsManager::getInstance()->isAutoStart());
         });
     connect(ui->radioButton_ratio_fitDesktop, &QRadioButton::clicked,
         [=]

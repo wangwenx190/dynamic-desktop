@@ -1,4 +1,5 @@
 #include "settingsmanager.h"
+#include "utils.h"
 
 #include <QDir>
 #include <QUrl>
@@ -6,33 +7,38 @@
 #include <QMimeDatabase>
 #include <QCoreApplication>
 
+#include <qtservice.h>
+
 SettingsManager *SettingsManager::getInstance()
 {
     static SettingsManager settingsManager;
     return &settingsManager;
 }
 
-bool SettingsManager::isAutoStart()
+bool SettingsManager::isAutoStart(const QString &name)
 {
-    const QString key = QStringLiteral("HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run");
-    QSettings set(key, QSettings::NativeFormat);
-    return set.contains(QStringLiteral("Dynamic Desktop"));
+    QString serviceName = name.isEmpty() ? QCoreApplication::applicationName() : name;
+    QtServiceController controller(serviceName);
+    return controller.isInstalled();
 }
 
 bool SettingsManager::setAutoStart(bool enable)
 {
-    const QString key = QStringLiteral("HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run");
-    QSettings set(key, QSettings::NativeFormat);
-    if (set.status() != QSettings::NoError)
+    QString servicePath = QCoreApplication::applicationDirPath() + QStringLiteral("/ddsvc");
+#ifdef WIN64
+    servicePath += QStringLiteral("64");
+#endif
+#ifdef _DEBUG
+    servicePath += QStringLiteral("d");
+#endif
+    servicePath += QStringLiteral(".exe");
+    if (!QFileInfo::exists(servicePath))
         return false;
     if (enable && !isAutoStart())
-    {
-        QString value = QLatin1Char('"') + QCoreApplication::applicationFilePath() + QLatin1Char('"');
-        set.setValue(QStringLiteral("Dynamic Desktop"), QDir::toNativeSeparators(value));
-    }
+        return Utils::adminRun(QDir::toNativeSeparators(servicePath), QStringLiteral("-i"));
     else if (!enable && isAutoStart())
-        set.remove(QStringLiteral("Dynamic Desktop"));
-    return true;
+        return Utils::adminRun(QDir::toNativeSeparators(servicePath), QStringLiteral("-u"));
+    return false;
 }
 
 QStringList SettingsManager::defaultDecoders() const

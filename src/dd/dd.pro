@@ -23,7 +23,9 @@ DEFINES += \
 CONFIG *= c++11
 LIBS += \
     -lUser32 \
-    -lDwmapi
+    -lDwmapi \
+    -lAdvAPI32
+include(../3rdparty/qtservice/qtservice.pri)
 HEADERS += \
     forms/preferencesdialog.h \
     settingsmanager.h \

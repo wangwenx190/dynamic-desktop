@@ -2,7 +2,7 @@ isEmpty(ROOT): ROOT = $$PWD/../..
 include($$ROOT/version.pri)
 QMAKE_TARGET_PRODUCT     = Dynamic Desktop Service
 QMAKE_TARGET_DESCRIPTION = Dynamic Desktop Helper Service
-RC_ICONS                 = gear.ico
+RC_ICONS                 = image/gear.ico
 include($$ROOT/optimization.pri)
 TARGET = ddsvc
 BIN_DIR = $$ROOT/bin
@@ -17,14 +17,9 @@ DEFINES += \
     QT_DISABLE_DEPRECATED_BEFORE=0x050603
 CONFIG *= c++11
 CONFIG += console
-LIBS += -lUser32 -lWtsapi32 -lAdvapi32 -lUserenv
-HEADERS += \
-    qtservice.h \
-    qtservice_p.h
-SOURCES += \
-    main.cpp \
-    qtservice.cpp \
-    qtservice_win.cpp
+LIBS += -lUser32 -lWtsapi32 -lAdvAPI32 -lUserenv
+include(../3rdparty/qtservice/qtservice.pri)
+SOURCES += main.cpp
 target.path = $$BIN_DIR
 INSTALLS += target
 !CONFIG(static_dd) {

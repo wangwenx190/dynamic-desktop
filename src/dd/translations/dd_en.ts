@@ -387,7 +387,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="602"/>
+        <location filename="../forms/preferencesdialog.cpp" line="603"/>
         <source>Reopen this video or play another video to experience it.
 Make sure this application runs in your GPU&apos;s Optimus mode.</source>
         <translation type="unfinished"></translation>
