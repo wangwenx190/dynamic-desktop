@@ -1,0 +1,167 @@
+/*
+Skin: Rose Quartz & Serenity
+PantoneCode: 13-1520 15-3919 (13-3820)
+Author: Yuriko
+Date: 2018/10/9
+
+隆重介绍！水晶粉与宁静蓝
+追求正念与幸福以做为现代生活压力的解药之时，能在心理上满足对安心与安全渴望的友善色彩变得愈加重要。
+将水晶粉与宁静蓝结合，在温暖亲和的玫瑰色调与冷静安详的蓝色之间显现一种固有的平衡，反映出连结、幸福，还有一种秩序与和平的抚慰感觉
+
+*/
+QWidget {
+	font-family: 12px "Noto Sans", "FreeSans";
+	background: rgb(247, 202, 201);
+	color: rgb(131, 70, 85);
+}
+
+QPushButton {
+	background: rgb(145, 168, 208);
+	border: 1px solid #000;
+	border-radius: 2px;
+	color: whitesmoke;
+	min-width: 76px;
+	min-height: 17px;
+	padding: 4px 6px;
+}
+
+QPushButton:focus {
+	border: 1px solid rgb(145, 168, 208);
+	outline: none;
+}
+
+QPushButton:pressed {
+	background: rgb(210, 196, 214);
+}
+
+QPushButton:disabled {
+	background: transparent;
+	border: 1px solid #454A4D;
+	color: #6F6F6F;
+}
+
+QPushButton#pushButton_minimize {
+	background: none;
+	border: 0px;
+	border-radius: 0px;
+	color: none;
+	min-width: 8px;
+	min-height: 8px;
+}
+
+QPushButton#pushButton_maximize {
+	background: none;
+	border: 0px;
+	border-radius: 0px;
+	color: none;
+	min-width: 8px;
+	min-height: 8px;
+}
+
+QPushButton#pushButton_close {
+	background: none;
+	border: 0px;
+	border-radius: 0px;
+	color: none;
+	min-width: 8px;
+	min-height: 8px;
+}
+
+QSlider::groove:horizontal {
+	background: rgb(210, 196, 214);
+	height: 1px;
+}
+
+QSlider::sub-page:horizontal {
+	background: rgb(145, 168, 208);
+}
+
+QSlider::handle:horizontal {
+	background: whitesmoke;
+	border: 2px solid #1A1A1A;
+	border-radius: 7px;
+	margin: -7px 0;
+	width: 12px;
+}
+
+QCheckBox::indicator {
+	width: 11px;
+	height: 11px;
+	border: 1px solid rgb(145, 168, 208);
+	border-radius: 2px;
+}
+
+QCheckBox::indicator:unchecked {
+	border: 1px solid rgb(131, 70, 85);
+	background: rgb(210, 196, 214);
+	image: none;
+}
+
+QCheckBox::indicator:checked {
+	border: 1px solid rgb(145, 168, 208);
+	background: rgb(145, 168, 208);
+	image: url(:/checked.ico);
+}
+
+QLineEdit {
+	background: rgb(210, 196, 214);
+	border: 1px solid #454A4D;
+	padding: 2px;
+}
+
+QLineEdit:focus {
+	border: 1px solid rgb(145, 168, 208);
+}
+
+QComboBox {
+	background: rgb(210, 196, 214);
+	border: 1px solid #000;
+	border-radius: 2px;
+	padding: 2px;
+}
+
+QComboBox:focus {
+	border: 1px solid rgb(145, 168, 208);
+}
+
+QComboBox::drop-down {
+	background: rgb(145, 168, 208);
+	border-top-right-radius: 2px;
+	border-bottom-right-radius: 2px;
+}
+
+QComboBox::down-arrow {
+	image: url(:/down-arrow.ico);
+}
+
+QGroupBox {
+	border: 1px solid #454A4D;
+	border-radius: 2px;
+	margin-top: 0.5em;
+}
+
+QGroupBox::title {
+	subcontrol-origin: margin;
+	subcontrol-position: top center;
+	background: rgb(210, 196, 214);
+	border: 1px solid #454A4D;
+	border-radius: 2px;
+	padding: 0 2px;
+}
+
+QRadioButton::indicator {
+	width: 6px;
+	height: 6px;
+	border-radius: 5px;
+	padding: 2px;
+}
+
+QRadioButton::indicator:unchecked {
+	border: 1px solid rgb(131, 70, 85);
+	image: none;
+}
+
+QRadioButton::indicator:checked {
+	border: 1px solid rgb(145, 168, 208);
+	image: url(:/selected.ico);
+}

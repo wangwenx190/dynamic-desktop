@@ -26,6 +26,11 @@ MainWindow::~MainWindow()
     delete aboutDialog;
     delete preferencesDialog;
     delete trayIcon;
+    delete trayMenu;
+    delete subtitle;
+    delete renderer;
+    delete player;
+    delete mainLayout;
 }
 
 void MainWindow::init()

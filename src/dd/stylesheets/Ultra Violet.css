@@ -1,0 +1,167 @@
+/*
+Skin: Ultra Violet
+PantoneCode: 18-3838 (17-3313)
+Author: Yuriko
+Date: 2018/10/9
+
+紫外光照亮了通往未来的道路！
+一个强烈挑动思绪与深思的紫色调! 紫外光传达独创性、创造力和前瞻性的思维，为我们指向未来。
+复杂和沉思，紫外光暗示了宇宙的神秘，以及我们未知的世界。广袤无垠的夜空象征着无限的可能，并继续激励着我们追求一个超越我们自己世界的渴望。
+
+*/
+QWidget {
+	font-family: 12px "Noto Sans", "FreeSans";
+	background: rgb(95, 75, 139);
+	color: whitesmoke;
+}
+
+QPushButton {
+	background: rgb(161, 117, 156);
+	border: 1px solid #000;
+	border-radius: 2px;
+	color: whitesmoke;
+	min-width: 76px;
+	min-height: 17px;
+	padding: 4px 6px;
+}
+
+QPushButton:focus {
+	border: 1px solid rgb(161, 117, 156);
+	outline: none;
+}
+
+QPushButton:pressed {
+	background: rgb(118, 123, 165);
+}
+
+QPushButton:disabled {
+	background: transparent;
+	border: 1px solid #454A4D;
+	color: #6F6F6F;
+}
+
+QPushButton#pushButton_minimize {
+	background: none;
+	border: 0px;
+	border-radius: 0px;
+	color: none;
+	min-width: 8px;
+	min-height: 8px;
+}
+
+QPushButton#pushButton_maximize {
+	background: none;
+	border: 0px;
+	border-radius: 0px;
+	color: none;
+	min-width: 8px;
+	min-height: 8px;
+}
+
+QPushButton#pushButton_close {
+	background: none;
+	border: 0px;
+	border-radius: 0px;
+	color: none;
+	min-width: 8px;
+	min-height: 8px;
+}
+
+QSlider::groove:horizontal {
+	background: rgb(118, 123, 165);
+	height: 1px;
+}
+
+QSlider::sub-page:horizontal {
+	background: rgb(161, 117, 156);
+}
+
+QSlider::handle:horizontal {
+	background: whitesmoke;
+	border: 2px solid #1A1A1A;
+	border-radius: 7px;
+	margin: -7px 0;
+	width: 12px;
+}
+
+QCheckBox::indicator {
+	width: 11px;
+	height: 11px;
+	border: 1px solid rgb(161, 117, 156);
+	border-radius: 2px;
+}
+
+QCheckBox::indicator:unchecked {
+	border: 1px solid whitesmoke;
+	background: rgb(118, 123, 165);
+	image: none;
+}
+
+QCheckBox::indicator:checked {
+	border: 1px solid rgb(161, 117, 156);
+	background: rgb(161, 117, 156);
+	image: url(:/checked.ico);
+}
+
+QLineEdit {
+	background: rgb(118, 123, 165);
+	border: 1px solid #454A4D;
+	padding: 2px;
+}
+
+QLineEdit:focus {
+	border: 1px solid rgb(161, 117, 156);
+}
+
+QComboBox {
+	background: rgb(118, 123, 165);
+	border: 1px solid #000;
+	border-radius: 2px;
+	padding: 2px;
+}
+
+QComboBox:focus {
+	border: 1px solid rgb(161, 117, 156);
+}
+
+QComboBox::drop-down {
+	background: rgb(161, 117, 156);
+	border-top-right-radius: 2px;
+	border-bottom-right-radius: 2px;
+}
+
+QComboBox::down-arrow {
+	image: url(:/down-arrow.ico);
+}
+
+QGroupBox {
+	border: 1px solid #454A4D;
+	border-radius: 2px;
+	margin-top: 0.5em;
+}
+
+QGroupBox::title {
+	subcontrol-origin: margin;
+	subcontrol-position: top center;
+	background: rgb(118, 123, 165);
+	border: 1px solid #454A4D;
+	border-radius: 2px;
+	padding: 0 2px;
+}
+
+QRadioButton::indicator {
+	width: 6px;
+	height: 6px;
+	border-radius: 5px;
+	padding: 2px;
+}
+
+QRadioButton::indicator:unchecked {
+	border: 1px solid whitesmoke;
+	image: none;
+}
+
+QRadioButton::indicator:checked {
+	border: 1px solid rgb(161, 117, 156);
+	image: url(:/selected.ico);
+}

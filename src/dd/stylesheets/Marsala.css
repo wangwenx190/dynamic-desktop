@@ -1,0 +1,167 @@
+/*
+Skin: Marsala
+PantoneCode: 18-1438 (15-1242 14-1122)
+Author: Yuriko
+Date: 2018/10/10
+
+一种自然有劲与质朴的酒红色。玛萨拉酒红丰富我们的精神、肉体与灵魂。
+玛萨拉酒红的名称来自玛萨拉这种成分加烈的葡萄酒，这个极具风味的色调正如其名，
+体现了一顿圆满餐饮的丰足感，它的红褐底色则散发出一种自然成熟的朴实感。
+
+*/
+QWidget {
+	font-family: 12px "Noto Sans", "FreeSans";
+	background: rgb(150, 79, 76);
+	color: whitesmoke;
+}
+
+QPushButton {
+	background: rgb(218, 181, 143);
+	border: 1px solid #000;
+	border-radius: 2px;
+	color: rgb(236, 14, 101);
+	min-width: 76px;
+	min-height: 17px;
+	padding: 4px 6px;
+}
+
+QPushButton:focus {
+	border: 1px solid rgb(218, 181, 143);
+	outline: none;
+}
+
+QPushButton:pressed {
+	background: rgb(236, 147, 94);
+}
+
+QPushButton:disabled {
+	background: transparent;
+	border: 1px solid #454A4D;
+	color: #6F6F6F;
+}
+
+QPushButton#pushButton_minimize {
+	background: none;
+	border: 0px;
+	border-radius: 0px;
+	color: none;
+	min-width: 8px;
+	min-height: 8px;
+}
+
+QPushButton#pushButton_maximize {
+	background: none;
+	border: 0px;
+	border-radius: 0px;
+	color: none;
+	min-width: 8px;
+	min-height: 8px;
+}
+
+QPushButton#pushButton_close {
+	background: none;
+	border: 0px;
+	border-radius: 0px;
+	color: none;
+	min-width: 8px;
+	min-height: 8px;
+}
+
+QSlider::groove:horizontal {
+	background: rgb(236, 147, 94);
+	height: 1px;
+}
+
+QSlider::sub-page:horizontal {
+	background: rgb(218, 181, 143);
+}
+
+QSlider::handle:horizontal {
+	background: whitesmoke;
+	border: 2px solid #1A1A1A;
+	border-radius: 7px;
+	margin: -7px 0;
+	width: 12px;
+}
+
+QCheckBox::indicator {
+	width: 11px;
+	height: 11px;
+	border: 1px solid rgb(218, 181, 143);
+	border-radius: 2px;
+}
+
+QCheckBox::indicator:unchecked {
+	border: 1px solid whitesmoke;
+	background: rgb(236, 147, 94);
+	image: none;
+}
+
+QCheckBox::indicator:checked {
+	border: 1px solid rgb(218, 181, 143);
+	background: rgb(218, 181, 143);
+	image: url(:/checked.ico);
+}
+
+QLineEdit {
+	background: rgb(236, 147, 94);
+	border: 1px solid #454A4D;
+	padding: 2px;
+}
+
+QLineEdit:focus {
+	border: 1px solid rgb(218, 181, 143);
+}
+
+QComboBox {
+	background: rgb(236, 147, 94);
+	border: 1px solid #000;
+	border-radius: 2px;
+	padding: 2px;
+}
+
+QComboBox:focus {
+	border: 1px solid rgb(218, 181, 143);
+}
+
+QComboBox::drop-down {
+	background: rgb(218, 181, 143);
+	border-top-right-radius: 2px;
+	border-bottom-right-radius: 2px;
+}
+
+QComboBox::down-arrow {
+	image: url(:/down-arrow.ico);
+}
+
+QGroupBox {
+	border: 1px solid #454A4D;
+	border-radius: 2px;
+	margin-top: 0.5em;
+}
+
+QGroupBox::title {
+	subcontrol-origin: margin;
+	subcontrol-position: top center;
+	background: rgb(236, 147, 94);
+	border: 1px solid #454A4D;
+	border-radius: 2px;
+	padding: 0 2px;
+}
+
+QRadioButton::indicator {
+	width: 6px;
+	height: 6px;
+	border-radius: 5px;
+	padding: 2px;
+}
+
+QRadioButton::indicator:unchecked {
+	border: 1px solid whitesmoke;
+	image: none;
+}
+
+QRadioButton::indicator:checked {
+	border: 1px solid rgb(218, 181, 143);
+	image: url(:/selected.ico);
+}

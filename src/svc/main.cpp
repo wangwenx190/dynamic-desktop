@@ -38,15 +38,15 @@ void DDSvc::start()
 #endif
     path += QStringLiteral(".exe");
     HANDLE mutex = CreateMutex(nullptr, FALSE, TEXT(DD_MUTEX));
-    if ((mutex != nullptr) && (GetLastError() == ERROR_ALREADY_EXISTS))
+    if ((mutex == nullptr) || (GetLastError() != ERROR_ALREADY_EXISTS))
     {
         ReleaseMutex(mutex);
-        qApp->quit();
+        CloseHandle(mutex);
+        if (QFileInfo::exists(path))
+            launchSession1Process(QDir::toNativeSeparators(path));
     }
-    ReleaseMutex(mutex);
-    CloseHandle(mutex);
-    if (QFileInfo::exists(path))
-        launchSession1Process(QDir::toNativeSeparators(path));
+    else
+        ReleaseMutex(mutex);
     qApp->quit();
 }
 
