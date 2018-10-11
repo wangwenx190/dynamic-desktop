@@ -39,5 +39,31 @@
         <source>Close</source>
         <translation>关闭</translation>
     </message>
+    <message>
+        <source>Save File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Archive (*.7z);;All files (*)</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>QObject</name>
+    <message>
+        <source>Dynamic Desktop Updater</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>main</name>
+    <message>
+        <source>Start checking update.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Check update without showing any window. But if there is any new version, the main window will show.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 </TS>

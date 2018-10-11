@@ -176,17 +176,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="96"/>
+        <location filename="../forms/preferencesdialog.cpp" line="98"/>
         <source>Default</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="94"/>
+        <location filename="../forms/preferencesdialog.cpp" line="96"/>
         <source>Best</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="95"/>
+        <location filename="../forms/preferencesdialog.cpp" line="97"/>
         <source>Fastest</source>
         <translation type="unfinished"></translation>
     </message>
@@ -227,7 +227,7 @@
     </message>
     <message>
         <location filename="../forms/preferencesdialog.ui" line="323"/>
-        <location filename="../forms/preferencesdialog.cpp" line="401"/>
+        <location filename="../forms/preferencesdialog.cpp" line="403"/>
         <source>URL</source>
         <translation type="unfinished"></translation>
     </message>
@@ -329,86 +329,86 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="191"/>
+        <location filename="../forms/preferencesdialog.cpp" line="193"/>
         <source>Please select an audio file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="191"/>
+        <location filename="../forms/preferencesdialog.cpp" line="193"/>
         <source>Audios (*.mka *.aac *.flac *.mp3 *.wav);;All files (*)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="198"/>
+        <location filename="../forms/preferencesdialog.cpp" line="200"/>
         <source>Please select a subtitle file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="221"/>
-        <location filename="../forms/preferencesdialog.cpp" line="244"/>
-        <location filename="../forms/preferencesdialog.cpp" line="269"/>
+        <location filename="../forms/preferencesdialog.cpp" line="223"/>
+        <location filename="../forms/preferencesdialog.cpp" line="246"/>
+        <location filename="../forms/preferencesdialog.cpp" line="271"/>
         <source>ID: %0 | Title: %1 | Language: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="276"/>
+        <location filename="../forms/preferencesdialog.cpp" line="278"/>
         <source>File: %0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="102"/>
-        <location filename="../forms/preferencesdialog.cpp" line="142"/>
+        <location filename="../forms/preferencesdialog.cpp" line="104"/>
+        <location filename="../forms/preferencesdialog.cpp" line="144"/>
         <source>&lt;None&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="137"/>
+        <location filename="../forms/preferencesdialog.cpp" line="139"/>
         <source>Auto</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="198"/>
+        <location filename="../forms/preferencesdialog.cpp" line="200"/>
         <source>Subtitles (*.ass *.ssa *.srt *.sub);;All files (*)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="393"/>
+        <location filename="../forms/preferencesdialog.cpp" line="395"/>
         <source>Please select a media file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="393"/>
+        <location filename="../forms/preferencesdialog.cpp" line="395"/>
         <source>Videos (*.avi *.mp4 *.mkv *.flv);;Audios (*.mp3 *.flac *.ape *.wav);;Pictures (*.bmp *.jpg *.jpeg *.png *.gif);;All files (*)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="401"/>
+        <location filename="../forms/preferencesdialog.cpp" line="403"/>
         <source>Please input a valid URL</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="413"/>
+        <location filename="../forms/preferencesdialog.cpp" line="415"/>
         <source>&quot;%0&quot; is not a valid URL.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="609"/>
+        <location filename="../forms/preferencesdialog.cpp" line="611"/>
         <source>Reopen this video or play another video to experience it.
 Make sure this application runs in your GPU&apos;s Optimus mode.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="440"/>
+        <location filename="../forms/preferencesdialog.cpp" line="442"/>
         <source>Auto detect</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="441"/>
+        <location filename="../forms/preferencesdialog.cpp" line="443"/>
         <source>System</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="461"/>
+        <location filename="../forms/preferencesdialog.cpp" line="463"/>
         <source>You have changed the UI translation. Application restart is needed.</source>
         <translation type="unfinished"></translation>
     </message>

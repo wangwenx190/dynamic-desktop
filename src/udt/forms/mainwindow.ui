@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>348</width>
+    <width>444</width>
     <height>206</height>
    </rect>
   </property>
@@ -151,8 +151,17 @@
    </item>
    <item>
     <widget class="QProgressBar" name="progressBar">
+     <property name="maximum">
+      <number>99</number>
+     </property>
      <property name="value">
-      <number>24</number>
+      <number>0</number>
+     </property>
+     <property name="textVisible">
+      <bool>true</bool>
+     </property>
+     <property name="textDirection">
+      <enum>QProgressBar::TopToBottom</enum>
      </property>
     </widget>
    </item>

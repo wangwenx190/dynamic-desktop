@@ -35,13 +35,13 @@ int main(int argc, char *argv[])
 #ifndef _DEBUG
     qInstallMessageHandler(Utils::fileLogger);
 #endif
-    QTranslator translator;
 #ifdef BUILD_DD_STATIC
     QString qmDir = QStringLiteral(":/i18n");
 #else
     QString qmDir = QLibraryInfo::location(QLibraryInfo::TranslationsPath);
 #endif
     QString language = SettingsManager::getInstance()->getLanguage();
+    QTranslator translator;
     if (language == QStringLiteral("auto"))
     {
         if (translator.load(QLocale(), QStringLiteral("dd"), QStringLiteral("_"), qmDir))

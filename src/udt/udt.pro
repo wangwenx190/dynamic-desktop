@@ -13,12 +13,23 @@ contains(QT_ARCH, x86_64) {
 CONFIG(debug, debug|release): TARGET = $$join(TARGET,,,d)
 TEMPLATE = app
 QT *= gui widgets network
+qtHaveModule(winextras) {
+    QT *= winextras
+    DEFINES *= QT_HAS_WINEXTRAS
+}
 DEFINES *= \
     QT_DEPRECATED_WARNINGS \
     QT_DISABLE_DEPRECATED_BEFORE=0x050603
 CONFIG *= c++11
-SOURCES += main.cpp \
-    forms/mainwindow.cpp
+HEADERS += \
+    forms/mainwindow.h \
+    downloadmanager.h
+SOURCES += \
+    main.cpp \
+    forms/mainwindow.cpp \
+    downloadmanager.cpp
+FORMS += \
+    forms/mainwindow.ui
 TRANSLATIONS += \
     translations/udt_en.ts \
     translations/udt_zh_CN.ts
@@ -52,9 +63,3 @@ CONFIG(static_dd) {
     }
     INSTALLS *= libs translations
 }
-
-FORMS += \
-    forms/mainwindow.ui
-
-HEADERS += \
-    forms/mainwindow.h

@@ -39,6 +39,8 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
 PreferencesDialog::~PreferencesDialog()
 {
     delete ui;
+    delete taskbarButton;
+    delete taskbarProgress;
 }
 
 void PreferencesDialog::changeEvent(QEvent *event)
