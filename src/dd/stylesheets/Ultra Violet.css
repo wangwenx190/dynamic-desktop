@@ -100,7 +100,7 @@ QCheckBox::indicator:unchecked {
 QCheckBox::indicator:checked {
 	border: 1px solid rgb(161, 117, 156);
 	background: rgb(161, 117, 156);
-	image: url(:/checked.ico);
+	image: url(:/images/checked.ico);
 }
 
 QLineEdit {
@@ -131,7 +131,7 @@ QComboBox::drop-down {
 }
 
 QComboBox::down-arrow {
-	image: url(:/down-arrow.ico);
+	image: url(:/images/down-arrow.ico);
 }
 
 QGroupBox {
@@ -163,5 +163,5 @@ QRadioButton::indicator:unchecked {
 
 QRadioButton::indicator:checked {
 	border: 1px solid rgb(161, 117, 156);
-	image: url(:/selected.ico);
+	image: url(:/images/selected.ico);
 }
