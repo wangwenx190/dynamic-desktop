@@ -11,17 +11,17 @@ contains(QT_ARCH, x86_64) {
     TARGET = $$join(TARGET,,,64)
 }
 CONFIG(debug, debug|release): TARGET = $$join(TARGET,,,d)
-QT += gui widgets av avwidgets concurrent
+QT *= gui widgets av avwidgets concurrent
 qtHaveModule(winextras) {
-    QT += winextras
-    DEFINES += QT_HAS_WINEXTRAS
+    QT *= winextras
+    DEFINES *= QT_HAS_WINEXTRAS
 }
 TEMPLATE = app
-DEFINES += \
+DEFINES *= \
     QT_DEPRECATED_WARNINGS \
     QT_DISABLE_DEPRECATED_BEFORE=0x050603
 CONFIG *= c++11
-LIBS += \
+LIBS *= \
     -lUser32 \
     -lDwmapi \
     -lAdvAPI32
@@ -61,9 +61,9 @@ exists("$${lupdate}") {
     system("$${lrelease} $${lrelease_params} $${_PRO_FILE_}")
 }
 target.path = $$BIN_DIR
-INSTALLS += target
+INSTALLS *= target
 CONFIG(static_dd) {
-    DEFINES += BUILD_DD_STATIC
+    DEFINES *= BUILD_DD_STATIC
     RESOURCES += \
         i18n.qrc \
         skins.qrc
@@ -99,5 +99,5 @@ CONFIG(static_dd) {
         libs.commands = $$quote(\"$${windeployqt}\" --plugindir \"$${BIN_DIR}/plugins\" --force --no-translations --compiler-runtime --angle --no-opengl-sw -opengl --no-svg --list source \"$${BIN_DIR}/$${TARGET}.exe\")
         libs.commands = $$join(libs.commands, $$escape_expand(\\n\\t))
     }
-    INSTALLS += libs translations skins
+    INSTALLS *= libs translations skins
 }

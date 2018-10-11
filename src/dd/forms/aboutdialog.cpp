@@ -2,7 +2,6 @@
 #include "ui_aboutdialog.h"
 
 #include <QtAV>
-#include <QSysInfo>
 #include <QDesktopServices>
 #include <QUrl>
 #include <QCoreApplication>
@@ -29,7 +28,12 @@ AboutDialog::AboutDialog(QWidget *parent) :
     compiler = QStringLiteral("Unknown");
 #endif
     ui->lineEdit_compiler->setText(compiler);
-    ui->lineEdit_arch->setText(QSysInfo::buildCpuArchitecture());
+#ifdef WIN64
+    const QString arch = QStringLiteral("x64");
+#else
+    const QString arch = QStringLiteral("x86");
+#endif
+    ui->lineEdit_arch->setText(arch);
     ui->lineEdit_build_time->setText(QStringLiteral("%0 %1").arg(QStringLiteral(__DATE__)).arg(QStringLiteral(__TIME__)));
     connect(ui->pushButton_aboutQt, &QPushButton::clicked,
         [=]

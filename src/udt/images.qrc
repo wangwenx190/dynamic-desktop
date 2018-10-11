@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/images">
+        <file alias="refresh.ico">images/refresh.ico</file>
+    </qresource>
+</RCC>

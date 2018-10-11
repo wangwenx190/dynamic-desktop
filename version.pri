@@ -5,7 +5,7 @@ exists($$ROOT/version_ci.pri) {
     DD_VERSION         = 1.0.0
     DD_COMMIT_ID       = -
     DD_COMMIT_TIME     = -
-    FFMPEG_VERSION_STR = unknown
+    FFMPEG_VERSION_STR = Unknown
 }
 VERSION = $${DD_VERSION}
 DEFINES += \
