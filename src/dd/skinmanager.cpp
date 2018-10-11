@@ -35,6 +35,8 @@ bool SkinManager::setSkin(const QString &skin)
     if (skin.toLower() == QStringLiteral("none"))
     {
         qApp->setStyleSheet(QString());
+        curSkinPath = QString();
+        curSkinName = QString();
         return true;
     }
     QString filePath;
