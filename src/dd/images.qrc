@@ -1,5 +1,5 @@
 <RCC>
-    <qresource prefix="/">
+    <qresource prefix="/images">
         <file alias="bee.ico">images/bee.ico</file>
         <file alias="close.ico">images/close.ico</file>
         <file alias="maximize.ico">images/maximize.ico</file>

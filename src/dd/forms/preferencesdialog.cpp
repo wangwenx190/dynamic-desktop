@@ -45,9 +45,9 @@ void PreferencesDialog::changeEvent(QEvent *event)
 {
     if (event->type() == QEvent::WindowStateChange)
         if (windowState() == Qt::WindowMaximized)
-            ui->pushButton_maximize->setIcon(QIcon(QStringLiteral(":/restore.ico")));
+            ui->pushButton_maximize->setIcon(QIcon(QStringLiteral(":/images/restore.ico")));
         else
-            ui->pushButton_maximize->setIcon(QIcon(QStringLiteral(":/maximize.ico")));
+            ui->pushButton_maximize->setIcon(QIcon(QStringLiteral(":/images/maximize.ico")));
     FramelessWindow::changeEvent(event);
 }
 
