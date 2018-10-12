@@ -15,6 +15,7 @@
 #include <QtAV>
 #include <QtAVWidgets>
 
+static bool firstLoad = true;
 const qreal kVolumeInterval = 0.04;
 
 MainWindow::MainWindow(QWidget *parent) : QWidget(parent)
@@ -93,7 +94,11 @@ void MainWindow::initPlayer()
 
 void MainWindow::initConnections()
 {
-    connect(player, &QtAV::AVPlayer::started, this, &MainWindow::onStartPlay);
+    connect(player, &QtAV::AVPlayer::started,
+        [=]
+        {
+            QTimer::singleShot(0, [=]{ onStartPlay(); });
+        });
     connect(muteAction, &QAction::triggered,
         [=](bool checked)
         {
@@ -102,18 +107,30 @@ void MainWindow::initConnections()
                 muteAction->setChecked(checked);
                 SettingsManager::getInstance()->setMute(checked);
                 preferencesDialog->updateVolumeArea();
-                player->audio()->setMute(checked);
+                QTimer::singleShot(0, [=]{ player->audio()->setMute(checked); });
             }
         });
     connect(trayIcon, &QSystemTrayIcon::activated,
         [=](QSystemTrayIcon::ActivationReason reason)
         {
             if (reason != QSystemTrayIcon::Context)
-                showPreferencesDialog();
+                QTimer::singleShot(0, [=]{ showPreferencesDialog(); });
         });
-    connect(preferencesDialog, &PreferencesDialog::about, this, &MainWindow::showAboutDialog);
-    connect(preferencesDialog, &PreferencesDialog::pause, this, &MainWindow::pause);
-    connect(preferencesDialog, &PreferencesDialog::urlChanged, this, &MainWindow::urlChanged);
+    connect(preferencesDialog, &PreferencesDialog::about,
+        [=]
+        {
+            QTimer::singleShot(0, [=]{ showAboutDialog(); });
+        });
+    connect(preferencesDialog, &PreferencesDialog::pause,
+        [=]
+        {
+            QTimer::singleShot(0, [=]{ pause(); });
+        });
+    connect(preferencesDialog, &PreferencesDialog::urlChanged,
+        [=](const QString &url)
+        {
+            QTimer::singleShot(0, [=]{ urlChanged(url); });
+        });
     connect(preferencesDialog, &PreferencesDialog::volumeChanged,
         [=](unsigned int volume)
         {
@@ -121,9 +138,12 @@ void MainWindow::initConnections()
             if (ao)
             {
                 qreal newVolume = static_cast<qreal>(volume) * kVolumeInterval;
-                if ((static_cast<unsigned int>(ao->volume() / kVolumeInterval) - volume) >= static_cast<unsigned int>(0.1 / kVolumeInterval))
-                    ao->setVolume(newVolume);
-                preferencesDialog->setVolumeToolTip(tr("Volume: %0").arg(QString::number(newVolume)));
+                if (ao->volume() != newVolume)
+                {
+                    if (qAbs(static_cast<unsigned int>(ao->volume() / kVolumeInterval) - volume) >= static_cast<unsigned int>(0.1 / kVolumeInterval))
+                        QTimer::singleShot(0, [=]{ ao->setVolume(newVolume); });
+                    preferencesDialog->setVolumeToolTip(tr("Volume: %0").arg(QString::number(newVolume)));
+                }
             }
         });
     connect(preferencesDialog, &PreferencesDialog::muteChanged,
@@ -131,7 +151,7 @@ void MainWindow::initConnections()
         {
             if (player->audio())
                 if (player->audio()->isMute() != mute)
-                    muteAction->triggered(mute);
+                    QTimer::singleShot(0, [=]{ muteAction->triggered(mute); });
         });
     connect(preferencesDialog, &PreferencesDialog::seekBySlider,
         [=](qint64 value)
@@ -145,14 +165,14 @@ void MainWindow::initConnections()
         {
             if (player->isLoaded())
                 if (id != player->currentVideoStream())
-                    player->setVideoStream(id);
+                    QTimer::singleShot(0, [=]{ player->setVideoStream(id); });
         });
     connect(preferencesDialog, &PreferencesDialog::audioTrackChanged,
         [=](unsigned int id)
         {
             if (player->isLoaded())
                 if (id != player->currentAudioStream())
-                    player->setAudioStream(id);
+                    QTimer::singleShot(0, [=]{ player->setAudioStream(id); });
         });
     connect(preferencesDialog, &PreferencesDialog::subtitleTrackChanged,
         [=](const QVariant &track)
@@ -161,12 +181,12 @@ void MainWindow::initConnections()
             {
                 const QString newSubFile = track.toString();
                 if (QFileInfo::exists(newSubFile) && subtitle->file() != newSubFile)
-                    subtitle->setFile(newSubFile);
+                    QTimer::singleShot(0, [=]{ subtitle->setFile(newSubFile); });
                 else
                 {
                     unsigned int id = track.toUInt();
                     if (id != player->currentSubtitleStream())
-                        player->setSubtitleStream(id);
+                        QTimer::singleShot(0, [=]{ player->setSubtitleStream(id); });
                 }
             }
         });
@@ -175,61 +195,75 @@ void MainWindow::initConnections()
         {
             if (player->isLoaded())
                 if (subtitle->file() != subPath)
-                    subtitle->setFile(subPath);
+                    QTimer::singleShot(0, [=]{ subtitle->setFile(subPath); });
         });
     connect(preferencesDialog, &PreferencesDialog::audioOpened,
         [=](const QString &audioPath)
         {
             if (player->isLoaded() && player->audio())
-                player->setExternalAudio(audioPath);
+                QTimer::singleShot(0, [=]{ player->setExternalAudio(audioPath); });
         });
     connect(preferencesDialog, &PreferencesDialog::charsetChanged,
         [=](const QString &charset)
         {
             if (SettingsManager::getInstance()->getSubtitle())
                 if (subtitle->codec() != charset.toLatin1())
-                    subtitle->setCodec(charset.toLatin1());
+                    QTimer::singleShot(0, [=]{ subtitle->setCodec(charset.toLatin1()); });
         });
     connect(preferencesDialog, &PreferencesDialog::subtitleAutoLoadChanged,
         [=](bool autoload)
         {
             if (subtitle->autoLoad() != autoload)
-                subtitle->setAutoLoad(autoload);
+                QTimer::singleShot(0, [=]{ subtitle->setAutoLoad(autoload); });
         });
     connect(preferencesDialog, &PreferencesDialog::subtitleEnabled,
         [=](bool enabled)
         {
             if (subtitle->isEnabled() != enabled)
-                subtitle->setEnabled(enabled);
+                QTimer::singleShot(0, [=]{ subtitle->setEnabled(enabled); });
         });
     connect(preferencesDialog, &PreferencesDialog::skinChanged,
         [=](const QString &skin)
         {
             if (SkinManager::getInstance()->currentSkinName() != skin)
-                SkinManager::getInstance()->setSkin(skin);
+                QTimer::singleShot(0, [=]{ SkinManager::getInstance()->setSkin(skin); });
         });
     connect(preferencesDialog, &PreferencesDialog::rendererChanged,
         [=](QtAV::VideoRendererId rendererId)
         {
             if ((rendererId != renderer->id()) || !renderer)
-            {
-                QtAV::VideoRenderer *newRenderer = QtAV::VideoRenderer::create(rendererId);
-                setRenderer(newRenderer);
-            }
+                QTimer::singleShot(0,
+                    [=]
+                    {
+                        QtAV::VideoRenderer *newRenderer = QtAV::VideoRenderer::create(rendererId);
+                        setRenderer(newRenderer);
+                    });
         });
     connect(preferencesDialog, &PreferencesDialog::imageQualityChanged,
         [=](const QString &quality)
         {
-            setImageQuality(quality);
+            QTimer::singleShot(0, [=]{ setImageQuality(quality); });
         });
     connect(player, &QtAV::AVPlayer::positionChanged,
         [=](qint64 pos)
         {
-            preferencesDialog->updateVideoSlider(pos);
-            preferencesDialog->setVideoPositionText(QTime(0, 0, 0).addMSecs(pos).toString(QStringLiteral("HH:mm:ss")));
+            QTimer::singleShot(0,
+                [=]
+                {
+                    preferencesDialog->updateVideoSlider(pos);
+                    preferencesDialog->setVideoPositionText(QTime(0, 0, 0).addMSecs(pos).toString(QStringLiteral("HH:mm:ss")));
+                });
         });
-    connect(this, &MainWindow::showOptions, this, &MainWindow::showPreferencesDialog);
-    connect(this, static_cast<void(MainWindow::*)(const QString &)>(&MainWindow::play), this, &MainWindow::urlChanged);
+    connect(this, &MainWindow::showOptions,
+        [=]
+        {
+            QTimer::singleShot(0, [=]{ showPreferencesDialog(); });
+        });
+    connect(this, static_cast<void(MainWindow::*)(const QString &)>(&MainWindow::play),
+        [=](const QString &url)
+        {
+            QTimer::singleShot(0, [=]{ urlChanged(url); });
+        });
 }
 
 void MainWindow::disconnectAll()
@@ -285,6 +319,8 @@ void MainWindow::refreshPlayer()
     }
     if (renderer)
     {
+        // deleting "renderer" will crash
+        // currently don't know why
         //delete renderer;
         renderer = nullptr;
     }
@@ -487,13 +523,10 @@ void MainWindow::urlChanged(const QString &url)
 {
     if (!player)
         return;
-    stop();
-    static bool notFirstChange = false;
-    if (!notFirstChange)
-    {
+    if (!url.isEmpty())
+        stop();
+    if (!firstLoad && !url.isEmpty())
         refreshPlayer();
-        notFirstChange = true;
-    }
     if (SettingsManager::getInstance()->getHwdec())
     {
         QStringList decoders = SettingsManager::getInstance()->getDecoders();
@@ -540,4 +573,7 @@ void MainWindow::urlChanged(const QString &url)
     }
     else
         play();
+    preferencesDialog->volumeChanged(SettingsManager::getInstance()->getVolume());
+    if (firstLoad)
+        firstLoad = false;
 }

@@ -13,3 +13,9 @@ void Slider::mousePressEvent(QMouseEvent *event)
     setValue(static_cast<int>(currentPositionPercent * (maximum() - minimum())) + minimum());
     emit sliderMoved(value());
 }
+
+void Slider::wheelEvent(QWheelEvent *event)
+{
+    QSlider::wheelEvent(event);
+    emit sliderMoved(value());
+}

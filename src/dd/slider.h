@@ -9,4 +9,5 @@ public:
     explicit Slider(QWidget *parent = nullptr);
 protected:
     void mousePressEvent(QMouseEvent *event) override;
+    void wheelEvent(QWheelEvent *event) override;
 };
