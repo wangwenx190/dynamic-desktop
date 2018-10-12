@@ -58,6 +58,6 @@ void MainWindow::finish(int code)
     Q_UNUSED(code)
     disconnect(download, &DownloadManager::progressChanged, this, &MainWindow::updateProgressbar);
     disconnect(download, &DownloadManager::finished, this, &MainWindow::finish);
-    delete download;
+    download->deleteLater();
     download = nullptr;
 }

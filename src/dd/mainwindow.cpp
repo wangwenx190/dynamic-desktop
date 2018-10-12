@@ -237,14 +237,7 @@ bool MainWindow::setRenderer(QtAV::VideoRenderer *videoRenderer)
         oldRendererWidget = renderer->widget();
     if (oldRendererWidget)
     {
-        mainLayout->removeWidget(oldRendererWidget);
-        if (oldRendererWidget->testAttribute(Qt::WA_DeleteOnClose))
-            oldRendererWidget->close();
-        else
-        {
-            oldRendererWidget->close();
-            delete oldRendererWidget;
-        }
+        oldRendererWidget->deleteLater();
         oldRendererWidget = nullptr;
     }
     renderer = videoRenderer;

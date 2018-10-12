@@ -72,7 +72,7 @@ DownloadManager::DownloadManager(QObject *parent) : QObject(parent)
 DownloadManager::~DownloadManager()
 {
     delete manager;
-    delete reply;
+    reply = nullptr;
     delete file;
     delete dir;
 }
@@ -141,7 +141,7 @@ void DownloadManager::onFinished()
         QFileInfo fi(*file);
         QFile::copy(fi.absoluteFilePath(), filePath);
         QFile::remove(fi.absoluteFilePath());
-        delete file;
+        file->deleteLater();
         file = nullptr;
         delete dir;
         dir = nullptr;
@@ -189,7 +189,7 @@ void DownloadManager::closeDownload()
     reset();
     if (QFileInfo::exists(tempPath))
         QFile::remove(tempPath);
-    delete file;
+    file->deleteLater();
     file = nullptr;
     delete dir;
     dir = nullptr;
