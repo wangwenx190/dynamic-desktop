@@ -117,7 +117,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="342"/>
+        <location filename="../mainwindow.cpp" line="346"/>
         <source>Current renderer is not available on your platform!</source>
         <translation type="unfinished"></translation>
     </message>

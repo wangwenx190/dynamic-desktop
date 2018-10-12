@@ -117,7 +117,7 @@
         <translation>音量：%0</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="342"/>
+        <location filename="../mainwindow.cpp" line="346"/>
         <source>Current renderer is not available on your platform!</source>
         <translation>当前渲染引擎在您的平台上不可用！</translation>
     </message>

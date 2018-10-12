@@ -159,7 +159,11 @@ void MainWindow::initConnections()
             if (player->isLoaded() && player->isSeekable())
                 QTimer::singleShot(0, [=]{ player->seek(value); });
         });
-    connect(preferencesDialog, &PreferencesDialog::pictureRatioChanged, this, static_cast<void(MainWindow::*)(bool)>(&MainWindow::setImageRatio));
+    connect(preferencesDialog, &PreferencesDialog::pictureRatioChanged,
+        [=](bool fit)
+        {
+            QTimer::singleShot(0, [=]{ setImageRatio(fit); });
+        });
     connect(preferencesDialog, &PreferencesDialog::videoTrackChanged,
         [=](unsigned int id)
         {
