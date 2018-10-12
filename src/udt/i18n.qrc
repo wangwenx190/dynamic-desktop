@@ -1,6 +1,0 @@
-<RCC>
-    <qresource prefix="/i18n">
-        <file alias="udt_en.qm">translations/udt_en.qm</file>
-        <file alias="udt_zh_CN.qm">translations/udt_zh_CN.qm</file>
-    </qresource>
-</RCC>

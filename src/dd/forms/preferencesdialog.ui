@@ -740,6 +740,9 @@
      </item>
      <item>
       <widget class="QPushButton" name="pushButton_check_update">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
        <property name="text">
         <string>Check update</string>
        </property>

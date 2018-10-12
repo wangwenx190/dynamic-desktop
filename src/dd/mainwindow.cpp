@@ -7,10 +7,11 @@
 
 #include <QMessageBox>
 #include <QApplication>
-#include <QtConcurrent>
+#include <QTimer>
 #include <QVBoxLayout>
 #include <QMenu>
 #include <QSystemTrayIcon>
+#include <QAction>
 #include <QtAV>
 #include <QtAVWidgets>
 
@@ -18,7 +19,22 @@ const qreal kVolumeInterval = 0.04;
 
 MainWindow::MainWindow(QWidget *parent) : QWidget(parent)
 {
-    init();
+    initUI();
+    initPlayer();
+    initConnections();
+    if (player->audio())
+    {
+        preferencesDialog->volumeChanged(SettingsManager::getInstance()->getVolume());
+        player->audio()->setMute(SettingsManager::getInstance()->getMute());
+        muteAction->setCheckable(true);
+        muteAction->setChecked(SettingsManager::getInstance()->getMute());
+    }
+    else
+    {
+        muteAction->setCheckable(false);
+        muteAction->setEnabled(false);
+        preferencesDialog->setVolumeAreaEnabled(false);
+    }
 }
 
 MainWindow::~MainWindow()
@@ -33,11 +49,34 @@ MainWindow::~MainWindow()
     delete mainLayout;
 }
 
-void MainWindow::init()
+void MainWindow::initUI()
 {
     mainLayout = new QVBoxLayout(this);
     mainLayout->setContentsMargins(0, 0, 0, 0);
     mainLayout->setSpacing(0);
+    setWindowIcon(QIcon(QStringLiteral(":/images/bee.ico")));
+    setWindowTitle(QStringLiteral("Dynamic Desktop"));
+    preferencesDialog = new PreferencesDialog();
+    aboutDialog = new AboutDialog();
+    trayMenu = new QMenu(this);
+    trayMenu->addAction(tr("Preferences"), this, &MainWindow::showPreferencesDialog);
+    trayMenu->addSeparator();
+    trayMenu->addAction(tr("Play"), this, static_cast<void(MainWindow::*)(void)>(&MainWindow::play));
+    trayMenu->addAction(tr("Pause"), this, &MainWindow::pause);
+    muteAction = trayMenu->addAction(tr("Mute"));
+    muteAction->setCheckable(true);
+    trayMenu->addSeparator();
+    trayMenu->addAction(tr("About"), this, &MainWindow::showAboutDialog);
+    trayMenu->addAction(tr("Exit"), qApp, &QApplication::closeAllWindows);
+    trayIcon = new QSystemTrayIcon(this);
+    trayIcon->setIcon(QIcon(QStringLiteral(":/images/bee.ico")));
+    trayIcon->setToolTip(QStringLiteral("Dynamic Desktop"));
+    trayIcon->setContextMenu(trayMenu);
+    trayIcon->show();
+}
+
+void MainWindow::initPlayer()
+{
     player = new QtAV::AVPlayer(this);
     player->setRepeat(-1);
     subtitle = new QtAV::SubtitleFilter(this);
@@ -46,22 +85,15 @@ void MainWindow::init()
     subtitle->setEngines(QStringList() << QStringLiteral("LibASS") << QStringLiteral("FFmpeg"));
     subtitle->setAutoLoad(SettingsManager::getInstance()->getSubtitleAutoLoad());
     subtitle->setEnabled(SettingsManager::getInstance()->getSubtitle());
-    QtAV::VideoRenderer *vo = QtAV::VideoRenderer::create(SettingsManager::getInstance()->getRenderer());
-    setRenderer(vo);
+    QtAV::VideoRenderer *videoOutput = QtAV::VideoRenderer::create(SettingsManager::getInstance()->getRenderer());
+    setRenderer(videoOutput);
     setImageQuality();
     setImageRatio();
-    setWindowIcon(QIcon(QStringLiteral(":/images/bee.ico")));
-    setWindowTitle(QStringLiteral("Dynamic Desktop"));
-    preferencesDialog = new PreferencesDialog();
-    aboutDialog = new AboutDialog();
+}
+
+void MainWindow::initConnections()
+{
     connect(player, &QtAV::AVPlayer::started, this, &MainWindow::onStartPlay);
-    trayMenu = new QMenu(this);
-    trayMenu->addAction(tr("Preferences"), this, &MainWindow::showPreferencesDialog);
-    trayMenu->addSeparator();
-    trayMenu->addAction(tr("Play"), this, static_cast<void(MainWindow::*)(void)>(&MainWindow::play));
-    trayMenu->addAction(tr("Pause"), this, &MainWindow::pause);
-    QAction *muteAction = trayMenu->addAction(tr("Mute"));
-    muteAction->setCheckable(true);
     connect(muteAction, &QAction::triggered,
         [=](bool checked)
         {
@@ -73,14 +105,6 @@ void MainWindow::init()
                 player->audio()->setMute(checked);
             }
         });
-    trayMenu->addSeparator();
-    trayMenu->addAction(tr("About"), this, &MainWindow::showAboutDialog);
-    trayMenu->addAction(tr("Exit"), qApp, &QApplication::closeAllWindows);
-    trayIcon = new QSystemTrayIcon(this);
-    trayIcon->setIcon(QIcon(QStringLiteral(":/images/bee.ico")));
-    trayIcon->setToolTip(QStringLiteral("Dynamic Desktop"));
-    trayIcon->setContextMenu(trayMenu);
-    trayIcon->show();
     connect(trayIcon, &QSystemTrayIcon::activated,
         [=](QSystemTrayIcon::ActivationReason reason)
         {
@@ -113,7 +137,7 @@ void MainWindow::init()
         [=](qint64 value)
         {
             if (player->isLoaded() && player->isSeekable())
-                QtConcurrent::run([=]{ player->seek(value); });
+                QTimer::singleShot(0, [=]{ player->seek(value); });
         });
     connect(preferencesDialog, &PreferencesDialog::pictureRatioChanged, this, static_cast<void(MainWindow::*)(bool)>(&MainWindow::setImageRatio));
     connect(preferencesDialog, &PreferencesDialog::videoTrackChanged,
@@ -204,21 +228,73 @@ void MainWindow::init()
             preferencesDialog->updateVideoSlider(pos);
             preferencesDialog->setVideoPositionText(QTime(0, 0, 0).addMSecs(pos).toString(QStringLiteral("HH:mm:ss")));
         });
-    if (player->audio())
-    {
-        preferencesDialog->volumeChanged(SettingsManager::getInstance()->getVolume());
-        player->audio()->setMute(SettingsManager::getInstance()->getMute());
-        muteAction->setCheckable(true);
-        muteAction->setChecked(SettingsManager::getInstance()->getMute());
-    }
-    else
-    {
-        muteAction->setCheckable(false);
-        muteAction->setEnabled(false);
-        preferencesDialog->setVolumeAreaEnabled(false);
-    }
     connect(this, &MainWindow::showOptions, this, &MainWindow::showPreferencesDialog);
     connect(this, static_cast<void(MainWindow::*)(const QString &)>(&MainWindow::play), this, &MainWindow::urlChanged);
+}
+
+void MainWindow::disconnectAll()
+{
+    disconnect(player, &QtAV::AVPlayer::started, nullptr, nullptr);
+    disconnect(muteAction, &QAction::triggered, nullptr, nullptr);
+    disconnect(trayIcon, &QSystemTrayIcon::activated, nullptr, nullptr);
+    disconnect(preferencesDialog, &PreferencesDialog::about, nullptr, nullptr);
+    disconnect(preferencesDialog, &PreferencesDialog::pause, nullptr, nullptr);
+    disconnect(preferencesDialog, &PreferencesDialog::urlChanged, nullptr, nullptr);
+    disconnect(preferencesDialog, &PreferencesDialog::volumeChanged, nullptr, nullptr);
+    disconnect(preferencesDialog, &PreferencesDialog::muteChanged, nullptr, nullptr);
+    disconnect(preferencesDialog, &PreferencesDialog::seekBySlider, nullptr, nullptr);
+    disconnect(preferencesDialog, &PreferencesDialog::pictureRatioChanged, nullptr, nullptr);
+    disconnect(preferencesDialog, &PreferencesDialog::videoTrackChanged, nullptr, nullptr);
+    disconnect(preferencesDialog, &PreferencesDialog::audioTrackChanged, nullptr, nullptr);
+    disconnect(preferencesDialog, &PreferencesDialog::subtitleTrackChanged, nullptr, nullptr);
+    disconnect(preferencesDialog, &PreferencesDialog::subtitleOpened, nullptr, nullptr);
+    disconnect(preferencesDialog, &PreferencesDialog::audioOpened, nullptr, nullptr);
+    disconnect(preferencesDialog, &PreferencesDialog::charsetChanged, nullptr, nullptr);
+    disconnect(preferencesDialog, &PreferencesDialog::subtitleAutoLoadChanged, nullptr, nullptr);
+    disconnect(preferencesDialog, &PreferencesDialog::subtitleEnabled, nullptr, nullptr);
+    disconnect(preferencesDialog, &PreferencesDialog::skinChanged, nullptr, nullptr);
+    disconnect(preferencesDialog, &PreferencesDialog::rendererChanged, nullptr, nullptr);
+    disconnect(preferencesDialog, &PreferencesDialog::imageQualityChanged, nullptr, nullptr);
+    disconnect(player, &QtAV::AVPlayer::positionChanged, nullptr, nullptr);
+    disconnect(this, &MainWindow::showOptions, nullptr, nullptr);
+    disconnect(this, static_cast<void(MainWindow::*)(const QString &)>(&MainWindow::play), nullptr, nullptr);
+}
+
+void MainWindow::refreshPlayer()
+{
+    disconnectAll();
+    if (subtitle)
+    {
+        delete subtitle;
+        subtitle = nullptr;
+    }
+    QWidget *oldRendererWidget = nullptr;
+    if (renderer)
+        oldRendererWidget = renderer->widget();
+    if (oldRendererWidget)
+    {
+        mainLayout->removeWidget(oldRendererWidget);
+        if (oldRendererWidget->testAttribute(Qt::WA_DeleteOnClose))
+            oldRendererWidget->close();
+        else
+        {
+            oldRendererWidget->close();
+            delete oldRendererWidget;
+        }
+        oldRendererWidget = nullptr;
+    }
+    if (renderer)
+    {
+        //delete renderer;
+        renderer = nullptr;
+    }
+    if (player)
+    {
+        delete player;
+        player = nullptr;
+    }
+    initPlayer();
+    initConnections();
 }
 
 bool MainWindow::setRenderer(QtAV::VideoRenderer *videoRenderer)
@@ -237,7 +313,14 @@ bool MainWindow::setRenderer(QtAV::VideoRenderer *videoRenderer)
         oldRendererWidget = renderer->widget();
     if (oldRendererWidget)
     {
-        oldRendererWidget->deleteLater();
+        mainLayout->removeWidget(oldRendererWidget);
+        if (oldRendererWidget->testAttribute(Qt::WA_DeleteOnClose))
+            oldRendererWidget->close();
+        else
+        {
+            oldRendererWidget->close();
+            delete oldRendererWidget;
+        }
         oldRendererWidget = nullptr;
     }
     renderer = videoRenderer;
@@ -404,6 +487,13 @@ void MainWindow::urlChanged(const QString &url)
 {
     if (!player)
         return;
+    stop();
+    static bool notFirstChange = false;
+    if (!notFirstChange)
+    {
+        refreshPlayer();
+        notFirstChange = true;
+    }
     if (SettingsManager::getInstance()->getHwdec())
     {
         QStringList decoders = SettingsManager::getInstance()->getDecoders();
@@ -445,7 +535,7 @@ void MainWindow::urlChanged(const QString &url)
         show();
     if (!url.isEmpty())
     {
-        QtConcurrent::run([=]{ player->play(url); });
+        QTimer::singleShot(0, [=]{ player->play(url); });
         setWindowTitle(QFileInfo(url).fileName());
     }
     else

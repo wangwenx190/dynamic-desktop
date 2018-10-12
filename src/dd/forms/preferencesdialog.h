@@ -40,7 +40,7 @@ signals:
     void skinChanged(const QString &);
     void rendererChanged(QtAV::VideoRendererId);
     void imageQualityChanged(const QString &);
-    void requestUpdate();
+    //void requestUpdate();
 
 signals:
     void updateVideoSlider(qint64);

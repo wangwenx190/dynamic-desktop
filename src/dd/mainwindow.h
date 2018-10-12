@@ -5,6 +5,7 @@
 QT_BEGIN_NAMESPACE
 QT_FORWARD_DECLARE_CLASS(QVBoxLayout)
 QT_FORWARD_DECLARE_CLASS(QMenu)
+QT_FORWARD_DECLARE_CLASS(QAction)
 QT_FORWARD_DECLARE_CLASS(QSystemTrayIcon)
 QT_END_NAMESPACE
 
@@ -30,7 +31,11 @@ signals:
     void play(const QString &);
 
 private slots:
-    void init();
+    void initUI();
+    void initPlayer();
+    void initConnections();
+    void disconnectAll();
+    void refreshPlayer();
     bool setRenderer(QtAV::VideoRenderer *videoRenderer);
     void setImageQuality(const QString &quality);
     void setImageQuality();
@@ -53,4 +58,5 @@ private:
     QVBoxLayout *mainLayout = nullptr;
     AboutDialog *aboutDialog = nullptr;
     PreferencesDialog *preferencesDialog = nullptr;
+    QAction *muteAction = nullptr;
 };

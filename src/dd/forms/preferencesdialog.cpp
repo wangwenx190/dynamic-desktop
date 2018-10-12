@@ -587,7 +587,7 @@ void PreferencesDialog::initConnections()
             if (!text.isEmpty())
                 ui->label_video_duration->setText(text);
         });
-    connect(ui->pushButton_check_update, &QPushButton::clicked, this, &PreferencesDialog::requestUpdate);
+    //connect(ui->pushButton_check_update, &QPushButton::clicked, this, &PreferencesDialog::requestUpdate);
 }
 
 void PreferencesDialog::setDecoders()

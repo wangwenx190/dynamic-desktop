@@ -11,7 +11,7 @@ contains(QT_ARCH, x86_64) {
     TARGET = $$join(TARGET,,,64)
 }
 CONFIG(debug, debug|release): TARGET = $$join(TARGET,,,d)
-QT *= gui widgets av avwidgets concurrent
+QT *= gui widgets av avwidgets
 qtHaveModule(winextras) {
     QT *= winextras
     DEFINES *= QT_HAS_WINEXTRAS
@@ -79,7 +79,6 @@ CONFIG(static_dd) {
     }
     libs.path = $$BIN_DIR
     libs.files = \
-        $$[QT_INSTALL_BINS]/Qt?Concurrent.dll \
         $$[QT_INSTALL_BINS]/QtAV?.dll \
         $$[QT_INSTALL_BINS]/QtAVWidgets?.dll \
         $$[QT_INSTALL_BINS]/avcodec-*.dll \
