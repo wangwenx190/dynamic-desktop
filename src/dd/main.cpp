@@ -147,10 +147,6 @@ int main(int argc, char *argv[])
             SettingsManager::getInstance()->setVolume(static_cast<unsigned int>(volumeOptionValueInt));
     }
     SkinManager::getInstance()->setSkin(SettingsManager::getInstance()->getSkin());
-#ifndef _DEBUG
-    QtAV::setFFmpegLogLevel("warn");
-    QtAV::setLogLevel(QtAV::LogAll);
-#endif
     MainWindow mainWindow;
     const Qt::WindowFlags rendererWindowFlags = Qt::FramelessWindowHint;
     const QRect screenGeometry = QApplication::desktop()->screenGeometry(&mainWindow);
