@@ -352,20 +352,21 @@ void MainWindow::onStartPlay()
             emit preferencesDialog->updateSubtitleTracks(externalSubtitleTracks, true);
         }
     }
-    subtitle->setEnabled(false);
+    QtConcurrent::run([=]{ subtitle->setEnabled(false); });
     if (SettingsManager::getInstance()->getSubtitle())
     {
         if (player->subtitleStreamCount() > 0)
-        {
-            subtitle->setEnabled(true);
-            QtConcurrent::run([=]{ player->setSubtitleStream(0); });
-        }
+            QtConcurrent::run([=]
+            {
+                subtitle->setEnabled(true);
+                player->setSubtitleStream(0);
+            });
         else if (SettingsManager::getInstance()->getSubtitleAutoLoad())
         {
             QStringList externalSubtitles = Utils::externalFilesToLoad(QFileInfo(player->file()), QStringLiteral("sub"));
             if (!externalSubtitles.isEmpty())
             {
-                subtitle->setEnabled(true);
+                QtConcurrent::run([=]{ subtitle->setEnabled(true); });
                 if (subtitle->file() != externalSubtitles.constFirst())
                     QtConcurrent::run([=]{ subtitle->setFile(externalSubtitles.constFirst()); });
             }
