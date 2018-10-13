@@ -1,8 +1,8 @@
 isEmpty(ROOT): ROOT = $$PWD/../..
 include($$ROOT/version.pri)
-QMAKE_TARGET_PRODUCT     = Dynamic Desktop Service
+QMAKE_TARGET_PRODUCT = Dynamic Desktop Service
 QMAKE_TARGET_DESCRIPTION = Dynamic Desktop Startup Service
-RC_ICONS                 = images/gear.ico
+RC_ICONS = images/gear.ico
 include($$ROOT/optimization.pri)
 TARGET = ddsvc
 BIN_DIR = $$ROOT/bin
@@ -19,10 +19,9 @@ DEFINES *= \
 CONFIG *= c++11
 CONFIG *= console
 LIBS *= \
-    -lUser32 \
     -lWtsapi32 \
-    -lAdvAPI32 \
-    -lUserenv
+    -lUserenv \
+    -lAdvAPI32
 include(../3rdparty/qtservice/qtservice.pri)
 SOURCES += main.cpp
 target.path = $$BIN_DIR

@@ -310,10 +310,7 @@ void PreferencesDialog::initConnections()
         this->audioAvailable = audioAvailable;
         ui->groupBox_audio->setEnabled(audioAvailable);
     });
-    connect(this, &PreferencesDialog::setSeekAreaEnabled, this, [=](bool enabled)
-    {
-        ui->horizontalSlider_video_position->setEnabled(enabled);
-    });
+    connect(this, &PreferencesDialog::setSeekAreaEnabled, ui->horizontalSlider_video_position, &QSlider::setEnabled);
     connect(ui->horizontalSlider_video_position, &QSlider::sliderMoved, this, [=](int value)
     {
         emit this->seekBySlider(static_cast<qint64>(value * sliderUnit));
@@ -321,6 +318,11 @@ void PreferencesDialog::initConnections()
     connect(this, &PreferencesDialog::updateVideoSliderRange, this, [=](qint64 duration)
     {
         ui->horizontalSlider_video_position->setRange(0, static_cast<int>(duration / sliderUnit));
+        int max = ui->horizontalSlider_video_position->maximum();
+        auto singleStep = static_cast<int>(max * 0.01);
+        ui->horizontalSlider_video_position->setSingleStep(singleStep);
+        auto pageStep = static_cast<int>(max * 0.05);
+        ui->horizontalSlider_video_position->setPageStep(pageStep);
     });
     connect(this, &PreferencesDialog::updateVideoSliderUnit, this, [=](int unit)
     {
@@ -383,12 +385,10 @@ void PreferencesDialog::initConnections()
         {
             QUrl url(input);
             if (url.isValid())
-            {
                 if (url.isLocalFile())
                     ui->lineEdit_url->setText(url.toLocalFile());
                 else
                     ui->lineEdit_url->setText(url.url());
-            }
             else
                 QMessageBox::warning(nullptr, QStringLiteral("Dynamic Desktop"), tr("\"%0\" is not a valid URL.").arg(input));
         }
@@ -473,20 +473,13 @@ void PreferencesDialog::initConnections()
             SettingsManager::getInstance()->setAutoStart(true);
         else if (!ui->checkBox_autoStart->isChecked() && SettingsManager::getInstance()->isAutoStart())
             SettingsManager::getInstance()->setAutoStart(false);
-        QTimer::singleShot(2500,
-                           [=]
+        QTimer::singleShot(2500, this, [=]
         {
             ui->checkBox_autoStart->setChecked(SettingsManager::getInstance()->isAutoStart());
         });
     });
-    connect(ui->radioButton_ratio_fitDesktop, &QRadioButton::clicked, this, [=]
-    {
-        this->setRatio();
-    });
-    connect(ui->radioButton_ratio_videoAspectRatio, &QRadioButton::clicked, this, [=]
-    {
-        this->setRatio();
-    });
+    connect(ui->radioButton_ratio_fitDesktop, &QRadioButton::clicked, this, &PreferencesDialog::setRatio);
+    connect(ui->radioButton_ratio_videoAspectRatio, &QRadioButton::clicked, this, &PreferencesDialog::setRatio);
     connect(ui->comboBox_subtitle_charset, qOverload<int>(&QComboBox::currentIndexChanged), this, [=](int index)
     {
         Q_UNUSED(index)

@@ -1,8 +1,8 @@
 isEmpty(ROOT): ROOT = $$PWD/../..
 include($$ROOT/version.pri)
-QMAKE_TARGET_PRODUCT     = Dynamic Desktop
+QMAKE_TARGET_PRODUCT = Dynamic Desktop
 QMAKE_TARGET_DESCRIPTION = A tool that make your desktop alive
-RC_ICONS                 = images/bee.ico
+RC_ICONS = images/bee.ico
 include($$ROOT/optimization.pri)
 TARGET = dd
 BIN_DIR = $$ROOT/bin
@@ -21,10 +21,7 @@ DEFINES *= \
     QT_DEPRECATED_WARNINGS \
     QT_DISABLE_DEPRECATED_BEFORE=0x050603
 CONFIG *= c++11 c++14
-LIBS *= \
-    -lUser32 \
-    -lDwmapi \
-    -lAdvAPI32
+LIBS *= -lDwmapi
 include(../3rdparty/qtservice/qtservice.pri)
 HEADERS += \
     forms/preferencesdialog.h \
@@ -99,4 +96,14 @@ CONFIG(static_dd) {
         libs.commands = $$join(libs.commands, $$escape_expand(\\n\\t))
     }
     INSTALLS *= libs translations skins
+}
+release:CONFIG(small) {
+    isEmpty(upx): upx = $$[QT_INSTALL_BINS]/upx.exe
+    exists("$${upx}") {
+        upx.path = $$BIN_DIR
+        upx.commands += $$quote(\"$${upx}\" --force --ultra-brute \"$${BIN_DIR}/*.exe\")
+        upx.commands += $$quote(\"$${upx}\" --force --ultra-brute \"$${BIN_DIR}/*.dll\")
+        upx.commands = $$join(upx.commands, $$escape_expand(\\n\\t))
+        INSTALLS *= upx
+    }
 }
