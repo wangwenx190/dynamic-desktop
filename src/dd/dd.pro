@@ -11,7 +11,7 @@ contains(QT_ARCH, x86_64) {
     TARGET = $$join(TARGET,,,64)
 }
 CONFIG(debug, debug|release): TARGET = $$join(TARGET,,,d)
-QT *= gui widgets av avwidgets
+QT *= gui widgets av avwidgets concurrent
 qtHaveModule(winextras) {
     QT *= winextras
     DEFINES *= QT_HAS_WINEXTRAS
@@ -20,7 +20,7 @@ TEMPLATE = app
 DEFINES *= \
     QT_DEPRECATED_WARNINGS \
     QT_DISABLE_DEPRECATED_BEFORE=0x050603
-CONFIG *= c++11
+CONFIG *= c++11 c++14
 LIBS *= \
     -lUser32 \
     -lDwmapi \

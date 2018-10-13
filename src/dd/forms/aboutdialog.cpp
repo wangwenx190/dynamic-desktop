@@ -35,27 +35,23 @@ AboutDialog::AboutDialog(QWidget *parent) :
 #endif
     ui->lineEdit_arch->setText(arch);
     ui->lineEdit_build_time->setText(QStringLiteral("%0 %1").arg(QStringLiteral(__DATE__)).arg(QStringLiteral(__TIME__)));
-    connect(ui->pushButton_aboutQt, &QPushButton::clicked,
-        [=]
-        {
-            qApp->aboutQt();
-        });
+    connect(ui->pushButton_aboutQt, &QPushButton::clicked, this, [=]
+    {
+        qApp->aboutQt();
+    });
     connect(ui->pushButton_ok, &QPushButton::clicked, this, &AboutDialog::close);
-    connect(ui->pushButton_source, &QPushButton::clicked,
-        [=]
-        {
-            QDesktopServices::openUrl(QUrl(QStringLiteral("https://github.com/wangwenx190/dynamic-desktop")));
-        });
-    connect(ui->pushButton_issues, &QPushButton::clicked,
-        [=]
-        {
-            QDesktopServices::openUrl(QUrl(QStringLiteral("https://github.com/wangwenx190/dynamic-desktop/issues")));
-        });
-    connect(ui->pushButton_release, &QPushButton::clicked,
-        [=]
-        {
-            QDesktopServices::openUrl(QUrl(QStringLiteral("https://github.com/wangwenx190/dynamic-desktop/releases/latest")));
-        });
+    connect(ui->pushButton_source, &QPushButton::clicked, this, [=]
+    {
+        QDesktopServices::openUrl(QUrl(QStringLiteral("https://github.com/wangwenx190/dynamic-desktop")));
+    });
+    connect(ui->pushButton_issues, &QPushButton::clicked, this, [=]
+    {
+        QDesktopServices::openUrl(QUrl(QStringLiteral("https://github.com/wangwenx190/dynamic-desktop/issues")));
+    });
+    connect(ui->pushButton_release, &QPushButton::clicked, this, [=]
+    {
+        QDesktopServices::openUrl(QUrl(QStringLiteral("https://github.com/wangwenx190/dynamic-desktop/releases/latest")));
+    });
 }
 
 AboutDialog::~AboutDialog()
