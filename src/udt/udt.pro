@@ -20,3 +20,13 @@ SOURCES += main.cpp
 target.path = $$BIN_DIR
 INSTALLS *= target
 include(../3rdparty/qsimpleupdater/QSimpleUpdater.pri)
+!CONFIG(static_dd) {
+    libs.path = $$BIN_DIR
+    isEmpty(qttools_dir): qttools_dir = $$[QT_INSTALL_BINS]
+    isEmpty(windeployqt): windeployqt = $${qttools_dir}/windeployqt.exe
+    exists("$${windeployqt}") {
+        libs.commands = $$quote(\"$${windeployqt}\" --plugindir \"$${BIN_DIR}/plugins\" --no-patchqt --no-translations --no-system-d3d-compiler --no-compiler-runtime --no-angle --no-opengl-sw --no-svg --list source \"$${BIN_DIR}/$${TARGET}.exe\")
+        libs.commands = $$join(libs.commands, $$escape_expand(\\n\\t))
+    }
+    INSTALLS *= libs
+}

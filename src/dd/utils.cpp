@@ -176,7 +176,11 @@ bool checkUpdate(bool hide)
     updaterPath += QStringLiteral(".exe");
     if (!QFileInfo::exists(updaterPath))
         return false;
-    return QProcess::startDetached(QDir::toNativeSeparators(updaterPath), hide ? QStringList{ QStringLiteral("--no-gui") } : QStringList{}, QDir::toNativeSeparators(updaterDir));
+    QStringList arguments = QCoreApplication::arguments();
+    arguments.takeFirst();
+    if (hide)
+        arguments << QStringLiteral("--no-gui");
+    return QProcess::startDetached(QDir::toNativeSeparators(updaterPath), arguments, QDir::toNativeSeparators(updaterDir));
 }
 
 }

@@ -32,10 +32,16 @@ int main(int argc, char *argv[])
     QCoreApplication::setApplicationVersion(QStringLiteral(DD_VERSION));
     QCoreApplication::setOrganizationName(QStringLiteral("wangwenx190"));
     QCoreApplication::setOrganizationDomain(QStringLiteral("wangwenx190.github.io"));
-    if (!QApplication::arguments().contains(QStringLiteral("--launch")))
+#ifndef _DEBUG
+    const QStringList arguments = QApplication::arguments();
+    if (!arguments.contains(QStringLiteral("-?"))
+            && !arguments.contains(QStringLiteral("-h"), Qt::CaseInsensitive)
+            && !arguments.contains(QStringLiteral("--help"), Qt::CaseInsensitive)
+            && !arguments.contains(QStringLiteral("-v"), Qt::CaseInsensitive)
+            && !arguments.contains(QStringLiteral("--version"), Qt::CaseInsensitive)
+            && !QApplication::arguments().contains(QStringLiteral("--launch"), Qt::CaseInsensitive))
         if (Utils::checkUpdate())
             return 0;
-#ifndef _DEBUG
     qInstallMessageHandler(Utils::fileLogger);
 #endif
 #ifdef BUILD_DD_STATIC
@@ -90,7 +96,7 @@ int main(int argc, char *argv[])
                                         QApplication::translate("main", "Make the output image keep original video aspect ratio instead of fitting the whole renderer window."));
     parser.addOption(keepRatioOption);*/
     QCommandLineOption imageQualityOption(QStringLiteral("quality"),
-                                          QApplication::translate("main", "Set the quality of the output image. It can be default/best/fastest. Default is fastest. Case insensitive."),
+                                          QApplication::translate("main", "Set the quality of the output image. It can be default/best/fastest. Default is best. Case insensitive."),
                                           QApplication::translate("main", "Image quality"));
     parser.addOption(imageQualityOption);
     QCommandLineOption rendererOption(QStringLiteral("renderer"),
@@ -101,6 +107,9 @@ int main(int argc, char *argv[])
                                     QApplication::translate("main", "Set volume. It must be a positive integer between 0 and 99. Default is 9."),
                                     QApplication::translate("main", "volume"));
     parser.addOption(volumeOption);
+    QCommandLineOption launchOption(QStringLiteral("launch"),
+                                    QApplication::translate("main", "Skip checking for updates, launch directly."));
+    parser.addOption(launchOption);
     parser.process(app);
     windowMode = parser.isSet(windowModeOption);
     QString skinOptionValue = parser.value(skinOption);
