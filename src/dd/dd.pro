@@ -49,8 +49,9 @@ TRANSLATIONS += \
     translations/dd_en.ts \
     translations/dd_zh_CN.ts
 RESOURCES += images.qrc
-isEmpty(lupdate): lupdate = $$[QT_INSTALL_BINS]/lupdate.exe
-isEmpty(lrelease): lrelease = $$[QT_INSTALL_BINS]/lrelease.exe
+isEmpty(qttools_dir): qttools_dir = $$[QT_INSTALL_BINS]
+isEmpty(lupdate): lupdate = $${qttools_dir}/lupdate.exe
+isEmpty(lrelease): lrelease = $${qttools_dir}/lrelease.exe
 lrelease_params = -nounfinished -removeidentical
 CONFIG(small): lrelease_params = $${lrelease_params} -compress
 exists("$${lupdate}") {
@@ -74,31 +75,33 @@ CONFIG(static_dd) {
         translations.commands += $$quote(\"$${lrelease}\" $${lrelease_params} \"$${_PRO_FILE_}\")
         translations.commands = $$join(translations.commands, $$escape_expand(\\n\\t))
     }
+    isEmpty(ffmpeg_dir): ffmpeg_dir = $$[QT_INSTALL_BINS]
     libs.path = $$BIN_DIR
     libs.files = \
         $$[QT_INSTALL_BINS]/QtAV?.dll \
         $$[QT_INSTALL_BINS]/QtAVWidgets?.dll \
-        $$[QT_INSTALL_BINS]/avcodec-*.dll \
-        $$[QT_INSTALL_BINS]/avdevice-*.dll \
-        $$[QT_INSTALL_BINS]/avfilter-*.dll \
-        $$[QT_INSTALL_BINS]/avformat-*.dll \
-        $$[QT_INSTALL_BINS]/avresample-*.dll \
-        $$[QT_INSTALL_BINS]/avutil-*.dll \
-        $$[QT_INSTALL_BINS]/ass.dll \
-        $$[QT_INSTALL_BINS]/libass.dll \
-        $$[QT_INSTALL_BINS]/OpenAL32*.dll \
-        $$[QT_INSTALL_BINS]/postproc-*.dll \
-        $$[QT_INSTALL_BINS]/swresample-*.dll \
-        $$[QT_INSTALL_BINS]/swscale-*.dll
-    isEmpty(windeployqt): windeployqt = $$[QT_INSTALL_BINS]/windeployqt.exe
+        $${ffmpeg_dir}/avcodec-*.dll \
+        $${ffmpeg_dir}/avdevice-*.dll \
+        $${ffmpeg_dir}/avfilter-*.dll \
+        $${ffmpeg_dir}/avformat-*.dll \
+        $${ffmpeg_dir}/avresample-*.dll \
+        $${ffmpeg_dir}/avutil-*.dll \
+        $${ffmpeg_dir}/ass.dll \
+        $${ffmpeg_dir}/libass.dll \
+        $${ffmpeg_dir}/OpenAL32*.dll \
+        $${ffmpeg_dir}/postproc-*.dll \
+        $${ffmpeg_dir}/swresample-*.dll \
+        $${ffmpeg_dir}/swscale-*.dll
+    isEmpty(windeployqt): windeployqt = $${qttools_dir}/windeployqt.exe
     exists("$${windeployqt}") {
         libs.commands = $$quote(\"$${windeployqt}\" --plugindir \"$${BIN_DIR}/plugins\" --force --no-translations --compiler-runtime --angle --no-opengl-sw -concurrent -opengl --no-svg --list source \"$${BIN_DIR}/$${TARGET}.exe\")
         libs.commands = $$join(libs.commands, $$escape_expand(\\n\\t))
     }
     INSTALLS *= libs translations skins
 }
-release:CONFIG(small) {
-    isEmpty(upx): upx = $$[QT_INSTALL_BINS]/upx.exe
+CONFIG(upx) {
+    isEmpty(upx_dir): upx_dir = $$[QT_INSTALL_BINS]
+    isEmpty(upx): upx = $${upx_dir}/upx.exe
     exists("$${upx}") {
         upx.path = $$BIN_DIR
         upx.commands += $$quote(\"$${upx}\" --force --ultra-brute \"$${BIN_DIR}/*.exe\")

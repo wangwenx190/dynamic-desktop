@@ -178,9 +178,9 @@ int main(int argc, char *argv[])
     {
         if (mainWindow.isHidden())
             mainWindow.show();
-        mainWindow.play(SettingsManager::getInstance()->getUrl());
+        emit mainWindow.play(SettingsManager::getInstance()->getUrl());
     }
     else
-        mainWindow.showOptions();
+        emit mainWindow.showOptions();
     return Utils::ExitProgram(QApplication::exec());
 }

@@ -111,7 +111,7 @@ void MainWindow::initConnections()
             if (ao->volume() != newVolume)
                 if (qAbs(static_cast<unsigned int>(ao->volume() / kVolumeInterval) - volume) >= static_cast<unsigned int>(0.1 / kVolumeInterval))
                     QtConcurrent::run([=]{ ao->setVolume(newVolume); });
-            preferencesDialog->setVolumeToolTip(tr("Volume: %0").arg(QString::number(newVolume)));
+            emit preferencesDialog->setVolumeToolTip(tr("Volume: %0").arg(QString::number(newVolume)));
         }
     });
     connect(preferencesDialog, &PreferencesDialog::muteChanged, this, [=](bool mute)
