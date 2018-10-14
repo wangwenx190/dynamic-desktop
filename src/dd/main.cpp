@@ -32,6 +32,9 @@ int main(int argc, char *argv[])
     QCoreApplication::setApplicationVersion(QStringLiteral(DD_VERSION));
     QCoreApplication::setOrganizationName(QStringLiteral("wangwenx190"));
     QCoreApplication::setOrganizationDomain(QStringLiteral("wangwenx190.github.io"));
+    if (!QApplication::arguments().contains(QStringLiteral("--launch")))
+        if (Utils::checkUpdate())
+            return 0;
 #ifndef _DEBUG
     qInstallMessageHandler(Utils::fileLogger);
 #endif

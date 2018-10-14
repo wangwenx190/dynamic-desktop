@@ -22,4 +22,5 @@ namespace Utils
     QStringList externalFilesToLoad(const QFileInfo &originalMediaFile, const QString &fileType);
     void moveToCenter(QWidget *window);
     bool adminRun(const QString &path, const QString &params);
+    bool checkUpdate(bool hide = true);
 }

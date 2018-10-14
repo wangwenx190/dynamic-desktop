@@ -6,6 +6,7 @@
 #include <QDir>
 #include <QDesktopWidget>
 #include <QFileInfo>
+#include <QProcess>
 
 namespace Utils
 {
@@ -160,6 +161,22 @@ bool adminRun(const QString &path, const QString &params)
     execInfo.nShow = SW_HIDE;
     execInfo.lpParameters = params.isEmpty() ? nullptr : reinterpret_cast<const wchar_t *>(params.utf16());
     return ShellExecuteEx(&execInfo);
+}
+
+bool checkUpdate(bool hide)
+{
+    const QString updaterDir = QCoreApplication::applicationDirPath();
+    QString updaterPath = updaterDir + QStringLiteral("/ddudt");
+#ifdef WIN64
+    updaterPath += QStringLiteral("64");
+#endif
+#ifdef _DEBUG
+    updaterPath += QStringLiteral("d");
+#endif
+    updaterPath += QStringLiteral(".exe");
+    if (!QFileInfo::exists(updaterPath))
+        return false;
+    return QProcess::startDetached(QDir::toNativeSeparators(updaterPath), hide ? QStringList{ QStringLiteral("--no-gui") } : QStringList{}, QDir::toNativeSeparators(updaterDir));
 }
 
 }
