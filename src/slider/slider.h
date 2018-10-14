@@ -1,8 +1,10 @@
 #pragma once
 
+#include "slider_global.h"
+
 #include <QSlider>
 
-class Slider : public QSlider
+class SLIDERSHARED_EXPORT Slider : public QSlider
 {
     Q_OBJECT
 public:

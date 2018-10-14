@@ -1,6 +1,7 @@
 #include "preferencesdialog.h"
 #include "ui_preferencesdialog.h"
-#include "settingsmanager.h"
+#include <settingsmanager.h>
+#include <utils.h>
 
 #ifdef QT_HAS_WINEXTRAS
 #include <QWinTaskbarButton>
@@ -150,7 +151,7 @@ void PreferencesDialog::initUI()
         ui->horizontalSlider_volume->setEnabled(ui->checkBox_volume->isChecked());
         ui->horizontalSlider_volume->setValue(SettingsManager::getInstance()->getVolume());
     }
-    ui->checkBox_autoStart->setChecked(SettingsManager::getInstance()->isAutoStart());
+    ui->checkBox_autoStart->setChecked(Utils::isAutoStart());
     QStringList decoders = SettingsManager::getInstance()->getDecoders();
     ui->checkBox_hwdec_cuda->setChecked(decoders.contains(QStringLiteral("CUDA")));
     ui->checkBox_hwdec_d3d11->setChecked(decoders.contains(QStringLiteral("D3D11")));
@@ -407,7 +408,7 @@ void PreferencesDialog::initConnections()
     ui->comboBox_subtitle_charset->addItem(tr("Auto detect"), QStringLiteral("AutoDetect"));
     ui->comboBox_subtitle_charset->addItem(tr("System"), QStringLiteral("System"));
     for (auto& codec : QTextCodec::availableCodecs())
-        ui->comboBox_subtitle_charset->addItem(QString::fromLatin1(codec), QString::fromLatin1(codec));
+        ui->comboBox_subtitle_charset->addItem(QString::fromLocal8Bit(codec), QString::fromLocal8Bit(codec));
     connect(ui->comboBox_skin, qOverload<int>(&QComboBox::currentIndexChanged), this, [=](int index)
     {
         Q_UNUSED(index)
@@ -469,13 +470,13 @@ void PreferencesDialog::initConnections()
     });
     connect(ui->checkBox_autoStart, &QCheckBox::clicked, this, [=]
     {
-        if (ui->checkBox_autoStart->isChecked() && !SettingsManager::getInstance()->isAutoStart())
-            SettingsManager::getInstance()->setAutoStart(true);
-        else if (!ui->checkBox_autoStart->isChecked() && SettingsManager::getInstance()->isAutoStart())
-            SettingsManager::getInstance()->setAutoStart(false);
+        if (ui->checkBox_autoStart->isChecked() && !Utils::isAutoStart())
+            Utils::setAutoStart(true);
+        else if (!ui->checkBox_autoStart->isChecked() && Utils::isAutoStart())
+            Utils::setAutoStart(false);
         QTimer::singleShot(2500, this, [=]
         {
-            ui->checkBox_autoStart->setChecked(SettingsManager::getInstance()->isAutoStart());
+            ui->checkBox_autoStart->setChecked(Utils::isAutoStart());
         });
     });
     connect(ui->radioButton_ratio_fitDesktop, &QRadioButton::clicked, this, &PreferencesDialog::setRatio);

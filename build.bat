@@ -37,3 +37,5 @@ if %ERRORLEVEL% neq 0 set _buildtool=nmake
 %_buildtool% && %_buildtool% install
 cd "%~dp0"
 rd /s /q build
+if exist bin del /f /s /q bin\*.lib
+if exist bin64 del /f /s /q bin64\*.lib

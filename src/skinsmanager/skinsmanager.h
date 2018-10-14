@@ -1,17 +1,19 @@
 #pragma once
 
+#include "skinsmanager_global.h"
+
 #include <QtCore>
 
-class SkinManager
+class SKINSMANAGERSHARED_EXPORT SkinsManager
 {
 public:
-    static SkinManager *getInstance();
+    static SkinsManager *getInstance();
 
 public:
     QString currentSkinName() const;
     QString currentSkinPath() const;
     QString currentSkinContent() const;
-    bool setSkin(const QString &skin = QStringLiteral("default"));
+    bool setSkin(const QString &skin = QStringLiteral("Default"));
 
 private:
     QString curSkinName;

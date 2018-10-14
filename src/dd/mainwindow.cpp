@@ -1,7 +1,7 @@
 #include "mainwindow.h"
-#include "utils.h"
-#include "settingsmanager.h"
-#include "skinmanager.h"
+#include <utils.h>
+#include <settingsmanager.h>
+#include <skinsmanager.h>
 #include "forms/aboutdialog.h"
 #include "forms/preferencesdialog.h"
 
@@ -81,7 +81,7 @@ void MainWindow::initPlayer()
     player->setRepeat(-1);
     subtitle = new QtAV::SubtitleFilter();
     subtitle->setPlayer(player);
-    subtitle->setCodec(SettingsManager::getInstance()->getCharset().toLatin1());
+    subtitle->setCodec(SettingsManager::getInstance()->getCharset().toLocal8Bit());
     subtitle->setEngines(QStringList() << QStringLiteral("LibASS") << QStringLiteral("FFmpeg"));
     subtitle->setAutoLoad(SettingsManager::getInstance()->getSubtitleAutoLoad());
     subtitle->setEnabled(SettingsManager::getInstance()->getSubtitle());
@@ -172,8 +172,8 @@ void MainWindow::initConnections()
     connect(preferencesDialog, &PreferencesDialog::charsetChanged, this, [=](const QString &charset)
     {
         if (SettingsManager::getInstance()->getSubtitle())
-            if (subtitle->codec() != charset.toLatin1())
-                QtConcurrent::run([=]{ subtitle->setCodec(charset.toLatin1()); });
+            if (subtitle->codec() != charset.toLocal8Bit())
+                QtConcurrent::run([=]{ subtitle->setCodec(charset.toLocal8Bit()); });
     });
     connect(preferencesDialog, &PreferencesDialog::subtitleAutoLoadChanged, this, [=](bool autoload)
     {
@@ -187,8 +187,8 @@ void MainWindow::initConnections()
     });
     connect(preferencesDialog, &PreferencesDialog::skinChanged, this, [=](const QString &skin)
     {
-        if (SkinManager::getInstance()->currentSkinName() != skin)
-            QtConcurrent::run([=]{ SkinManager::getInstance()->setSkin(skin); });
+        if (SkinsManager::getInstance()->currentSkinName() != skin)
+            QtConcurrent::run([=]{ SkinsManager::getInstance()->setSkin(skin); });
     });
     connect(preferencesDialog, &PreferencesDialog::rendererChanged, this, [=](QtAV::VideoRendererId rendererId)
     {

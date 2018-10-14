@@ -1,18 +1,15 @@
 #pragma once
 
-#include <QSettings>
-#include <QtAV>
-#include <QtAVWidgets>
+#include "settingsmanager_global.h"
 
-class SettingsManager
+#include <QSettings>
+
+class SETTINGSMANAGERSHARED_EXPORT SettingsManager
 {
 public:
     static SettingsManager *getInstance();
 
 public:
-    bool setAutoStart(bool enable = true);
-    bool isAutoStart(const QString &name = QStringLiteral("Dynamic Desktop Service"));
-
     QStringList defaultDecoders() const;
     QStringList supportedMimeTypes() const;
     QString lastDir() const;
@@ -29,7 +26,7 @@ public:
     bool getAudioAutoLoad() const;
     QString getSkin() const;
     QString getLanguage() const;
-    QtAV::VideoRendererId getRenderer() const;
+    int getRenderer() const;
     QString getImageQuality() const;
 
     void setUrl(const QString &url);
@@ -44,7 +41,7 @@ public:
     void setAudioAutoLoad(bool autoload = true);
     void setSkin(const QString &skin = QStringLiteral("Default"));
     void setLanguage(const QString &lang = QStringLiteral("auto"));
-    void setRenderer(QtAV::VideoRendererId vid = QtAV::VideoRendererId_GLWidget2);
+    void setRenderer(int vid);
     void setImageQuality(const QString &quality = QStringLiteral("best"));
 
 private:

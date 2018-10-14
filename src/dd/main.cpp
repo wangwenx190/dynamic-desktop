@@ -1,10 +1,13 @@
-#include "settingsmanager.h"
-#include "skinmanager.h"
-#include "utils.h"
+#include <settingsmanager.h>
+#include <skinsmanager.h>
+#include <utils.h>
+#include <wallpaper.h>
 #include "mainwindow.h"
 
 #include <Windows.h>
 
+#include <QtAV>
+#include <QtAVWidgets>
 #include <QApplication>
 #include <QDesktopWidget>
 #include <QMessageBox>
@@ -70,11 +73,11 @@ int main(int argc, char *argv[])
         QMessageBox::critical(nullptr, QStringLiteral("Dynamic Desktop"), QObject::tr("This application only supports Windows 7 and newer."));
         Utils::Exit(-1);
     }
-    Utils::mutex = CreateMutex(nullptr, FALSE, TEXT(DD_MUTEX));
-    if ((Utils::mutex != nullptr) && (GetLastError() == ERROR_ALREADY_EXISTS))
+    Utils::setAppMutex(CreateMutex(nullptr, FALSE, TEXT(DD_MUTEX)));
+    if ((Utils::getAppMutex() != nullptr) && (GetLastError() == ERROR_ALREADY_EXISTS))
     {
         QMessageBox::critical(nullptr, QStringLiteral("Dynamic Desktop"), QObject::tr("There is another instance running. Please do not run twice."));
-        ReleaseMutex(Utils::mutex);
+        ReleaseMutex(Utils::getAppMutex());
         return 0;
     }
     QCommandLineParser parser;
@@ -158,7 +161,7 @@ int main(int argc, char *argv[])
         if (static_cast<unsigned int>(volumeOptionValueInt) != SettingsManager::getInstance()->getVolume())
             SettingsManager::getInstance()->setVolume(static_cast<unsigned int>(volumeOptionValueInt));
     }
-    SkinManager::getInstance()->setSkin(SettingsManager::getInstance()->getSkin());
+    SkinsManager::getInstance()->setSkin(SettingsManager::getInstance()->getSkin());
     MainWindow mainWindow;
     const Qt::WindowFlags rendererWindowFlags = Qt::FramelessWindowHint;
     const QRect screenGeometry = QApplication::desktop()->screenGeometry(&mainWindow);
@@ -177,9 +180,7 @@ int main(int argc, char *argv[])
         // also block our desktop icons, however using
         // "WorkerW" as our parent window will not result
         // in this problem, I don't know why. It's strange.
-        HWND hwnd = Utils::getWorkerW(currentVersion < win10Version);
-        if (hwnd != nullptr)
-            SetParent(reinterpret_cast<HWND>(mainWindow.winId()), hwnd);
+        Wallpaper::setWallpaper(reinterpret_cast<HWND>(mainWindow.winId()), currentVersion < win10Version);
     }
     else
     {

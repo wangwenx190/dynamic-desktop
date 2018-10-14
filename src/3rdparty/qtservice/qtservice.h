@@ -40,12 +40,14 @@
 
 #pragma once
 
+#include "qtservice_global.h"
+
 #include <QCoreApplication>
 
 QT_FORWARD_DECLARE_CLASS(QStringList)
 QT_FORWARD_DECLARE_CLASS(QtServiceControllerPrivate)
 
-class QtServiceController
+class QTSERVICESHARED_EXPORT QtServiceController
 {
     Q_DECLARE_PRIVATE(QtServiceController)
 public:
@@ -82,7 +84,7 @@ private:
 
 QT_FORWARD_DECLARE_CLASS(QtServiceBasePrivate)
 
-class QtServiceBase
+class QTSERVICESHARED_EXPORT QtServiceBase
 {
     Q_DECLARE_PRIVATE(QtServiceBase)
 public:

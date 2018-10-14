@@ -1,8 +1,7 @@
 #include <qtservice.h>
+#include <utils.h>
 
 #include <Windows.h>
-#include <wtsapi32.h>
-#include <userenv.h>
 
 #include <QCoreApplication>
 #include <QFileInfo>
@@ -15,9 +14,6 @@ public:
 
 protected:
     void start() override;
-
-private:
-    bool launchSession1Process(const QString &path);
 };
 
 DDSvc::DDSvc(int argc, char **argv)
@@ -43,44 +39,11 @@ void DDSvc::start()
         ReleaseMutex(mutex);
         CloseHandle(mutex);
         if (QFileInfo::exists(path))
-            launchSession1Process(QDir::toNativeSeparators(path));
+            Utils::launchSession1Process(QDir::toNativeSeparators(path), QStringLiteral("--launch"));
     }
     else
         ReleaseMutex(mutex);
     qApp->quit();
-}
-
-bool DDSvc::launchSession1Process(const QString &path)
-{
-    if (path.isEmpty())
-        return false;
-    if (!QFileInfo::exists(path))
-        return false;
-    const QString dir = QDir::toNativeSeparators(QFileInfo(path).canonicalPath());
-    STARTUPINFO si = { 0 };
-    PROCESS_INFORMATION pi = { nullptr };
-    si.cb = sizeof(si);
-    DWORD dwSessionID = WTSGetActiveConsoleSessionId();
-    HANDLE hToken = nullptr;
-    if (WTSQueryUserToken(dwSessionID, &hToken) == FALSE)
-        return false;
-    HANDLE hDuplicatedToken = nullptr;
-    if (DuplicateTokenEx(hToken, MAXIMUM_ALLOWED, nullptr, SecurityIdentification, TokenPrimary, &hDuplicatedToken) == FALSE)
-        return false;
-    LPVOID lpEnvironment = nullptr;
-    if (CreateEnvironmentBlock(&lpEnvironment, hDuplicatedToken, FALSE) == FALSE)
-        return false;
-    if (CreateProcessAsUser(hDuplicatedToken,
-                            reinterpret_cast<const wchar_t *>(QDir::toNativeSeparators(path).utf16()),
-                            nullptr, nullptr, nullptr, FALSE,
-                            NORMAL_PRIORITY_CLASS | CREATE_NEW_CONSOLE | CREATE_UNICODE_ENVIRONMENT,
-                            lpEnvironment,
-                            reinterpret_cast<const wchar_t *>(dir.utf16()),
-                            &si, &pi) == FALSE)
-        return false;
-    CloseHandle(pi.hProcess);
-    CloseHandle(pi.hThread);
-    return true;
 }
 
 int main(int argc, char **argv)

@@ -1,5 +1,8 @@
 #include "utils.h"
 
+#include <qtservice.h>
+#include <wallpaper.h>
+
 #include <QMutex>
 #include <QApplication>
 #include <QTextStream>
@@ -7,37 +10,15 @@
 #include <QDesktopWidget>
 #include <QFileInfo>
 #include <QProcess>
+#include <QWidget>
+
+#include <wtsapi32.h>
+#include <userenv.h>
 
 namespace Utils
 {
 
-//https://github.com/ThomasHuai/Wallpaper/blob/master/utils.cpp
-BOOL CALLBACK EnumWindowsProc(_In_ HWND hwnd, _In_ LPARAM lParam)
-{
-    Q_UNUSED(lParam)
-    HWND defview = FindWindowEx(hwnd, nullptr, TEXT("SHELLDLL_DefView"), nullptr);
-    if (defview != nullptr)
-    {
-        HWORKERW = FindWindowEx(nullptr, hwnd, TEXT("WorkerW"), nullptr);
-        if (HWORKERW != nullptr)
-            return FALSE;
-    }
-    return TRUE;
-}
-
-HWND getProgman()
-{
-    return FindWindow(TEXT("Progman"), TEXT("Program Manager"));
-}
-
-HWND getWorkerW(bool legacyMode)
-{
-    HWND hwnd = getProgman();
-    SendMessage(hwnd, 0x052c, 0, 0);
-    EnumWindows(EnumWindowsProc, 0);
-    ShowWindow(HWORKERW, legacyMode ? SW_HIDE : SW_SHOW);
-    return legacyMode ? hwnd : HWORKERW;
-}
+static HANDLE mutex = nullptr;
 
 void Exit(int resultCode)
 {
@@ -119,17 +100,18 @@ QStringList externalFilesToLoad(const QFileInfo &originalMediaFile, const QStrin
     return newFileList;
 }
 
-void moveToCenter(QWidget *window)
+void moveToCenter(QObject *window)
 {
     if (!window)
         return;
-    unsigned int screenWidth = QApplication::desktop()->screenGeometry(window).width();
-    unsigned int screenHeight = QApplication::desktop()->screenGeometry(window).height();
-    unsigned int windowWidth = window->width();
-    unsigned int windowHeight = window->height();
+    auto win = qobject_cast<QWidget *>(window);
+    unsigned int screenWidth = QApplication::desktop()->screenGeometry(win).width();
+    unsigned int screenHeight = QApplication::desktop()->screenGeometry(win).height();
+    unsigned int windowWidth = win->width();
+    unsigned int windowHeight = win->height();
     unsigned int newX = (screenWidth - windowWidth) / 2;
     unsigned int newY = (screenHeight - windowHeight) / 2;
-    window->move(newX, newY);
+    win->move(newX, newY);
 }
 
 void preExit()
@@ -139,8 +121,8 @@ void preExit()
         ReleaseMutex(mutex);
         CloseHandle(mutex);
     }
-    if (HWORKERW != nullptr)
-        ShowWindow(HWORKERW, SW_HIDE);
+    if (Wallpaper::getWorkerW() != nullptr)
+        ShowWindow(Wallpaper::getWorkerW(), SW_HIDE);
 }
 
 int ExitProgram(int resultCode)
@@ -181,6 +163,85 @@ bool checkUpdate(bool hide)
     if (hide)
         arguments << QStringLiteral("--no-gui");
     return QProcess::startDetached(QDir::toNativeSeparators(updaterPath), arguments, QDir::toNativeSeparators(updaterDir));
+}
+
+bool launchSession1Process(const QString &path, const QString &params)
+{
+    if (path.isEmpty())
+        return false;
+    if (!QFileInfo::exists(path))
+        return false;
+    const QString dir = QDir::toNativeSeparators(QFileInfo(path).canonicalPath());
+    STARTUPINFO si = { 0 };
+    PROCESS_INFORMATION pi = { nullptr };
+    si.cb = sizeof(si);
+    DWORD dwSessionID = WTSGetActiveConsoleSessionId();
+    HANDLE hToken = nullptr;
+    if (WTSQueryUserToken(dwSessionID, &hToken) == FALSE)
+        return false;
+    HANDLE hDuplicatedToken = nullptr;
+    if (DuplicateTokenEx(hToken, MAXIMUM_ALLOWED, nullptr, SecurityIdentification, TokenPrimary, &hDuplicatedToken) == FALSE)
+        return false;
+    LPVOID lpEnvironment = nullptr;
+    if (CreateEnvironmentBlock(&lpEnvironment, hDuplicatedToken, FALSE) == FALSE)
+        return false;
+    wchar_t *wcstring;
+    if (!params.isEmpty())
+    {
+        QByteArray byteArray = params.toLocal8Bit();
+        char *param = byteArray.data();
+        size_t newsize = strlen(param) + 1;
+        wcstring = new wchar_t[newsize];
+        size_t convertedChars = 0;
+        mbstowcs_s(&convertedChars, wcstring, newsize, param, _TRUNCATE);
+    }
+    if (CreateProcessAsUser(hDuplicatedToken,
+                            reinterpret_cast<const wchar_t *>(QDir::toNativeSeparators(path).utf16()),
+                            params.isEmpty() ? nullptr : wcstring, nullptr, nullptr, FALSE,
+                            NORMAL_PRIORITY_CLASS | CREATE_NEW_CONSOLE | CREATE_UNICODE_ENVIRONMENT,
+                            lpEnvironment,
+                            reinterpret_cast<const wchar_t *>(dir.utf16()),
+                            &si, &pi) == FALSE)
+        return false;
+    CloseHandle(pi.hProcess);
+    CloseHandle(pi.hThread);
+    return true;
+}
+
+bool isAutoStart(const QString &name)
+{
+    QString serviceName = name.isEmpty() ? QCoreApplication::applicationName() : name;
+    QtServiceController controller(serviceName);
+    return controller.isInstalled();
+}
+
+bool setAutoStart(bool enable)
+{
+    QString servicePath = QCoreApplication::applicationDirPath() + QStringLiteral("/ddsvc");
+#ifdef WIN64
+    servicePath += QStringLiteral("64");
+#endif
+#ifdef _DEBUG
+    servicePath += QStringLiteral("d");
+#endif
+    servicePath += QStringLiteral(".exe");
+    if (!QFileInfo::exists(servicePath))
+        return false;
+    if (enable && !isAutoStart())
+        return adminRun(QDir::toNativeSeparators(servicePath), QStringLiteral("-i"));
+    else if (!enable && isAutoStart())
+        return adminRun(QDir::toNativeSeparators(servicePath), QStringLiteral("-u"));
+    return false;
+}
+
+HANDLE getAppMutex()
+{
+    return mutex;
+}
+
+void setAppMutex(HANDLE appMutex)
+{
+    mutex = appMutex;
 }
 
 }

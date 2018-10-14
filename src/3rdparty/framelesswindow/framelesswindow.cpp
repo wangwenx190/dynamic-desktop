@@ -1,6 +1,5 @@
 #include "framelesswindow.h"
 
-#ifdef Q_OS_WIN
 #include <windows.h>
 //#include <WinUser.h>
 #include <windowsx.h>
@@ -277,5 +276,3 @@ void FramelessWindow::showFullScreen()
     }
     QWidget::showFullScreen();
 }
-
-#endif //Q_OS_WIN

@@ -1,5 +1,7 @@
 ﻿#pragma once
 
+#include "framelesswindow_global.h"
+
 #include <QWidget>
 
 //A nice frameless window for both Windows and OS X
@@ -7,9 +9,7 @@
 //Github: https://github.com/Bringer-of-Light/Qt-Nice-Frameless-Window
 // Usage: use "FramelessWindow" as base class instead of "QWidget", and enjoy
 
-#ifdef Q_OS_WIN
-
-class FramelessWindow : public QWidget
+class FRAMELESSWINDOWSHARED_EXPORT FramelessWindow : public QWidget
 {
     Q_OBJECT
 public:
@@ -59,5 +59,3 @@ private:
 
     bool m_bResizeable = true;
 };
-
-#endif

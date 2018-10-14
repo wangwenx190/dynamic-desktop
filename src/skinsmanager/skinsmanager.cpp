@@ -1,4 +1,4 @@
-#include "skinmanager.h"
+#include "skinsmanager.h"
 
 #include <QFile>
 #include <QFileInfo>
@@ -7,28 +7,28 @@
 #include <QCoreApplication>
 #include <QApplication>
 
-SkinManager *SkinManager::getInstance()
+SkinsManager *SkinsManager::getInstance()
 {
-    static SkinManager skinManager;
-    return &skinManager;
+    static SkinsManager SkinsManager;
+    return &SkinsManager;
 }
 
-QString SkinManager::currentSkinName() const
+QString SkinsManager::currentSkinName() const
 {
     return curSkinName;
 }
 
-QString SkinManager::currentSkinPath() const
+QString SkinsManager::currentSkinPath() const
 {
     return curSkinPath;
 }
 
-QString SkinManager::currentSkinContent() const
+QString SkinsManager::currentSkinContent() const
 {
     return qApp->styleSheet();
 }
 
-bool SkinManager::setSkin(const QString &skin)
+bool SkinsManager::setSkin(const QString &skin)
 {
     if (skin.isEmpty())
         return false;

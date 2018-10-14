@@ -1,10 +1,10 @@
 #include <QApplication>
 #include <QDir>
 #include <QProcess>
-#include <QSettings>
+//#include <QSettings>
 #include <QFileInfo>
 
-#include <QSimpleUpdater.h>
+//#include <QSimpleUpdater.h>
 
 int main(int argc, char *argv[])
 {
@@ -20,7 +20,7 @@ int main(int argc, char *argv[])
     QStringList arguments = QApplication::arguments();
     arguments.takeFirst();
     const QString dir = QApplication::applicationDirPath();
-    /*const QString updateUrl = QStringLiteral("https://raw.githubusercontent.com/wangwenx190/dynamic-desktop/develop/updates.json");
+    /*const QString updateUrl = QStringLiteral("https://raw.githubusercontent.com/wangwenx190/dynamic-desktop/develop/src/updates.json");
     QString ini = dir + QStringLiteral("/config.ini");
     QSettings settings(ini, QSettings::IniFormat);
     QSimpleUpdater *updater = QSimpleUpdater::getInstance();

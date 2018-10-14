@@ -1,7 +1,7 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/7n23thxiormp6oar/branch/develop?svg=true)](https://ci.appveyor.com/project/wangwenx190/dynamic-desktop/branch/develop)
 [![Code quality](https://api.codacy.com/project/badge/Grade/b41d1d384abe4f81a9613945cf654ff6)](https://www.codacy.com/app/wangwenx190/dynamic-desktop?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=wangwenx190/dynamic-desktop&amp;utm_campaign=Badge_Grade)
 [![Bugs](https://img.shields.io/github/issues/wangwenx190/dynamic-desktop/bug.svg)](https://github.com/wangwenx190/dynamic-desktop/issues?utf8=✓&q=is%3Aissue+is%3Aopen+label%3Abug)
-[![Github All Releases](https://img.shields.io/github/downloads/wangwenx190/dynamic-desktop/total.svg)](https://github.com/wangwenx190/dynamic-desktop/releases/latest)
+[![Latest release](https://img.shields.io/github/downloads/wangwenx190/dynamic-desktop/total.svg)](https://github.com/wangwenx190/dynamic-desktop/releases/latest)
 
 ## Overview
 A small tool that can play videos on your desktop. Only for Microsoft Windows 7 ~ 10(with GUI desktop). It may have some limitations because it's just a media player, putting it's window under your desktop icons. Maybe Wallpaper Engine's principle is totally different with this tool.
@@ -58,13 +58,12 @@ You can also use Intel C++ Compiler(ICC), Clang or MinGW to compile it, just rem
 See [CONTRIBUTING.md](/CONTRIBUTING.md) for more information.
 
 ## Licenses
-- [**Wallpaper Engine**](https://store.steampowered.com/app/431960/Wallpaper_Engine/) from Steam gives me the original idea to make this tool. Thanks to WE's author(s)!
-- Main train of thought comes from https://github.com/ThomasHuai/Wallpaper , some code([utils.cpp](/src/dd/utils.cpp) and [main.cpp](/src/dd/main.cpp)) is also copied from https://github.com/ThomasHuai/Wallpaper/blob/master/utils.cpp and https://github.com/ThomasHuai/Wallpaper/blob/master/wallpaper.cpp , thanks to [**ThomasHuai**](https://github.com/ThomasHuai)!
-- Special thanks to [**wang bin**](https://github.com/wang-bin) for his awesome [QtAV](https://github.com/wang-bin/QtAV)!
-- Most frameless window code([framelesswindow.h](/src/dd/framelesswindow.h) and [framelesswindow.cpp](/src/dd/framelesswindow.cpp)) is copied from https://github.com/Bringer-of-Light/Qt-Nice-Frameless-Window , thanks to [Bringer-of-Light](https://github.com/Bringer-of-Light)!
-- [Most Windows Service code](/src/3rdparty/qtservice) is copied from https://github.com/qtproject/qt-solutions , thanks to [the Qt Company](https://www.qt.io/)!
-- [src/3rdparty/qsimpleupdater](/src/3rdparty/qsimpleupdater) is added from https://github.com/alex-spataru/QSimpleUpdater , thanks to [Alex Spataru](https://github.com/alex-spataru)!
-- [src/dd/stylesheets/Default.css](/src/dd/stylesheets/Default.css) is copied from https://github.com/u8sand/Baka-MPlayer , thanks to [Daniel Clarke](https://github.com/u8sand)!
+- [Wallpaper](/src/3rdparty/wallpaper): https://github.com/ThomasHuai/Wallpaper , Apache License 2.0, thanks to [**ThomasHuai**](https://github.com/ThomasHuai)!
+- [QtAV](https://github.com/wang-bin/QtAV): GPLv3/LGPLv2.1, thanks to [**wang bin**](https://github.com/wang-bin)!
+- [Qt Nice Frameless Window](/src/3rdparty/framelesswindow): https://github.com/Bringer-of-Light/Qt-Nice-Frameless-Window , MIT, thanks to [Bringer of Light](https://github.com/Bringer-of-Light)!
+- [Qt](http://download.qt.io/archive/qt/) and [Qt Service](/src/3rdparty/qtservice): https://github.com/qtproject/qt-solutions , GPLv3/LGPLv2.1, thanks to [the Qt Company](https://www.qt.io/)!
+- [QSimpleUpdater](/src/3rdparty/qsimpleupdater): https://github.com/alex-spataru/QSimpleUpdater , DON'T BE A DICK PUBLIC LICENSE, thanks to [Alex Spataru](https://github.com/alex-spataru)!
+- [src/dd/stylesheets/Default.css](/src/dd/stylesheets/Default.css): copied from https://github.com/u8sand/Baka-MPlayer , GPLv2, thanks to [Daniel Clarke](https://github.com/u8sand)!
 - [src/dd/stylesheets/Greenery.css](/src/dd/stylesheets/Greenery.css), [src/dd/stylesheets/Marsala.css](/src/dd/stylesheets/Marsala.css), [src/dd/stylesheets/Rose&nbsp;Quartz&nbsp;&amp;&nbsp;Serenity.css](/src/dd/stylesheets/Rose%20Quartz%20&%20Serenity.css), [src/dd/stylesheets/Ultra&nbsp;Violet.css](/src/dd/stylesheets/Ultra%20Violet.css): created by [Yuriko](https://github.com/GA-1101), thanks a lot!
 - [src/dd/images/bee.ico](/src/dd/images/bee.ico), [src/svc/images/gear.ico](/src/svc/images/gear.ico), [src/udt/images/refresh.ico](/src/udt/images/refresh.ico): downloaded from https://www.easyicon.net/
 - [src/dd/images/minimize.ico](/src/dd/images/minimize.ico), [src/dd/images/maximize.ico](/src/dd/images/maximize.ico), [src/dd/images/restore.ico](/src/dd/images/restore.ico), [src/dd/images/close.ico](/src/dd/images/close.ico): original svg files downloaded from http://www.iconfont.cn/ and I converted them to ico files manually

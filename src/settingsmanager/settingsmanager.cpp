@@ -1,5 +1,4 @@
 #include "settingsmanager.h"
-#include "utils.h"
 
 #include <QDir>
 #include <QUrl>
@@ -7,38 +6,10 @@
 #include <QMimeDatabase>
 #include <QCoreApplication>
 
-#include <qtservice.h>
-
 SettingsManager *SettingsManager::getInstance()
 {
     static SettingsManager settingsManager;
     return &settingsManager;
-}
-
-bool SettingsManager::isAutoStart(const QString &name)
-{
-    QString serviceName = name.isEmpty() ? QCoreApplication::applicationName() : name;
-    QtServiceController controller(serviceName);
-    return controller.isInstalled();
-}
-
-bool SettingsManager::setAutoStart(bool enable)
-{
-    QString servicePath = QCoreApplication::applicationDirPath() + QStringLiteral("/ddsvc");
-#ifdef WIN64
-    servicePath += QStringLiteral("64");
-#endif
-#ifdef _DEBUG
-    servicePath += QStringLiteral("d");
-#endif
-    servicePath += QStringLiteral(".exe");
-    if (!QFileInfo::exists(servicePath))
-        return false;
-    if (enable && !isAutoStart())
-        return Utils::adminRun(QDir::toNativeSeparators(servicePath), QStringLiteral("-i"));
-    else if (!enable && isAutoStart())
-        return Utils::adminRun(QDir::toNativeSeparators(servicePath), QStringLiteral("-u"));
-    return false;
 }
 
 QStringList SettingsManager::defaultDecoders() const
@@ -189,9 +160,10 @@ QString SettingsManager::getLanguage() const
     return settings->value(QStringLiteral("dd/language"), QStringLiteral("auto")).toString();
 }
 
-QtAV::VideoRendererId SettingsManager::getRenderer() const
+int SettingsManager::getRenderer() const
 {
-    return settings->value(QStringLiteral("dd/renderer"), QtAV::VideoRendererId_GLWidget2).toInt();
+    // QtAV::VideoRendererId_GLWidget2: 1600016726
+    return settings->value(QStringLiteral("dd/renderer"), 1600016726).toInt();
 }
 
 QString SettingsManager::getImageQuality() const
@@ -262,7 +234,7 @@ void SettingsManager::setLanguage(const QString &lang)
     settings->setValue(QStringLiteral("dd/language"), lang);
 }
 
-void SettingsManager::setRenderer(QtAV::VideoRendererId vid)
+void SettingsManager::setRenderer(int vid)
 {
     settings->setValue(QStringLiteral("dd/renderer"), vid);
 }

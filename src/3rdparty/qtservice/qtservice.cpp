@@ -65,7 +65,7 @@ static void qtServiceCloseDebugLog()
 {
     if (!f)
         return;
-    f->write(QTime::currentTime().toString("HH:mm:ss.zzz").toLatin1());
+    f->write(QTime::currentTime().toString("HH:mm:ss.zzz").toLocal8Bit());
     f->write(" --- DEBUG LOG CLOSED ---\n\n");
     f->flush();
     f->close();
@@ -86,7 +86,7 @@ void qtServiceLogDebug(QtMsgType type, const char* msg)
 #else
     const qulonglong processId = getpid();
 #endif
-    QByteArray s(QTime::currentTime().toString("HH:mm:ss.zzz").toLatin1());
+    QByteArray s(QTime::currentTime().toString("HH:mm:ss.zzz").toLocal8Bit());
     s += " [";
     s += QByteArray::number(processId);
     s += "] ";
@@ -780,32 +780,32 @@ int QtServiceBase::exec()
                 if (d_ptr->args.size() > 3)
                     password = d_ptr->args.at(3);
                 if (!d_ptr->install(account, password)) {
-                    fprintf(stderr, "The service %s could not be installed\n", serviceName().toLatin1().constData());
+                    fprintf(stderr, "The service %s could not be installed\n", serviceName().toLocal8Bit().constData());
                     return -1;
                 } else {
                     printf("The service %s has been installed under: %s\n",
-                        serviceName().toLatin1().constData(), d_ptr->filePath().toLatin1().constData());
+                        serviceName().toLocal8Bit().constData(), d_ptr->filePath().toLocal8Bit().constData());
                 }
             } else {
-                fprintf(stderr, "The service %s is already installed\n", serviceName().toLatin1().constData());
+                fprintf(stderr, "The service %s is already installed\n", serviceName().toLocal8Bit().constData());
             }
             return 0;
         } else if (a == QLatin1String("-u") || a == QLatin1String("-uninstall")) {
             if (d_ptr->controller.isInstalled()) {
                 if (!d_ptr->controller.uninstall()) {
-                    fprintf(stderr, "The service %s could not be uninstalled\n", serviceName().toLatin1().constData());
+                    fprintf(stderr, "The service %s could not be uninstalled\n", serviceName().toLocal8Bit().constData());
                     return -1;
                 } else {
                     printf("The service %s has been uninstalled.\n",
-                        serviceName().toLatin1().constData());
+                        serviceName().toLocal8Bit().constData());
                 }
             } else {
-                fprintf(stderr, "The service %s is not installed\n", serviceName().toLatin1().constData());
+                fprintf(stderr, "The service %s is not installed\n", serviceName().toLocal8Bit().constData());
             }
             return 0;
         } else if (a == QLatin1String("-v") || a == QLatin1String("-version")) {
             printf("The service\n"
-                "\t%s\n\t%s\n\n", serviceName().toLatin1().constData(), d_ptr->args.at(0).toLatin1().constData());
+                "\t%s\n\t%s\n\n", serviceName().toLocal8Bit().constData(), d_ptr->args.at(0).toLocal8Bit().constData());
             printf("is %s", (d_ptr->controller.isInstalled() ? "installed" : "not installed"));
             printf(" and %s\n\n", (d_ptr->controller.isRunning() ? "running" : "not running"));
             return 0;
@@ -843,7 +843,7 @@ int QtServiceBase::exec()
                    "\t-v(ersion)\t: Print version and status information.\n"
                    "\t-h(elp)   \t: Show this help\n"
                    "\tNo arguments\t: Start the service.\n",
-                   d_ptr->args.at(0).toLatin1().constData());
+                   d_ptr->args.at(0).toLocal8Bit().constData());
             return 0;
         }
     }
@@ -857,7 +857,7 @@ int QtServiceBase::exec()
     }
 #endif
     if (!d_ptr->start()) {
-        fprintf(stderr, "The service %s could not start\n", serviceName().toLatin1().constData());
+        fprintf(stderr, "The service %s could not start\n", serviceName().toLocal8Bit().constData());
         return -4;
     }
     return 0;

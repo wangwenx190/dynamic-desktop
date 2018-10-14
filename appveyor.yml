@@ -15,7 +15,6 @@ matrix:
   fast_finish: true
 image: Visual Studio 2017
 init:
-  - set "CI=AppVeyor"
   - set "QTVER=5.9"
   - set "QTDIR=C:\Qt\%QTVER%\msvc2017_64"
   - set "QTAVID=7ddf6db"
