@@ -1,6 +1,7 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/7n23thxiormp6oar/branch/develop?svg=true)](https://ci.appveyor.com/project/wangwenx190/dynamic-desktop/branch/develop)
-[![Github All Releases](https://img.shields.io/github/downloads/wangwenx190/dynamic-desktop/total.svg)](https://github.com/wangwenx190/dynamic-desktop/releases/latest)
+[![Code quality](https://api.codacy.com/project/badge/Grade/b41d1d384abe4f81a9613945cf654ff6)](https://www.codacy.com/app/wangwenx190/dynamic-desktop?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=wangwenx190/dynamic-desktop&amp;utm_campaign=Badge_Grade)
 [![Bugs](https://img.shields.io/github/issues/wangwenx190/dynamic-desktop/bug.svg)](https://github.com/wangwenx190/dynamic-desktop/issues?utf8=✓&q=is%3Aissue+is%3Aopen+label%3Abug)
+[![Github All Releases](https://img.shields.io/github/downloads/wangwenx190/dynamic-desktop/total.svg)](https://github.com/wangwenx190/dynamic-desktop/releases/latest)
 
 ## Overview
 A small tool that can play videos on your desktop. Only for Microsoft Windows 7 ~ 10(with GUI desktop). It may have some limitations because it's just a media player, putting it's window under your desktop icons. Maybe Wallpaper Engine's principle is totally different with this tool.
@@ -40,6 +41,10 @@ Microsoft Windows 7 ~ 10(with GUI desktop), both 32 bit and 64 bit systems.
 - Currently, hardware decoding only supports traditional video formats such as AVC/H.264, so please do not attempt to play HEVC videos if you are using hardware decoding.
 
 ## Compilation
+- Clone or download(don't forget submodules) this repository
+   ```bat
+   git clone --recursive https://github.com/wangwenx190/dynamic-desktop.git
+   ```
 - Download [Qt5](http://download.qt.io/archive/qt/) and install it.
 - Download [QtAV](https://github.com/wang-bin/QtAV)'s prebuilt SDK and install it, or build yourself.
 - Download [FFmpeg](https://github.com/wang-bin/avbuild)'s prebuilt binaries or build yourself.
@@ -58,6 +63,7 @@ See [CONTRIBUTING.md](/CONTRIBUTING.md) for more information.
 - Special thanks to [**wang bin**](https://github.com/wang-bin) for his awesome [QtAV](https://github.com/wang-bin/QtAV)!
 - Most frameless window code([framelesswindow.h](/src/dd/framelesswindow.h) and [framelesswindow.cpp](/src/dd/framelesswindow.cpp)) is copied from https://github.com/Bringer-of-Light/Qt-Nice-Frameless-Window , thanks to [Bringer-of-Light](https://github.com/Bringer-of-Light)!
 - [Most Windows Service code](/src/3rdparty/qtservice) is copied from https://github.com/qtproject/qt-solutions , thanks to [the Qt Company](https://www.qt.io/)!
+- [src/3rdparty/qsimpleupdater](/src/3rdparty/qsimpleupdater) is added from https://github.com/alex-spataru/QSimpleUpdater , thanks to [Alex Spataru](https://github.com/alex-spataru)!
 - [src/dd/stylesheets/Default.css](/src/dd/stylesheets/Default.css) is copied from https://github.com/u8sand/Baka-MPlayer , thanks to [Daniel Clarke](https://github.com/u8sand)!
 - [src/dd/stylesheets/Greenery.css](/src/dd/stylesheets/Greenery.css), [src/dd/stylesheets/Marsala.css](/src/dd/stylesheets/Marsala.css), [src/dd/stylesheets/Rose&nbsp;Quartz&nbsp;&amp;&nbsp;Serenity.css](/src/dd/stylesheets/Rose%20Quartz%20&%20Serenity.css), [src/dd/stylesheets/Ultra&nbsp;Violet.css](/src/dd/stylesheets/Ultra%20Violet.css): created by [Yuriko](https://github.com/GA-1101), thanks a lot!
 - [src/dd/images/bee.ico](/src/dd/images/bee.ico), [src/svc/images/gear.ico](/src/svc/images/gear.ico): downloaded from https://www.easyicon.net/
