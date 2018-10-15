@@ -8,7 +8,7 @@
 //#include <gdiplus.h>
 //#include <GdiPlusColor.h>
 
-FramelessWindow::FramelessWindow(QWidget *parent)
+CFramelessWindow::CFramelessWindow(QWidget *parent)
     : QWidget(parent)
 {
 //    setWindowFlag(Qt::Window,true);
@@ -21,7 +21,7 @@ FramelessWindow::FramelessWindow(QWidget *parent)
     setResizeable(m_bResizeable);
 }
 
-void FramelessWindow::setResizeable(bool resizeable)
+void CFramelessWindow::setResizeable(bool resizeable)
 {
     bool visible = isVisible();
     m_bResizeable = resizeable;
@@ -50,20 +50,20 @@ void FramelessWindow::setResizeable(bool resizeable)
     setVisible(visible);
 }
 
-void FramelessWindow::setResizeableAreaWidth(int width)
+void CFramelessWindow::setResizeableAreaWidth(int width)
 {
     if (1 > width) width = 1;
     m_borderWidth = width;
 }
 
-void FramelessWindow::setTitleBar(QWidget* titlebar)
+void CFramelessWindow::setTitleBar(QWidget* titlebar)
 {
     m_titlebar = titlebar;
     if (!titlebar) return;
-    connect(titlebar, &QWidget::destroyed, this, &FramelessWindow::onTitleBarDestroyed);
+    connect(titlebar, &QWidget::destroyed, this, &CFramelessWindow::onTitleBarDestroyed);
 }
 
-void FramelessWindow::onTitleBarDestroyed()
+void CFramelessWindow::onTitleBarDestroyed()
 {
     if (m_titlebar == QObject::sender())
     {
@@ -71,14 +71,14 @@ void FramelessWindow::onTitleBarDestroyed()
     }
 }
 
-void FramelessWindow::addIgnoreWidget(QWidget* widget)
+void CFramelessWindow::addIgnoreWidget(QWidget* widget)
 {
     if (!widget) return;
     if (m_whiteList.contains(widget)) return;
     m_whiteList.append(widget);
 }
 
-bool FramelessWindow::nativeEvent(const QByteArray &eventType, void *message, long *result)
+bool CFramelessWindow::nativeEvent(const QByteArray &eventType, void *message, long *result)
 {
     auto* msg = reinterpret_cast<MSG *>(message);
     switch (msg->message)
@@ -222,12 +222,12 @@ bool FramelessWindow::nativeEvent(const QByteArray &eventType, void *message, lo
     }
 }
 
-void FramelessWindow::setContentsMargins(QMargins margins)
+void CFramelessWindow::setContentsMargins(QMargins margins)
 {
     QWidget::setContentsMargins(margins+m_frames);
     m_margins = margins;
 }
-void FramelessWindow::setContentsMargins(int left, int top, int right, int bottom)
+void CFramelessWindow::setContentsMargins(int left, int top, int right, int bottom)
 {
     QWidget::setContentsMargins(left+m_frames.left(),\
                                     top+m_frames.top(), \
@@ -238,13 +238,13 @@ void FramelessWindow::setContentsMargins(int left, int top, int right, int botto
     m_margins.setRight(right);
     m_margins.setBottom(bottom);
 }
-QMargins FramelessWindow::contentsMargins() const
+QMargins CFramelessWindow::contentsMargins() const
 {
     QMargins margins = QWidget::contentsMargins();
     margins -= m_frames;
     return margins;
 }
-void FramelessWindow::getContentsMargins(int *left, int *top, int *right, int *bottom) const
+void CFramelessWindow::getContentsMargins(int *left, int *top, int *right, int *bottom) const
 {
     QWidget::getContentsMargins(left,top,right,bottom);
     if (!(left&&top&&right&&bottom)) return;
@@ -256,7 +256,7 @@ void FramelessWindow::getContentsMargins(int *left, int *top, int *right, int *b
         *bottom -= m_frames.bottom();
     }
 }
-QRect FramelessWindow::contentsRect() const
+QRect CFramelessWindow::contentsRect() const
 {
     QRect rect = QWidget::contentsRect();
     int width = rect.width();
@@ -267,7 +267,7 @@ QRect FramelessWindow::contentsRect() const
     rect.setHeight(height);
     return rect;
 }
-void FramelessWindow::showFullScreen()
+void CFramelessWindow::showFullScreen()
 {
     if (isMaximized())
     {

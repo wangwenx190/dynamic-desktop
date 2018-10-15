@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
     }
     updater->setNotifyOnUpdate(updateUrl, showUI);
     updater->checkForUpdates(updateUrl);*/
-    QString path = dir + QStringLiteral("/dd");
+    QString path = dir + QStringLiteral("/launcher");
 #ifdef _DEBUG
     path += QStringLiteral("d");
 #endif

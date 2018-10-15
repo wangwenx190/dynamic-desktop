@@ -17,7 +17,7 @@ namespace Ui
     class PreferencesDialog;
 }
 
-class PreferencesDialog : public FramelessWindow
+class PreferencesDialog : public CFramelessWindow
 {
     Q_OBJECT
 

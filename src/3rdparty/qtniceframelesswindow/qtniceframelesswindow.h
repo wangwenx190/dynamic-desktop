@@ -9,11 +9,11 @@
 //Github: https://github.com/Bringer-of-Light/Qt-Nice-Frameless-Window
 // Usage: use "FramelessWindow" as base class instead of "QWidget", and enjoy
 
-class DD_SHARED_EXPORT FramelessWindow : public QWidget
+class DD_SHARED_EXPORT CFramelessWindow : public QWidget
 {
     Q_OBJECT
 public:
-    explicit FramelessWindow(QWidget *parent = nullptr);
+    explicit CFramelessWindow(QWidget *parent = nullptr);
 public:
 
     //if resizeable is set to false, then the window can not be resized by mouse

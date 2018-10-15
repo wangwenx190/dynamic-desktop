@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>PreferencesDialog</class>
- <widget class="FramelessWindow" name="PreferencesDialog">
+ <widget class="CFramelessWindow" name="PreferencesDialog">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -774,7 +774,7 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>FramelessWindow</class>
+   <class>CFramelessWindow</class>
    <extends>QWidget</extends>
    <header>qtniceframelesswindow.h</header>
    <container>1</container>

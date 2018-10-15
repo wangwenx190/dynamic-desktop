@@ -214,10 +214,7 @@ bool isAutoStart(const QString &name)
 
 bool setAutoStart(bool enable)
 {
-    QString servicePath = QCoreApplication::applicationDirPath() + QStringLiteral("/ddsvc");
-#ifdef WIN64
-    servicePath += QStringLiteral("64");
-#endif
+    QString servicePath = QCoreApplication::applicationDirPath() + QStringLiteral("/service");
 #ifdef _DEBUG
     servicePath += QStringLiteral("d");
 #endif

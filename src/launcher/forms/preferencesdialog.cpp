@@ -24,7 +24,7 @@
 #include <QTimer>
 
 PreferencesDialog::PreferencesDialog(QWidget *parent) :
-    FramelessWindow(parent),
+    CFramelessWindow(parent),
     ui(new Ui::PreferencesDialog)
 {
     ui->setupUi(this);
@@ -50,7 +50,7 @@ void PreferencesDialog::changeEvent(QEvent *event)
             ui->pushButton_maximize->setIcon(QIcon(QStringLiteral(":/images/restore.ico")));
         else
             ui->pushButton_maximize->setIcon(QIcon(QStringLiteral(":/images/maximize.ico")));
-    FramelessWindow::changeEvent(event);
+    CFramelessWindow::changeEvent(event);
 }
 
 static bool canHandleDrop(const QDragEnterEvent *event)
@@ -65,7 +65,7 @@ static bool canHandleDrop(const QDragEnterEvent *event)
 void PreferencesDialog::dragEnterEvent(QDragEnterEvent *event)
 {
     event->setAccepted(canHandleDrop(event));
-    FramelessWindow::dragEnterEvent(event);
+    CFramelessWindow::dragEnterEvent(event);
 }
 
 void PreferencesDialog::dropEvent(QDropEvent *event)
@@ -78,7 +78,7 @@ void PreferencesDialog::dropEvent(QDropEvent *event)
     else
         path = url.url();
     ui->lineEdit_url->setText(path);
-    FramelessWindow::dropEvent(event);
+    CFramelessWindow::dropEvent(event);
 }
 
 void PreferencesDialog::initUI()
