@@ -5,6 +5,7 @@ RC_ICONS = images/bee.ico
 TARGET = launcher
 CONFIG(debug, debug|release): TARGET = $$join(TARGET,,,d)
 QT *= gui widgets av avwidgets concurrent
+CONFIG *= c++14
 qtHaveModule(winextras) {
     QT *= winextras
     DEFINES *= QT_HAS_WINEXTRAS
