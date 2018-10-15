@@ -1,7 +1,6 @@
 skm_lib_name = skinsmanager
 skm_lib_file = skinsmanager
 skm_lib_dir = release
-contains(QT_ARCH, x86_64): skm_lib_file = $$join(skm_lib_file,,,64)
 CONFIG(debug, debug|release) {
     skm_lib_file = $$join(skm_lib_file,,,d)
     skm_lib_dir = debug

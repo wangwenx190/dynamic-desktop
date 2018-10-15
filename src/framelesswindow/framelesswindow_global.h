@@ -1,9 +1,0 @@
-#pragma once
-
-#include <QtCore/qglobal.h>
-
-#if defined(FRAMELESSWINDOW_LIBRARY)
-#  define FRAMELESSWINDOWSHARED_EXPORT Q_DECL_EXPORT
-#else
-#  define FRAMELESSWINDOWSHARED_EXPORT Q_DECL_IMPORT
-#endif

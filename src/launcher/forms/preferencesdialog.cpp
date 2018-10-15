@@ -408,7 +408,7 @@ void PreferencesDialog::initConnections()
     ui->comboBox_subtitle_charset->addItem(tr("Auto detect"), QStringLiteral("AutoDetect"));
     ui->comboBox_subtitle_charset->addItem(tr("System"), QStringLiteral("System"));
     for (auto& codec : QTextCodec::availableCodecs())
-        ui->comboBox_subtitle_charset->addItem(QString::fromLocal8Bit(codec), QString::fromLocal8Bit(codec));
+        ui->comboBox_subtitle_charset->addItem(QString::fromLatin1(codec), QString::fromLatin1(codec));
     connect(ui->comboBox_skin, qOverload<int>(&QComboBox::currentIndexChanged), this, [=](int index)
     {
         Q_UNUSED(index)

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <framelesswindow.h>
+#include <qtniceframelesswindow.h>
 
 #ifdef QT_HAS_WINEXTRAS
 QT_BEGIN_NAMESPACE

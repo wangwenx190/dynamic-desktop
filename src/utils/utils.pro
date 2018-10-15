@@ -2,11 +2,10 @@ include(../common.pri)
 QMAKE_TARGET_PRODUCT = Utils
 QMAKE_TARGET_DESCRIPTION = Dynamic Desktop Utils Module
 TARGET = utils
-contains(QT_ARCH, x86_64): TARGET = $$join(TARGET,,,64)
 CONFIG(debug, debug|release): TARGET = $$join(TARGET,,,d)
 QT *= widgets
 TEMPLATE = lib
-DEFINES *= UTILS_LIBRARY
+DEFINES *= BUILD_SHARED_LIBRARY_DD
 CONFIG *= dll
 LIBS *= \
     -lUser32 \
@@ -19,7 +18,7 @@ include(../wallpaper/wallpaper.pri)
 SOURCES += utils.cpp
 HEADERS += \
     utils.h \
-    utils_global.h
+    $$PWD/../dd_dll_global.h
 target.path = $${BIN_DIR}
 INSTALLS *= target
 include(../deploy.pri)

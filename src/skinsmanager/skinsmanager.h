@@ -1,10 +1,10 @@
 #pragma once
 
-#include "skinsmanager_global.h"
+#include "../dd_dll_global.h"
 
 #include <QtCore>
 
-class SKINSMANAGERSHARED_EXPORT SkinsManager
+class DD_SHARED_EXPORT SkinsManager
 {
 public:
     static SkinsManager *getInstance();

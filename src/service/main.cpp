@@ -25,10 +25,7 @@ DDSvc::DDSvc(int argc, char **argv)
 
 void DDSvc::start()
 {
-    QString path = QCoreApplication::applicationDirPath() + QStringLiteral("/dd");
-#ifdef WIN64
-    path += QStringLiteral("64");
-#endif
+    QString path = QCoreApplication::applicationDirPath() + QStringLiteral("/launcher");
 #ifdef _DEBUG
     path += QStringLiteral("d");
 #endif

@@ -4,16 +4,16 @@ CONFIG *= ordered
 qtHaveModule(network) {
     SUBDIRS += \
         src/qsimpleupdater \
-        src/udt
+        src/updater
     DEFINES *= QT_HAS_NETWORK
 }
 SUBDIRS += \
     src/qtservice \
     src/wallpaper \
     src/utils \
-    src/framelesswindow \
+    src/qtniceframelesswindow \
     src/skinsmanager \
     src/settingsmanager \
-    src/svc \
+    src/service \
     src/slider \
-    src/dd
+    src/launcher

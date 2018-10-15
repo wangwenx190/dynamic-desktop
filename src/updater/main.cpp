@@ -34,9 +34,6 @@ int main(int argc, char *argv[])
     updater->setNotifyOnUpdate(updateUrl, showUI);
     updater->checkForUpdates(updateUrl);*/
     QString path = dir + QStringLiteral("/dd");
-#ifdef WIN64
-    path += QStringLiteral("64");
-#endif
 #ifdef _DEBUG
     path += QStringLiteral("d");
 #endif

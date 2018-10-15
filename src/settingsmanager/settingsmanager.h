@@ -1,10 +1,10 @@
 #pragma once
 
-#include "settingsmanager_global.h"
+#include "../dd_dll_global.h"
 
 #include <QSettings>
 
-class SETTINGSMANAGERSHARED_EXPORT SettingsManager
+class DD_SHARED_EXPORT SettingsManager
 {
 public:
     static SettingsManager *getInstance();

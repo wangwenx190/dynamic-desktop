@@ -2,8 +2,7 @@ include(../common.pri)
 QMAKE_TARGET_PRODUCT = Launcher
 QMAKE_TARGET_DESCRIPTION = Dynamic Desktop Launcher
 RC_ICONS = images/bee.ico
-TARGET = dd
-contains(QT_ARCH, x86_64): TARGET = $$join(TARGET,,,64)
+TARGET = launcher
 CONFIG(debug, debug|release): TARGET = $$join(TARGET,,,d)
 QT *= gui widgets av avwidgets concurrent
 qtHaveModule(winextras) {
@@ -11,7 +10,7 @@ qtHaveModule(winextras) {
     DEFINES *= QT_HAS_WINEXTRAS
 }
 TEMPLATE = app
-include(../framelesswindow/framelesswindow.pri)
+include(../qtniceframelesswindow/qtniceframelesswindow.pri)
 include(../utils/utils.pri)
 include(../settingsmanager/settingsmanager.pri)
 include(../skinsmanager/skinsmanager.pri)

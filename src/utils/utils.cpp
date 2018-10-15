@@ -148,10 +148,7 @@ bool adminRun(const QString &path, const QString &params)
 bool checkUpdate(bool hide)
 {
     const QString updaterDir = QCoreApplication::applicationDirPath();
-    QString updaterPath = updaterDir + QStringLiteral("/ddudt");
-#ifdef WIN64
-    updaterPath += QStringLiteral("64");
-#endif
+    QString updaterPath = updaterDir + QStringLiteral("/updater");
 #ifdef _DEBUG
     updaterPath += QStringLiteral("d");
 #endif

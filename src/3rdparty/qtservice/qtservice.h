@@ -40,14 +40,14 @@
 
 #pragma once
 
-#include "qtservice_global.h"
+#include "../dd_dll_global.h"
 
 #include <QCoreApplication>
 
 QT_FORWARD_DECLARE_CLASS(QStringList)
 QT_FORWARD_DECLARE_CLASS(QtServiceControllerPrivate)
 
-class QTSERVICESHARED_EXPORT QtServiceController
+class DD_SHARED_EXPORT QtServiceController
 {
     Q_DECLARE_PRIVATE(QtServiceController)
 public:
@@ -84,7 +84,7 @@ private:
 
 QT_FORWARD_DECLARE_CLASS(QtServiceBasePrivate)
 
-class QTSERVICESHARED_EXPORT QtServiceBase
+class DD_SHARED_EXPORT QtServiceBase
 {
     Q_DECLARE_PRIVATE(QtServiceBase)
 public:

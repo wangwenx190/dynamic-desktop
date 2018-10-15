@@ -2,8 +2,7 @@ include(../common.pri)
 QMAKE_TARGET_PRODUCT = Service
 QMAKE_TARGET_DESCRIPTION = Dynamic Desktop Startup Service
 RC_ICONS = images/gear.ico
-TARGET = ddsvc
-contains(QT_ARCH, x86_64): TARGET = $$join(TARGET,,,64)
+TARGET = service
 CONFIG(debug, debug|release): TARGET = $$join(TARGET,,,d)
 TEMPLATE = app
 QT -= gui widgets

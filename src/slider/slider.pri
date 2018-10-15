@@ -1,7 +1,6 @@
 sl_lib_name = slider
 sl_lib_file = slider
 sl_lib_dir = release
-contains(QT_ARCH, x86_64): sl_lib_file = $$join(sl_lib_file,,,64)
 CONFIG(debug, debug|release) {
     sl_lib_file = $$join(sl_lib_file,,,d)
     sl_lib_dir = debug
