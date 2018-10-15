@@ -1,7 +1,7 @@
-#include <settingsmanager.h>
-#include <skinsmanager.h>
-#include <utils.h>
-#include <wallpaper.h>
+#include <SettingsManager>
+#include <SkinsManager>
+#include <Utils>
+#include <Wallpaper>
 #include "mainwindow.h"
 
 #include <Windows.h>
@@ -22,6 +22,21 @@
 #include <QCommandLineOption>
 
 static bool windowMode = false;
+static HANDLE mutex = nullptr;
+
+int Exit(int resultCode = 0, bool trulyExit = true)
+{
+    if (mutex != nullptr)
+    {
+        ReleaseMutex(mutex);
+        CloseHandle(mutex);
+    }
+    if (Wallpaper::getWorkerW() != nullptr)
+        ShowWindow(Wallpaper::getWorkerW(), SW_HIDE);
+    if (trulyExit)
+        exit(resultCode);
+    return resultCode;
+}
 
 int main(int argc, char *argv[])
 {
@@ -71,13 +86,13 @@ int main(int argc, char *argv[])
     if (currentVersion < win7Version)
     {
         QMessageBox::critical(nullptr, QStringLiteral("Dynamic Desktop"), QObject::tr("This application only supports Windows 7 and newer."));
-        Utils::Exit(-1);
+        Exit(-1);
     }
-    Utils::setAppMutex(CreateMutex(nullptr, FALSE, TEXT(DD_MUTEX)));
-    if ((Utils::getAppMutex() != nullptr) && (GetLastError() == ERROR_ALREADY_EXISTS))
+    mutex = CreateMutex(nullptr, FALSE, TEXT(DD_MUTEX));
+    if ((mutex != nullptr) && (GetLastError() == ERROR_ALREADY_EXISTS))
     {
         QMessageBox::critical(nullptr, QStringLiteral("Dynamic Desktop"), QObject::tr("There is another instance running. Please do not run twice."));
-        ReleaseMutex(Utils::getAppMutex());
+        ReleaseMutex(mutex);
         return 0;
     }
     QCommandLineParser parser;
@@ -195,5 +210,5 @@ int main(int argc, char *argv[])
     }
     else
         emit mainWindow.showOptions();
-    return Utils::ExitProgram(QApplication::exec());
+    return Exit(QApplication::exec(), false);
 }

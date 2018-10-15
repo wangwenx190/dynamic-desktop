@@ -176,17 +176,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="98"/>
+        <location filename="../forms/preferencesdialog.cpp" line="118"/>
         <source>Default</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="96"/>
+        <location filename="../forms/preferencesdialog.cpp" line="116"/>
         <source>Best</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="97"/>
+        <location filename="../forms/preferencesdialog.cpp" line="117"/>
         <source>Fastest</source>
         <translation type="unfinished"></translation>
     </message>
@@ -227,7 +227,7 @@
     </message>
     <message>
         <location filename="../forms/preferencesdialog.ui" line="323"/>
-        <location filename="../forms/preferencesdialog.cpp" line="384"/>
+        <location filename="../forms/preferencesdialog.cpp" line="398"/>
         <source>URL</source>
         <translation type="unfinished"></translation>
     </message>
@@ -329,86 +329,86 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="192"/>
+        <location filename="../forms/preferencesdialog.cpp" line="210"/>
         <source>Please select an audio file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="192"/>
+        <location filename="../forms/preferencesdialog.cpp" line="210"/>
         <source>Audios (*.mka *.aac *.flac *.mp3 *.wav);;All files (*)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="198"/>
+        <location filename="../forms/preferencesdialog.cpp" line="216"/>
         <source>Please select a subtitle file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="219"/>
-        <location filename="../forms/preferencesdialog.cpp" line="241"/>
-        <location filename="../forms/preferencesdialog.cpp" line="265"/>
+        <location filename="../forms/preferencesdialog.cpp" line="237"/>
+        <location filename="../forms/preferencesdialog.cpp" line="259"/>
+        <location filename="../forms/preferencesdialog.cpp" line="283"/>
         <source>ID: %0 | Title: %1 | Language: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="272"/>
+        <location filename="../forms/preferencesdialog.cpp" line="290"/>
         <source>File: %0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="104"/>
-        <location filename="../forms/preferencesdialog.cpp" line="144"/>
+        <location filename="../forms/preferencesdialog.cpp" line="124"/>
+        <location filename="../forms/preferencesdialog.cpp" line="164"/>
         <source>&lt;None&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="139"/>
+        <location filename="../forms/preferencesdialog.cpp" line="159"/>
         <source>Auto</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="198"/>
+        <location filename="../forms/preferencesdialog.cpp" line="216"/>
         <source>Subtitles (*.ass *.ssa *.srt *.sub);;All files (*)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="377"/>
+        <location filename="../forms/preferencesdialog.cpp" line="391"/>
         <source>Please select a media file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="377"/>
+        <location filename="../forms/preferencesdialog.cpp" line="391"/>
         <source>Videos (*.avi *.mp4 *.mkv *.flv);;Audios (*.mp3 *.flac *.ape *.wav);;Pictures (*.bmp *.jpg *.jpeg *.png *.gif);;All files (*)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="384"/>
+        <location filename="../forms/preferencesdialog.cpp" line="398"/>
         <source>Please input a valid URL</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="394"/>
+        <location filename="../forms/preferencesdialog.cpp" line="408"/>
         <source>&quot;%0&quot; is not a valid URL.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="552"/>
+        <location filename="../forms/preferencesdialog.cpp" line="566"/>
         <source>Reopen this video or play another video to experience it.
 Make sure this application runs in your GPU&apos;s Optimus mode.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="408"/>
+        <location filename="../forms/preferencesdialog.cpp" line="422"/>
         <source>Auto detect</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="409"/>
+        <location filename="../forms/preferencesdialog.cpp" line="423"/>
         <source>System</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/preferencesdialog.cpp" line="427"/>
+        <location filename="../forms/preferencesdialog.cpp" line="441"/>
         <source>You have changed the UI translation. Application restart is needed.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -416,17 +416,17 @@ Make sure this application runs in your GPU&apos;s Optimus mode.</source>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../main.cpp" line="73"/>
+        <location filename="../main.cpp" line="88"/>
         <source>This application only supports Windows 7 and newer.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="79"/>
+        <location filename="../main.cpp" line="94"/>
         <source>There is another instance running. Please do not run twice.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="84"/>
+        <location filename="../main.cpp" line="99"/>
         <source>A tool that make your desktop alive.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -434,62 +434,62 @@ Make sure this application runs in your GPU&apos;s Optimus mode.</source>
 <context>
     <name>main</name>
     <message>
-        <location filename="../main.cpp" line="107"/>
+        <location filename="../main.cpp" line="122"/>
         <source>renderer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="95"/>
+        <location filename="../main.cpp" line="110"/>
         <source>Play the given url. It can be a local file or a valid web url. Default is empty.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="88"/>
+        <location filename="../main.cpp" line="103"/>
         <source>Show a normal window instead of placing it under the desktop icons.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="91"/>
+        <location filename="../main.cpp" line="106"/>
         <source>Set skin. The value is the file name of the skin file, excluding the file extension. If it&apos;s not under the &quot;skins&quot; folder, please give the absolute path of the file.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="92"/>
+        <location filename="../main.cpp" line="107"/>
         <source>Skin file name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="103"/>
+        <location filename="../main.cpp" line="118"/>
         <source>Image quality</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="106"/>
+        <location filename="../main.cpp" line="121"/>
         <source>Set rendering engine. It can be opengl/gl/qt/gdi/d2d. Default is gl. Case insensitive.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="110"/>
+        <location filename="../main.cpp" line="125"/>
         <source>Set volume. It must be a positive integer between 0 and 99. Default is 9.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="114"/>
+        <location filename="../main.cpp" line="129"/>
         <source>Skip checking for updates, launch directly.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="96"/>
+        <location filename="../main.cpp" line="111"/>
         <source>url</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="102"/>
+        <location filename="../main.cpp" line="117"/>
         <source>Set the quality of the output image. It can be default/best/fastest. Default is best. Case insensitive.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="111"/>
+        <location filename="../main.cpp" line="126"/>
         <source>volume</source>
         <translation type="unfinished"></translation>
     </message>

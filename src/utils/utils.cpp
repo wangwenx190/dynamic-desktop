@@ -1,8 +1,5 @@
 #include "utils.h"
 
-#include <qtservice.h>
-#include <wallpaper.h>
-
 #include <QMutex>
 #include <QApplication>
 #include <QTextStream>
@@ -17,14 +14,6 @@
 
 namespace Utils
 {
-
-static HANDLE mutex = nullptr;
-
-void Exit(int resultCode)
-{
-    preExit();
-    exit(resultCode);
-}
 
 void fileLogger(QtMsgType type, const QMessageLogContext &context, const QString &msg)
 {
@@ -114,23 +103,6 @@ void moveToCenter(QObject *window)
     win->move(newX, newY);
 }
 
-void preExit()
-{
-    if (mutex != nullptr)
-    {
-        ReleaseMutex(mutex);
-        CloseHandle(mutex);
-    }
-    if (Wallpaper::getWorkerW() != nullptr)
-        ShowWindow(Wallpaper::getWorkerW(), SW_HIDE);
-}
-
-int ExitProgram(int resultCode)
-{
-    preExit();
-    return resultCode;
-}
-
 bool adminRun(const QString &path, const QString &params)
 {
     if (path.isEmpty())
@@ -203,39 +175,6 @@ bool launchSession1Process(const QString &path, const QString &params)
     CloseHandle(pi.hProcess);
     CloseHandle(pi.hThread);
     return true;
-}
-
-bool isAutoStart(const QString &name)
-{
-    QString serviceName = name.isEmpty() ? QCoreApplication::applicationName() : name;
-    QtServiceController controller(serviceName);
-    return controller.isInstalled();
-}
-
-bool setAutoStart(bool enable)
-{
-    QString servicePath = QCoreApplication::applicationDirPath() + QStringLiteral("/service");
-#ifdef _DEBUG
-    servicePath += QStringLiteral("d");
-#endif
-    servicePath += QStringLiteral(".exe");
-    if (!QFileInfo::exists(servicePath))
-        return false;
-    if (enable && !isAutoStart())
-        return adminRun(QDir::toNativeSeparators(servicePath), QStringLiteral("-i"));
-    else if (!enable && isAutoStart())
-        return adminRun(QDir::toNativeSeparators(servicePath), QStringLiteral("-u"));
-    return false;
-}
-
-HANDLE getAppMutex()
-{
-    return mutex;
-}
-
-void setAppMutex(HANDLE appMutex)
-{
-    mutex = appMutex;
 }
 
 }

@@ -1,7 +1,7 @@
 #include "mainwindow.h"
-#include <utils.h>
-#include <settingsmanager.h>
-#include <skinsmanager.h>
+#include <Utils>
+#include <SettingsManager>
+#include <SkinsManager>
 #include "forms/aboutdialog.h"
 #include "forms/preferencesdialog.h"
 

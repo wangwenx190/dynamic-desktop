@@ -13,8 +13,6 @@ LIBS *= \
     -lWtsapi32 \
     -lUserenv \
     -lAdvapi32
-include(../qtservice/qtservice.pri)
-include(../wallpaper/wallpaper.pri)
 SOURCES += utils.cpp
 HEADERS += \
     utils.h \

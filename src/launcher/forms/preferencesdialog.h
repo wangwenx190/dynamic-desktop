@@ -1,13 +1,11 @@
 #pragma once
 
-#include <qtniceframelesswindow.h>
+#include <QtNiceFramelessWindow>
 
-#ifdef QT_HAS_WINEXTRAS
 QT_BEGIN_NAMESPACE
 QT_FORWARD_DECLARE_CLASS(QWinTaskbarButton)
 QT_FORWARD_DECLARE_CLASS(QWinTaskbarProgress)
 QT_END_NAMESPACE
-#endif
 
 #include <QtAV>
 #include <QtAVWidgets>
@@ -62,6 +60,10 @@ public:
     explicit PreferencesDialog(QWidget *parent = nullptr);
     ~PreferencesDialog() override;
 
+public:
+    bool setAutoStart(bool enable = true);
+    bool isAutoStart(const QString &name = QStringLiteral("Dynamic Desktop Service"));
+
 protected:
     void changeEvent(QEvent *event) override;
     void dragEnterEvent(QDragEnterEvent *event) override;
@@ -77,8 +79,6 @@ private:
     Ui::PreferencesDialog *ui;
     bool audioAvailable = true;
     unsigned int sliderUnit = 1000;
-#ifdef QT_HAS_WINEXTRAS
     QWinTaskbarButton *taskbarButton = nullptr;
     QWinTaskbarProgress *taskbarProgress = nullptr;
-#endif
 };

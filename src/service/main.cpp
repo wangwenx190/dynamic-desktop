@@ -1,5 +1,5 @@
-#include <qtservice.h>
-#include <utils.h>
+#include <QtService>
+#include <Utils>
 
 #include <Windows.h>
 

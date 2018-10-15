@@ -1,12 +1,11 @@
 #include "preferencesdialog.h"
 #include "ui_preferencesdialog.h"
-#include <settingsmanager.h>
-#include <utils.h>
+#include <SettingsManager>
+#include <Utils>
+#include <QtService>
 
-#ifdef QT_HAS_WINEXTRAS
 #include <QWinTaskbarButton>
 #include <QWinTaskbarProgress>
-#endif
 #include <QFileDialog>
 #include <QInputDialog>
 #include <QFileInfo>
@@ -41,6 +40,29 @@ PreferencesDialog::~PreferencesDialog()
 {
     delete ui;
     delete taskbarButton;
+}
+
+bool PreferencesDialog::setAutoStart(bool enable)
+{
+    QString servicePath = QCoreApplication::applicationDirPath() + QStringLiteral("/service");
+#ifdef _DEBUG
+    servicePath += QStringLiteral("d");
+#endif
+    servicePath += QStringLiteral(".exe");
+    if (!QFileInfo::exists(servicePath))
+        return false;
+    if (enable && !isAutoStart())
+        return Utils::adminRun(QDir::toNativeSeparators(servicePath), QStringLiteral("-i"));
+    else if (!enable && isAutoStart())
+        return Utils::adminRun(QDir::toNativeSeparators(servicePath), QStringLiteral("-u"));
+    return false;
+}
+
+bool PreferencesDialog::isAutoStart(const QString &name)
+{
+    QString serviceName = name.isEmpty() ? QCoreApplication::applicationName() : name;
+    QtServiceController controller(serviceName);
+    return controller.isInstalled();
 }
 
 void PreferencesDialog::changeEvent(QEvent *event)
@@ -83,13 +105,11 @@ void PreferencesDialog::dropEvent(QDropEvent *event)
 
 void PreferencesDialog::initUI()
 {
-#ifdef QT_HAS_WINEXTRAS
     taskbarButton = new QWinTaskbarButton();
     taskbarButton->setWindow(windowHandle());
     taskbarProgress = taskbarButton->progress();
     taskbarProgress->setRange(0, 99);
     taskbarProgress->show();
-#endif
     ui->comboBox_video_track->setEnabled(false);
     ui->comboBox_audio_track->setEnabled(false);
     ui->comboBox_subtitle_track->setEnabled(false);
@@ -151,7 +171,7 @@ void PreferencesDialog::initUI()
         ui->horizontalSlider_volume->setEnabled(ui->checkBox_volume->isChecked());
         ui->horizontalSlider_volume->setValue(SettingsManager::getInstance()->getVolume());
     }
-    ui->checkBox_autoStart->setChecked(Utils::isAutoStart());
+    ui->checkBox_autoStart->setChecked(isAutoStart());
     QStringList decoders = SettingsManager::getInstance()->getDecoders();
     ui->checkBox_hwdec_cuda->setChecked(decoders.contains(QStringLiteral("CUDA")));
     ui->checkBox_hwdec_d3d11->setChecked(decoders.contains(QStringLiteral("D3D11")));
@@ -183,10 +203,8 @@ void PreferencesDialog::initUI()
 
 void PreferencesDialog::initConnections()
 {
-#ifdef QT_HAS_WINEXTRAS
     connect(ui->horizontalSlider_video_position, &QSlider::valueChanged, taskbarProgress, &QWinTaskbarProgress::setValue);
     connect(ui->horizontalSlider_video_position, &QSlider::rangeChanged, taskbarProgress, &QWinTaskbarProgress::setRange);
-#endif
     connect(ui->pushButton_audio_open, &QPushButton::clicked, this, [=]
     {
         QString audioPath = QFileDialog::getOpenFileName(nullptr, tr("Please select an audio file"), SettingsManager::getInstance()->lastDir(), tr("Audios (*.mka *.aac *.flac *.mp3 *.wav);;All files (*)"));
@@ -358,17 +376,13 @@ void PreferencesDialog::initConnections()
             emit this->urlChanged(ui->lineEdit_url->text());
         else
             emit this->urlChanged(QString());
-#ifdef QT_HAS_WINEXTRAS
         if (!taskbarProgress->isVisible())
             taskbarProgress->show();
         taskbarProgress->resume();
-#endif
     });
     connect(ui->pushButton_pause, &QPushButton::clicked, this, [=]
     {
-#ifdef QT_HAS_WINEXTRAS
         taskbarProgress->pause();
-#endif
         emit this->pause();
     });
     connect(ui->pushButton_cancel, &QPushButton::clicked, this, &PreferencesDialog::close);
@@ -470,13 +484,13 @@ void PreferencesDialog::initConnections()
     });
     connect(ui->checkBox_autoStart, &QCheckBox::clicked, this, [=]
     {
-        if (ui->checkBox_autoStart->isChecked() && !Utils::isAutoStart())
-            Utils::setAutoStart(true);
-        else if (!ui->checkBox_autoStart->isChecked() && Utils::isAutoStart())
-            Utils::setAutoStart(false);
+        if (ui->checkBox_autoStart->isChecked() && !isAutoStart())
+            setAutoStart(true);
+        else if (!ui->checkBox_autoStart->isChecked() && isAutoStart())
+            setAutoStart(false);
         QTimer::singleShot(2500, this, [=]
         {
-            ui->checkBox_autoStart->setChecked(Utils::isAutoStart());
+            ui->checkBox_autoStart->setChecked(isAutoStart());
         });
     });
     connect(ui->radioButton_ratio_fitDesktop, &QRadioButton::clicked, this, &PreferencesDialog::setRatio);

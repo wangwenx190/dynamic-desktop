@@ -4,11 +4,7 @@ QMAKE_TARGET_DESCRIPTION = Dynamic Desktop Launcher
 RC_ICONS = images/bee.ico
 TARGET = launcher
 CONFIG(debug, debug|release): TARGET = $$join(TARGET,,,d)
-QT *= gui widgets av avwidgets concurrent
-qtHaveModule(winextras) {
-    QT *= winextras
-    DEFINES *= QT_HAS_WINEXTRAS
-}
+QT *= gui widgets av avwidgets concurrent winextras
 TEMPLATE = app
 include(../qtniceframelesswindow/qtniceframelesswindow.pri)
 include(../utils/utils.pri)
@@ -16,6 +12,7 @@ include(../settingsmanager/settingsmanager.pri)
 include(../skinsmanager/skinsmanager.pri)
 include(../slider/slider.pri)
 include(../wallpaper/wallpaper.pri)
+include(../qtservice/qtservice.pri)
 LIBS *= -lUser32
 HEADERS += \
     forms/preferencesdialog.h \
