@@ -60,7 +60,7 @@ See [CONTRIBUTING.md](/CONTRIBUTING.md) for more information.
 ## Licenses
 - [Wallpaper](/src/3rdparty/wallpaper): https://github.com/ThomasHuai/Wallpaper , Apache License 2.0, thanks to [**ThomasHuai**](https://github.com/ThomasHuai)!
 - [QtAV](https://github.com/wang-bin/QtAV): GPLv3/LGPLv2.1, thanks to [**wang bin**](https://github.com/wang-bin)!
-- [Qt Nice Frameless Window](/src/3rdparty/framelesswindow): https://github.com/Bringer-of-Light/Qt-Nice-Frameless-Window , MIT, thanks to [Bringer of Light](https://github.com/Bringer-of-Light)!
+- [Qt Nice Frameless Window](/src/3rdparty/qtniceframelesswindow): https://github.com/Bringer-of-Light/Qt-Nice-Frameless-Window , MIT, thanks to [Bringer of Light](https://github.com/Bringer-of-Light)!
 - [Qt](http://download.qt.io/archive/qt/) and [Qt Service](/src/3rdparty/qtservice): https://github.com/qtproject/qt-solutions , GPLv3/LGPLv2.1, thanks to [the Qt Company](https://www.qt.io/)!
 - [QSimpleUpdater](/src/3rdparty/qsimpleupdater): https://github.com/alex-spataru/QSimpleUpdater , DON'T BE A DICK PUBLIC LICENSE, thanks to [Alex Spataru](https://github.com/alex-spataru)!
 - [src/launcher/stylesheets/Default.css](/src/launcher/stylesheets/Default.css): copied from https://github.com/u8sand/Baka-MPlayer , GPLv2, thanks to [Daniel Clarke](https://github.com/u8sand)!
