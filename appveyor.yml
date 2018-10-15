@@ -30,11 +30,10 @@ install:
   - powershell ..\patch.ps1
   - cd ..
   - rd /s /q build
+  - call update_version.bat
   - cd ..
 build_script:
   - call build.bat
-after_build:
-  - call ci\update_version.bat
 test: off
 artifacts:
   - path: version_ci.pri
