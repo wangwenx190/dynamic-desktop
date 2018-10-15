@@ -13,6 +13,7 @@ CONFIG(debug, debug|release) {
 TEMPLATE = lib
 DEFINES *= QSU_SHARED
 CONFIG *= dll
+HEADERS += qsimpleupdater_global.h
 include(../3rdparty/qsimpleupdater/QSimpleUpdater.pri)
 target.path = $${BIN_DIR}
 INSTALLS *= target
