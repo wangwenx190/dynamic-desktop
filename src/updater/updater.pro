@@ -1,7 +1,7 @@
 include(../common.pri)
 QMAKE_TARGET_PRODUCT = Updater
 QMAKE_TARGET_DESCRIPTION = Dynamic Desktop Updater
-RC_ICONS = images/refresh.ico
+RC_ICONS = ../resources/icons/dll_win10.ico
 TARGET = updater
 CONFIG(debug, debug|release): TARGET = $$join(TARGET,,,d)
 TEMPLATE = app

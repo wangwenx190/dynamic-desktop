@@ -1,12 +1,12 @@
 <RCC>
-    <qresource prefix="/images">
-        <file alias="bee.ico">images/bee.ico</file>
-        <file alias="close.ico">images/close.ico</file>
-        <file alias="maximize.ico">images/maximize.ico</file>
-        <file alias="minimize.ico">images/minimize.ico</file>
-        <file alias="restore.ico">images/restore.ico</file>
-        <file alias="checked.ico">images/checked.ico</file>
-        <file alias="down-arrow.ico">images/down-arrow.ico</file>
-        <file alias="selected.ico">images/selected.ico</file>
+    <qresource prefix="/icons">
+        <file alias="color_palette.ico">../resources/icons/color_palette.ico</file>
+        <file alias="close.ico">../resources/icons/close.ico</file>
+        <file alias="maximize.ico">../resources/icons/maximize.ico</file>
+        <file alias="minimize.ico">../resources/icons/minimize.ico</file>
+        <file alias="restore.ico">../resources/icons/restore.ico</file>
+        <file alias="checked.ico">../resources/icons/checked.ico</file>
+        <file alias="down-arrow.ico">../resources/icons/down-arrow.ico</file>
+        <file alias="selected.ico">../resources/icons/selected.ico</file>
     </qresource>
 </RCC>

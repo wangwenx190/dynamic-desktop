@@ -55,7 +55,7 @@ void MainWindow::initUI()
     mainLayout->setContentsMargins(0, 0, 0, 0);
     mainLayout->setSpacing(0);
     setLayout(mainLayout);
-    setWindowIcon(QIcon(QStringLiteral(":/images/bee.ico")));
+    setWindowIcon(QIcon(QStringLiteral(":/icons/color_palette.ico")));
     setWindowTitle(QStringLiteral("Dynamic Desktop"));
     preferencesDialog = new PreferencesDialog();
     aboutDialog = new AboutDialog();
@@ -69,7 +69,7 @@ void MainWindow::initUI()
     trayMenu->addAction(tr("About"), this, &MainWindow::showAboutDialog);
     trayMenu->addAction(tr("Exit"), qApp, &QApplication::closeAllWindows);
     trayIcon = new QSystemTrayIcon();
-    trayIcon->setIcon(QIcon(QStringLiteral(":/images/bee.ico")));
+    trayIcon->setIcon(QIcon(QStringLiteral(":/icons/color_palette.ico")));
     trayIcon->setToolTip(QStringLiteral("Dynamic Desktop"));
     trayIcon->setContextMenu(trayMenu);
     trayIcon->show();

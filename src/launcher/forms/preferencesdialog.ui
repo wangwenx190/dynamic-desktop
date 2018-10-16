@@ -24,7 +24,7 @@
   </property>
   <property name="windowIcon">
    <iconset resource="../images.qrc">
-    <normaloff>:/images/bee.ico</normaloff>:/images/bee.ico</iconset>
+    <normaloff>:/icons/color_palette.ico</normaloff>:/icons/color_palette.ico</iconset>
   </property>
   <property name="styleSheet">
    <string notr="true"/>
@@ -99,7 +99,7 @@
          <string/>
         </property>
         <property name="pixmap">
-         <pixmap resource="../images.qrc">:/images/bee.ico</pixmap>
+         <pixmap resource="../images.qrc">:/icons/color_palette.ico</pixmap>
         </property>
         <property name="scaledContents">
          <bool>true</bool>
@@ -170,7 +170,7 @@
         </property>
         <property name="icon">
          <iconset resource="../images.qrc">
-          <normaloff>:/images/minimize.ico</normaloff>:/images/minimize.ico</iconset>
+          <normaloff>:/icons/minimize.ico</normaloff>:/icons/minimize.ico</iconset>
         </property>
         <property name="flat">
          <bool>true</bool>
@@ -199,7 +199,7 @@
         </property>
         <property name="icon">
          <iconset resource="../images.qrc">
-          <normaloff>:/images/maximize.ico</normaloff>:/images/maximize.ico</iconset>
+          <normaloff>:/icons/maximize.ico</normaloff>:/icons/maximize.ico</iconset>
         </property>
         <property name="flat">
          <bool>true</bool>
@@ -225,7 +225,7 @@
         </property>
         <property name="icon">
          <iconset resource="../images.qrc">
-          <normaloff>:/images/close.ico</normaloff>:/images/close.ico</iconset>
+          <normaloff>:/icons/close.ico</normaloff>:/icons/close.ico</iconset>
         </property>
         <property name="flat">
          <bool>true</bool>

@@ -1,7 +1,7 @@
 include(../common.pri)
 QMAKE_TARGET_PRODUCT = Launcher
 QMAKE_TARGET_DESCRIPTION = Dynamic Desktop Launcher
-RC_ICONS = images/bee.ico
+RC_ICONS = ../resources/icons/color_palette.ico
 TARGET = launcher
 CONFIG(debug, debug|release): TARGET = $$join(TARGET,,,d)
 QT *= gui widgets av avwidgets concurrent winextras
@@ -27,8 +27,8 @@ FORMS += \
     forms/preferencesdialog.ui \
     forms/aboutdialog.ui
 TRANSLATIONS += \
-    translations/dd_en.ts \
-    translations/dd_zh_CN.ts
+    ../resources/translations/launcher_en.ts \
+    ../resources/translations/launcher_zh_CN.ts
 RESOURCES += images.qrc
 isEmpty(lupdate): lupdate = $${qttools_dir}/lupdate.exe
 isEmpty(lrelease): lrelease = $${qttools_dir}/lrelease.exe
@@ -47,7 +47,7 @@ CONFIG(static_dd) {
         i18n.qrc
 } else {
     skins.path = $${BIN_DIR}/skins
-    skins.files = stylesheets/*.css
+    skins.files = ../resources/stylesheets/*.css
     libs.path = $${BIN_DIR}
     libs.files = \
         $$[QT_INSTALL_BINS]/QtAV?.dll \
@@ -70,7 +70,7 @@ CONFIG(static_dd) {
         libs.commands = $$join(libs.commands, $$escape_expand(\\n\\t))
     }
     translations.path = $${BIN_DIR}/translations
-    translations.files = translations/*.qm
+    translations.files = ../resources/translations/launcher_*.qm
     exists("$${lupdate}") {
         translations.commands += $$quote(\"$${lupdate}\" -no-obsolete \"$${_PRO_FILE_}\")
         translations.commands += $$quote(\"$${lrelease}\" $${lrelease_params} \"$${_PRO_FILE_}\")
@@ -81,4 +81,7 @@ CONFIG(static_dd) {
         skins \
         translations
 }
+licenses.path = $${BIN_DIR}/licenses
+licenses.files = $${ROOT}/docs/licenses/*
+INSTALLS *= licenses
 include(../upx.pri)

@@ -1,37 +1,37 @@
 /*
-Skin: Ultra Violet
-PantoneCode: 18-3838 (17-3313)
+Skin: Marsala
+PantoneCode: 18-1438 (15-1242 14-1122)
 Author: Yuriko
-Date: 2018/10/9
+Date: 2018/10/10
 
-紫外光照亮了通往未来的道路！
-一个强烈挑动思绪与深思的紫色调! 紫外光传达独创性、创造力和前瞻性的思维，为我们指向未来。
-复杂和沉思，紫外光暗示了宇宙的神秘，以及我们未知的世界。广袤无垠的夜空象征着无限的可能，并继续激励着我们追求一个超越我们自己世界的渴望。
+一种自然有劲与质朴的酒红色。玛萨拉酒红丰富我们的精神、肉体与灵魂。
+玛萨拉酒红的名称来自玛萨拉这种成分加烈的葡萄酒，这个极具风味的色调正如其名，
+体现了一顿圆满餐饮的丰足感，它的红褐底色则散发出一种自然成熟的朴实感。
 
 */
 QWidget {
 	font-family: 12px "Noto Sans", "FreeSans";
-	background: rgb(95, 75, 139);
+	background: rgb(150, 79, 76);
 	color: whitesmoke;
 }
 
 QPushButton {
-	background: rgb(161, 117, 156);
+	background: rgb(218, 181, 143);
 	border: 1px solid #000;
 	border-radius: 2px;
-	color: whitesmoke;
+	color: rgb(236, 14, 101);
 	min-width: 76px;
 	min-height: 17px;
 	padding: 4px 6px;
 }
 
 QPushButton:focus {
-	border: 1px solid rgb(161, 117, 156);
+	border: 1px solid rgb(218, 181, 143);
 	outline: none;
 }
 
 QPushButton:pressed {
-	background: rgb(118, 123, 165);
+	background: rgb(236, 147, 94);
 }
 
 QPushButton:disabled {
@@ -68,12 +68,12 @@ QPushButton#pushButton_close {
 }
 
 QSlider::groove:horizontal {
-	background: rgb(118, 123, 165);
+	background: rgb(236, 147, 94);
 	height: 1px;
 }
 
 QSlider::sub-page:horizontal {
-	background: rgb(161, 117, 156);
+	background: rgb(218, 181, 143);
 }
 
 QSlider::handle:horizontal {
@@ -87,51 +87,51 @@ QSlider::handle:horizontal {
 QCheckBox::indicator {
 	width: 11px;
 	height: 11px;
-	border: 1px solid rgb(161, 117, 156);
+	border: 1px solid rgb(218, 181, 143);
 	border-radius: 2px;
 }
 
 QCheckBox::indicator:unchecked {
 	border: 1px solid whitesmoke;
-	background: rgb(118, 123, 165);
+	background: rgb(236, 147, 94);
 	image: none;
 }
 
 QCheckBox::indicator:checked {
-	border: 1px solid rgb(161, 117, 156);
-	background: rgb(161, 117, 156);
-	image: url(:/images/checked.ico);
+	border: 1px solid rgb(218, 181, 143);
+	background: rgb(218, 181, 143);
+	image: url(:/icons/checked.ico);
 }
 
 QLineEdit {
-	background: rgb(118, 123, 165);
+	background: rgb(236, 147, 94);
 	border: 1px solid #454A4D;
 	padding: 2px;
 }
 
 QLineEdit:focus {
-	border: 1px solid rgb(161, 117, 156);
+	border: 1px solid rgb(218, 181, 143);
 }
 
 QComboBox {
-	background: rgb(118, 123, 165);
+	background: rgb(236, 147, 94);
 	border: 1px solid #000;
 	border-radius: 2px;
 	padding: 2px;
 }
 
 QComboBox:focus {
-	border: 1px solid rgb(161, 117, 156);
+	border: 1px solid rgb(218, 181, 143);
 }
 
 QComboBox::drop-down {
-	background: rgb(161, 117, 156);
+	background: rgb(218, 181, 143);
 	border-top-right-radius: 2px;
 	border-bottom-right-radius: 2px;
 }
 
 QComboBox::down-arrow {
-	image: url(:/images/down-arrow.ico);
+	image: url(:/icons/down-arrow.ico);
 }
 
 QGroupBox {
@@ -143,7 +143,7 @@ QGroupBox {
 QGroupBox::title {
 	subcontrol-origin: margin;
 	subcontrol-position: top center;
-	background: rgb(118, 123, 165);
+	background: rgb(236, 147, 94);
 	border: 1px solid #454A4D;
 	border-radius: 2px;
 	padding: 0 2px;
@@ -162,6 +162,6 @@ QRadioButton::indicator:unchecked {
 }
 
 QRadioButton::indicator:checked {
-	border: 1px solid rgb(161, 117, 156);
-	image: url(:/images/selected.ico);
+	border: 1px solid rgb(218, 181, 143);
+	image: url(:/icons/selected.ico);
 }

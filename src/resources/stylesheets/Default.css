@@ -1,37 +1,31 @@
 /*
-Skin: Greenery
-PantoneCode: 15-0343 (13-0220 12-0525)
-Author: Yuriko
-Date: 2018/10/10
-
-清新活力之色，草木绿是新生的象徵
-草木绿是一个代表初春时节万物复苏、欣欣向荣的颜色，清新而充满活力，如同身处于繁茂的绿植之中，让人情不自禁地开始深呼吸，感受新鲜空气，振作精神。
-草木绿，一个俱生命力、令人愉悦的颜色，也像徵著个人对热情和活力的追求。
-
+Author: Daniel Clarke(https://github.com/u8sand)
+Notice: Originally copied from https://github.com/u8sand/Baka-MPlayer and wangwenx190 made some changes to it.
+Last update date: 2018/10/09
 */
 QWidget {
 	font-family: 12px "Noto Sans", "FreeSans";
-	background: rgb(136, 176, 75);
-	color: rgb(105, 45, 93);
+	background: #1A1A1A;
+	color: whitesmoke;
 }
 
 QPushButton {
-	background: rgb(178, 231, 159);
+	background: #454A4D;
 	border: 1px solid #000;
 	border-radius: 2px;
-	color: rgb(105, 45, 93);
+	color: whitesmoke;
 	min-width: 76px;
 	min-height: 17px;
 	padding: 4px 6px;
 }
 
 QPushButton:focus {
-	border: 1px solid rgb(178, 231, 159);
+	border: 1px solid #008098;
 	outline: none;
 }
 
 QPushButton:pressed {
-	background: rgb(227, 234, 165);
+	background: #2E3133;
 }
 
 QPushButton:disabled {
@@ -68,12 +62,12 @@ QPushButton#pushButton_close {
 }
 
 QSlider::groove:horizontal {
-	background: rgb(227, 234, 165);
+	background: #5A5A5A;
 	height: 1px;
 }
 
 QSlider::sub-page:horizontal {
-	background: rgb(178, 231, 159);
+	background: #008098;
 }
 
 QSlider::handle:horizontal {
@@ -87,51 +81,51 @@ QSlider::handle:horizontal {
 QCheckBox::indicator {
 	width: 11px;
 	height: 11px;
-	border: 1px solid rgb(178, 231, 159);
+	border: 1px solid #008098;
 	border-radius: 2px;
 }
 
 QCheckBox::indicator:unchecked {
-	border: 1px solid rgb(105, 45, 93);
-	background: rgb(227, 234, 165);
+	border: 1px solid whitesmoke;
+	background: #1A1A1A;
 	image: none;
 }
 
 QCheckBox::indicator:checked {
-	border: 1px solid rgb(178, 231, 159);
-	background: rgb(178, 231, 159);
-	image: url(:/images/checked.ico);
+	border: 1px solid #008098;
+	background: #008098;
+	image: url(:/icons/checked.ico);
 }
 
 QLineEdit {
-	background: rgb(227, 234, 165);
+	background: #000;
 	border: 1px solid #454A4D;
 	padding: 2px;
 }
 
 QLineEdit:focus {
-	border: 1px solid rgb(178, 231, 159);
+	border: 1px solid #008098;
 }
 
 QComboBox {
-	background: rgb(227, 234, 165);
+	background: #454A4D;
 	border: 1px solid #000;
 	border-radius: 2px;
 	padding: 2px;
 }
 
 QComboBox:focus {
-	border: 1px solid rgb(178, 231, 159);
+	border: 1px solid #008098;
 }
 
 QComboBox::drop-down {
-	background: rgb(178, 231, 159);
+	background: #008098;
 	border-top-right-radius: 2px;
 	border-bottom-right-radius: 2px;
 }
 
 QComboBox::down-arrow {
-	image: url(:/images/down-arrow.ico);
+	image: url(:/icons/down-arrow.ico);
 }
 
 QGroupBox {
@@ -143,7 +137,7 @@ QGroupBox {
 QGroupBox::title {
 	subcontrol-origin: margin;
 	subcontrol-position: top center;
-	background: rgb(227, 234, 165);
+	background: #454A4D;
 	border: 1px solid #454A4D;
 	border-radius: 2px;
 	padding: 0 2px;
@@ -162,6 +156,6 @@ QRadioButton::indicator:unchecked {
 }
 
 QRadioButton::indicator:checked {
-	border: 1px solid rgb(178, 231, 159);
-	image: url(:/images/selected.ico);
+	border: 1px solid #008098;
+	image: url(:/icons/selected.ico);
 }

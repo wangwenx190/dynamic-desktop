@@ -1,7 +1,7 @@
 include(../common.pri)
 QMAKE_TARGET_PRODUCT = Service
 QMAKE_TARGET_DESCRIPTION = Dynamic Desktop Startup Service
-RC_ICONS = images/gear.ico
+RC_ICONS = ../resources/icons/dll_win10.ico
 TARGET = service
 CONFIG(debug, debug|release): TARGET = $$join(TARGET,,,d)
 TEMPLATE = app
