@@ -40,16 +40,16 @@ int Exit(int resultCode = 0, bool trulyExit = true)
 
 int main(int argc, char *argv[])
 {
-    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
-    QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
-    QCoreApplication::setAttribute(Qt::AA_DontCreateNativeWidgetSiblings);
-    QCoreApplication::setAttribute(Qt::AA_UseOpenGLES);
+    QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+    QApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
+    QApplication::setAttribute(Qt::AA_DontCreateNativeWidgetSiblings);
+    QApplication::setAttribute(Qt::AA_UseOpenGLES);
     QApplication app(argc, argv);
-    QCoreApplication::setApplicationName(QStringLiteral("Dynamic Desktop"));
-    QApplication::setApplicationDisplayName(QStringLiteral("Dynamic Desktop"));
-    QCoreApplication::setApplicationVersion(QStringLiteral(DD_VERSION));
-    QCoreApplication::setOrganizationName(QStringLiteral("wangwenx190"));
-    QCoreApplication::setOrganizationDomain(QStringLiteral("wangwenx190.github.io"));
+    QApplication::setApplicationName(QStringLiteral("Dynamic Desktop Launcher"));
+    QApplication::setApplicationDisplayName(QStringLiteral("Dynamic Desktop Launcher"));
+    QApplication::setApplicationVersion(QStringLiteral(DD_VERSION));
+    QApplication::setOrganizationName(QStringLiteral("wangwenx190"));
+    QApplication::setOrganizationDomain(QStringLiteral("wangwenx190.github.io"));
 #ifndef _DEBUG
     const QStringList arguments = QApplication::arguments();
     if (!arguments.contains(QStringLiteral("-?"))

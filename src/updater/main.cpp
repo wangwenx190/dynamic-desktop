@@ -8,14 +8,14 @@
 
 int main(int argc, char *argv[])
 {
-    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
-    QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
-    QCoreApplication::setAttribute(Qt::AA_DontCreateNativeWidgetSiblings);
+    QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+    QApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
+    QApplication::setAttribute(Qt::AA_DontCreateNativeWidgetSiblings);
     QApplication app(argc, argv);
-    QCoreApplication::setApplicationName(QStringLiteral("Dynamic Desktop Updater"));
-    QCoreApplication::setApplicationVersion(QStringLiteral(DD_VERSION));
-    QCoreApplication::setOrganizationName(QStringLiteral("wangwenx190"));
-    QCoreApplication::setOrganizationDomain(QStringLiteral("wangwenx190.github.io"));
+    QApplication::setApplicationName(QStringLiteral("Dynamic Desktop Updater"));
+    QApplication::setApplicationVersion(QStringLiteral(DD_VERSION));
+    QApplication::setOrganizationName(QStringLiteral("wangwenx190"));
+    QApplication::setOrganizationDomain(QStringLiteral("wangwenx190.github.io"));
     QApplication::setApplicationDisplayName(QStringLiteral("Dynamic Desktop Updater"));
     QStringList arguments = QApplication::arguments();
     arguments.takeFirst();

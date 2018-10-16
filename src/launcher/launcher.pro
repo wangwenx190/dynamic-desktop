@@ -30,21 +30,12 @@ TRANSLATIONS += \
     ../resources/translations/launcher_en.ts \
     ../resources/translations/launcher_zh_CN.ts
 RESOURCES += images.qrc
-isEmpty(lupdate): lupdate = $${qttools_dir}/lupdate.exe
-isEmpty(lrelease): lrelease = $${qttools_dir}/lrelease.exe
-lrelease_params = -nounfinished -removeidentical
-CONFIG(small): lrelease_params = $${lrelease_params} -compress
-exists("$${lupdate}") {
-    system("$${lupdate} -no-obsolete $${_PRO_FILE_}")
-    system("$${lrelease} $${lrelease_params} $${_PRO_FILE_}")
-}
+include(../translations.pri)
 target.path = $${BIN_DIR}
 INSTALLS *= target
 CONFIG(static_dd) {
     DEFINES *= BUILD_DD_STATIC
-    RESOURCES *= \
-        skins.qrc \
-        i18n.qrc
+    RESOURCES *= skins.qrc
 } else {
     skins.path = $${BIN_DIR}/skins
     skins.files = ../resources/stylesheets/*.css
@@ -69,17 +60,9 @@ CONFIG(static_dd) {
         libs.commands = $$quote(\"$${windeployqt}\" --plugindir \"$${BIN_DIR}/plugins\" --force --no-translations --compiler-runtime --angle --no-opengl-sw -concurrent -opengl --no-svg --list source \"$${BIN_DIR}/$${TARGET}.exe\")
         libs.commands = $$join(libs.commands, $$escape_expand(\\n\\t))
     }
-    translations.path = $${BIN_DIR}/translations
-    translations.files = ../resources/translations/launcher_*.qm
-    exists("$${lupdate}") {
-        translations.commands += $$quote(\"$${lupdate}\" -no-obsolete \"$${_PRO_FILE_}\")
-        translations.commands += $$quote(\"$${lrelease}\" $${lrelease_params} \"$${_PRO_FILE_}\")
-        translations.commands = $$join(translations.commands, $$escape_expand(\\n\\t))
-    }
     INSTALLS *= \
         libs \
-        skins \
-        translations
+        skins
 }
 licenses.path = $${BIN_DIR}/licenses
 licenses.files = $${ROOT}/docs/licenses/*

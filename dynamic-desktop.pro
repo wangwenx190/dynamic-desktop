@@ -13,4 +13,5 @@ SUBDIRS += \
     src/settingsmanager \
     src/updater \
     src/service \
+    src/player \
     src/launcher
