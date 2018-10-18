@@ -1,7 +1,6 @@
 #include "aboutdialog.h"
 #include "ui_aboutdialog.h"
 
-#include <QtAV>
 #include <QDesktopServices>
 #include <QUrl>
 #include <QCoreApplication>
@@ -15,7 +14,8 @@ AboutDialog::AboutDialog(QWidget *parent) :
     ui->lineEdit_commit_id->setText(QStringLiteral(DD_COMMIT_ID));
     ui->lineEdit_commit_time->setText(QStringLiteral(DD_COMMIT_TIME));
     ui->lineEdit_qt->setText(QStringLiteral(QT_VERSION_STR));
-    ui->lineEdit_qtav->setText(QtAV_Version_String());
+    // TODO: Do not hard code QtAV version
+    ui->lineEdit_qtav->setText(QStringLiteral("1.12.0"));
     ui->lineEdit_ffmpeg->setText(QStringLiteral(FFMPEG_VERSION_STR));
     QString compiler;
 #ifdef __clang__

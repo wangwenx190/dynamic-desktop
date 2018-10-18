@@ -4,12 +4,12 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../../player/mainwindow.cpp" line="50"/>
+        <location filename="../../player/mainwindow.cpp" line="59"/>
         <source>Volume: %0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../player/mainwindow.cpp" line="200"/>
+        <location filename="../../player/mainwindow.cpp" line="209"/>
         <source>Current renderer is not available on your platform!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -17,12 +17,12 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../../player/main.cpp" line="66"/>
+        <location filename="../../player/main.cpp" line="65"/>
         <source>This application only supports Windows 7 and newer.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../player/main.cpp" line="72"/>
+        <location filename="../../player/main.cpp" line="71"/>
         <source>There is another instance running. Please do not run twice.</source>
         <translation type="unfinished"></translation>
     </message>

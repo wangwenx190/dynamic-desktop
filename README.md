@@ -50,9 +50,9 @@ Microsoft Windows 7 ~ 10(with GUI desktop), both 32 bit and 64 bit systems.
 - Download [FFmpeg](https://github.com/wang-bin/avbuild)'s prebuilt binaries or build yourself.
 - Open "dynamic-desktop.pro" and start compiling or call "build.bat". But remember to call "vcvarsall.bat" and add Qt's directories to your path variables before calling "build.bat".
 
-**IMPORTANT NOTE**
-
-You can also use Intel C++ Compiler(ICC), Clang or MinGW to compile it, just remember to set up environment variables. Cross compile on other platforms may also work, but it will never run on platforms other than MS Windows.
+**IMPORTANT NOTES**
+- You can also use Intel C++ Compiler(ICC), Clang or MinGW to compile it, just remember to set up environment variables. Cross compile on other platforms may also work, but it will never run on platforms other than MS Windows.
+- Submodules *launcher* and *player* use *Qt Windows Extras* module, *ipc* uses *Qt Remote Objects* module, *QSimpleUpdater* and *updater* use *Qt Network* module, please make sure your Qt has these modules. However, you could also change the source code to remove these dependences.
 
 ## Contributing
 See [CONTRIBUTING.md](/CONTRIBUTING.md) for more information.

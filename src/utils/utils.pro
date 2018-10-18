@@ -8,6 +8,7 @@ TEMPLATE = lib
 DEFINES *= BUILD_SHARED_LIBRARY_DD
 CONFIG *= dll
 LIBS *= \
+    -lKernel32 \
     -lUser32 \
     -lShell32 \
     -lWtsapi32 \

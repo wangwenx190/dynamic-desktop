@@ -1,13 +1,13 @@
 #include "ipcserver.h"
 
-#include "rep_ipc_source.h"
+#include "ipccore.h"
 
-DDIPCSimpleSource *ipcSource = nullptr;
+IPCCore *ipcSource = nullptr;
 QRemoteObjectHost *srcNode = nullptr;
 
 IPCServer::IPCServer(QObject *parent) : QObject(parent)
 {
-    ipcSource = new DDIPCSimpleSource();
+    ipcSource = new IPCCore();
     srcNode = new QRemoteObjectHost(QUrl(QStringLiteral("local:replica")));
     srcNode->enableRemoting(ipcSource);
     connect(ipcSource, &DDIPCSimpleSource::clientMessage, this, &IPCServer::clientMessage);

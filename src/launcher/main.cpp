@@ -4,6 +4,7 @@
 #include <IPCServer>
 #include "forms/preferencesdialog.h"
 #include "forms/aboutdialog.h"
+#include "../common.h"
 
 #include <Windows.h>
 
@@ -18,11 +19,10 @@
 #include <QVersionNumber>
 #include <QCommandLineParser>
 #include <QCommandLineOption>
-#include <QtAV>
-#include <QtAVWidgets>
 #include <QMenu>
 #include <QSystemTrayIcon>
 #include <QAction>
+#include <QThread>
 
 static HANDLE mutex = nullptr;
 
@@ -47,7 +47,6 @@ int main(int argc, char *argv[])
             && !QApplication::arguments().contains(QStringLiteral("--launch"), Qt::CaseInsensitive))
         if (Utils::checkUpdate())
             return 0;
-    qInstallMessageHandler(Utils::fileLogger);
 #endif
 #ifdef BUILD_DD_STATIC
     QString qmDir = QStringLiteral(":/i18n");
@@ -138,20 +137,20 @@ int main(int argc, char *argv[])
     QString rendererOptionValue = parser.value(rendererOption).toLower();
     if (!rendererOptionValue.isEmpty())
         if ((rendererOptionValue == QStringLiteral("opengl")) &&
-                (SettingsManager::getInstance()->getRenderer() != QtAV::VideoRendererId_OpenGLWidget))
-            SettingsManager::getInstance()->setRenderer(QtAV::VideoRendererId_OpenGLWidget);
+                (SettingsManager::getInstance()->getRenderer() != QtAV_VId_OpenGLWidget))
+            SettingsManager::getInstance()->setRenderer(QtAV_VId_OpenGLWidget);
         else if ((rendererOptionValue == QStringLiteral("gl")) &&
-                 (SettingsManager::getInstance()->getRenderer() != QtAV::VideoRendererId_GLWidget2))
-            SettingsManager::getInstance()->setRenderer(QtAV::VideoRendererId_GLWidget2);
+                 (SettingsManager::getInstance()->getRenderer() != QtAV_VId_GLWidget2))
+            SettingsManager::getInstance()->setRenderer(QtAV_VId_GLWidget2);
         else if ((rendererOptionValue == QStringLiteral("qt")) &&
-                 (SettingsManager::getInstance()->getRenderer() != QtAV::VideoRendererId_Widget))
-            SettingsManager::getInstance()->setRenderer(QtAV::VideoRendererId_Widget);
+                 (SettingsManager::getInstance()->getRenderer() != QtAV_VId_Widget))
+            SettingsManager::getInstance()->setRenderer(QtAV_VId_Widget);
         else if ((rendererOptionValue == QStringLiteral("gdi")) &&
-                 (SettingsManager::getInstance()->getRenderer() != QtAV::VideoRendererId_GDI))
-            SettingsManager::getInstance()->setRenderer(QtAV::VideoRendererId_GDI);
+                 (SettingsManager::getInstance()->getRenderer() != QtAV_VId_GDI))
+            SettingsManager::getInstance()->setRenderer(QtAV_VId_GDI);
         else if ((rendererOptionValue == QStringLiteral("d2d")) &&
-                 (SettingsManager::getInstance()->getRenderer() != QtAV::VideoRendererId_Direct2D))
-            SettingsManager::getInstance()->setRenderer(QtAV::VideoRendererId_Direct2D);
+                 (SettingsManager::getInstance()->getRenderer() != QtAV_VId_Direct2D))
+            SettingsManager::getInstance()->setRenderer(QtAV_VId_Direct2D);
     QString volumeOptionValue = parser.value(volumeOption);
     if (!volumeOptionValue.isEmpty())
     {
@@ -167,6 +166,11 @@ int main(int argc, char *argv[])
     PreferencesDialog preferencesDialog;
     AboutDialog aboutDialog;
     QMenu trayMenu;
+    QSystemTrayIcon trayIcon;
+    trayIcon.setIcon(QIcon(QStringLiteral(":/icons/color_palette.ico")));
+    trayIcon.setToolTip(QStringLiteral("Dynamic Desktop"));
+    trayIcon.setContextMenu(&trayMenu);
+    trayIcon.show();
     QAction *showPreferencesDialogAction = trayMenu.addAction(QObject::tr("Preferences"), [=, &preferencesDialog]
     {
         if (preferencesDialog.isHidden())
@@ -194,9 +198,12 @@ int main(int argc, char *argv[])
     QAction *muteAction = trayMenu.addAction(QObject::tr("Mute"));
     muteAction->setCheckable(true);
     muteAction->setChecked(SettingsManager::getInstance()->getMute());
-    QObject::connect(muteAction, &QAction::triggered, &preferencesDialog, &PreferencesDialog::muteChanged);
+    QObject::connect(muteAction, &QAction::triggered, [=, &preferencesDialog]
+    {
+        emit preferencesDialog.setMute(muteAction->isChecked());
+    });
     trayMenu.addSeparator();
-    trayMenu.addAction(QObject::tr("About"), [=, &aboutDialog]
+    QAction *aboutAction = trayMenu.addAction(QObject::tr("About"), [=, &aboutDialog]
     {
         if (aboutDialog.isHidden())
         {
@@ -211,33 +218,42 @@ int main(int argc, char *argv[])
             aboutDialog.activateWindow();
         }
     });
-    trayMenu.addAction(QObject::tr("Exit"), [=, &preferencesDialog]
+    QObject::connect(&preferencesDialog, &PreferencesDialog::about, [=]
     {
-        emit preferencesDialog.sendCommand(qMakePair(QStringLiteral("quit"), QVariant()));
+        emit aboutAction->triggered();
+    });
+    QString playerFileName = QStringLiteral("player");
+#ifdef _DEBUG
+    playerFileName += QStringLiteral("d");
+#endif
+    playerFileName += QStringLiteral(".exe");
+    QObject::connect(&preferencesDialog, &PreferencesDialog::requestQuit, [=, &preferencesDialog, &trayIcon](bool fromPlayer)
+    {
         qApp->closeAllWindows();
+        trayIcon.hide();
+        if (!fromPlayer)
+        {
+            emit preferencesDialog.sendCommand(qMakePair(QStringLiteral("quit"), QVariant()));
+            QThread::sleep(2);
+            // Make sure the player process is terminated
+            Utils::killProcess(playerFileName);
+        }
         qApp->quit();
     });
-    QSystemTrayIcon trayIcon;
-    trayIcon.setIcon(QIcon(QStringLiteral(":/icons/color_palette.ico")));
-    trayIcon.setToolTip(QStringLiteral("Dynamic Desktop"));
-    trayIcon.setContextMenu(&trayMenu);
-    trayIcon.show();
+    trayMenu.addAction(QObject::tr("Exit"), [=, &preferencesDialog]
+    {
+        emit preferencesDialog.requestQuit(false);
+    });
     QObject::connect(&trayIcon, &QSystemTrayIcon::activated, [=](QSystemTrayIcon::ActivationReason reason)
     {
         if (reason != QSystemTrayIcon::Context)
             emit showPreferencesDialogAction->triggered();
     });
-    QObject::connect(&preferencesDialog, &PreferencesDialog::muteChanged, [=](bool mute)
+    QObject::connect(&preferencesDialog, &PreferencesDialog::muteChanged, [=, &preferencesDialog](bool mute)
     {
-        if (!muteAction->isCheckable())
-            muteAction->setCheckable(true);
         muteAction->setChecked(mute);
     });
-    QString playerPath = QApplication::applicationDirPath() + QStringLiteral("/player");
-#ifdef _DEBUG
-    playerPath += QStringLiteral("d");
-#endif
-    playerPath += QStringLiteral(".exe");
+    QString playerPath = QApplication::applicationDirPath() + QLatin1Char('/') + playerFileName;
     QStringList playerStartupArguments{ QStringLiteral("--runfromlauncher") };
     if (parser.isSet(windowModeOption))
         playerStartupArguments << QStringLiteral("--window");

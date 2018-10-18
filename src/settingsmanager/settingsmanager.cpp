@@ -162,8 +162,7 @@ QString SettingsManager::getLanguage() const
 
 int SettingsManager::getRenderer() const
 {
-    // QtAV::VideoRendererId_GLWidget2: 1600016726
-    return settings->value(QStringLiteral("dd/renderer"), 1600016726).toInt();
+    return settings->value(QStringLiteral("dd/renderer"), QtAV_VId_GLWidget2).toInt();
 }
 
 QString SettingsManager::getImageQuality() const

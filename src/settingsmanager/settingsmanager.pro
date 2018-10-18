@@ -10,7 +10,8 @@ CONFIG *= dll
 SOURCES += settingsmanager.cpp
 HEADERS += \
     settingsmanager.h \
-    $$PWD/../dd_dll_global.h
+    $$PWD/../dd_dll_global.h \
+    $$PWD/../common.h
 target.path = $${BIN_DIR}
 INSTALLS *= target
 include(../deploy.pri)

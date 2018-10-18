@@ -11,7 +11,7 @@ IPCClient::IPCClient(QObject *parent) : QObject(parent)
     repNode->connectToNode(QUrl(QStringLiteral("local:replica")));
     ipcReplica = repNode->acquire<DDIPCReplica>();
     connect(ipcReplica, &DDIPCReplica::serverMessage, this, &IPCClient::serverMessage);
-    connect(this, &IPCClient::clientMessage, ipcReplica, &DDIPCReplica::clientMessage);
+    connect(this, &IPCClient::clientMessage, ipcReplica, &DDIPCReplica::sendMessageToServer);
 }
 
 IPCClient::~IPCClient()

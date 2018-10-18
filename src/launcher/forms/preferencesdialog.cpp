@@ -4,6 +4,7 @@
 #include <Utils>
 #include <QtService>
 #include <SkinsManager>
+#include "../common.h"
 
 #include <QWinTaskbarButton>
 #include <QWinTaskbarProgress>
@@ -22,8 +23,11 @@
 #include <QLibraryInfo>
 #endif
 #include <QTimer>
-#include <QtAV>
-#include <QtAVWidgets>
+
+void PreferencesDialog::quit(const QVariant &param)
+{
+    emit this->requestQuit(param.toBool());
+}
 
 void PreferencesDialog::updateVideoSlider(const QVariant &params)
 {
@@ -288,11 +292,11 @@ void PreferencesDialog::initUI()
     ui->comboBox_image_quality->addItem(tr("Best"), QStringLiteral("best"));
     ui->comboBox_image_quality->addItem(tr("Fastest"), QStringLiteral("fastest"));
     ui->comboBox_image_quality->addItem(tr("Default"), QStringLiteral("default"));
-    ui->comboBox_video_renderer->addItem(QStringLiteral("OpenGLWidget"), QtAV::VideoRendererId_OpenGLWidget);
-    ui->comboBox_video_renderer->addItem(QStringLiteral("QGLWidget2"), QtAV::VideoRendererId_GLWidget2);
-    ui->comboBox_video_renderer->addItem(QStringLiteral("Widget"), QtAV::VideoRendererId_Widget);
-    ui->comboBox_video_renderer->addItem(QStringLiteral("GDI"), QtAV::VideoRendererId_GDI);
-    ui->comboBox_video_renderer->addItem(QStringLiteral("Direct2D"), QtAV::VideoRendererId_Direct2D);
+    ui->comboBox_video_renderer->addItem(QStringLiteral("OpenGLWidget"), QtAV_VId_OpenGLWidget);
+    ui->comboBox_video_renderer->addItem(QStringLiteral("QGLWidget2"), QtAV_VId_GLWidget2);
+    ui->comboBox_video_renderer->addItem(QStringLiteral("Widget"), QtAV_VId_Widget);
+    ui->comboBox_video_renderer->addItem(QStringLiteral("GDI"), QtAV_VId_GDI);
+    ui->comboBox_video_renderer->addItem(QStringLiteral("Direct2D"), QtAV_VId_Direct2D);
     ui->comboBox_skin->addItem(tr("<None>"), QStringLiteral("none"));
 #ifndef BUILD_DD_STATIC
     QString skinDirPath = QApplication::applicationDirPath() + QDir::separator() + QStringLiteral("skins");
@@ -528,7 +532,7 @@ void PreferencesDialog::initConnections()
         if (ui->comboBox_image_quality->currentData().toString() != SettingsManager::getInstance()->getImageQuality())
         {
             SettingsManager::getInstance()->setImageQuality(ui->comboBox_image_quality->currentData().toString());
-            emit this->sendCommand(qMakePair(QStringLiteral("imageQualityChanged"), SettingsManager::getInstance()->getImageQuality()));
+            emit this->sendCommand(qMakePair(QStringLiteral("setImageQuality"), SettingsManager::getInstance()->getImageQuality()));
         }
     });
     connect(ui->lineEdit_url, &QLineEdit::textChanged, this, [=](const QString &text)
@@ -577,6 +581,11 @@ void PreferencesDialog::initConnections()
             emit this->sendCommand(qMakePair(QStringLiteral("subtitleEnabled"), SettingsManager::getInstance()->getSubtitle()));
         }
     });
+    connect(this, &PreferencesDialog::setMute, this, [=](bool mute)
+    {
+        ui->checkBox_volume->setChecked(!mute);
+        emit ui->checkBox_volume->clicked(!mute);
+    });
     //connect(ui->pushButton_check_update, &QPushButton::clicked, this, &PreferencesDialog::requestUpdate);
 }
 
@@ -605,6 +614,6 @@ void PreferencesDialog::setRatio()
     if (ui->radioButton_ratio_fitDesktop->isChecked() != SettingsManager::getInstance()->getFitDesktop())
     {
         SettingsManager::getInstance()->setFitDesktop(ui->radioButton_ratio_fitDesktop->isChecked());
-        emit this->sendCommand(qMakePair(QStringLiteral("pictureRatioChanged"), SettingsManager::getInstance()->getFitDesktop()));
+        emit this->sendCommand(qMakePair(QStringLiteral("setImageRatio"), SettingsManager::getInstance()->getFitDesktop()));
     }
 }

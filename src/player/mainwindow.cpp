@@ -17,6 +17,15 @@ MainWindow::MainWindow(QWidget *parent) : QWidget(parent)
     initUI();
     initPlayer();
     initConnections();
+    if (player->audio())
+    {
+        volumeChanged(SettingsManager::getInstance()->getVolume());
+        muteChanged(SettingsManager::getInstance()->getMute());
+        sendCommand(qMakePair(QStringLiteral("updateVolumeArea"), QVariant()));
+        sendCommand(qMakePair(QStringLiteral("muteChanged"), SettingsManager::getInstance()->getMute()));
+    }
+    else
+        sendCommand(qMakePair(QStringLiteral("setVolumeAreaEnabled"), false));
 }
 
 MainWindow::~MainWindow()
@@ -234,7 +243,7 @@ void MainWindow::setImageQuality(const QVariant& param)
 {
     if (!renderer)
         return;
-    const QString quality = param.toString();
+    const QString quality = param.toString().toLower();
     if ((quality == QStringLiteral("default")) &&
             (renderer->quality() != QtAV::VideoRenderer::QualityDefault))
         renderer->setQuality(QtAV::VideoRenderer::QualityDefault);
@@ -264,7 +273,7 @@ void MainWindow::onStartPlay()
     emit this->sendCommand(qMakePair(QStringLiteral("clearAllTracks"), QVariant()));
     emit this->sendCommand(qMakePair(QStringLiteral("updateVideoSliderUnit"), player->notifyInterval()));
     emit this->sendCommand(qMakePair(QStringLiteral("updateVideoSliderRange"), player->duration()));
-    taskbarProgress->setRange(0, player->position());
+    taskbarProgress->setRange(0, player->duration());
     if (!taskbarProgress->isVisible())
         taskbarProgress->show();
     taskbarProgress->resume();
@@ -275,7 +284,7 @@ void MainWindow::onStartPlay()
     emit this->sendCommand(qMakePair(QStringLiteral("updateAudioTracks"), player->internalAudioTracks()));
     emit this->sendCommand(qMakePair(QStringLiteral("setVideoDurationText"), QTime(0, 0, 0).addMSecs(player->mediaStopPosition()).toString(QStringLiteral("HH:mm:ss"))));
     //if (SettingsManager::getInstance()->getAudioAutoLoad())
-        //emit this->updateAudioTracks(player->externalAudioTracks(), true);
+    //emit this->updateAudioTracks(player->externalAudioTracks(), true);
     emit this->sendCommand(qMakePair(QStringLiteral("updateSubtitleTracks"), player->internalSubtitleTracks()));
     /*if (SettingsManager::getInstance()->getSubtitleAutoLoad())
     {
@@ -406,5 +415,4 @@ void MainWindow::urlChanged(const QVariant& param)
     }
     else
         play(QVariant());
-    volumeChanged(SettingsManager::getInstance()->getVolume());
 }

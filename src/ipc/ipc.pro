@@ -14,10 +14,12 @@ REPC_REPLICA = ipc.rep
 HEADERS += \
     $$PWD/../dd_dll_global.h \
     ipcserver.h \
-    ipcclient.h
+    ipcclient.h \
+    ipccore.h
 SOURCES += \
     ipcserver.cpp \
-    ipcclient.cpp
+    ipcclient.cpp \
+    ipccore.cpp
 target.path = $${BIN_DIR}
 INSTALLS *= target
 include(../deploy.pri)

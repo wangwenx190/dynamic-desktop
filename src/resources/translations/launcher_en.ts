@@ -133,17 +133,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../launcher/forms/preferencesdialog.cpp" line="290"/>
+        <location filename="../../launcher/forms/preferencesdialog.cpp" line="294"/>
         <source>Default</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../launcher/forms/preferencesdialog.cpp" line="288"/>
+        <location filename="../../launcher/forms/preferencesdialog.cpp" line="292"/>
         <source>Best</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../launcher/forms/preferencesdialog.cpp" line="289"/>
+        <location filename="../../launcher/forms/preferencesdialog.cpp" line="293"/>
         <source>Fastest</source>
         <translation type="unfinished"></translation>
     </message>
@@ -184,7 +184,7 @@
     </message>
     <message>
         <location filename="../../launcher/forms/preferencesdialog.ui" line="323"/>
-        <location filename="../../launcher/forms/preferencesdialog.cpp" line="455"/>
+        <location filename="../../launcher/forms/preferencesdialog.cpp" line="459"/>
         <source>URL</source>
         <translation type="unfinished"></translation>
     </message>
@@ -286,86 +286,86 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../launcher/forms/preferencesdialog.cpp" line="383"/>
+        <location filename="../../launcher/forms/preferencesdialog.cpp" line="387"/>
         <source>Please select an audio file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../launcher/forms/preferencesdialog.cpp" line="383"/>
+        <location filename="../../launcher/forms/preferencesdialog.cpp" line="387"/>
         <source>Audios (*.mka *.aac *.flac *.mp3 *.wav);;All files (*)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../launcher/forms/preferencesdialog.cpp" line="389"/>
+        <location filename="../../launcher/forms/preferencesdialog.cpp" line="393"/>
         <source>Please select a subtitle file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../launcher/forms/preferencesdialog.cpp" line="91"/>
-        <location filename="../../launcher/forms/preferencesdialog.cpp" line="116"/>
-        <location filename="../../launcher/forms/preferencesdialog.cpp" line="143"/>
+        <location filename="../../launcher/forms/preferencesdialog.cpp" line="95"/>
+        <location filename="../../launcher/forms/preferencesdialog.cpp" line="120"/>
+        <location filename="../../launcher/forms/preferencesdialog.cpp" line="147"/>
         <source>ID: %0 | Title: %1 | Language: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../launcher/forms/preferencesdialog.cpp" line="150"/>
+        <location filename="../../launcher/forms/preferencesdialog.cpp" line="154"/>
         <source>File: %0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../launcher/forms/preferencesdialog.cpp" line="296"/>
-        <location filename="../../launcher/forms/preferencesdialog.cpp" line="337"/>
+        <location filename="../../launcher/forms/preferencesdialog.cpp" line="300"/>
+        <location filename="../../launcher/forms/preferencesdialog.cpp" line="341"/>
         <source>&lt;None&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../launcher/forms/preferencesdialog.cpp" line="332"/>
+        <location filename="../../launcher/forms/preferencesdialog.cpp" line="336"/>
         <source>Auto</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../launcher/forms/preferencesdialog.cpp" line="389"/>
+        <location filename="../../launcher/forms/preferencesdialog.cpp" line="393"/>
         <source>Subtitles (*.ass *.ssa *.srt *.sub);;All files (*)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../launcher/forms/preferencesdialog.cpp" line="448"/>
+        <location filename="../../launcher/forms/preferencesdialog.cpp" line="452"/>
         <source>Please select a media file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../launcher/forms/preferencesdialog.cpp" line="448"/>
+        <location filename="../../launcher/forms/preferencesdialog.cpp" line="452"/>
         <source>Videos (*.avi *.mp4 *.mkv *.flv);;Audios (*.mp3 *.flac *.ape *.wav);;Pictures (*.bmp *.jpg *.jpeg *.png *.gif);;All files (*)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../launcher/forms/preferencesdialog.cpp" line="455"/>
+        <location filename="../../launcher/forms/preferencesdialog.cpp" line="459"/>
         <source>Please input a valid URL</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../launcher/forms/preferencesdialog.cpp" line="465"/>
+        <location filename="../../launcher/forms/preferencesdialog.cpp" line="469"/>
         <source>&quot;%0&quot; is not a valid URL.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../launcher/forms/preferencesdialog.cpp" line="600"/>
+        <location filename="../../launcher/forms/preferencesdialog.cpp" line="609"/>
         <source>Reopen this video or play another video to experience it.
 Make sure this application runs in your GPU&apos;s Optimus mode.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../launcher/forms/preferencesdialog.cpp" line="479"/>
+        <location filename="../../launcher/forms/preferencesdialog.cpp" line="483"/>
         <source>Auto detect</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../launcher/forms/preferencesdialog.cpp" line="480"/>
+        <location filename="../../launcher/forms/preferencesdialog.cpp" line="484"/>
         <source>System</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../launcher/forms/preferencesdialog.cpp" line="498"/>
+        <location filename="../../launcher/forms/preferencesdialog.cpp" line="502"/>
         <source>You have changed the UI translation. Application restart is needed.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -373,52 +373,52 @@ Make sure this application runs in your GPU&apos;s Optimus mode.</source>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../../launcher/main.cpp" line="75"/>
+        <location filename="../../launcher/main.cpp" line="74"/>
         <source>This application only supports Windows 7 and newer.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../launcher/main.cpp" line="81"/>
+        <location filename="../../launcher/main.cpp" line="80"/>
         <source>There is another instance running. Please do not run twice.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../launcher/main.cpp" line="87"/>
+        <location filename="../../launcher/main.cpp" line="86"/>
         <source>A tool that make your desktop alive.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../launcher/main.cpp" line="170"/>
+        <location filename="../../launcher/main.cpp" line="174"/>
         <source>Preferences</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../launcher/main.cpp" line="186"/>
+        <location filename="../../launcher/main.cpp" line="190"/>
         <source>Play</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../launcher/main.cpp" line="190"/>
+        <location filename="../../launcher/main.cpp" line="194"/>
         <source>Pause</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../launcher/main.cpp" line="194"/>
+        <location filename="../../launcher/main.cpp" line="198"/>
         <source>Mute</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../launcher/main.cpp" line="199"/>
+        <location filename="../../launcher/main.cpp" line="206"/>
         <source>About</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../launcher/main.cpp" line="214"/>
+        <location filename="../../launcher/main.cpp" line="243"/>
         <source>Exit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../launcher/main.cpp" line="249"/>
+        <location filename="../../launcher/main.cpp" line="265"/>
         <source>Cannot start the core module. Application aborting.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -426,62 +426,62 @@ Make sure this application runs in your GPU&apos;s Optimus mode.</source>
 <context>
     <name>main</name>
     <message>
-        <location filename="../../launcher/main.cpp" line="110"/>
+        <location filename="../../launcher/main.cpp" line="109"/>
         <source>renderer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../launcher/main.cpp" line="98"/>
+        <location filename="../../launcher/main.cpp" line="97"/>
         <source>Play the given url. It can be a local file or a valid web url. Default is empty.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../launcher/main.cpp" line="91"/>
+        <location filename="../../launcher/main.cpp" line="90"/>
         <source>Show a normal window instead of placing it under the desktop icons.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../launcher/main.cpp" line="94"/>
+        <location filename="../../launcher/main.cpp" line="93"/>
         <source>Set skin. The value is the file name of the skin file, excluding the file extension. If it&apos;s not under the &quot;skins&quot; folder, please give the absolute path of the file.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../launcher/main.cpp" line="95"/>
+        <location filename="../../launcher/main.cpp" line="94"/>
         <source>Skin file name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../launcher/main.cpp" line="106"/>
+        <location filename="../../launcher/main.cpp" line="105"/>
         <source>Image quality</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../launcher/main.cpp" line="109"/>
+        <location filename="../../launcher/main.cpp" line="108"/>
         <source>Set rendering engine. It can be opengl/gl/qt/gdi/d2d. Default is gl. Case insensitive.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../launcher/main.cpp" line="113"/>
+        <location filename="../../launcher/main.cpp" line="112"/>
         <source>Set volume. It must be a positive integer between 0 and 99. Default is 9.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../launcher/main.cpp" line="117"/>
+        <location filename="../../launcher/main.cpp" line="116"/>
         <source>Skip checking for updates, launch directly.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../launcher/main.cpp" line="99"/>
+        <location filename="../../launcher/main.cpp" line="98"/>
         <source>url</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../launcher/main.cpp" line="105"/>
+        <location filename="../../launcher/main.cpp" line="104"/>
         <source>Set the quality of the output image. It can be default/best/fastest. Default is best. Case insensitive.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../launcher/main.cpp" line="114"/>
+        <location filename="../../launcher/main.cpp" line="113"/>
         <source>volume</source>
         <translation type="unfinished"></translation>
     </message>

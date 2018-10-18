@@ -19,11 +19,14 @@ class PreferencesDialog : public CFramelessWindow
 
 signals:
     void sendCommand(QPair<QString, QVariant>);
+    void setMute(bool);
     void muteChanged(bool);
     void about();
+    void requestQuit(bool);
     //void requestUpdate();
 
 public slots:
+    void quit(const QVariant& param);
     void updateVideoSlider(const QVariant& params);
     void updateVideoSliderUnit(const QVariant& params);
     void updateVideoSliderRange(const QVariant& params);

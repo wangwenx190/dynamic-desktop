@@ -4,7 +4,7 @@ QMAKE_TARGET_DESCRIPTION = Dynamic Desktop Launcher
 RC_ICONS = ../resources/icons/color_palette.ico
 TARGET = launcher
 CONFIG(debug, debug|release): TARGET = $$join(TARGET,,,d)
-QT *= widgets av avwidgets winextras
+QT *= widgets winextras
 TEMPLATE = app
 include(../qtniceframelesswindow/qtniceframelesswindow.pri)
 include(../utils/utils.pri)
@@ -16,7 +16,8 @@ include(../qtservice/qtservice.pri)
 LIBS *= -lUser32
 HEADERS += \
     forms/preferencesdialog.h \
-    forms/aboutdialog.h
+    forms/aboutdialog.h \
+    $$PWD/../common.h
 SOURCES += \
     main.cpp \
     forms/preferencesdialog.cpp \

@@ -11,6 +11,8 @@
 
 #include <wtsapi32.h>
 #include <userenv.h>
+#include <tlhelp32.h>
+#include <tchar.h>
 
 namespace Utils
 {
@@ -37,7 +39,7 @@ void fileLogger(QtMsgType type, const QMessageLogContext &context, const QString
     case QtFatalMsg:
         msgType = QStringLiteral("FATAL");
         break;
-    /*case QtSystemMsg:
+        /*case QtSystemMsg:
         msgType = QStringLiteral("SYSTEM");
         break;*/
     default:
@@ -45,7 +47,7 @@ void fileLogger(QtMsgType type, const QMessageLogContext &context, const QString
         break;
     }
     QString messageStr = QStringLiteral("%0\t%1\t%2\t%3\t%4")
-                .arg(msgType).arg(msg).arg(context.file).arg(context.line).arg(context.function);
+            .arg(msgType).arg(msg).arg(context.file).arg(context.line).arg(context.function);
     QString logPath = QCoreApplication::applicationDirPath();
     logPath += QStringLiteral("/debug.log");
     QFile file(logPath);
@@ -117,7 +119,7 @@ bool adminRun(const QString &path, const QString &params)
     return ShellExecuteEx(&execInfo);
 }
 
-bool checkUpdate(bool hide)
+bool checkUpdate(bool autoUpdate)
 {
     const QString updaterDir = QCoreApplication::applicationDirPath();
     QString updaterPath = updaterDir + QStringLiteral("/updater");
@@ -129,8 +131,8 @@ bool checkUpdate(bool hide)
         return false;
     QStringList arguments = QCoreApplication::arguments();
     arguments.takeFirst();
-    if (hide)
-        arguments << QStringLiteral("--no-gui");
+    if (autoUpdate)
+        arguments << QStringLiteral("--auto-update");
     return QProcess::startDetached(QDir::toNativeSeparators(updaterPath), arguments, QDir::toNativeSeparators(updaterDir));
 }
 
@@ -209,6 +211,37 @@ bool run(const QString &path, const QStringList &params, bool needAdmin)
     if ((sessionId == static_cast<DWORD>(0)) || (sessionId != static_cast<DWORD>(1)))
         return launchSession1Process(path, paramsInAll);
     return QProcess::startDetached(QDir::toNativeSeparators(path), params, QDir::toNativeSeparators(QFileInfo(path).canonicalPath()));
+}
+
+bool killProcess(const QString &name)
+{
+    if (name.isEmpty())
+        return false;
+    PROCESSENTRY32 pe;
+    DWORD id = 0;
+    HANDLE hSnapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
+    pe.dwSize = sizeof(PROCESSENTRY32);
+    if (!Process32First(hSnapshot, &pe))
+        return false;
+    while (true)
+    {
+        pe.dwSize = sizeof(PROCESSENTRY32);
+        if (Process32Next(hSnapshot, &pe) == FALSE)
+            break;
+        if (_tcscmp(pe.szExeFile, reinterpret_cast<const wchar_t *>(name.utf16())) == 0)
+        {
+            id = pe.th32ProcessID;
+            break;
+        }
+    }
+    CloseHandle(hSnapshot);
+    HANDLE hProcess = OpenProcess(PROCESS_ALL_ACCESS, FALSE, id);
+    if (hProcess != nullptr)
+    {
+        TerminateProcess(hProcess, 0);
+        CloseHandle(hProcess);
+    }
+    return true;
 }
 
 }

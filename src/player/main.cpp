@@ -16,7 +16,6 @@
 #include <QDesktopWidget>
 #include <QSysInfo>
 #include <QLocale>
-#include <QMetaType>
 
 static bool windowMode = false;
 static HANDLE mutex = nullptr;
@@ -73,12 +72,19 @@ int main(int argc, char *argv[])
         ReleaseMutex(mutex);
         return 0;
     }
-    app.setQuitOnLastWindowClosed(false);
     MainWindow mainWindow;
+    IPCClient ipcClient;
+    QObject::connect(&ipcClient, &IPCClient::serverMessage, &mainWindow, &MainWindow::parseCommand);
+    QObject::connect(&mainWindow, &MainWindow::sendCommand, &ipcClient, &IPCClient::clientMessage);
+    QObject::connect(qApp, &QCoreApplication::aboutToQuit, [=, &ipcClient]
+    {
+        emit ipcClient.clientMessage(qMakePair(QStringLiteral("quit"), true));
+    });
     const Qt::WindowFlags windowFlags = Qt::FramelessWindowHint;
     const QRect screenGeometry = QApplication::desktop()->screenGeometry(&mainWindow);
     if (!windowMode)
     {
+        app.setQuitOnLastWindowClosed(false);
         mainWindow.setWindowFlags(windowFlags);
         // Why is Direct2D image too large?
         mainWindow.setGeometry(screenGeometry);
@@ -96,8 +102,11 @@ int main(int argc, char *argv[])
     }
     else
     {
+        app.setQuitOnLastWindowClosed(true);
         mainWindow.resize(QSize(1280, 720));
         Utils::moveToCenter(&mainWindow);
+        if (mainWindow.isHidden())
+            mainWindow.show();
     }
     if (!SettingsManager::getInstance()->getUrl().isEmpty())
     {
@@ -105,8 +114,5 @@ int main(int argc, char *argv[])
             mainWindow.show();
         mainWindow.urlChanged(SettingsManager::getInstance()->getUrl());
     }
-    IPCClient ipcClient;
-    QObject::connect(&ipcClient, &IPCClient::serverMessage, &mainWindow, &MainWindow::parseCommand);
-    QObject::connect(&mainWindow, &MainWindow::sendCommand, &ipcClient, &IPCClient::clientMessage);
     return Utils::Exit(QApplication::exec(), false, mutex, Wallpaper::getWorkerW());
 }

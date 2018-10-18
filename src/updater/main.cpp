@@ -25,13 +25,7 @@ int main(int argc, char *argv[])
     QSettings settings(ini, QSettings::IniFormat);
     QSimpleUpdater *updater = QSimpleUpdater::getInstance();
     updater->setModuleVersion(updateUrl, QStringLiteral(DD_VERSION));
-    bool showUI = true;
-    if (arguments.contains(QStringLiteral("--no-gui")))
-    {
-        app.setQuitOnLastWindowClosed(false);
-        showUI = false;
-    }
-    updater->setNotifyOnUpdate(updateUrl, showUI);
+    updater->setNotifyOnUpdate(updateUrl, true);
     updater->checkForUpdates(updateUrl);*/
     QString path = dir + QStringLiteral("/launcher");
 #ifdef _DEBUG
@@ -40,9 +34,10 @@ int main(int argc, char *argv[])
     path += QStringLiteral(".exe");
     if (QFileInfo::exists(path))
     {
-        if (arguments.contains(QStringLiteral("--no-gui"), Qt::CaseInsensitive))
-            arguments.removeAll(QStringLiteral("--no-gui"));
-        arguments << QStringLiteral("--launch");
+        if (arguments.contains(QStringLiteral("--auto-update"), Qt::CaseInsensitive))
+            arguments.removeAll(QStringLiteral("--auto-update"));
+        if (!arguments.contains(QStringLiteral("--launch"), Qt::CaseInsensitive))
+            arguments << QStringLiteral("--launch");
         if (Utils::run(path, arguments))
             return 0;
     }
