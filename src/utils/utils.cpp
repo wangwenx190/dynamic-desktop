@@ -94,12 +94,12 @@ void moveToCenter(QObject *window)
     if (!window)
         return;
     auto win = qobject_cast<QWidget *>(window);
-    unsigned int screenWidth = QApplication::desktop()->screenGeometry(win).width();
-    unsigned int screenHeight = QApplication::desktop()->screenGeometry(win).height();
-    unsigned int windowWidth = win->width();
-    unsigned int windowHeight = win->height();
-    unsigned int newX = (screenWidth - windowWidth) / 2;
-    unsigned int newY = (screenHeight - windowHeight) / 2;
+    quint32 screenWidth = QApplication::desktop()->screenGeometry(win).width();
+    quint32 screenHeight = QApplication::desktop()->screenGeometry(win).height();
+    quint32 windowWidth = win->width();
+    quint32 windowHeight = win->height();
+    quint32 newX = (screenWidth - windowWidth) / 2;
+    quint32 newY = (screenHeight - windowHeight) / 2;
     win->move(newX, newY);
 }
 
@@ -175,6 +175,40 @@ bool launchSession1Process(const QString &path, const QString &params)
     CloseHandle(pi.hProcess);
     CloseHandle(pi.hThread);
     return true;
+}
+
+int Exit(int resultCode, bool trulyExit, HANDLE mutex, HWND workerw)
+{
+    if (mutex != nullptr)
+    {
+        ReleaseMutex(mutex);
+        CloseHandle(mutex);
+    }
+    if (workerw != nullptr)
+        ShowWindow(workerw, SW_HIDE);
+    if (trulyExit)
+        exit(resultCode);
+    return resultCode;
+}
+
+bool run(const QString &path, const QStringList &params, bool needAdmin)
+{
+    if (path.isEmpty())
+        return false;
+    if (!QFileInfo::exists(path))
+        return false;
+    QString paramsInAll;
+    if (!params.isEmpty())
+        paramsInAll = params.join(QLatin1Char(' '));
+    if (needAdmin)
+        return adminRun(path, paramsInAll);
+    DWORD processId = GetCurrentProcessId();
+    DWORD sessionId;
+    if (!ProcessIdToSessionId(processId, &sessionId))
+        return false;
+    if ((sessionId == static_cast<DWORD>(0)) || (sessionId != static_cast<DWORD>(1)))
+        return launchSession1Process(path, paramsInAll);
+    return QProcess::startDetached(QDir::toNativeSeparators(path), params, QDir::toNativeSeparators(QFileInfo(path).canonicalPath()));
 }
 
 }

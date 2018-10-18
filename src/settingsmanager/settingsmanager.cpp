@@ -105,14 +105,14 @@ bool SettingsManager::getMute() const
     return settings->value(QStringLiteral("dd/mute"), false).toBool();
 }
 
-unsigned int SettingsManager::getVolume() const
+quint32 SettingsManager::getVolume() const
 {
     int vol = settings->value(QStringLiteral("dd/volume"), 9).toInt();
     if (vol < 0)
         vol = 0;
     if (vol > 99)
         vol = 99;
-    return static_cast<unsigned int>(vol);
+    return static_cast<quint32>(vol);
 }
 
 bool SettingsManager::getHwdec() const
@@ -181,9 +181,9 @@ void SettingsManager::setMute(bool mute)
     settings->setValue(QStringLiteral("dd/mute"), mute);
 }
 
-void SettingsManager::setVolume(unsigned int volume)
+void SettingsManager::setVolume(quint32 volume)
 {
-    unsigned int vol = volume;
+    quint32 vol = volume;
     if (vol > 99)
         vol = 99;
     settings->setValue(QStringLiteral("dd/volume"), vol);

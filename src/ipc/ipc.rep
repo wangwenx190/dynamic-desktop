@@ -1,0 +1,6 @@
+#include <QVariant>
+class DDIPC
+{
+    SIGNAL(clientMessage(QPair<QString, QVariant>))
+    SIGNAL(serverMessage(QPair<QString, QVariant>))
+}

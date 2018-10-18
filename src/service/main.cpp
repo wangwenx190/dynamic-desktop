@@ -5,7 +5,6 @@
 
 #include <QCoreApplication>
 #include <QFileInfo>
-#include <QDir>
 
 class DDSvc : public QtService<QCoreApplication>
 {
@@ -30,16 +29,24 @@ void DDSvc::start()
     path += QStringLiteral("d");
 #endif
     path += QStringLiteral(".exe");
-    HANDLE mutex = CreateMutex(nullptr, FALSE, TEXT(DD_MUTEX));
-    if ((mutex == nullptr) || (GetLastError() != ERROR_ALREADY_EXISTS))
+    HANDLE serviceMutex = CreateMutex(nullptr, FALSE, TEXT("wangwenx190.DynamicDesktop.Service.1000.AppMutex"));
+    if ((serviceMutex != nullptr) && (GetLastError() == ERROR_ALREADY_EXISTS))
     {
-        ReleaseMutex(mutex);
-        CloseHandle(mutex);
+        ReleaseMutex(serviceMutex);
+        qApp->quit();
+    }
+    HANDLE playerMutex = CreateMutex(nullptr, FALSE, TEXT("wangwenx190.DynamicDesktop.Player.1000.AppMutex"));
+    if ((playerMutex == nullptr) || (GetLastError() != ERROR_ALREADY_EXISTS))
+    {
+        ReleaseMutex(playerMutex);
+        CloseHandle(playerMutex);
         if (QFileInfo::exists(path))
-            Utils::launchSession1Process(QDir::toNativeSeparators(path), QStringLiteral("--launch"));
+            Utils::run(path, QStringList() << QStringLiteral("--launch"));
     }
     else
-        ReleaseMutex(mutex);
+        ReleaseMutex(playerMutex);
+    ReleaseMutex(serviceMutex);
+    CloseHandle(serviceMutex);
     qApp->quit();
 }
 

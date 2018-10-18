@@ -16,7 +16,7 @@ public:
 
     QString getUrl() const;
     bool getMute() const;
-    unsigned int getVolume() const;
+    quint32 getVolume() const;
     bool getHwdec() const;
     QStringList getDecoders() const;
     bool getFitDesktop() const;
@@ -31,7 +31,7 @@ public:
 
     void setUrl(const QString &url);
     void setMute(bool mute = true);
-    void setVolume(unsigned int volume = 9);
+    void setVolume(quint32 volume = 9);
     void setHwdec(bool enable = false);
     void setDecoders(const QStringList &decoders = QStringList{ QStringLiteral("FFmpeg") });
     void setFitDesktop(bool fit = true);

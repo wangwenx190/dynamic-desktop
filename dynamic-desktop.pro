@@ -5,12 +5,12 @@ SUBDIRS += \
     src/qsimpleupdater \
     src/qtniceframelesswindow \
     src/qtservice \
-    src/qtsingleapplication \
     src/wallpaper \
     src/utils \
     src/slider \
     src/skinsmanager \
     src/settingsmanager \
+    src/ipc \
     src/updater \
     src/service \
     src/player \

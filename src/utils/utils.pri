@@ -1,10 +1,10 @@
-ut_lib_name = utils
-ut_lib_file = utils
-ut_lib_dir = release
+utl_lib_name = utils
+utl_lib_file = utils
+utl_lib_dir = release
 CONFIG(debug, debug|release) {
-    ut_lib_file = $$join(ut_lib_file,,,d)
-    ut_lib_dir = debug
+    utl_lib_file = $$join(utl_lib_file,,,d)
+    utl_lib_dir = debug
 }
-LIBS += -L$$OUT_PWD/../$${ut_lib_name}/$${ut_lib_dir} -l$${ut_lib_file}$${DD_MAJOR_VERSION}
-INCLUDEPATH += $$PWD/../$${ut_lib_name}
-DEPENDPATH += $$PWD/../$${ut_lib_name}
+LIBS += -L$$OUT_PWD/../$${utl_lib_name}/$${utl_lib_dir} -l$${utl_lib_file}$${DD_MAJOR_VERSION}
+INCLUDEPATH += $$PWD/../$${utl_lib_name}
+DEPENDPATH += $$PWD/../$${utl_lib_name}

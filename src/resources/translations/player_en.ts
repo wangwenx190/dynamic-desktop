@@ -4,42 +4,12 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../../player/mainwindow.cpp" line="63"/>
-        <source>Preferences</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../player/mainwindow.cpp" line="65"/>
-        <source>Play</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../player/mainwindow.cpp" line="66"/>
-        <source>Pause</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../player/mainwindow.cpp" line="67"/>
-        <source>Mute</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../player/mainwindow.cpp" line="69"/>
-        <source>About</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../player/mainwindow.cpp" line="70"/>
-        <source>Exit</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../player/mainwindow.cpp" line="114"/>
+        <location filename="../../player/mainwindow.cpp" line="50"/>
         <source>Volume: %0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../player/mainwindow.cpp" line="217"/>
+        <location filename="../../player/mainwindow.cpp" line="200"/>
         <source>Current renderer is not available on your platform!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -47,7 +17,12 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../../player/main.cpp" line="54"/>
+        <location filename="../../player/main.cpp" line="66"/>
+        <source>This application only supports Windows 7 and newer.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../player/main.cpp" line="72"/>
         <source>There is another instance running. Please do not run twice.</source>
         <translation type="unfinished"></translation>
     </message>

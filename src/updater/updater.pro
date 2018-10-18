@@ -7,6 +7,7 @@ CONFIG(debug, debug|release): TARGET = $$join(TARGET,,,d)
 TEMPLATE = app
 QT *= widgets
 include(../qsimpleupdater/qsimpleupdater.pri)
+include(../utils/utils.pri)
 SOURCES += main.cpp
 target.path = $${BIN_DIR}
 INSTALLS *= target

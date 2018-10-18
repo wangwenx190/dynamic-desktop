@@ -3,6 +3,7 @@
 #include <SettingsManager>
 #include <Utils>
 #include <QtService>
+#include <SkinsManager>
 
 #include <QWinTaskbarButton>
 #include <QWinTaskbarProgress>
@@ -21,6 +22,168 @@
 #include <QLibraryInfo>
 #endif
 #include <QTimer>
+#include <QtAV>
+#include <QtAVWidgets>
+
+void PreferencesDialog::updateVideoSlider(const QVariant &params)
+{
+    const qint64 position = params.toLongLong();
+    ui->horizontalSlider_video_position->setValue(static_cast<int>(position / sliderUnit));
+}
+
+void PreferencesDialog::updateVideoSliderUnit(const QVariant &params)
+{
+    sliderUnit = params.toInt();
+}
+
+void PreferencesDialog::updateVideoSliderRange(const QVariant &params)
+{
+    const qint64 duration = params.toLongLong();
+    ui->horizontalSlider_video_position->setRange(0, static_cast<int>(duration / sliderUnit));
+    int max = ui->horizontalSlider_video_position->maximum();
+    auto singleStep = static_cast<int>(max * 0.01);
+    ui->horizontalSlider_video_position->setSingleStep(singleStep);
+    auto pageStep = static_cast<int>(max * 0.05);
+    ui->horizontalSlider_video_position->setPageStep(pageStep);
+}
+
+void PreferencesDialog::setSeekAreaEnabled(const QVariant &params)
+{
+    ui->horizontalSlider_video_position->setEnabled(params.toBool());
+}
+
+void PreferencesDialog::setAudioAreaEnabled(const QVariant &params)
+{
+    audioAvailable = params.toBool();
+    ui->groupBox_audio->setEnabled(audioAvailable);
+}
+
+void PreferencesDialog::setVolumeAreaEnabled(const QVariant &params)
+{
+    bool enabled = params.toBool();
+    ui->checkBox_volume->setEnabled(audioAvailable && enabled);
+    ui->horizontalSlider_volume->setEnabled(audioAvailable && enabled && ui->checkBox_volume->isChecked());
+}
+
+void PreferencesDialog::updateVolumeArea(const QVariant &params)
+{
+    Q_UNUSED(params)
+    if (audioAvailable)
+    {
+        ui->checkBox_volume->setChecked(!SettingsManager::getInstance()->getMute());
+        ui->horizontalSlider_volume->setEnabled(ui->checkBox_volume->isChecked());
+        ui->horizontalSlider_volume->setValue(SettingsManager::getInstance()->getVolume());
+    }
+}
+
+void PreferencesDialog::updateVideoTracks(const QVariant &params)
+{
+    const QVariantList videoTracks = params.toList();
+    if (!videoTracks.isEmpty())
+    {
+        ui->comboBox_video_track->clear();
+        for (auto& track : videoTracks)
+        {
+            QVariantMap trackData = track.toMap();
+            quint32 id = trackData[QStringLiteral("id")].toUInt();
+            QString lang = trackData[QStringLiteral("language")].toString();
+            QString title = trackData[QStringLiteral("title")].toString();
+            QString txt = tr("ID: %0 | Title: %1 | Language: %2")
+                    .arg(id).arg(title).arg(lang);
+            ui->comboBox_video_track->addItem(txt, id);
+        }
+    }
+    if (ui->comboBox_video_track->count() > 0)
+        ui->comboBox_video_track->setEnabled(true);
+    else
+        ui->comboBox_video_track->setEnabled(false);
+}
+
+void PreferencesDialog::updateAudioTracks(const QVariant &params)
+{
+    const QVariantList audioTracks = params.toList();
+    bool add = false;
+    if (!audioTracks.isEmpty())
+    {
+        if (!add)
+            ui->comboBox_audio_track->clear();
+        for (auto& track : audioTracks)
+        {
+            QVariantMap trackData = track.toMap();
+            quint32 id = trackData[QStringLiteral("id")].toUInt();
+            QString lang = trackData[QStringLiteral("language")].toString();
+            QString title = trackData[QStringLiteral("title")].toString();
+            QString txt = tr("ID: %0 | Title: %1 | Language: %2")
+                    .arg(id).arg(title).arg(lang);
+            ui->comboBox_audio_track->addItem(txt, id);
+        }
+    }
+    if (ui->comboBox_audio_track->count() > 0)
+        ui->comboBox_audio_track->setEnabled(true);
+    else
+        ui->comboBox_audio_track->setEnabled(false);
+}
+
+void PreferencesDialog::updateSubtitleTracks(const QVariant &params)
+{
+    const QVariantList subtitleTracks = params.toList();
+    bool add = false;
+    if (!subtitleTracks.isEmpty())
+    {
+        if (!add)
+            ui->comboBox_subtitle_track->clear();
+        for (auto& track : subtitleTracks)
+        {
+            QVariantMap trackData = track.toMap();
+            if (!add)
+            {
+                quint32 id = trackData[QStringLiteral("id")].toUInt();
+                QString lang = trackData[QStringLiteral("language")].toString();
+                QString title = trackData[QStringLiteral("title")].toString();
+                QString txt = tr("ID: %0 | Title: %1 | Language: %2")
+                        .arg(id).arg(title).arg(lang);
+                ui->comboBox_subtitle_track->addItem(txt, id);
+            }
+            else
+            {
+                QString file = trackData[QStringLiteral("file")].toString();
+                QString txt = tr("File: %0").arg(QFileInfo(file).fileName());
+                ui->comboBox_subtitle_track->addItem(txt, file);
+            }
+        }
+    }
+    if (ui->comboBox_subtitle_track->count() > 0)
+        ui->comboBox_subtitle_track->setEnabled(true);
+    else
+        ui->comboBox_subtitle_track->setEnabled(false);
+}
+
+void PreferencesDialog::clearAllTracks(const QVariant &params)
+{
+    Q_UNUSED(params)
+    ui->comboBox_video_track->clear();
+    ui->comboBox_audio_track->clear();
+    ui->comboBox_subtitle_track->clear();
+}
+
+void PreferencesDialog::setVolumeToolTip(const QVariant &params)
+{
+    const QString text = params.toString();
+    ui->checkBox_volume->setToolTip(text);
+    ui->horizontalSlider_volume->setToolTip(text);
+}
+
+void PreferencesDialog::setVideoPositionText(const QVariant &params)
+{
+    const QString text = params.toString();
+    ui->label_video_position->setText(text);
+}
+
+void PreferencesDialog::setVideoDurationText(const QVariant &params)
+{
+    const QString text = params.toString();
+    ui->label_video_duration->setText(text);
+}
 
 PreferencesDialog::PreferencesDialog(QWidget *parent) :
     CFramelessWindow(parent),
@@ -42,6 +205,15 @@ PreferencesDialog::~PreferencesDialog()
     delete taskbarButton;
 }
 
+void PreferencesDialog::parseCommand(const QPair<QString, QVariant> &command)
+{
+    QString action = command.first;
+    QByteArray byteArray = action.toLatin1();
+    const char *name = byteArray.constData();
+    QVariant param = command.second;
+    QMetaObject::invokeMethod(this, name, Q_ARG(QVariant, param));
+}
+
 bool PreferencesDialog::setAutoStart(bool enable)
 {
     QString servicePath = QCoreApplication::applicationDirPath() + QStringLiteral("/service");
@@ -52,9 +224,9 @@ bool PreferencesDialog::setAutoStart(bool enable)
     if (!QFileInfo::exists(servicePath))
         return false;
     if (enable && !isAutoStart())
-        return Utils::adminRun(QDir::toNativeSeparators(servicePath), QStringLiteral("-i"));
+        return Utils::run(servicePath, QStringList() << QStringLiteral("-i"), true);
     else if (!enable && isAutoStart())
-        return Utils::adminRun(QDir::toNativeSeparators(servicePath), QStringLiteral("-u"));
+        return Utils::run(servicePath, QStringList() << QStringLiteral("-u"), true);
     return false;
 }
 
@@ -147,7 +319,8 @@ void PreferencesDialog::initUI()
         for (auto& languageFile : languageFileList)
         {
             QString fileName = languageFile.completeBaseName();
-            if (fileName.startsWith(QStringLiteral("qt"), Qt::CaseInsensitive))
+            if (fileName.startsWith(QStringLiteral("qt"), Qt::CaseInsensitive)
+                    || fileName.startsWith(QStringLiteral("player"), Qt::CaseInsensitive))
                 continue;
             QString lang = fileName.mid(fileName.indexOf(QLatin1Char('_')) + 1);
             lang = lang.replace('-', '_');
@@ -209,107 +382,13 @@ void PreferencesDialog::initConnections()
     {
         QString audioPath = QFileDialog::getOpenFileName(nullptr, tr("Please select an audio file"), SettingsManager::getInstance()->lastDir(), tr("Audios (*.mka *.aac *.flac *.mp3 *.wav);;All files (*)"));
         if (!audioPath.isEmpty())
-            emit this->audioOpened(audioPath);
+            emit this->sendCommand(qMakePair(QStringLiteral("audioOpened"), audioPath));
     });
     connect(ui->pushButton_subtitle_open, &QPushButton::clicked, this, [=]
     {
         QString subtitlePath = QFileDialog::getOpenFileName(nullptr, tr("Please select a subtitle file"), SettingsManager::getInstance()->lastDir(), tr("Subtitles (*.ass *.ssa *.srt *.sub);;All files (*)"));
         if (!subtitlePath.isEmpty())
-            emit this->subtitleOpened(subtitlePath);
-    });
-    connect(this, &PreferencesDialog::clearAllTracks, this, [=]
-    {
-        ui->comboBox_video_track->clear();
-        ui->comboBox_audio_track->clear();
-        ui->comboBox_subtitle_track->clear();
-    });
-    connect(this, &PreferencesDialog::updateVideoTracks, this, [=](const QVariantList &videoTracks)
-    {
-        if (!videoTracks.isEmpty())
-        {
-            ui->comboBox_video_track->clear();
-            for (auto& track : videoTracks)
-            {
-                QVariantMap trackData = track.toMap();
-                unsigned int id = trackData[QStringLiteral("id")].toUInt();
-                QString lang = trackData[QStringLiteral("language")].toString();
-                QString title = trackData[QStringLiteral("title")].toString();
-                QString txt = tr("ID: %0 | Title: %1 | Language: %2")
-                        .arg(id).arg(title).arg(lang);
-                ui->comboBox_video_track->addItem(txt, id);
-            }
-        }
-        if (ui->comboBox_video_track->count() > 0)
-            ui->comboBox_video_track->setEnabled(true);
-        else
-            ui->comboBox_video_track->setEnabled(false);
-    });
-    connect(this, &PreferencesDialog::updateAudioTracks, this, [=](const QVariantList &audioTracks, bool add)
-    {
-        if (!audioTracks.isEmpty())
-        {
-            if (!add)
-                ui->comboBox_audio_track->clear();
-            for (auto& track : audioTracks)
-            {
-                QVariantMap trackData = track.toMap();
-                unsigned int id = trackData[QStringLiteral("id")].toUInt();
-                QString lang = trackData[QStringLiteral("language")].toString();
-                QString title = trackData[QStringLiteral("title")].toString();
-                QString txt = tr("ID: %0 | Title: %1 | Language: %2")
-                        .arg(id).arg(title).arg(lang);
-                ui->comboBox_audio_track->addItem(txt, id);
-            }
-        }
-        if (ui->comboBox_audio_track->count() > 0)
-            ui->comboBox_audio_track->setEnabled(true);
-        else
-            ui->comboBox_audio_track->setEnabled(false);
-    });
-    connect(this, &PreferencesDialog::updateSubtitleTracks, this, [=](const QVariantList &subtitleTracks, bool add)
-    {
-        if (!subtitleTracks.isEmpty())
-        {
-            if (!add)
-                ui->comboBox_subtitle_track->clear();
-            for (auto& track : subtitleTracks)
-            {
-                QVariantMap trackData = track.toMap();
-                if (!add)
-                {
-                    unsigned int id = trackData[QStringLiteral("id")].toUInt();
-                    QString lang = trackData[QStringLiteral("language")].toString();
-                    QString title = trackData[QStringLiteral("title")].toString();
-                    QString txt = tr("ID: %0 | Title: %1 | Language: %2")
-                            .arg(id).arg(title).arg(lang);
-                    ui->comboBox_subtitle_track->addItem(txt, id);
-                }
-                else
-                {
-                    QString file = trackData[QStringLiteral("file")].toString();
-                    QString txt = tr("File: %0").arg(QFileInfo(file).fileName());
-                    ui->comboBox_subtitle_track->addItem(txt, file);
-                }
-            }
-        }
-        if (ui->comboBox_subtitle_track->count() > 0)
-            ui->comboBox_subtitle_track->setEnabled(true);
-        else
-            ui->comboBox_subtitle_track->setEnabled(false);
-    });
-    connect(this, &PreferencesDialog::updateVolumeArea, this, [=]
-    {
-        if (audioAvailable)
-        {
-            ui->checkBox_volume->setChecked(!SettingsManager::getInstance()->getMute());
-            ui->horizontalSlider_volume->setEnabled(ui->checkBox_volume->isChecked());
-            ui->horizontalSlider_volume->setValue(SettingsManager::getInstance()->getVolume());
-        }
-    });
-    connect(this, &PreferencesDialog::setVolumeAreaEnabled, this, [=](bool enabled)
-    {
-        ui->checkBox_volume->setEnabled(audioAvailable && enabled);
-        ui->horizontalSlider_volume->setEnabled(audioAvailable && enabled && ui->checkBox_volume->isChecked());
+            emit this->sendCommand(qMakePair(QStringLiteral("subtitleOpened"), subtitlePath));
     });
     connect(ui->horizontalSlider_volume, &QSlider::sliderMoved, this, [=](int value)
     {
@@ -318,38 +397,15 @@ void PreferencesDialog::initConnections()
             vol = 99;
         if (vol < 0)
             vol = 0;
-        if (static_cast<unsigned int>(vol) != SettingsManager::getInstance()->getVolume())
+        if (static_cast<quint32>(vol) != SettingsManager::getInstance()->getVolume())
         {
-            SettingsManager::getInstance()->setVolume(static_cast<unsigned int>(vol));
-            emit this->volumeChanged(SettingsManager::getInstance()->getVolume());
+            SettingsManager::getInstance()->setVolume(static_cast<quint32>(vol));
+            emit this->sendCommand(qMakePair(QStringLiteral("volumeChanged"), SettingsManager::getInstance()->getVolume()));
         }
     });
-    connect(this, &PreferencesDialog::setAudioAreaEnabled, this, [=](bool audioAvailable)
-    {
-        this->audioAvailable = audioAvailable;
-        ui->groupBox_audio->setEnabled(audioAvailable);
-    });
-    connect(this, &PreferencesDialog::setSeekAreaEnabled, ui->horizontalSlider_video_position, &QSlider::setEnabled);
     connect(ui->horizontalSlider_video_position, &QSlider::sliderMoved, this, [=](int value)
     {
-        emit this->seekBySlider(static_cast<qint64>(value * sliderUnit));
-    });
-    connect(this, &PreferencesDialog::updateVideoSliderRange, this, [=](qint64 duration)
-    {
-        ui->horizontalSlider_video_position->setRange(0, static_cast<int>(duration / sliderUnit));
-        int max = ui->horizontalSlider_video_position->maximum();
-        auto singleStep = static_cast<int>(max * 0.01);
-        ui->horizontalSlider_video_position->setSingleStep(singleStep);
-        auto pageStep = static_cast<int>(max * 0.05);
-        ui->horizontalSlider_video_position->setPageStep(pageStep);
-    });
-    connect(this, &PreferencesDialog::updateVideoSliderUnit, this, [=](int unit)
-    {
-        sliderUnit = unit;
-    });
-    connect(this, &PreferencesDialog::updateVideoSlider, this, [=](qint64 position)
-    {
-        ui->horizontalSlider_video_position->setValue(static_cast<int>(position / sliderUnit));
+        emit this->sendCommand(qMakePair(QStringLiteral("seekBySlider"), static_cast<qint64>(value * sliderUnit)));
     });
     connect(ui->pushButton_about, &QPushButton::clicked, this, &PreferencesDialog::about);
     connect(ui->pushButton_minimize, &QPushButton::clicked, this, &PreferencesDialog::showMinimized);
@@ -368,14 +424,15 @@ void PreferencesDialog::initConnections()
         {
             SettingsManager::getInstance()->setMute(!ui->checkBox_volume->isChecked());
             emit this->muteChanged(SettingsManager::getInstance()->getMute());
+            emit this->sendCommand(qMakePair(QStringLiteral("muteChanged"), SettingsManager::getInstance()->getMute()));
         }
     });
     connect(ui->pushButton_play, &QPushButton::clicked, this, [=]
     {
         if (ui->lineEdit_url->text() != SettingsManager::getInstance()->getUrl())
-            emit this->urlChanged(ui->lineEdit_url->text());
+            emit this->sendCommand(qMakePair(QStringLiteral("urlChanged"), ui->lineEdit_url->text()));
         else
-            emit this->urlChanged(QString());
+            emit this->sendCommand(qMakePair(QStringLiteral("play"), QVariant()));
         if (!taskbarProgress->isVisible())
             taskbarProgress->show();
         taskbarProgress->resume();
@@ -383,7 +440,7 @@ void PreferencesDialog::initConnections()
     connect(ui->pushButton_pause, &QPushButton::clicked, this, [=]
     {
         taskbarProgress->pause();
-        emit this->pause();
+        emit this->sendCommand(qMakePair(QStringLiteral("pause"), QVariant()));
     });
     connect(ui->pushButton_cancel, &QPushButton::clicked, this, &PreferencesDialog::close);
     connect(ui->pushButton_url_browse, &QPushButton::clicked, this, [=]
@@ -429,7 +486,7 @@ void PreferencesDialog::initConnections()
         if (ui->comboBox_skin->currentData().toString() != SettingsManager::getInstance()->getSkin())
         {
             SettingsManager::getInstance()->setSkin(ui->comboBox_skin->currentData().toString());
-            emit this->skinChanged(SettingsManager::getInstance()->getSkin());
+            SkinsManager::getInstance()->setSkin(SettingsManager::getInstance()->getSkin());
         }
     });
     connect(ui->comboBox_language, qOverload<int>(&QComboBox::currentIndexChanged), this, [=](int index)
@@ -444,17 +501,17 @@ void PreferencesDialog::initConnections()
     connect(ui->comboBox_video_track, qOverload<int>(&QComboBox::currentIndexChanged), this, [=](int index)
     {
         Q_UNUSED(index)
-        emit this->videoTrackChanged(ui->comboBox_video_track->currentData().toUInt());
+        emit this->sendCommand(qMakePair(QStringLiteral("videoTrackChanged"), ui->comboBox_video_track->currentData().toUInt()));
     });
     connect(ui->comboBox_audio_track, qOverload<int>(&QComboBox::currentIndexChanged), this, [=](int index)
     {
         Q_UNUSED(index)
-        emit this->audioTrackChanged(ui->comboBox_audio_track->currentData().toUInt());
+        emit this->sendCommand(qMakePair(QStringLiteral("audioTrackChanged"), ui->comboBox_audio_track->currentData().toUInt()));
     });
     connect(ui->comboBox_subtitle_track, qOverload<int>(&QComboBox::currentIndexChanged), this, [=](int index)
     {
         Q_UNUSED(index)
-        emit this->subtitleTrackChanged(ui->comboBox_subtitle_track->currentData());
+        emit this->sendCommand(qMakePair(QStringLiteral("subtitleTrackChanged"), ui->comboBox_subtitle_track->currentData()));
     });
     connect(ui->comboBox_video_renderer, qOverload<int>(&QComboBox::currentIndexChanged), this, [=](int index)
     {
@@ -462,7 +519,7 @@ void PreferencesDialog::initConnections()
         if (ui->comboBox_video_renderer->currentData().toInt() != SettingsManager::getInstance()->getRenderer())
         {
             SettingsManager::getInstance()->setRenderer(ui->comboBox_video_renderer->currentData().toInt());
-            emit this->rendererChanged(SettingsManager::getInstance()->getRenderer());
+            emit this->sendCommand(qMakePair(QStringLiteral("rendererChanged"), SettingsManager::getInstance()->getRenderer()));
         }
     });
     connect(ui->comboBox_image_quality, qOverload<int>(&QComboBox::currentIndexChanged), this, [=](int index)
@@ -471,7 +528,7 @@ void PreferencesDialog::initConnections()
         if (ui->comboBox_image_quality->currentData().toString() != SettingsManager::getInstance()->getImageQuality())
         {
             SettingsManager::getInstance()->setImageQuality(ui->comboBox_image_quality->currentData().toString());
-            emit this->imageQualityChanged(SettingsManager::getInstance()->getImageQuality());
+            emit this->sendCommand(qMakePair(QStringLiteral("imageQualityChanged"), SettingsManager::getInstance()->getImageQuality()));
         }
     });
     connect(ui->lineEdit_url, &QLineEdit::textChanged, this, [=](const QString &text)
@@ -479,7 +536,7 @@ void PreferencesDialog::initConnections()
         if (text != SettingsManager::getInstance()->getUrl())
         {
             SettingsManager::getInstance()->setUrl(text);
-            emit this->urlChanged(SettingsManager::getInstance()->getUrl());
+            emit this->sendCommand(qMakePair(QStringLiteral("urlChanged"), SettingsManager::getInstance()->getUrl()));
         }
     });
     connect(ui->checkBox_autoStart, &QCheckBox::clicked, this, [=]
@@ -501,7 +558,7 @@ void PreferencesDialog::initConnections()
         if (ui->comboBox_subtitle_charset->currentData().toString() != SettingsManager::getInstance()->getCharset())
         {
             SettingsManager::getInstance()->setCharset(ui->comboBox_subtitle_charset->currentData().toString());
-            emit this->charsetChanged(SettingsManager::getInstance()->getCharset());
+            emit this->sendCommand(qMakePair(QStringLiteral("charsetChanged"), SettingsManager::getInstance()->getCharset()));
         }
     });
     connect(ui->checkBox_subtitle_autoLoadExternal, &QCheckBox::clicked, this, [=]
@@ -509,7 +566,7 @@ void PreferencesDialog::initConnections()
         if (ui->checkBox_subtitle_autoLoadExternal->isChecked() != SettingsManager::getInstance()->getSubtitleAutoLoad())
         {
             SettingsManager::getInstance()->setSubtitleAutoLoad(ui->checkBox_subtitle_autoLoadExternal->isChecked());
-            emit this->subtitleAutoLoadChanged(SettingsManager::getInstance()->getSubtitleAutoLoad());
+            emit this->sendCommand(qMakePair(QStringLiteral("subtitleAutoLoadChanged"), SettingsManager::getInstance()->getSubtitleAutoLoad()));
         }
     });
     connect(ui->checkBox_displaySubtitle, &QCheckBox::clicked, this, [=]
@@ -517,31 +574,8 @@ void PreferencesDialog::initConnections()
         if (ui->checkBox_displaySubtitle->isChecked() != SettingsManager::getInstance()->getSubtitle())
         {
             SettingsManager::getInstance()->setSubtitle(ui->checkBox_displaySubtitle->isChecked());
-            emit this->subtitleEnabled(SettingsManager::getInstance()->getSubtitle());
+            emit this->sendCommand(qMakePair(QStringLiteral("subtitleEnabled"), SettingsManager::getInstance()->getSubtitle()));
         }
-    });
-    connect(ui->checkBox_audio_autoLoadExternal, &QCheckBox::clicked, this, [=]
-    {
-        if (ui->checkBox_audio_autoLoadExternal->isChecked() != SettingsManager::getInstance()->getAudioAutoLoad())
-            SettingsManager::getInstance()->setAudioAutoLoad(ui->checkBox_audio_autoLoadExternal->isChecked());
-    });
-    connect(this, &PreferencesDialog::setVolumeToolTip, this, [=](const QString &text)
-    {
-        if (!text.isEmpty())
-        {
-            ui->checkBox_volume->setToolTip(text);
-            ui->horizontalSlider_volume->setToolTip(text);
-        }
-    });
-    connect(this, &PreferencesDialog::setVideoPositionText, this, [=](const QString &text)
-    {
-        if (!text.isEmpty())
-            ui->label_video_position->setText(text);
-    });
-    connect(this, &PreferencesDialog::setVideoDurationText, this, [=](const QString &text)
-    {
-        if (!text.isEmpty())
-            ui->label_video_duration->setText(text);
     });
     //connect(ui->pushButton_check_update, &QPushButton::clicked, this, &PreferencesDialog::requestUpdate);
 }
@@ -571,6 +605,6 @@ void PreferencesDialog::setRatio()
     if (ui->radioButton_ratio_fitDesktop->isChecked() != SettingsManager::getInstance()->getFitDesktop())
     {
         SettingsManager::getInstance()->setFitDesktop(ui->radioButton_ratio_fitDesktop->isChecked());
-        emit pictureRatioChanged(SettingsManager::getInstance()->getFitDesktop());
+        emit this->sendCommand(qMakePair(QStringLiteral("pictureRatioChanged"), SettingsManager::getInstance()->getFitDesktop()));
     }
 }

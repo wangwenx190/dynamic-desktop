@@ -5,14 +5,16 @@ RC_ICONS = ../resources/icons/dll_win10.ico
 TARGET = player
 CONFIG(debug, debug|release): TARGET = $$join(TARGET,,,d)
 TEMPLATE = app
-QT *= widgets av avwidgets
-include(../qtsingleapplication/qtsingleapplication.pri)
+QT *= widgets av avwidgets winextras
+include(../ipc/ipc.pri)
 include(../settingsmanager/settingsmanager.pri)
 include(../utils/utils.pri)
+include(../wallpaper/wallpaper.pri)
 HEADERS += mainwindow.h
 SOURCES += \
     main.cpp \
     mainwindow.cpp
+RESOURCES *= images.qrc
 TRANSLATIONS += \
     ../resources/translations/player_en.ts \
     ../resources/translations/player_zh_CN.ts

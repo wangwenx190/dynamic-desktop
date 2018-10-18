@@ -11,7 +11,6 @@ exists($${ROOT}/version_ci.pri) {
 }
 VERSION = $${DD_MAJOR_VERSION}.$${DD_MINOR_VERSION}.$${DD_PATCH_VERSION}.$${DD_BUILD_VERSION}
 DEFINES *= \
-    DD_MUTEX=\\\"wangwenx190.DynamicDesktop.1000.AppMutex\\\" \
     DD_VERSION=\\\"$${VERSION}\\\" \
     DD_COMMIT_ID=\\\"$${DD_COMMIT_ID}\\\" \
     DD_COMMIT_TIME=\\\"$${DD_COMMIT_TIME}\\\" \

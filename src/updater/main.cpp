@@ -1,6 +1,6 @@
+#include <Utils>
+
 #include <QApplication>
-#include <QDir>
-#include <QProcess>
 //#include <QSettings>
 #include <QFileInfo>
 
@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
         if (arguments.contains(QStringLiteral("--no-gui"), Qt::CaseInsensitive))
             arguments.removeAll(QStringLiteral("--no-gui"));
         arguments << QStringLiteral("--launch");
-        if (QProcess::startDetached(QDir::toNativeSeparators(path), arguments, QDir::toNativeSeparators(dir)))
+        if (Utils::run(path, arguments))
             return 0;
     }
     return QApplication::exec();

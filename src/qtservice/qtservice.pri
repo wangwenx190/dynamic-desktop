@@ -1,10 +1,10 @@
-qs_lib_name = qtservice
-qs_lib_file = qtservice
-qs_lib_dir = release
+qts_lib_name = qtservice
+qts_lib_file = qtservice
+qts_lib_dir = release
 CONFIG(debug, debug|release) {
-    qs_lib_file = $$join(qs_lib_file,,,d)
-    qs_lib_dir = debug
+    qts_lib_file = $$join(qts_lib_file,,,d)
+    qts_lib_dir = debug
 }
-LIBS += -L$$OUT_PWD/../$${qs_lib_name}/$${qs_lib_dir} -l$${qs_lib_file}$${DD_MAJOR_VERSION}
-INCLUDEPATH += $$PWD/../3rdparty/$${qs_lib_name}
-DEPENDPATH += $$PWD/../3rdparty/$${qs_lib_name}
+LIBS += -L$$OUT_PWD/../$${qts_lib_name}/$${qts_lib_dir} -l$${qts_lib_file}$${DD_MAJOR_VERSION}
+INCLUDEPATH += $$PWD/../3rdparty/$${qts_lib_name}
+DEPENDPATH += $$PWD/../3rdparty/$${qts_lib_name}
