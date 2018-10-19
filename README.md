@@ -54,6 +54,17 @@ Microsoft Windows 7 ~ 10(with GUI desktop), both 32 bit and 64 bit systems.
 - You can also use Intel C++ Compiler(ICC), Clang or MinGW to compile it, just remember to set up environment variables. Cross compile on other platforms may also work, but it will never run on platforms other than MS Windows.
 - Submodules *launcher* and *player* use *Qt Windows Extras* module, *ipc* uses *Qt Remote Objects* module, *QSimpleUpdater* and *updater* use *Qt Network* module, please make sure your Qt has these modules. However, you could also change the source code to remove these dependences.
 
+### How to build installer
+1. Download and install the latest version of [Inno Setup](http://jrsoftware.org/isdl.php).
+2. Create a plain text file named **.qmake.conf** in the root directory of this repository and write:
+   ```text
+   inno_dir = C:/Program Files (x86)/Inno Setup 5
+   CONFIG *= build_installer
+   ```
+   You should change `C:/Program Files (x86)/Inno Setup 5` to your own Inno Setup directory.
+3. Call `build.bat` or run qmake and jom manually.
+4. You can find the generated installer in *src/installer/build*.
+
 ## Contributing
 See [CONTRIBUTING.md](/CONTRIBUTING.md) for more information.
 

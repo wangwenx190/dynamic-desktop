@@ -1,5 +1,7 @@
 #define DDName "Dynamic Desktop"
+#ifndef DDVersion
 #define DDVersion "1.0.0.0"
+#endif
 #define DDPublisher "wangwenx190"
 #define DDURL "https://github.com/wangwenx190/dynamic-desktop"
 #ifdef _DEBUG
@@ -38,14 +40,14 @@ RestartIfNeededByRun=False
 TimeStampsInUTC=True
 ShowLanguageDialog=no
 Uninstallable=no
-VersionInfoVersion=1.0.0.0
+VersionInfoVersion={#DDVersion}
 VersionInfoCompany=wangwenx190
 VersionInfoDescription=Dynamic Desktop Installer
-VersionInfoTextVersion=1.0.0.0
+VersionInfoTextVersion={#DDVersion}
 VersionInfoCopyright=GPLv3
 VersionInfoProductName=Dynamic Desktop
-VersionInfoProductVersion=1.0.0.0
-VersionInfoProductTextVersion=1.0.0.0
+VersionInfoProductVersion={#DDVersion}
+VersionInfoProductTextVersion={#DDVersion}
 InternalCompressLevel=ultra64
 MinVersion=0,6.1
 DisableReadyPage=True
@@ -70,7 +72,7 @@ Name: "zh_TW"; MessagesFile: ".\languages\zh_TW.isl"
 BeveledLabel={#DDName}
 
 [Files]
-Source: "..\..\{#DDBinDir}\*"; DestDir: "{app}"; Excludes: "vc_redist.x??.exe,vcredist_x??.exe"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "..\..\{#DDBinDir}\*"; DestDir: "{app}"; Excludes: "vc_redist.x??.exe,vcredist_x??.exe,*.log,*.ini,*.lib"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 [Run]
 Filename: "{app}\{#DDExeName}"; Description: "{cm:LaunchProgram,{#StringChange(DDName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent

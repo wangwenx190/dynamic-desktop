@@ -14,3 +14,4 @@ LIBS *= \
 SOURCES += main.cpp
 target.path = $${BIN_DIR}
 INSTALLS *= target
+CONFIG(build_installer): include(../installer.pri)
