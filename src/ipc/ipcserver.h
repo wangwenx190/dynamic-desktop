@@ -13,6 +13,6 @@ public:
     ~IPCServer() override;
 
 signals:
-    void clientMessage(QPair<QString, QVariant>);
-    void serverMessage(QPair<QString, QVariant>);
+    void clientMessage(QPair<QString, QVariant> message);
+    void serverMessage(QPair<QString, QVariant> message);
 };

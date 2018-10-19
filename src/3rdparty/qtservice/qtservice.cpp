@@ -732,6 +732,16 @@ void QtServiceBase::setStartupType(QtServiceController::StartupType type)
     d_ptr->startupType = type;
 }
 
+QStringList QtServiceBase::startupArguments() const
+{
+    return d_ptr->startupArguments;
+}
+
+void QtServiceBase::setStartupArguments(const QStringList &arguments)
+{
+    d_ptr->startupArguments = arguments;
+}
+
 /*!
     Returns the service's state which is decribed using the
     ServiceFlag enum.

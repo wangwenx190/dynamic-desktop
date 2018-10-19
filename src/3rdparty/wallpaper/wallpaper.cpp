@@ -3,7 +3,7 @@
 namespace Wallpaper
 {
 
-static HWND HWORKERW = nullptr;
+HWND HWORKERW = nullptr;
 
 BOOL CALLBACK EnumWindowsProc(_In_ HWND hwnd, _In_ LPARAM lParam)
 {

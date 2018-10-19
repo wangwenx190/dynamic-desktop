@@ -3,6 +3,11 @@
 #include <QtNiceFramelessWindow>
 #include <QVariant>
 
+QT_FORWARD_DECLARE_CLASS(IPCServer)
+QT_FORWARD_DECLARE_CLASS(QSystemTrayIcon)
+QT_FORWARD_DECLARE_CLASS(QMenu)
+QT_FORWARD_DECLARE_CLASS(AboutDialog)
+
 QT_BEGIN_NAMESPACE
 QT_FORWARD_DECLARE_CLASS(QWinTaskbarButton)
 QT_FORWARD_DECLARE_CLASS(QWinTaskbarProgress)
@@ -26,6 +31,7 @@ signals:
     //void requestUpdate();
 
 public slots:
+    void playerEcho(const QVariant& param);
     void quit(const QVariant& param);
     void updateVideoSlider(const QVariant& params);
     void updateVideoSliderUnit(const QVariant& params);
@@ -57,10 +63,13 @@ protected:
     void changeEvent(QEvent *event) override;
     void dragEnterEvent(QDragEnterEvent *event) override;
     void dropEvent(QDropEvent *event) override;
+    void closeEvent(QCloseEvent *event) override;
 
 private slots:
     void initUI();
     void initConnections();
+    void initIPC();
+    void initTrayArea();
     void setDecoders();
     void setRatio();
 
@@ -70,4 +79,8 @@ private:
     quint32 sliderUnit = 1000;
     QWinTaskbarButton *taskbarButton = nullptr;
     QWinTaskbarProgress *taskbarProgress = nullptr;
+    IPCServer *ipcServer = nullptr;
+    QSystemTrayIcon *trayIcon = nullptr;
+    QMenu *trayMenu = nullptr;
+    AboutDialog *aboutDialog = nullptr;
 };

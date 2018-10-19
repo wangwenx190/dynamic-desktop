@@ -1,10 +1,11 @@
 include(../common.pri)
 QMAKE_TARGET_PRODUCT = Service
-QMAKE_TARGET_DESCRIPTION = Dynamic Desktop Startup Service
-RC_ICONS = ../resources/icons/dll_win10.ico
+QMAKE_TARGET_DESCRIPTION = Dynamic Desktop Service Module
 TARGET = service
 CONFIG(debug, debug|release): TARGET = $$join(TARGET,,,d)
-TEMPLATE = app
+TEMPLATE = lib
+CONFIG *= dll
+DEFINES *= BUILD_INNER_SHARED_LIBRARY_DD
 QT -= gui widgets
 CONFIG *= console
 include(../qtservice/qtservice.pri)
@@ -13,7 +14,10 @@ LIBS *= \
     -lWtsapi32 \
     -lUserenv \
     -lAdvapi32
-SOURCES += main.cpp
+HEADERS += \
+    $$PWD/../dd_inner_dll_global.h \
+    service.h
+SOURCES += service.cpp
 target.path = $${BIN_DIR}
 INSTALLS *= target
 include(../deploy.pri)

@@ -4,7 +4,9 @@
 #include <Utils>
 #include <QtService>
 #include <SkinsManager>
+#include <IPCServer>
 #include "../common.h"
+#include "forms/aboutdialog.h"
 
 #include <QWinTaskbarButton>
 #include <QWinTaskbarProgress>
@@ -23,6 +25,18 @@
 #include <QLibraryInfo>
 #endif
 #include <QTimer>
+#include <QThread>
+#include <QSystemTrayIcon>
+#include <QMenu>
+#include <QAction>
+#include <QMetaObject>
+#include <QDebug>
+
+void PreferencesDialog::playerEcho(const QVariant &param)
+{
+    const QString text = param.toString();
+    qDebug().noquote() << QStringLiteral("Player echo:") << text;
+}
 
 void PreferencesDialog::quit(const QVariant &param)
 {
@@ -200,13 +214,19 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
     setTitleBar(ui->widget_windowTitleBar);
     addIgnoreWidget(ui->label_windowTitle);
     initUI();
+    initIPC();
     initConnections();
+    initTrayArea();
 }
 
 PreferencesDialog::~PreferencesDialog()
 {
     delete ui;
     delete taskbarButton;
+    delete ipcServer;
+    delete trayMenu;
+    delete trayIcon;
+    delete aboutDialog;
 }
 
 void PreferencesDialog::parseCommand(const QPair<QString, QVariant> &command)
@@ -220,17 +240,10 @@ void PreferencesDialog::parseCommand(const QPair<QString, QVariant> &command)
 
 bool PreferencesDialog::setAutoStart(bool enable)
 {
-    QString servicePath = QCoreApplication::applicationDirPath() + QStringLiteral("/service");
-#ifdef _DEBUG
-    servicePath += QStringLiteral("d");
-#endif
-    servicePath += QStringLiteral(".exe");
-    if (!QFileInfo::exists(servicePath))
-        return false;
     if (enable && !isAutoStart())
-        return Utils::run(servicePath, QStringList() << QStringLiteral("-i"), true);
+        return Utils::run(QApplication::applicationFilePath(), QStringList() << QStringLiteral("--service") << QStringLiteral("-i"), true);
     else if (!enable && isAutoStart())
-        return Utils::run(servicePath, QStringList() << QStringLiteral("-u"), true);
+        return Utils::run(QApplication::applicationFilePath(), QStringList() << QStringLiteral("--service") << QStringLiteral("-u"), true);
     return false;
 }
 
@@ -243,12 +256,12 @@ bool PreferencesDialog::isAutoStart(const QString &name)
 
 void PreferencesDialog::changeEvent(QEvent *event)
 {
+    CFramelessWindow::changeEvent(event);
     if (event->type() == QEvent::WindowStateChange)
         if (windowState() == Qt::WindowMaximized)
             ui->pushButton_maximize->setIcon(QIcon(QStringLiteral(":/icons/restore.ico")));
         else
             ui->pushButton_maximize->setIcon(QIcon(QStringLiteral(":/icons/maximize.ico")));
-    CFramelessWindow::changeEvent(event);
 }
 
 static bool canHandleDrop(const QDragEnterEvent *event)
@@ -262,12 +275,13 @@ static bool canHandleDrop(const QDragEnterEvent *event)
 
 void PreferencesDialog::dragEnterEvent(QDragEnterEvent *event)
 {
-    event->setAccepted(canHandleDrop(event));
     CFramelessWindow::dragEnterEvent(event);
+    event->setAccepted(canHandleDrop(event));
 }
 
 void PreferencesDialog::dropEvent(QDropEvent *event)
 {
+    CFramelessWindow::dropEvent(event);
     event->accept();
     QUrl url = event->mimeData()->urls().constFirst();
     QString path;
@@ -276,7 +290,13 @@ void PreferencesDialog::dropEvent(QDropEvent *event)
     else
         path = url.url();
     ui->lineEdit_url->setText(path);
-    CFramelessWindow::dropEvent(event);
+}
+
+void PreferencesDialog::closeEvent(QCloseEvent *event)
+{
+    CFramelessWindow::closeEvent(event);
+    if (ui->lineEdit_url->text().isEmpty())
+        emit this->requestQuit(false);
 }
 
 void PreferencesDialog::initUI()
@@ -587,6 +607,107 @@ void PreferencesDialog::initConnections()
         emit ui->checkBox_volume->clicked(!mute);
     });
     //connect(ui->pushButton_check_update, &QPushButton::clicked, this, &PreferencesDialog::requestUpdate);
+}
+
+void PreferencesDialog::initIPC()
+{
+    ipcServer = new IPCServer();
+    connect(ipcServer, &IPCServer::clientMessage, this, &PreferencesDialog::parseCommand);
+    connect(this, &PreferencesDialog::sendCommand, ipcServer, &IPCServer::serverMessage);
+    QTimer::singleShot(1000, this, [=]
+    {
+        emit this->sendCommand(qMakePair(QStringLiteral("controllerEcho"), QStringLiteral("Hello, player. Controller is online.")));
+    });
+}
+
+void PreferencesDialog::initTrayArea()
+{
+    trayMenu = new QMenu();
+    trayIcon = new QSystemTrayIcon();
+    trayIcon->setIcon(QIcon(QStringLiteral(":/icons/color_palette.ico")));
+    trayIcon->setToolTip(QStringLiteral("Dynamic Desktop"));
+    trayIcon->setContextMenu(trayMenu);
+    trayIcon->show();
+    QAction *showPreferencesDialogAction = trayMenu->addAction(tr("Preferences"), this, [=]
+    {
+        if (this->isHidden())
+        {
+            Utils::moveToCenter(this);
+            this->show();
+        }
+        if (!this->isActiveWindow())
+            this->setWindowState(this->windowState() & ~Qt::WindowMinimized);
+        if (!this->isActiveWindow())
+        {
+            this->raise();
+            this->activateWindow();
+        }
+    });
+    trayMenu->addSeparator();
+    trayMenu->addAction(tr("Play"), this, [=]
+    {
+        emit this->sendCommand(qMakePair(QStringLiteral("play"), QVariant()));
+    });
+    trayMenu->addAction(tr("Pause"), this, [=]
+    {
+        emit this->sendCommand(qMakePair(QStringLiteral("pause"), QVariant()));
+    });
+    QAction *muteAction = trayMenu->addAction(tr("Mute"));
+    muteAction->setCheckable(true);
+    muteAction->setChecked(SettingsManager::getInstance()->getMute());
+    connect(muteAction, &QAction::triggered, this, [=]
+    {
+        emit this->setMute(muteAction->isChecked());
+    });
+    trayMenu->addSeparator();
+    QAction *aboutAction = trayMenu->addAction(tr("About"), this, [=]
+    {
+        if (aboutDialog == nullptr)
+            aboutDialog = new AboutDialog();
+        if (aboutDialog->isHidden())
+        {
+            Utils::moveToCenter(aboutDialog);
+            aboutDialog->show();
+        }
+        if (!aboutDialog->isActiveWindow())
+            aboutDialog->setWindowState(aboutDialog->windowState() & ~Qt::WindowMinimized);
+        if (!aboutDialog->isActiveWindow())
+        {
+            aboutDialog->raise();
+            aboutDialog->activateWindow();
+        }
+    });
+    connect(this, &PreferencesDialog::about, this, [=]
+    {
+        emit aboutAction->triggered();
+    });
+    connect(this, &PreferencesDialog::requestQuit, this, [=](bool fromPlayer)
+    {
+        qApp->closeAllWindows();
+        trayIcon->hide();
+        if (!fromPlayer)
+        {
+            emit this->sendCommand(qMakePair(QStringLiteral("quit"), QVariant()));
+            QThread::msleep(500);
+            /*QThread::sleep(1);
+            // Make sure the player process is terminated
+            Utils::killProcess(QFileInfo(QApplication::applicationFilePath()).fileName());*/
+        }
+        qApp->quit();
+    });
+    trayMenu->addAction(tr("Exit"), this, [=]
+    {
+        emit this->requestQuit(false);
+    });
+    connect(trayIcon, &QSystemTrayIcon::activated, this, [=](QSystemTrayIcon::ActivationReason reason)
+    {
+        if (reason != QSystemTrayIcon::Context)
+            emit showPreferencesDialogAction->triggered();
+    });
+    connect(this, &PreferencesDialog::muteChanged, this, [=](bool mute)
+    {
+        muteAction->setChecked(mute);
+    });
 }
 
 void PreferencesDialog::setDecoders()

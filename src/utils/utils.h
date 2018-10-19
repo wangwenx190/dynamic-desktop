@@ -13,14 +13,14 @@ QT_END_NAMESPACE
 namespace Utils
 {
 
-DD_SHARED_EXPORT void fileLogger(QtMsgType type, const QMessageLogContext &context, const QString &msg);
-DD_SHARED_EXPORT QStringList externalFilesToLoad(const QFileInfo &originalMediaFile, const QString &fileType);
-DD_SHARED_EXPORT void moveToCenter(QObject *window);
-DD_SHARED_EXPORT bool adminRun(const QString &path, const QString &params);
-DD_SHARED_EXPORT bool checkUpdate(bool autoUpdate = true);
-DD_SHARED_EXPORT bool launchSession1Process(const QString &path, const QString &params);
-DD_SHARED_EXPORT int Exit(int resultCode = 0, bool trulyExit = true, HANDLE mutex = nullptr, HWND workerw = nullptr);
-DD_SHARED_EXPORT bool run(const QString &path, const QStringList &params = QStringList{}, bool needAdmin = false);
-DD_SHARED_EXPORT bool killProcess(const QString &name);
+void DD_SHARED_EXPORT fileLogger(QtMsgType type, const QMessageLogContext &context, const QString &msg);
+QStringList DD_SHARED_EXPORT externalFilesToLoad(const QFileInfo &originalMediaFile, const QString &fileType);
+void DD_SHARED_EXPORT moveToCenter(QObject *window);
+bool DD_SHARED_EXPORT adminRun(const QString &path, const QString &params);
+bool DD_SHARED_EXPORT checkUpdate(bool autoUpdate = true);
+bool DD_SHARED_EXPORT launchSession1Process(const QString &path, const QString &params);
+int DD_SHARED_EXPORT Exit(int resultCode = 0, bool trulyExit = true, HANDLE mutex = nullptr, HWND workerw = nullptr);
+bool DD_SHARED_EXPORT run(const QString &path, const QStringList &params = QStringList{}, bool needAdmin = false);
+bool DD_SHARED_EXPORT killProcess(const QString &name);
 
 }

@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include <SettingsManager>
 #include <Utils>
+#include <IPCClient>
 
 #include <QMessageBox>
 #include <QVBoxLayout>
@@ -9,6 +10,9 @@
 #include <QWinTaskbarButton>
 #include <QWinTaskbarProgress>
 #include <QFileInfo>
+#include <QMetaObject>
+#include <QDebug>
+#include <QTimer>
 
 const qreal kVolumeInterval = 0.04;
 
@@ -16,6 +20,7 @@ MainWindow::MainWindow(QWidget *parent) : QWidget(parent)
 {
     initUI();
     initPlayer();
+    initIPC();
     initConnections();
     initAudio();
 }
@@ -27,6 +32,7 @@ MainWindow::~MainWindow()
     delete player;
     delete mainLayout;
     delete taskbarButton;
+    delete ipcClient;
 }
 
 void MainWindow::parseCommand(const QPair<QString, QVariant> &command)
@@ -36,6 +42,12 @@ void MainWindow::parseCommand(const QPair<QString, QVariant> &command)
     const char *name = byteArray.constData();
     QVariant param = command.second;
     QMetaObject::invokeMethod(this, name, Q_ARG(QVariant, param));
+}
+
+void MainWindow::controllerEcho(const QVariant &param)
+{
+    const QString text = param.toString();
+    qDebug().noquote() << QStringLiteral("Controller echo:") << text;
 }
 
 void MainWindow::volumeChanged(const QVariant& param)
@@ -187,7 +199,7 @@ void MainWindow::initPlayer()
 
 void MainWindow::initConnections()
 {
-    connect(player, &QtAV::AVPlayer::started, this, &MainWindow::onStartPlay);
+    connect(player, &QtAV::AVPlayer::loaded, this, &MainWindow::onStartPlay);
     connect(player, &QtAV::AVPlayer::positionChanged, this, [=](qint64 pos)
     {
         taskbarProgress->setValue(pos);
@@ -205,6 +217,21 @@ void MainWindow::initAudio()
     }
     else
         emit this->sendCommand(qMakePair(QStringLiteral("setVolumeAreaEnabled"), false));
+}
+
+void MainWindow::initIPC()
+{
+    ipcClient = new IPCClient();
+    connect(ipcClient, &IPCClient::serverMessage, this, &MainWindow::parseCommand);
+    connect(this, &MainWindow::sendCommand, ipcClient, &IPCClient::clientMessage);
+    connect(qApp, &QCoreApplication::aboutToQuit, this, [=]
+    {
+        emit ipcClient->clientMessage(qMakePair(QStringLiteral("quit"), true));
+    });
+    QTimer::singleShot(1000, this, [=]
+    {
+        emit this->sendCommand(qMakePair(QStringLiteral("playerEcho"), QStringLiteral("Hello, controller. Player is online.")));
+    });
 }
 
 bool MainWindow::setRenderer(const QVariant& param)

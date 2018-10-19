@@ -3,6 +3,8 @@
 #include <QWidget>
 #include <QVariant>
 
+QT_FORWARD_DECLARE_CLASS(IPCClient)
+
 QT_BEGIN_NAMESPACE
 QT_FORWARD_DECLARE_CLASS(QVBoxLayout)
 QT_FORWARD_DECLARE_CLASS(QWinTaskbarButton)
@@ -31,6 +33,7 @@ public slots:
     void parseCommand(const QPair<QString, QVariant>& command);
 
 public slots:
+    void controllerEcho(const QVariant& param);
     void volumeChanged(const QVariant& param);
     void muteChanged(const QVariant& param);
     void seekBySlider(const QVariant& param);
@@ -57,6 +60,7 @@ private slots:
     void initPlayer();
     void initConnections();
     void initAudio();
+    void initIPC();
     void onStartPlay();
 
 private:
@@ -66,4 +70,5 @@ private:
     QVBoxLayout *mainLayout = nullptr;
     QWinTaskbarButton *taskbarButton = nullptr;
     QWinTaskbarProgress *taskbarProgress = nullptr;
+    IPCClient *ipcClient = nullptr;
 };

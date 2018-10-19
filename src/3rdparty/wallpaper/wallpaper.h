@@ -7,9 +7,9 @@
 namespace Wallpaper
 {
 
-DD_SHARED_EXPORT HWND getWorkerW();
-DD_SHARED_EXPORT HWND getProgman();
-DD_SHARED_EXPORT HWND getDesktop(bool legacyMode);
-DD_SHARED_EXPORT bool setWallpaper(HWND window, bool legacyMode);
+HWND DD_SHARED_EXPORT getWorkerW();
+HWND DD_SHARED_EXPORT getProgman();
+HWND DD_SHARED_EXPORT getDesktop(bool legacyMode);
+bool DD_SHARED_EXPORT setWallpaper(HWND window, bool legacyMode);
 
 }

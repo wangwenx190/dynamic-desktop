@@ -1,3 +1,5 @@
+#include "service.h"
+
 #include <QtService>
 #include <Utils>
 
@@ -20,15 +22,11 @@ DDSvc::DDSvc(int argc, char **argv)
 {
     setServiceDescription(QStringLiteral("A service to help Dynamic Desktop startup faster."));
     setStartupType(QtServiceController::AutoStartup);
+    setStartupArguments(QStringList() << QStringLiteral("--service"));
 }
 
 void DDSvc::start()
 {
-    QString path = QCoreApplication::applicationDirPath() + QStringLiteral("/launcher");
-#ifdef _DEBUG
-    path += QStringLiteral("d");
-#endif
-    path += QStringLiteral(".exe");
     HANDLE serviceMutex = CreateMutex(nullptr, FALSE, TEXT("wangwenx190.DynamicDesktop.Service.1000.AppMutex"));
     if ((serviceMutex != nullptr) && (GetLastError() == ERROR_ALREADY_EXISTS))
     {
@@ -40,8 +38,7 @@ void DDSvc::start()
     {
         ReleaseMutex(playerMutex);
         CloseHandle(playerMutex);
-        if (QFileInfo::exists(path))
-            Utils::run(path, QStringList() << QStringLiteral("--launch"));
+        Utils::run(QCoreApplication::applicationFilePath(), QStringList() << QStringLiteral("--controller") << QStringLiteral("--launch"));
     }
     else
         ReleaseMutex(playerMutex);
@@ -50,7 +47,7 @@ void DDSvc::start()
     qApp->quit();
 }
 
-int main(int argc, char **argv)
+int serviceMain(int argc, char **argv)
 {
     DDSvc svc(argc, argv);
     return svc.exec();

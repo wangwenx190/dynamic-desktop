@@ -121,19 +121,12 @@ bool adminRun(const QString &path, const QString &params)
 
 bool checkUpdate(bool autoUpdate)
 {
-    const QString updaterDir = QCoreApplication::applicationDirPath();
-    QString updaterPath = updaterDir + QStringLiteral("/updater");
-#ifdef _DEBUG
-    updaterPath += QStringLiteral("d");
-#endif
-    updaterPath += QStringLiteral(".exe");
-    if (!QFileInfo::exists(updaterPath))
-        return false;
     QStringList arguments = QCoreApplication::arguments();
     arguments.takeFirst();
     if (autoUpdate)
         arguments << QStringLiteral("--auto-update");
-    return QProcess::startDetached(QDir::toNativeSeparators(updaterPath), arguments, QDir::toNativeSeparators(updaterDir));
+    arguments.insert(0, QStringLiteral("--updater"));
+    return QProcess::startDetached(QDir::toNativeSeparators(QCoreApplication::applicationFilePath()), arguments, QDir::toNativeSeparators(QCoreApplication::applicationDirPath()));
 }
 
 bool launchSession1Process(const QString &path, const QString &params)

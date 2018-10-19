@@ -1,7 +1,8 @@
+#include "player.h"
+
 #include <SettingsManager>
 #include <Utils>
 #include <Wallpaper>
-#include <IPCClient>
 #include "mainwindow.h"
 
 #include <Windows.h>
@@ -17,10 +18,10 @@
 #include <QSysInfo>
 #include <QLocale>
 
-static bool windowMode = false;
-static HANDLE mutex = nullptr;
+bool windowMode = false;
+HANDLE mutex = nullptr;
 
-int main(int argc, char *argv[])
+int playerMain(int argc, char *argv[])
 {
     QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
@@ -73,13 +74,6 @@ int main(int argc, char *argv[])
         return 0;
     }
     MainWindow mainWindow;
-    IPCClient ipcClient;
-    QObject::connect(&ipcClient, &IPCClient::serverMessage, &mainWindow, &MainWindow::parseCommand);
-    QObject::connect(&mainWindow, &MainWindow::sendCommand, &ipcClient, &IPCClient::clientMessage);
-    QObject::connect(qApp, &QCoreApplication::aboutToQuit, [=, &ipcClient]
-    {
-        emit ipcClient.clientMessage(qMakePair(QStringLiteral("quit"), true));
-    });
     const Qt::WindowFlags windowFlags = Qt::FramelessWindowHint;
     const QRect screenGeometry = QApplication::desktop()->screenGeometry(&mainWindow);
     if (!windowMode)

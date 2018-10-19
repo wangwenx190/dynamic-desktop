@@ -81,4 +81,6 @@ public:
     void sysSetPath();
     void sysCleanup();
     class QtServiceSysPrivate *sysd;
+
+    QStringList startupArguments;
 };

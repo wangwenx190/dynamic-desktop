@@ -65,7 +65,7 @@ void CFramelessWindow::setTitleBar(QWidget* titlebar)
 
 void CFramelessWindow::onTitleBarDestroyed()
 {
-    if (m_titlebar == QObject::sender())
+    if (m_titlebar == sender())
     {
         m_titlebar = Q_NULLPTR;
     }

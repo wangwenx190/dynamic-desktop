@@ -1,7 +1,6 @@
-#include <QVariant>
 class DDIPC
 {
-    SIGNAL(clientMessage(QPair<QString, QVariant>))
-    SIGNAL(serverMessage(QPair<QString, QVariant>))
+    SIGNAL(clientMessage(QPair<QString, QVariant> message))
+    SIGNAL(serverMessage(QPair<QString, QVariant> message))
     SLOT(void sendMessageToServer(const QPair<QString, QVariant> &message))
 }

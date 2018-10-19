@@ -115,6 +115,9 @@ public:
     QtServiceController::StartupType startupType() const;
     void setStartupType(QtServiceController::StartupType startupType);
 
+    QStringList startupArguments() const;
+    void setStartupArguments(const QStringList& arguments);
+
     ServiceFlags serviceFlags() const;
     void setServiceFlags(ServiceFlags flags);
 

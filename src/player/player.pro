@@ -1,18 +1,22 @@
 include(../common.pri)
 QMAKE_TARGET_PRODUCT = Player
-QMAKE_TARGET_DESCRIPTION = Dynamic Desktop Multimedia Player
-RC_ICONS = ../resources/icons/dll_win10.ico
+QMAKE_TARGET_DESCRIPTION = Dynamic Desktop Player Module
 TARGET = player
 CONFIG(debug, debug|release): TARGET = $$join(TARGET,,,d)
-TEMPLATE = app
+TEMPLATE = lib
+CONFIG *= dll
+DEFINES *= BUILD_INNER_SHARED_LIBRARY_DD
 QT *= widgets av avwidgets winextras
 include(../ipc/ipc.pri)
 include(../settingsmanager/settingsmanager.pri)
 include(../utils/utils.pri)
 include(../wallpaper/wallpaper.pri)
-HEADERS += mainwindow.h
+HEADERS += \
+    $$PWD/../dd_inner_dll_global.h \
+    player.h \
+    mainwindow.h
 SOURCES += \
-    main.cpp \
+    player.cpp \
     mainwindow.cpp
 RESOURCES *= images.qrc
 TRANSLATIONS += \
