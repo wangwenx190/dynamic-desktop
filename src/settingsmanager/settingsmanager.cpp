@@ -80,10 +80,13 @@ QStringList SettingsManager::supportedMimeTypes() const
 QString SettingsManager::getUrl() const
 {
     QString path = settings->value(QStringLiteral("dd/url"), QString()).toString();
-    if (QFileInfo(path).isDir())
+    if (path.isEmpty())
         return QString();
     if (QFileInfo::exists(path))
-        return path;
+        if (QFileInfo(path).isDir())
+            return QString();
+        else if (QFileInfo(path).isFile())
+            return path;
     QUrl url(path);
     if (!url.isValid())
         return QString();
@@ -94,9 +97,12 @@ QString SettingsManager::getUrl() const
 
 QString SettingsManager::lastDir() const
 {
-    QString url = getUrl();
-    if (QFileInfo::exists(url))
-        return QFileInfo(url).dir().absolutePath();
+    const QString url = getUrl();
+    if (url.isEmpty())
+        return QStringLiteral(".");
+    const QString dir = QFileInfo(url).canonicalPath();
+    if (QFileInfo::exists(dir) && QFileInfo(dir).isDir())
+        return dir;
     return QStringLiteral(".");
 }
 

@@ -56,6 +56,7 @@ private slots:
     void initUI();
     void initPlayer();
     void initConnections();
+    void initAudio();
     void onStartPlay();
 
 private:

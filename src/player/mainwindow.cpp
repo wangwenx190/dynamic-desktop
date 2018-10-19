@@ -17,15 +17,7 @@ MainWindow::MainWindow(QWidget *parent) : QWidget(parent)
     initUI();
     initPlayer();
     initConnections();
-    if (player->audio())
-    {
-        volumeChanged(SettingsManager::getInstance()->getVolume());
-        muteChanged(SettingsManager::getInstance()->getMute());
-        sendCommand(qMakePair(QStringLiteral("updateVolumeArea"), QVariant()));
-        sendCommand(qMakePair(QStringLiteral("muteChanged"), SettingsManager::getInstance()->getMute()));
-    }
-    else
-        sendCommand(qMakePair(QStringLiteral("setVolumeAreaEnabled"), false));
+    initAudio();
 }
 
 MainWindow::~MainWindow()
@@ -57,6 +49,7 @@ void MainWindow::volumeChanged(const QVariant& param)
             if (qAbs(static_cast<quint32>(ao->volume() / kVolumeInterval) - volume) >= static_cast<quint32>(0.1 / kVolumeInterval))
                 ao->setVolume(newVolume);
         emit this->sendCommand(qMakePair(QStringLiteral("setVolumeToolTip"), tr("Volume: %0").arg(QString::number(newVolume))));
+        emit this->sendCommand(qMakePair(QStringLiteral("updateVolumeArea"), QVariant()));
     }
 }
 
@@ -65,7 +58,12 @@ void MainWindow::muteChanged(const QVariant& param)
     bool mute = param.toBool();
     if (player->audio())
         if (player->audio()->isMute() != mute)
+        {
             player->audio()->setMute(mute);
+            // The following code is not necessary
+            //emit this->sendCommand(qMakePair(QStringLiteral("muteChanged"), SettingsManager::getInstance()->getMute()));
+            emit this->sendCommand(qMakePair(QStringLiteral("updateVolumeArea"), QVariant()));
+        }
 }
 
 void MainWindow::seekBySlider(const QVariant& param)
@@ -196,6 +194,17 @@ void MainWindow::initConnections()
         emit this->sendCommand(qMakePair(QStringLiteral("updateVideoSlider"), pos));
         emit this->sendCommand(qMakePair(QStringLiteral("setVideoPositionText"), QTime(0, 0, 0).addMSecs(pos).toString(QStringLiteral("HH:mm:ss"))));
     });
+}
+
+void MainWindow::initAudio()
+{
+    if (player->audio())
+    {
+        volumeChanged(SettingsManager::getInstance()->getVolume());
+        muteChanged(SettingsManager::getInstance()->getMute());
+    }
+    else
+        emit this->sendCommand(qMakePair(QStringLiteral("setVolumeAreaEnabled"), false));
 }
 
 bool MainWindow::setRenderer(const QVariant& param)
