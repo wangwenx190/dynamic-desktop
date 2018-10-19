@@ -4,12 +4,12 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../../player/mainwindow.cpp" line="59"/>
+        <location filename="../../player/mainwindow.cpp" line="51"/>
         <source>Volume: %0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../player/mainwindow.cpp" line="209"/>
+        <location filename="../../player/mainwindow.cpp" line="218"/>
         <source>Current renderer is not available on your platform!</source>
         <translation type="unfinished"></translation>
     </message>
