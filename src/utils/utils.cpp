@@ -126,7 +126,7 @@ bool checkUpdate(bool autoUpdate)
     if (autoUpdate)
         arguments << QStringLiteral("--auto-update");
     arguments.insert(0, QStringLiteral("--updater"));
-    return QProcess::startDetached(QDir::toNativeSeparators(QCoreApplication::applicationFilePath()), arguments, QDir::toNativeSeparators(QCoreApplication::applicationDirPath()));
+    return run(QCoreApplication::applicationFilePath(), arguments);
 }
 
 bool launchSession1Process(const QString &path, const QString &params)
@@ -206,7 +206,7 @@ bool run(const QString &path, const QStringList &params, bool needAdmin)
     return QProcess::startDetached(QDir::toNativeSeparators(path), params, QDir::toNativeSeparators(QFileInfo(path).canonicalPath()));
 }
 
-bool killProcess(const QString &name)
+/*bool killProcess(const QString &name)
 {
     if (name.isEmpty())
         return false;
@@ -235,6 +235,6 @@ bool killProcess(const QString &name)
         CloseHandle(hProcess);
     }
     return true;
-}
+}*/
 
 }

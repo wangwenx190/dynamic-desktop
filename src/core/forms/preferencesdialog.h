@@ -53,7 +53,7 @@ public slots:
 
 public:
     bool setAutoStart(bool enable = true);
-    bool isAutoStart(const QString &name = QStringLiteral("Dynamic Desktop Service"));
+    bool isAutoStart(const QString &name = QStringLiteral("Dynamic Desktop Auto Start Service"));
 
 protected:
     void changeEvent(QEvent *event) override;

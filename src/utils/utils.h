@@ -21,6 +21,6 @@ bool DD_SHARED_EXPORT checkUpdate(bool autoUpdate = true);
 bool DD_SHARED_EXPORT launchSession1Process(const QString &path, const QString &params);
 int DD_SHARED_EXPORT Exit(int resultCode = 0, bool trulyExit = true, HANDLE mutex = nullptr, HWND workerw = nullptr);
 bool DD_SHARED_EXPORT run(const QString &path, const QStringList &params = QStringList{}, bool needAdmin = false);
-bool DD_SHARED_EXPORT killProcess(const QString &name);
+//bool DD_SHARED_EXPORT killProcess(const QString &name);
 
 }

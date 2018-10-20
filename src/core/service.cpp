@@ -6,7 +6,6 @@
 #include <Windows.h>
 
 #include <QApplication>
-#include <QFileInfo>
 
 class DDSvc : public QtService<QApplication>
 {
@@ -18,9 +17,9 @@ protected:
 };
 
 DDSvc::DDSvc(int argc, char **argv)
-    : QtService<QApplication>(argc, argv, QStringLiteral("Dynamic Desktop Service"))
+    : QtService<QApplication>(argc, argv, QStringLiteral("Dynamic Desktop Auto Start Service"))
 {
-    setServiceDescription(QStringLiteral("A service to help Dynamic Desktop startup faster."));
+    setServiceDescription(QStringLiteral("Make Dynamic Desktop auto start. Dynamic Desktop will not auto start if you disable this service."));
     setStartupType(QtServiceController::AutoStartup);
     setStartupArguments(QStringList() << QStringLiteral("--service"));
 }
@@ -38,7 +37,7 @@ void DDSvc::start()
     {
         ReleaseMutex(playerMutex);
         CloseHandle(playerMutex);
-        Utils::run(QCoreApplication::applicationFilePath(), QStringList() << QStringLiteral("--controller") << QStringLiteral("--launch"));
+        Utils::run(QApplication::applicationFilePath(), QStringList() << QStringLiteral("--controller") << QStringLiteral("--launch"));
     }
     else
         ReleaseMutex(playerMutex);
@@ -49,6 +48,6 @@ void DDSvc::start()
 
 int serviceMain(int argc, char **argv)
 {
-    DDSvc svc(argc, argv);
-    return svc.exec();
+    DDSvc ddsvc(argc, argv);
+    return ddsvc.exec();
 }

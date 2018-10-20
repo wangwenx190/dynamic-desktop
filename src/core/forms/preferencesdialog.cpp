@@ -226,7 +226,7 @@ bool PreferencesDialog::setAutoStart(bool enable)
 
 bool PreferencesDialog::isAutoStart(const QString &name)
 {
-    QString serviceName = name.isEmpty() ? QCoreApplication::applicationName() : name;
+    QString serviceName = name.isEmpty() ? QApplication::applicationName() : name;
     QtServiceController controller(serviceName);
     return controller.isInstalled();
 }
