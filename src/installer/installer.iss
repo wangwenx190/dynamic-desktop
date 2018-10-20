@@ -60,8 +60,8 @@ ArchitecturesAllowed=x64
 #else
 ArchitecturesAllowed=x86
 #endif
-WizardImageFile=.\images\wizardimage@100.bmp,.\images\wizardimage@125.bmp,.\images\wizardimage@150.bmp,.\images\wizardimage@175.bmp,.\images\wizardimage@200.bmp,.\images\wizardimage@225.bmp,.\images\wizardimage@250.bmp
-WizardSmallImageFile=.\images\wizardsmallimage@100.bmp,.\images\wizardsmallimage@125.bmp,.\images\wizardsmallimage@150.bmp,.\images\wizardsmallimage@175.bmp,.\images\wizardsmallimage@200.bmp,.\images\wizardsmallimage@225.bmp,.\images\wizardsmallimage@250.bmp
+WizardImageFile=.\images\wizardimage@250.bmp
+WizardSmallImageFile=.\images\wizardsmallimage@250.bmp
 
 [Languages]
 Name: "en"; MessagesFile: ".\languages\en.isl"

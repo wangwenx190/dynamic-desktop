@@ -15,4 +15,6 @@ public:
 signals:
     void serverMessage(QPair<QString, QVariant> message);
     void clientMessage(QPair<QString, QVariant> message);
+    void serverOnline();
+    void serverOffline();
 };

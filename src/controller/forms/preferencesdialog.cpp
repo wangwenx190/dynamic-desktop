@@ -35,7 +35,8 @@
 void PreferencesDialog::playerEcho(const QVariant &param)
 {
     const QString text = param.toString();
-    qDebug().noquote() << QStringLiteral("Player echo:") << text;
+    if (!text.isEmpty())
+        qDebug().noquote() << QStringLiteral("Player echo:") << text;
 }
 
 void PreferencesDialog::quit(const QVariant &param)
@@ -294,9 +295,9 @@ void PreferencesDialog::dropEvent(QDropEvent *event)
 
 void PreferencesDialog::closeEvent(QCloseEvent *event)
 {
-    CFramelessWindow::closeEvent(event);
     if (ui->lineEdit_url->text().isEmpty())
         emit this->requestQuit(false);
+    CFramelessWindow::closeEvent(event);
 }
 
 void PreferencesDialog::initUI()
@@ -688,7 +689,7 @@ void PreferencesDialog::initTrayArea()
         if (!fromPlayer)
         {
             emit this->sendCommand(qMakePair(QStringLiteral("quit"), QVariant()));
-            QThread::msleep(500);
+            QThread::msleep(200);
             /*QThread::sleep(1);
             // Make sure the player process is terminated
             Utils::killProcess(QFileInfo(QApplication::applicationFilePath()).fileName());*/

@@ -59,7 +59,7 @@ int controllerMain(int argc, char *argv[])
     }
     else
     {
-        language = QStringLiteral("controller_%0.qm").arg(language);
+        language = QStringLiteral("controller_%0").arg(language);
         if (translator.load(language, qmDir))
             QApplication::installTranslator(&translator);
     }
@@ -69,7 +69,7 @@ int controllerMain(int argc, char *argv[])
     if (currentVersion < win7Version)
     {
         QMessageBox::critical(nullptr, QStringLiteral("Dynamic Desktop"), QObject::tr("This application only supports Windows 7 and newer."));
-        Utils::Exit(-1, true, mutex);
+        return Utils::Exit(-1, false, mutex);
     }
     mutex = CreateMutex(nullptr, FALSE, TEXT("wangwenx190.DynamicDesktop.Controller.1000.AppMutex"));
     if ((mutex != nullptr) && (GetLastError() == ERROR_ALREADY_EXISTS))
@@ -168,7 +168,7 @@ int controllerMain(int argc, char *argv[])
     if (!Utils::run(QApplication::applicationFilePath(), playerStartupArguments))
     {
         QMessageBox::critical(nullptr, QStringLiteral("Dynamic Desktop"), QObject::tr("Cannot start the core module. Application aborting."));
-        Utils::Exit(-1, true, mutex);
+        return Utils::Exit(-1, false, mutex);
     }
     if (SettingsManager::getInstance()->getUrl().isEmpty())
     {

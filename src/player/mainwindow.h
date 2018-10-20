@@ -3,8 +3,6 @@
 #include <QWidget>
 #include <QVariant>
 
-QT_FORWARD_DECLARE_CLASS(IPCClient)
-
 QT_BEGIN_NAMESPACE
 QT_FORWARD_DECLARE_CLASS(QVBoxLayout)
 QT_FORWARD_DECLARE_CLASS(QWinTaskbarButton)
@@ -60,7 +58,6 @@ private slots:
     void initPlayer();
     void initConnections();
     void initAudio();
-    void initIPC();
     void onStartPlay();
 
 private:
@@ -70,5 +67,4 @@ private:
     QVBoxLayout *mainLayout = nullptr;
     QWinTaskbarButton *taskbarButton = nullptr;
     QWinTaskbarProgress *taskbarProgress = nullptr;
-    IPCClient *ipcClient = nullptr;
 };

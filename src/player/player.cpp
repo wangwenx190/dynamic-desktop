@@ -3,6 +3,7 @@
 #include <SettingsManager>
 #include <Utils>
 #include <Wallpaper>
+#include <IPCClient>
 #include "mainwindow.h"
 
 #include <Windows.h>
@@ -54,7 +55,7 @@ int playerMain(int argc, char *argv[])
     }
     else
     {
-        language = QStringLiteral("player_%0.qm").arg(language);
+        language = QStringLiteral("player_%0").arg(language);
         if (translator.load(language, qmDir))
             QApplication::installTranslator(&translator);
     }
@@ -64,7 +65,7 @@ int playerMain(int argc, char *argv[])
     if (currentVersion < win7Version)
     {
         QMessageBox::critical(nullptr, QStringLiteral("Dynamic Desktop"), QObject::tr("This application only supports Windows 7 and newer."));
-        Utils::Exit(-1, true, mutex);
+        return Utils::Exit(-1, false, mutex);
     }
     mutex = CreateMutex(nullptr, FALSE, TEXT("wangwenx190.DynamicDesktop.Player.1000.AppMutex"));
     if ((mutex != nullptr) && (GetLastError() == ERROR_ALREADY_EXISTS))
@@ -73,40 +74,51 @@ int playerMain(int argc, char *argv[])
         ReleaseMutex(mutex);
         return 0;
     }
-    MainWindow mainWindow;
-    const Qt::WindowFlags windowFlags = Qt::FramelessWindowHint;
-    const QRect screenGeometry = QApplication::desktop()->screenGeometry(&mainWindow);
-    if (!windowMode)
+    app.setQuitOnLastWindowClosed(false);
+    IPCClient ipcClient;
+    MainWindow *mainWindow = nullptr;
+    QObject::connect(&ipcClient, &IPCClient::serverOnline, [=, &ipcClient, &app]()mutable
     {
-        app.setQuitOnLastWindowClosed(false);
-        mainWindow.setWindowFlags(windowFlags);
-        // Why is Direct2D image too large?
-        mainWindow.setGeometry(screenGeometry);
-        QVersionNumber win10Version(10, 0, 10240); // Windows 10 Version 1507
-        // How to place our window under desktop icons:
-        // Use "Program Manager" as our parent window in Win7/8/8.1.
-        // Use "WorkerW" as our parent window in Win10.
-        // Use "Program Manager" as our parent window in
-        // Win10 is also OK, but our window will come
-        // to front if we press "Win + Tab" and it will
-        // also block our desktop icons, however using
-        // "WorkerW" as our parent window will not result
-        // in this problem, I don't know why. It's strange.
-        Wallpaper::setWallpaper(reinterpret_cast<HWND>(mainWindow.winId()), currentVersion < win10Version);
-    }
-    else
-    {
-        app.setQuitOnLastWindowClosed(true);
-        mainWindow.resize(QSize(1280, 720));
-        Utils::moveToCenter(&mainWindow);
-        if (mainWindow.isHidden())
-            mainWindow.show();
-    }
-    if (!SettingsManager::getInstance()->getUrl().isEmpty())
-    {
-        if (mainWindow.isHidden())
-            mainWindow.show();
-        mainWindow.urlChanged(SettingsManager::getInstance()->getUrl());
-    }
-    return Utils::Exit(QApplication::exec(), false, mutex, Wallpaper::getWorkerW());
+        mainWindow = new MainWindow();
+        QObject::connect(&ipcClient, &IPCClient::serverMessage, mainWindow, &MainWindow::parseCommand);
+        QObject::connect(mainWindow, &MainWindow::sendCommand, &ipcClient, &IPCClient::clientMessage);
+        emit mainWindow->sendCommand(qMakePair(QStringLiteral("playerEcho"), QStringLiteral("Hello, controller. Player is online.")));
+        const Qt::WindowFlags windowFlags = Qt::FramelessWindowHint;
+        const QRect screenGeometry = QApplication::desktop()->screenGeometry(mainWindow);
+        if (!windowMode)
+        {
+            mainWindow->setWindowFlags(windowFlags);
+            // Why is Direct2D image too large?
+            mainWindow->setGeometry(screenGeometry);
+            QVersionNumber win10Version(10, 0, 10240); // Windows 10 Version 1507
+            // How to place our window under desktop icons:
+            // Use "Program Manager" as our parent window in Win7/8/8.1.
+            // Use "WorkerW" as our parent window in Win10.
+            // Use "Program Manager" as our parent window in
+            // Win10 is also OK, but our window will come
+            // to front if we press "Win + Tab" and it will
+            // also block our desktop icons, however using
+            // "WorkerW" as our parent window will not result
+            // in this problem, I don't know why. It's strange.
+            Wallpaper::setWallpaper(reinterpret_cast<HWND>(mainWindow->winId()), currentVersion < win10Version);
+        }
+        else
+        {
+            app.setQuitOnLastWindowClosed(true);
+            mainWindow->resize(QSize(1280, 720));
+            Utils::moveToCenter(mainWindow);
+            if (mainWindow->isHidden())
+                mainWindow->show();
+        }
+        if (!SettingsManager::getInstance()->getUrl().isEmpty())
+        {
+            if (mainWindow->isHidden())
+                mainWindow->show();
+            mainWindow->urlChanged(SettingsManager::getInstance()->getUrl());
+        }
+    });
+    QObject::connect(&ipcClient, &IPCClient::serverOffline, &app, &QApplication::quit);
+    int exec = QApplication::exec();
+    delete mainWindow;
+    return Utils::Exit(exec, false, mutex, Wallpaper::getWorkerW());
 }
