@@ -54,3 +54,4 @@ version_ci.pri
 .qmake.conf
 rep_*_replica.h
 rep_*_source.h
+*.qm

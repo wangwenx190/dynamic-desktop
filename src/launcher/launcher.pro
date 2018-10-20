@@ -14,4 +14,5 @@ LIBS *= \
 SOURCES += main.cpp
 target.path = $${BIN_DIR}
 INSTALLS *= target
+CONFIG(upx): include(../upx.pri)
 CONFIG(build_installer): include(../installer.pri)

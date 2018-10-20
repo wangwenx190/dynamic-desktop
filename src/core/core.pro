@@ -62,4 +62,3 @@ CONFIG(static_dd) {
 licenses.path = $${BIN_DIR}/licenses
 licenses.files = $${ROOT}/docs/licenses/*
 INSTALLS *= licenses
-include(../upx.pri)

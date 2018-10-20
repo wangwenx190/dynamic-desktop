@@ -10,11 +10,11 @@ CONFIG(static_dd) {
     RESOURCES *= $$PWD/i18n.qrc
 } else {
     translations.path = $${BIN_DIR}/translations
-    translations.files = ../resources/translations/$${TARGET}_*.qm
-    exists("$${lupdate}") {
-        translations.commands += $$quote(\"$${lupdate}\" -no-obsolete \"$${_PRO_FILE_}\")
-        translations.commands += $$quote(\"$${lrelease}\" $${lrelease_params} \"$${_PRO_FILE_}\")
-        translations.commands = $$join(translations.commands, $$escape_expand(\\n\\t))
-    }
+    translations.files = ../resources/translations/*.qm
+    #exists("$${lupdate}") {
+        #translations.commands += $$quote(\"$${lupdate}\" -no-obsolete \"$${_PRO_FILE_}\")
+        #translations.commands += $$quote(\"$${lrelease}\" $${lrelease_params} \"$${_PRO_FILE_}\")
+        #translations.commands = $$join(translations.commands, $$escape_expand(\\n\\t))
+    #}
     INSTALLS *= translations
 }
