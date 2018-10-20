@@ -11,5 +11,5 @@ CONFIG(build_installer) {
     inno.path = $${BIN_DIR}
     inno.commands = $$quote(\"$${iscc}\" $${iscc_cmd} \"$$PWD/installer/installer.iss\")
     inno.commands = $$join(inno.commands, $$escape_expand(\\n\\t))
-    INSTALLS += inno
+    INSTALLS *= inno
 }
