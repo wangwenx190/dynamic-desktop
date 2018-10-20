@@ -24,8 +24,8 @@ include(updater.pri)
 target.path = $${BIN_DIR}
 INSTALLS *= target
 TRANSLATIONS += \
-    ../resources/translations/core_en.ts \
-    ../resources/translations/core_zh_CN.ts
+    ../resources/translations/dd_en.ts \
+    ../resources/translations/dd_zh_CN.ts
 include(../translations.pri)
 RESOURCES += images.qrc
 CONFIG(static_dd) {

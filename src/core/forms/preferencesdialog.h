@@ -36,8 +36,6 @@ public slots:
     void updateVideoSliderRange(const QVariant& params);
     void setSeekAreaEnabled(const QVariant& params);
     void setAudioAreaEnabled(const QVariant& params);
-    void setVolumeAreaEnabled(const QVariant& params);
-    void updateVolumeArea(const QVariant& params);
     void updateVideoTracks(const QVariant& params);
     void updateAudioTracks(const QVariant& params);
     void updateSubtitleTracks(const QVariant& params);

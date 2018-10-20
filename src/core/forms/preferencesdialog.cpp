@@ -71,24 +71,6 @@ void PreferencesDialog::setAudioAreaEnabled(const QVariant &params)
     ui->groupBox_audio->setEnabled(audioAvailable);
 }
 
-void PreferencesDialog::setVolumeAreaEnabled(const QVariant &params)
-{
-    bool enabled = params.toBool();
-    ui->checkBox_volume->setEnabled(audioAvailable && enabled);
-    ui->horizontalSlider_volume->setEnabled(audioAvailable && enabled && ui->checkBox_volume->isChecked());
-}
-
-void PreferencesDialog::updateVolumeArea(const QVariant &params)
-{
-    Q_UNUSED(params)
-    if (audioAvailable)
-    {
-        ui->checkBox_volume->setChecked(!SettingsManager::getInstance()->getMute());
-        ui->horizontalSlider_volume->setEnabled(ui->checkBox_volume->isChecked());
-        ui->horizontalSlider_volume->setValue(SettingsManager::getInstance()->getVolume());
-    }
-}
-
 void PreferencesDialog::updateVideoTracks(const QVariant &params)
 {
     const QVariantList videoTracks = params.toList();

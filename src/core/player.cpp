@@ -49,12 +49,12 @@ int playerMain(int argc, char *argv[])
     QTranslator translator;
     if (language == QStringLiteral("auto"))
     {
-        if (translator.load(QLocale(), QStringLiteral("core"), QStringLiteral("_"), qmDir))
+        if (translator.load(QLocale(), QStringLiteral("dd"), QStringLiteral("_"), qmDir))
             QApplication::installTranslator(&translator);
     }
     else
     {
-        language = QStringLiteral("core_%0").arg(language);
+        language = QStringLiteral("dd_%0").arg(language);
         if (translator.load(language, qmDir))
             QApplication::installTranslator(&translator);
     }

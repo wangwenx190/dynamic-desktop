@@ -45,7 +45,7 @@ public slots:
     void setSubtitleEnabled(const QVariant& param);
     void play(const QVariant& param);
     void pause(const QVariant& param);
-    void stop(const QVariant& param);
+    //void stop(const QVariant& param);
     void setUrl(const QVariant& param);
     bool setRenderer(const QVariant& param);
     void setImageQuality(const QVariant& param);

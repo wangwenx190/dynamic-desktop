@@ -351,7 +351,7 @@ void MainWindow::pause(const QVariant& param)
     }
 }
 
-void MainWindow::stop(const QVariant& param)
+/*void MainWindow::stop(const QVariant& param)
 {
     Q_UNUSED(param)
     if (!player)
@@ -363,7 +363,7 @@ void MainWindow::stop(const QVariant& param)
         if (!taskbarProgress->isVisible())
             taskbarProgress->show();
     }
-}
+}*/
 
 void MainWindow::setUrl(const QVariant& param)
 {

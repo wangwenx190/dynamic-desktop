@@ -8,7 +8,7 @@ QRemoteObjectHost *srcNode = nullptr;
 IPCServer::IPCServer(QObject *parent) : QObject(parent)
 {
     ipcSource = new IPCCore();
-    srcNode = new QRemoteObjectHost(QUrl(QStringLiteral("local:replica")));
+    srcNode = new QRemoteObjectHost(QUrl(QStringLiteral("local:dynamicdesktop")));
     srcNode->enableRemoting(ipcSource);
     connect(ipcSource, &DDIPCSimpleSource::clientMessage, this, &IPCServer::clientMessage);
     connect(this, &IPCServer::serverMessage, ipcSource, &DDIPCSimpleSource::serverMessage);
