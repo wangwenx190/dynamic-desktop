@@ -32,23 +32,21 @@ public slots:
 
 public slots:
     void controllerEcho(const QVariant& param);
-    void volumeChanged(const QVariant& param);
-    void muteChanged(const QVariant& param);
-    void seekBySlider(const QVariant& param);
-    void videoTrackChanged(const QVariant& param);
-    void audioTrackChanged(const QVariant& param);
-    void subtitleTrackChanged(const QVariant& param);
-    void subtitleOpened(const QVariant& param);
-    void audioOpened(const QVariant& param);
-    void charsetChanged(const QVariant& param);
-    void subtitleAutoLoadChanged(const QVariant& param);
-    void subtitleEnabled(const QVariant& param);
-    void rendererChanged(const QVariant& param);
-    void quit(const QVariant& param);
+    void setVolume(const QVariant& param);
+    void setMute(const QVariant& param);
+    void seek(const QVariant& param);
+    void setVideoTrack(const QVariant& param);
+    void setAudioTrack(const QVariant& param);
+    void setSubtitleTrack(const QVariant& param);
+    void setSubtitle(const QVariant& param);
+    void setAudio(const QVariant& param);
+    void setCharset(const QVariant& param);
+    void setSubtitleAutoLoad(const QVariant& param);
+    void setSubtitleEnabled(const QVariant& param);
     void play(const QVariant& param);
     void pause(const QVariant& param);
     void stop(const QVariant& param);
-    void urlChanged(const QVariant& param);
+    void setUrl(const QVariant& param);
     bool setRenderer(const QVariant& param);
     void setImageQuality(const QVariant& param);
     void setImageRatio(const QVariant& param);

@@ -62,7 +62,6 @@ ArchitecturesAllowed=x86
 #endif
 WizardImageFile=.\images\wizardimage@250.bmp
 WizardSmallImageFile=.\images\wizardsmallimage@250.bmp
-LicenseFile=..\..\docs\licenses\dynamicdesktop.txt
 AppComments={#DDName}
 AppContact={#DDPublisher}
 

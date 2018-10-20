@@ -47,7 +47,7 @@ void MainWindow::controllerEcho(const QVariant &param)
         qDebug().noquote() << QStringLiteral("Controller echo:") << text;
 }
 
-void MainWindow::volumeChanged(const QVariant& param)
+void MainWindow::setVolume(const QVariant& param)
 {
     quint32 volume = param.toUInt();
     QtAV::AudioOutput *ao = player ? player->audio() : nullptr;
@@ -58,31 +58,25 @@ void MainWindow::volumeChanged(const QVariant& param)
             if (qAbs(static_cast<quint32>(ao->volume() / kVolumeInterval) - volume) >= static_cast<quint32>(0.1 / kVolumeInterval))
                 ao->setVolume(newVolume);
         emit this->sendCommand(qMakePair(QStringLiteral("setVolumeToolTip"), tr("Volume: %0").arg(QString::number(newVolume))));
-        emit this->sendCommand(qMakePair(QStringLiteral("updateVolumeArea"), QVariant()));
     }
 }
 
-void MainWindow::muteChanged(const QVariant& param)
+void MainWindow::setMute(const QVariant& param)
 {
     bool mute = param.toBool();
     if (player->audio())
         if (player->audio()->isMute() != mute)
-        {
             player->audio()->setMute(mute);
-            // The following code is not necessary
-            //emit this->sendCommand(qMakePair(QStringLiteral("muteChanged"), SettingsManager::getInstance()->getMute()));
-            emit this->sendCommand(qMakePair(QStringLiteral("updateVolumeArea"), QVariant()));
-        }
 }
 
-void MainWindow::seekBySlider(const QVariant& param)
+void MainWindow::seek(const QVariant& param)
 {
     qint64 value = param.toLongLong();
     if (player->isLoaded() && player->isSeekable())
         player->seek(value);
 }
 
-void MainWindow::videoTrackChanged(const QVariant& param)
+void MainWindow::setVideoTrack(const QVariant& param)
 {
     quint32 id = param.toUInt();
     if (player->isLoaded())
@@ -90,7 +84,7 @@ void MainWindow::videoTrackChanged(const QVariant& param)
             player->setVideoStream(id);
 }
 
-void MainWindow::audioTrackChanged(const QVariant& param)
+void MainWindow::setAudioTrack(const QVariant& param)
 {
     quint32 id = param.toUInt();
     if (player->isLoaded())
@@ -98,7 +92,7 @@ void MainWindow::audioTrackChanged(const QVariant& param)
             player->setAudioStream(id);
 }
 
-void MainWindow::subtitleTrackChanged(const QVariant& param)
+void MainWindow::setSubtitleTrack(const QVariant& param)
 {
     if (player->isLoaded())
     {
@@ -114,7 +108,7 @@ void MainWindow::subtitleTrackChanged(const QVariant& param)
     }
 }
 
-void MainWindow::subtitleOpened(const QVariant& param)
+void MainWindow::setSubtitle(const QVariant& param)
 {
     const QString subPath = param.toString();
     if (player->isLoaded())
@@ -122,14 +116,14 @@ void MainWindow::subtitleOpened(const QVariant& param)
             subtitle->setFile(subPath);
 }
 
-void MainWindow::audioOpened(const QVariant& param)
+void MainWindow::setAudio(const QVariant& param)
 {
     const QString audioPath = param.toString();
     if (player->isLoaded() && player->audio())
         player->setExternalAudio(audioPath);
 }
 
-void MainWindow::charsetChanged(const QVariant& param)
+void MainWindow::setCharset(const QVariant& param)
 {
     const QString charset = param.toString();
     if (SettingsManager::getInstance()->getSubtitle())
@@ -137,31 +131,18 @@ void MainWindow::charsetChanged(const QVariant& param)
             subtitle->setCodec(charset.toLatin1());
 }
 
-void MainWindow::subtitleAutoLoadChanged(const QVariant& param)
+void MainWindow::setSubtitleAutoLoad(const QVariant& param)
 {
     bool autoload = param.toBool();
     if (subtitle->autoLoad() != autoload)
         subtitle->setAutoLoad(autoload);
 }
 
-void MainWindow::subtitleEnabled(const QVariant& param)
+void MainWindow::setSubtitleEnabled(const QVariant& param)
 {
     bool enabled = param.toBool();
     if (subtitle->isEnabled() != enabled)
         subtitle->setEnabled(enabled);
-}
-
-void MainWindow::rendererChanged(const QVariant& param)
-{
-    auto rendererId = static_cast<QtAV::VideoRendererId>(param.toInt());
-    if ((rendererId != renderer->id()) || !renderer)
-        setRenderer(rendererId);
-}
-
-void MainWindow::quit(const QVariant& param)
-{
-    Q_UNUSED(param)
-    qApp->quit();
 }
 
 void MainWindow::initUI()
@@ -209,11 +190,11 @@ void MainWindow::initAudio()
 {
     if (player->audio())
     {
-        volumeChanged(SettingsManager::getInstance()->getVolume());
-        muteChanged(SettingsManager::getInstance()->getMute());
+        setVolume(SettingsManager::getInstance()->getVolume());
+        setMute(SettingsManager::getInstance()->getMute());
     }
     else
-        emit this->sendCommand(qMakePair(QStringLiteral("setVolumeAreaEnabled"), false));
+        emit this->sendCommand(qMakePair(QStringLiteral("setAudioAreaEnabled"), false));
 }
 
 bool MainWindow::setRenderer(const QVariant& param)
@@ -221,6 +202,8 @@ bool MainWindow::setRenderer(const QVariant& param)
     if (!player || !subtitle)
         return false;
     auto id = static_cast<QtAV::VideoRendererId>(param.toInt());
+    if ((renderer != nullptr) && (id == renderer->id()))
+        return false;
     QtAV::VideoRenderer *videoRenderer = QtAV::VideoRenderer::create(id);
     if (!videoRenderer || !videoRenderer->isAvailable() || !videoRenderer->widget())
     {
@@ -382,7 +365,7 @@ void MainWindow::stop(const QVariant& param)
     }
 }
 
-void MainWindow::urlChanged(const QVariant& param)
+void MainWindow::setUrl(const QVariant& param)
 {
     if (!player)
         return;

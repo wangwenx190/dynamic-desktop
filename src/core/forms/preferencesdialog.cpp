@@ -25,7 +25,6 @@
 #include <QLibraryInfo>
 #endif
 #include <QTimer>
-#include <QThread>
 #include <QSystemTrayIcon>
 #include <QMenu>
 #include <QAction>
@@ -37,11 +36,6 @@ void PreferencesDialog::playerEcho(const QVariant &param)
     const QString text = param.toString();
     if (!text.isEmpty())
         qDebug().noquote() << QStringLiteral("Player echo:") << text;
-}
-
-void PreferencesDialog::quit(const QVariant &param)
-{
-    emit this->requestQuit(param.toBool());
 }
 
 void PreferencesDialog::updateVideoSlider(const QVariant &params)
@@ -295,9 +289,9 @@ void PreferencesDialog::dropEvent(QDropEvent *event)
 
 void PreferencesDialog::closeEvent(QCloseEvent *event)
 {
-    if (ui->lineEdit_url->text().isEmpty())
-        emit this->requestQuit(false);
     CFramelessWindow::closeEvent(event);
+    if (ui->lineEdit_url->text().isEmpty())
+        qApp->quit();
 }
 
 void PreferencesDialog::initUI()
@@ -406,13 +400,13 @@ void PreferencesDialog::initConnections()
     {
         QString audioPath = QFileDialog::getOpenFileName(nullptr, tr("Please select an audio file"), SettingsManager::getInstance()->lastDir(), tr("Audios (*.mka *.aac *.flac *.mp3 *.wav);;All files (*)"));
         if (!audioPath.isEmpty())
-            emit this->sendCommand(qMakePair(QStringLiteral("audioOpened"), audioPath));
+            emit this->sendCommand(qMakePair(QStringLiteral("setAudio"), audioPath));
     });
     connect(ui->pushButton_subtitle_open, &QPushButton::clicked, this, [=]
     {
         QString subtitlePath = QFileDialog::getOpenFileName(nullptr, tr("Please select a subtitle file"), SettingsManager::getInstance()->lastDir(), tr("Subtitles (*.ass *.ssa *.srt *.sub);;All files (*)"));
         if (!subtitlePath.isEmpty())
-            emit this->sendCommand(qMakePair(QStringLiteral("subtitleOpened"), subtitlePath));
+            emit this->sendCommand(qMakePair(QStringLiteral("setSubtitle"), subtitlePath));
     });
     connect(ui->horizontalSlider_volume, &QSlider::sliderMoved, this, [=](int value)
     {
@@ -424,12 +418,12 @@ void PreferencesDialog::initConnections()
         if (static_cast<quint32>(vol) != SettingsManager::getInstance()->getVolume())
         {
             SettingsManager::getInstance()->setVolume(static_cast<quint32>(vol));
-            emit this->sendCommand(qMakePair(QStringLiteral("volumeChanged"), SettingsManager::getInstance()->getVolume()));
+            emit this->sendCommand(qMakePair(QStringLiteral("setVolume"), SettingsManager::getInstance()->getVolume()));
         }
     });
     connect(ui->horizontalSlider_video_position, &QSlider::sliderMoved, this, [=](int value)
     {
-        emit this->sendCommand(qMakePair(QStringLiteral("seekBySlider"), static_cast<qint64>(value * sliderUnit)));
+        emit this->sendCommand(qMakePair(QStringLiteral("seek"), static_cast<qint64>(value * sliderUnit)));
     });
     connect(ui->pushButton_about, &QPushButton::clicked, this, &PreferencesDialog::about);
     connect(ui->pushButton_minimize, &QPushButton::clicked, this, &PreferencesDialog::showMinimized);
@@ -448,13 +442,13 @@ void PreferencesDialog::initConnections()
         {
             SettingsManager::getInstance()->setMute(!ui->checkBox_volume->isChecked());
             emit this->muteChanged(SettingsManager::getInstance()->getMute());
-            emit this->sendCommand(qMakePair(QStringLiteral("muteChanged"), SettingsManager::getInstance()->getMute()));
+            emit this->sendCommand(qMakePair(QStringLiteral("setMute"), SettingsManager::getInstance()->getMute()));
         }
     });
     connect(ui->pushButton_play, &QPushButton::clicked, this, [=]
     {
         if (ui->lineEdit_url->text() != SettingsManager::getInstance()->getUrl())
-            emit this->sendCommand(qMakePair(QStringLiteral("urlChanged"), ui->lineEdit_url->text()));
+            emit this->sendCommand(qMakePair(QStringLiteral("setUrl"), ui->lineEdit_url->text()));
         else
             emit this->sendCommand(qMakePair(QStringLiteral("play"), QVariant()));
         if (!taskbarProgress->isVisible())
@@ -525,17 +519,17 @@ void PreferencesDialog::initConnections()
     connect(ui->comboBox_video_track, qOverload<int>(&QComboBox::currentIndexChanged), this, [=](int index)
     {
         Q_UNUSED(index)
-        emit this->sendCommand(qMakePair(QStringLiteral("videoTrackChanged"), ui->comboBox_video_track->currentData().toUInt()));
+        emit this->sendCommand(qMakePair(QStringLiteral("setVideoTrack"), ui->comboBox_video_track->currentData().toUInt()));
     });
     connect(ui->comboBox_audio_track, qOverload<int>(&QComboBox::currentIndexChanged), this, [=](int index)
     {
         Q_UNUSED(index)
-        emit this->sendCommand(qMakePair(QStringLiteral("audioTrackChanged"), ui->comboBox_audio_track->currentData().toUInt()));
+        emit this->sendCommand(qMakePair(QStringLiteral("setAudioTrack"), ui->comboBox_audio_track->currentData().toUInt()));
     });
     connect(ui->comboBox_subtitle_track, qOverload<int>(&QComboBox::currentIndexChanged), this, [=](int index)
     {
         Q_UNUSED(index)
-        emit this->sendCommand(qMakePair(QStringLiteral("subtitleTrackChanged"), ui->comboBox_subtitle_track->currentData()));
+        emit this->sendCommand(qMakePair(QStringLiteral("setSubtitleTrack"), ui->comboBox_subtitle_track->currentData()));
     });
     connect(ui->comboBox_video_renderer, qOverload<int>(&QComboBox::currentIndexChanged), this, [=](int index)
     {
@@ -543,7 +537,7 @@ void PreferencesDialog::initConnections()
         if (ui->comboBox_video_renderer->currentData().toInt() != SettingsManager::getInstance()->getRenderer())
         {
             SettingsManager::getInstance()->setRenderer(ui->comboBox_video_renderer->currentData().toInt());
-            emit this->sendCommand(qMakePair(QStringLiteral("rendererChanged"), SettingsManager::getInstance()->getRenderer()));
+            emit this->sendCommand(qMakePair(QStringLiteral("setRenderer"), SettingsManager::getInstance()->getRenderer()));
         }
     });
     connect(ui->comboBox_image_quality, qOverload<int>(&QComboBox::currentIndexChanged), this, [=](int index)
@@ -560,7 +554,7 @@ void PreferencesDialog::initConnections()
         if (text != SettingsManager::getInstance()->getUrl())
         {
             SettingsManager::getInstance()->setUrl(text);
-            emit this->sendCommand(qMakePair(QStringLiteral("urlChanged"), SettingsManager::getInstance()->getUrl()));
+            emit this->sendCommand(qMakePair(QStringLiteral("setUrl"), SettingsManager::getInstance()->getUrl()));
         }
     });
     connect(ui->checkBox_autoStart, &QCheckBox::clicked, this, [=]
@@ -582,7 +576,7 @@ void PreferencesDialog::initConnections()
         if (ui->comboBox_subtitle_charset->currentData().toString() != SettingsManager::getInstance()->getCharset())
         {
             SettingsManager::getInstance()->setCharset(ui->comboBox_subtitle_charset->currentData().toString());
-            emit this->sendCommand(qMakePair(QStringLiteral("charsetChanged"), SettingsManager::getInstance()->getCharset()));
+            emit this->sendCommand(qMakePair(QStringLiteral("setCharset"), SettingsManager::getInstance()->getCharset()));
         }
     });
     connect(ui->checkBox_subtitle_autoLoadExternal, &QCheckBox::clicked, this, [=]
@@ -590,7 +584,7 @@ void PreferencesDialog::initConnections()
         if (ui->checkBox_subtitle_autoLoadExternal->isChecked() != SettingsManager::getInstance()->getSubtitleAutoLoad())
         {
             SettingsManager::getInstance()->setSubtitleAutoLoad(ui->checkBox_subtitle_autoLoadExternal->isChecked());
-            emit this->sendCommand(qMakePair(QStringLiteral("subtitleAutoLoadChanged"), SettingsManager::getInstance()->getSubtitleAutoLoad()));
+            emit this->sendCommand(qMakePair(QStringLiteral("setSubtitleAutoLoad"), SettingsManager::getInstance()->getSubtitleAutoLoad()));
         }
     });
     connect(ui->checkBox_displaySubtitle, &QCheckBox::clicked, this, [=]
@@ -598,7 +592,7 @@ void PreferencesDialog::initConnections()
         if (ui->checkBox_displaySubtitle->isChecked() != SettingsManager::getInstance()->getSubtitle())
         {
             SettingsManager::getInstance()->setSubtitle(ui->checkBox_displaySubtitle->isChecked());
-            emit this->sendCommand(qMakePair(QStringLiteral("subtitleEnabled"), SettingsManager::getInstance()->getSubtitle()));
+            emit this->sendCommand(qMakePair(QStringLiteral("setSubtitleEnabled"), SettingsManager::getInstance()->getSubtitle()));
         }
     });
     connect(this, &PreferencesDialog::setMute, this, [=](bool mute)
@@ -681,23 +675,9 @@ void PreferencesDialog::initTrayArea()
     {
         emit aboutAction->triggered();
     });
-    connect(this, &PreferencesDialog::requestQuit, this, [=](bool fromPlayer)
-    {
-        qApp->closeAllWindows();
-        trayIcon->hide();
-        if (!fromPlayer)
-        {
-            emit this->sendCommand(qMakePair(QStringLiteral("quit"), QVariant()));
-            QThread::msleep(200);
-            /*QThread::sleep(1);
-            // Make sure the player process is terminated
-            Utils::killProcess(QFileInfo(QApplication::applicationFilePath()).fileName());*/
-        }
-        qApp->quit();
-    });
     trayMenu->addAction(tr("Exit"), this, [=]
     {
-        emit this->requestQuit(false);
+        qApp->quit();
     });
     connect(trayIcon, &QSystemTrayIcon::activated, this, [=](QSystemTrayIcon::ActivationReason reason)
     {

@@ -113,11 +113,11 @@ int playerMain(int argc, char *argv[])
         {
             if (mainWindow->isHidden())
                 mainWindow->show();
-            mainWindow->urlChanged(SettingsManager::getInstance()->getUrl());
+            mainWindow->setUrl(SettingsManager::getInstance()->getUrl());
         }
     });
     QObject::connect(&ipcClient, &IPCClient::serverOffline, &app, &QApplication::quit);
-    int exec = QApplication::exec();
+    const int exec = QApplication::exec();
     delete mainWindow;
     return Utils::Exit(exec, false, playerMutex, Wallpaper::getWorkerW());
 }

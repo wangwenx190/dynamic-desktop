@@ -34,8 +34,6 @@ install:
   - cd ..
 build_script:
   - call build.bat
-after_build:
-  - cd "%APPVEYOR_BUILD_FOLDER%"
 test: off
 artifacts:
   - path: .qmake.conf
