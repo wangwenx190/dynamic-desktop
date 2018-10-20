@@ -1,6 +1,5 @@
 CONFIG(build_installer) {
     isEmpty(iscc): iscc = $${inno_dir}/iscc.exe
-    !exists("$${iscc}"): error("Cannot find Inno Setup Compiler!")
     installer_arch = x86
     iscc_cmd = /Qp /DDDVersion=$${VERSION} /O$${BUILD_DIR}
     contains(QT_ARCH, x86_64) {
@@ -12,5 +11,5 @@ CONFIG(build_installer) {
     inno.path = $${BIN_DIR}
     inno.commands = $$quote(\"$${iscc}\" $${iscc_cmd} \"$$PWD/installer/installer.iss\")
     inno.commands = $$join(inno.commands, $$escape_expand(\\n\\t))
-    INSTALLS *= inno
+    INSTALLS += inno
 }
