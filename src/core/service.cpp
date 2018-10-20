@@ -1,14 +1,14 @@
-#include "service.h"
+#include "core.h"
 
 #include <QtService>
 #include <Utils>
 
 #include <Windows.h>
 
-#include <QCoreApplication>
+#include <QApplication>
 #include <QFileInfo>
 
-class DDSvc : public QtService<QCoreApplication>
+class DDSvc : public QtService<QApplication>
 {
 public:
     DDSvc(int argc, char **argv);
@@ -18,7 +18,7 @@ protected:
 };
 
 DDSvc::DDSvc(int argc, char **argv)
-    : QtService<QCoreApplication>(argc, argv, QStringLiteral("Dynamic Desktop Service"))
+    : QtService<QApplication>(argc, argv, QStringLiteral("Dynamic Desktop Service"))
 {
     setServiceDescription(QStringLiteral("A service to help Dynamic Desktop startup faster."));
     setStartupType(QtServiceController::AutoStartup);

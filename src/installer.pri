@@ -2,7 +2,7 @@ CONFIG(build_installer) {
     isEmpty(iscc): iscc = $${inno_dir}/iscc.exe
     !exists("$${iscc}"): error("Cannot find Inno Setup Compiler!")
     installer_arch = x86
-    iscc_cmd = /Qp /DDDVersion=$${VERSION}
+    iscc_cmd = /Qp /DDDVersion=$${VERSION} /O$${BUILD_DIR}
     contains(QT_ARCH, x86_64) {
         installer_arch = x64
         iscc_cmd = $${iscc_cmd} /DWIN64

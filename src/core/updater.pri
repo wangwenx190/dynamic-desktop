@@ -1,0 +1,3 @@
+INCLUDEPATH += $$PWD
+DEPENDPATH += $$PWD
+SOURCES += $$PWD/updater.cpp

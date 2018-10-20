@@ -1,12 +1,13 @@
 include(../common.pri)
-QMAKE_TARGET_PRODUCT = Controller
-QMAKE_TARGET_DESCRIPTION = Dynamic Desktop Controller Module
-TARGET = controller
+QMAKE_TARGET_PRODUCT = Core
+QMAKE_TARGET_DESCRIPTION = Dynamic Desktop Core Module
+TARGET = core
+QT *= widgets winextras av avwidgets
 CONFIG(debug, debug|release): TARGET = $$join(TARGET,,,d)
-QT *= widgets winextras
 TEMPLATE = lib
-CONFIG *= dll
 DEFINES *= BUILD_INNER_SHARED_LIBRARY_DD
+CONFIG *= dll
+HEADERS += $$PWD/../dd_dll_global.h
 include(../qtniceframelesswindow/qtniceframelesswindow.pri)
 include(../utils/utils.pri)
 include(../settingsmanager/settingsmanager.pri)
@@ -14,27 +15,19 @@ include(../skinsmanager/skinsmanager.pri)
 include(../slider/slider.pri)
 include(../ipc/ipc.pri)
 include(../qtservice/qtservice.pri)
-LIBS *= -lUser32
-HEADERS += \
-    $$PWD/../dd_inner_dll_global.h \
-    controller.h \
-    forms/preferencesdialog.h \
-    forms/aboutdialog.h \
-    $$PWD/../common.h
-SOURCES += \
-    controller.cpp \
-    forms/preferencesdialog.cpp \
-    forms/aboutdialog.cpp
-FORMS += \
-    forms/preferencesdialog.ui \
-    forms/aboutdialog.ui
-TRANSLATIONS += \
-    ../resources/translations/controller_en.ts \
-    ../resources/translations/controller_zh_CN.ts
-RESOURCES += images.qrc
-include(../translations.pri)
+include(../wallpaper/wallpaper.pri)
+include(../qsimpleupdater/qsimpleupdater.pri)
+include(controller.pri)
+include(player.pri)
+include(service.pri)
+include(updater.pri)
 target.path = $${BIN_DIR}
 INSTALLS *= target
+TRANSLATIONS += \
+    ../resources/translations/core_en.ts \
+    ../resources/translations/core_zh_CN.ts
+include(../translations.pri)
+RESOURCES += images.qrc
 CONFIG(static_dd) {
     DEFINES *= BUILD_DD_STATIC
     RESOURCES *= skins.qrc

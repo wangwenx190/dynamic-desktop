@@ -1,4 +1,4 @@
-#include "player.h"
+#include "core.h"
 
 #include <SettingsManager>
 #include <Utils>
@@ -19,11 +19,10 @@
 #include <QSysInfo>
 #include <QLocale>
 
-bool windowMode = false;
-HANDLE mutex = nullptr;
-
 int playerMain(int argc, char *argv[])
 {
+    bool windowMode = false;
+    HANDLE playerMutex = nullptr;
     QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
     QApplication::setAttribute(Qt::AA_DontCreateNativeWidgetSiblings);
@@ -50,12 +49,12 @@ int playerMain(int argc, char *argv[])
     QTranslator translator;
     if (language == QStringLiteral("auto"))
     {
-        if (translator.load(QLocale(), QStringLiteral("player"), QStringLiteral("_"), qmDir))
+        if (translator.load(QLocale(), QStringLiteral("core"), QStringLiteral("_"), qmDir))
             QApplication::installTranslator(&translator);
     }
     else
     {
-        language = QStringLiteral("player_%0").arg(language);
+        language = QStringLiteral("core_%0").arg(language);
         if (translator.load(language, qmDir))
             QApplication::installTranslator(&translator);
     }
@@ -65,13 +64,13 @@ int playerMain(int argc, char *argv[])
     if (currentVersion < win7Version)
     {
         QMessageBox::critical(nullptr, QStringLiteral("Dynamic Desktop"), QObject::tr("This application only supports Windows 7 and newer."));
-        return Utils::Exit(-1, false, mutex);
+        return Utils::Exit(-1, false, playerMutex);
     }
-    mutex = CreateMutex(nullptr, FALSE, TEXT("wangwenx190.DynamicDesktop.Player.1000.AppMutex"));
-    if ((mutex != nullptr) && (GetLastError() == ERROR_ALREADY_EXISTS))
+    playerMutex = CreateMutex(nullptr, FALSE, TEXT("wangwenx190.DynamicDesktop.Player.1000.AppMutex"));
+    if ((playerMutex != nullptr) && (GetLastError() == ERROR_ALREADY_EXISTS))
     {
         QMessageBox::critical(nullptr, QStringLiteral("Dynamic Desktop"), QObject::tr("There is another instance running. Please do not run twice."));
-        ReleaseMutex(mutex);
+        ReleaseMutex(playerMutex);
         return 0;
     }
     app.setQuitOnLastWindowClosed(false);
@@ -120,5 +119,5 @@ int playerMain(int argc, char *argv[])
     QObject::connect(&ipcClient, &IPCClient::serverOffline, &app, &QApplication::quit);
     int exec = QApplication::exec();
     delete mainWindow;
-    return Utils::Exit(exec, false, mutex, Wallpaper::getWorkerW());
+    return Utils::Exit(exec, false, playerMutex, Wallpaper::getWorkerW());
 }

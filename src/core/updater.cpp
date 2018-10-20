@@ -1,4 +1,4 @@
-#include "updater.h"
+#include "core.h"
 
 #include <Utils>
 

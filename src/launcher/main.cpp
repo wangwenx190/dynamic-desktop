@@ -8,7 +8,7 @@
 #include <shellapi.h>
 #include <tchar.h>
 
-using externalMain = int (*)(int, char **);
+using ExternalMain = int (*)(int, char **);
 
 enum StartType
 {
@@ -62,69 +62,38 @@ int _tmain(int argc, TCHAR *argv[])
     for (int i = argcA + 1; i <= argcW; ++i)
         argvA[i] = nullptr;
     LocalFree(argvW);
+#ifdef _DEBUG
+    HINSTANCE module = LoadLibrary(_T("cored1"));
+#else
+    HINSTANCE module = LoadLibrary(_T("core1"));
+#endif
+    ExternalMain moduleMain = nullptr;
+    if (module != nullptr)
+        switch (startType)
+        {
+        case StartType::player:
+            moduleMain = (ExternalMain)GetProcAddress(module, "playerMain");
+            break;
+        case StartType::service:
+            moduleMain = (ExternalMain)GetProcAddress(module, "serviceMain");
+            break;
+        case StartType::updater:
+            moduleMain = (ExternalMain)GetProcAddress(module, "updaterMain");
+            break;
+        case StartType::controller:
+        default:
+            moduleMain = (ExternalMain)GetProcAddress(module, "controllerMain");
+            break;
+        }
     int exec = -1;
-    bool failed = true;
-    HINSTANCE module = nullptr;
-    switch (startType)
-    {
-    case StartType::player:
-        module = LoadLibrary(_T("player1.dll"));
-        if (module != nullptr)
-        {
-            auto moduleMain = (externalMain)GetProcAddress(module, "playerMain");
-            if (moduleMain != nullptr)
-            {
-                failed = false;
-                exec = moduleMain(argcA, argvA);
-            }
-            FreeLibrary(module);
-        }
-        break;
-    case StartType::service:
-        module = LoadLibrary(_T("service1.dll"));
-        if (module != nullptr)
-        {
-            auto moduleMain = (externalMain)GetProcAddress(module, "serviceMain");
-            if (moduleMain != nullptr)
-            {
-                failed = false;
-                exec = moduleMain(argcA, argvA);
-            }
-            FreeLibrary(module);
-        }
-        break;
-    case StartType::updater:
-        module = LoadLibrary(_T("updater1.dll"));
-        if (module != nullptr)
-        {
-            auto moduleMain = (externalMain)GetProcAddress(module, "updaterMain");
-            if (moduleMain != nullptr)
-            {
-                failed = false;
-                exec = moduleMain(argcA, argvA);
-            }
-            FreeLibrary(module);
-        }
-        break;
-    case StartType::controller:
-    default:
-        module = LoadLibrary(_T("controller1.dll"));
-        if (module != nullptr)
-        {
-            auto moduleMain = (externalMain)GetProcAddress(module, "controllerMain");
-            if (moduleMain != nullptr)
-            {
-                failed = false;
-                exec = moduleMain(argcA, argvA);
-            }
-            FreeLibrary(module);
-        }
-        break;
-    }
+    if (moduleMain != nullptr)
+        exec = moduleMain(argcA, argvA);
+    if (module != nullptr)
+        FreeLibrary(module);
     for (int i = 0; i != argcA && argvA[i]; ++i)
         delete [] argvA[i];
     delete [] argvA;
-    if (failed)
-        MessageBox(nullptr, _T("Failed to load main module!\nContact the developers for technical support."), _T("Error"), MB_OK | MB_ICONERROR);
+    if (module == nullptr || moduleMain == nullptr)
+        MessageBox(nullptr, _T("Failed to load main module, application aborting.\nReinstalling this application may fix this problem."), _T("Error"), MB_OK | MB_ICONERROR);
     return exec;
 }

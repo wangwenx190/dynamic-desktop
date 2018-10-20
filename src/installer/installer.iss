@@ -28,7 +28,7 @@ AppSupportURL={#DDURL}
 AppUpdatesURL={#DDURL}
 DefaultDirName={src}\{#DDName}
 DisableProgramGroupPage=yes
-OutputDir=.\Build
+OutputDir=..\..\build
 OutputBaseFilename={#DDInstallerName}
 SetupIconFile=..\resources\icons\color_palette.ico
 Compression=lzma2/ultra64
@@ -62,6 +62,9 @@ ArchitecturesAllowed=x86
 #endif
 WizardImageFile=.\images\wizardimage@250.bmp
 WizardSmallImageFile=.\images\wizardsmallimage@250.bmp
+LicenseFile=..\..\docs\licenses\dynamicdesktop.txt
+AppComments={#DDName}
+AppContact={#DDPublisher}
 
 [Languages]
 Name: "en"; MessagesFile: ".\languages\en.isl"
@@ -72,7 +75,7 @@ Name: "zh_TW"; MessagesFile: ".\languages\zh_TW.isl"
 BeveledLabel={#DDName}
 
 [Files]
-Source: "..\..\{#DDBinDir}\*"; DestDir: "{app}"; Excludes: "vc_redist.x??.exe,vcredist_x??.exe,*.log,*.ini,*.lib"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "..\..\build\{#DDBinDir}\*"; DestDir: "{app}"; Excludes: "vc_redist.x??.exe,vcredist_x??.exe,*.log,*.ini,*.lib"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 [Run]
 Filename: "{app}\{#DDExeName}"; Description: "{cm:LaunchProgram,{#StringChange(DDName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent

@@ -1,6 +1,0 @@
-<RCC>
-    <qresource prefix="/i18n">
-        <file alias="controller_en.qm">../resources/translations/controller_en.qm</file>
-        <file alias="controller_zh_CN.qm">../resources/translations/controller_zh_CN.qm</file>
-    </qresource>
-</RCC>

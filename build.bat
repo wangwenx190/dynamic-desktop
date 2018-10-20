@@ -5,6 +5,8 @@
 :: to your environment variables!
 @echo off
 cd /d "%~dp0"
+if not exist build md build
+cd build
 if exist build rd /s /q build
 md build
 cd build
@@ -36,6 +38,6 @@ if %ERRORLEVEL% neq 0 set _buildtool=nmake
 %_buildtool% qmake_all
 %_buildtool% && %_buildtool% install
 cd "%~dp0"
-rd /s /q build
-if exist bin del /f /s /q bin\*.lib
-if exist bin64 del /f /s /q bin64\*.lib
+rd /s /q build\build
+if exist build\bin del /f /s /q build\bin\*.lib
+if exist build\bin64 del /f /s /q build\bin64\*.lib

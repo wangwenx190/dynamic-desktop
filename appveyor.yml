@@ -36,5 +36,5 @@ build_script:
   - call build.bat
 test: off
 artifacts:
-  - path: version_ci.pri
+  - path: .qmake.conf
 deploy: off

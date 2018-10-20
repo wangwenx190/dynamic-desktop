@@ -11,8 +11,5 @@ SUBDIRS += \
     src/skinsmanager \
     src/settingsmanager \
     src/ipc \
-    src/updater \
-    src/service \
-    src/player \
-    src/controller \
+    src/core \
     src/launcher

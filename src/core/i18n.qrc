@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/i18n">
+        <file alias="core_en.qm">../resources/translations/core_en.qm</file>
+        <file alias="core_zh_CN.qm">../resources/translations/core_zh_CN.qm</file>
+    </qresource>
+</RCC>

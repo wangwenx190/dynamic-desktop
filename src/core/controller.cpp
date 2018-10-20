@@ -1,4 +1,4 @@
-#include "controller.h"
+#include "core.h"
 
 #include <SettingsManager>
 #include <SkinsManager>
@@ -20,10 +20,9 @@
 #include <QCommandLineParser>
 #include <QCommandLineOption>
 
-HANDLE mutex = nullptr;
-
 int controllerMain(int argc, char *argv[])
 {
+    HANDLE controllerMutex = nullptr;
     QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
     QApplication::setAttribute(Qt::AA_DontCreateNativeWidgetSiblings);
@@ -54,12 +53,12 @@ int controllerMain(int argc, char *argv[])
     QTranslator translator;
     if (language == QStringLiteral("auto"))
     {
-        if (translator.load(QLocale(), QStringLiteral("controller"), QStringLiteral("_"), qmDir))
+        if (translator.load(QLocale(), QStringLiteral("core"), QStringLiteral("_"), qmDir))
             QApplication::installTranslator(&translator);
     }
     else
     {
-        language = QStringLiteral("controller_%0").arg(language);
+        language = QStringLiteral("core_%0").arg(language);
         if (translator.load(language, qmDir))
             QApplication::installTranslator(&translator);
     }
@@ -69,13 +68,13 @@ int controllerMain(int argc, char *argv[])
     if (currentVersion < win7Version)
     {
         QMessageBox::critical(nullptr, QStringLiteral("Dynamic Desktop"), QObject::tr("This application only supports Windows 7 and newer."));
-        return Utils::Exit(-1, false, mutex);
+        return Utils::Exit(-1, false, controllerMutex);
     }
-    mutex = CreateMutex(nullptr, FALSE, TEXT("wangwenx190.DynamicDesktop.Controller.1000.AppMutex"));
-    if ((mutex != nullptr) && (GetLastError() == ERROR_ALREADY_EXISTS))
+    controllerMutex = CreateMutex(nullptr, FALSE, TEXT("wangwenx190.DynamicDesktop.Controller.1000.AppMutex"));
+    if ((controllerMutex != nullptr) && (GetLastError() == ERROR_ALREADY_EXISTS))
     {
         QMessageBox::critical(nullptr, QStringLiteral("Dynamic Desktop"), QObject::tr("There is another instance running. Please do not run twice."));
-        ReleaseMutex(mutex);
+        ReleaseMutex(controllerMutex);
         return 0;
     }
     app.setQuitOnLastWindowClosed(false);
@@ -168,12 +167,12 @@ int controllerMain(int argc, char *argv[])
     if (!Utils::run(QApplication::applicationFilePath(), playerStartupArguments))
     {
         QMessageBox::critical(nullptr, QStringLiteral("Dynamic Desktop"), QObject::tr("Cannot start the core module. Application aborting."));
-        return Utils::Exit(-1, false, mutex);
+        return Utils::Exit(-1, false, controllerMutex);
     }
     if (SettingsManager::getInstance()->getUrl().isEmpty())
     {
         Utils::moveToCenter(&preferencesDialog);
         preferencesDialog.show();
     }
-    return Utils::Exit(QApplication::exec(), false, mutex);
+    return Utils::Exit(QApplication::exec(), false, controllerMutex);
 }
