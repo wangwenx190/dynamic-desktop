@@ -2,20 +2,20 @@
 
 #include "ipccore.h"
 
-IPCCore *ipcSource = nullptr;
-QRemoteObjectHost *srcNode = nullptr;
+IPCCore *ipcServer = nullptr;
+QRemoteObjectHost *serverNode = nullptr;
 
 IPCServer::IPCServer(QObject *parent) : QObject(parent)
 {
-    ipcSource = new IPCCore();
-    srcNode = new QRemoteObjectHost(QUrl(QStringLiteral("local:dynamicdesktop")));
-    srcNode->enableRemoting(ipcSource);
-    connect(ipcSource, &DDIPCSimpleSource::clientMessage, this, &IPCServer::clientMessage);
-    connect(this, &IPCServer::serverMessage, ipcSource, &DDIPCSimpleSource::serverMessage);
+    ipcServer = new IPCCore();
+    serverNode = new QRemoteObjectHost(QUrl(QStringLiteral("local:dynamicdesktop")));
+    serverNode->enableRemoting(ipcServer);
+    connect(ipcServer, &DDIPCSimpleSource::clientMessage, this, &IPCServer::clientMessage);
+    connect(this, &IPCServer::serverMessage, ipcServer, &DDIPCSimpleSource::serverMessage);
 }
 
 IPCServer::~IPCServer()
 {
-    delete srcNode;
-    delete ipcSource;
+    delete serverNode;
+    delete ipcServer;
 }

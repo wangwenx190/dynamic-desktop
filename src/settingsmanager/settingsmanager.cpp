@@ -5,6 +5,7 @@
 #include <QFileInfo>
 #include <QMimeDatabase>
 #include <QCoreApplication>
+#include <QStandardPaths>
 
 SettingsManager *SettingsManager::getInstance()
 {
@@ -98,11 +99,15 @@ QString SettingsManager::getUrl() const
 QString SettingsManager::lastDir() const
 {
     const QString url = getUrl();
-    if (url.isEmpty())
-        return QStringLiteral(".");
-    const QString dir = QFileInfo(url).canonicalPath();
-    if (QFileInfo::exists(dir) && QFileInfo(dir).isDir())
-        return dir;
+    if (!url.isEmpty())
+    {
+        const QString dir = QFileInfo(url).canonicalPath();
+        if (QFileInfo::exists(dir) && QFileInfo(dir).isDir())
+            return QDir::toNativeSeparators(dir);
+    }
+    for (auto& dirPath : QStandardPaths::standardLocations(QStandardPaths::MoviesLocation))
+        if (QFileInfo::exists(dirPath) && QFileInfo(dirPath).isDir())
+            return QDir::toNativeSeparators(dirPath);
     return QStringLiteral(".");
 }
 

@@ -285,7 +285,28 @@ void MainWindow::onStartPlay()
     emit this->sendCommand(qMakePair(QStringLiteral("updateAudioTracks"), player->internalAudioTracks()));
     emit this->sendCommand(qMakePair(QStringLiteral("setVideoDurationText"), QTime(0, 0, 0).addMSecs(player->mediaStopPosition()).toString(QStringLiteral("HH:mm:ss"))));
     //if (SettingsManager::getInstance()->getAudioAutoLoad())
-    //emit this->updateAudioTracks(player->externalAudioTracks(), true);
+    //emit this->sendCommand(qMakePair(QStringLiteral("updateAudioTracks"), qMakePair(player->externalAudioTracks(), true)));
+    bool externalAudioLoaded = false;
+    if (SettingsManager::getInstance()->getAudioAutoLoad())
+    {
+        QVariantList externalAudioTracks = player->externalAudioTracks();
+        if (!externalAudioTracks.isEmpty())
+            for (auto& track : externalAudioTracks)
+            {
+                QVariantMap trackData = track.toMap();
+                const QString audioFilePath = trackData[QStringLiteral("file")].toString();
+                if (!audioFilePath.isEmpty())
+                    if (player->setExternalAudio(audioFilePath))
+                    {
+                        externalAudioLoaded = true;
+                        break;
+                    }
+                    else
+                        continue;
+            }
+    }
+    if (!externalAudioLoaded)
+        player->setExternalAudio(QString());
     emit this->sendCommand(qMakePair(QStringLiteral("updateSubtitleTracks"), player->internalSubtitleTracks()));
     /*if (SettingsManager::getInstance()->getSubtitleAutoLoad())
     {
@@ -299,7 +320,7 @@ void MainWindow::onStartPlay()
                 externalSubtitle[QStringLiteral("file")] = subPath;
                 externalSubtitleTracks.append(externalSubtitle);
             }
-            emit this->updateSubtitleTracks(externalSubtitleTracks, true);
+            emit this->sendCommand(qMakePair(QStringLiteral("updateSubtitleTracks"), qMakePair(externalSubtitleTracks, true)));
         }
     }*/
     subtitle->setEnabled(false);
@@ -370,43 +391,47 @@ void MainWindow::setUrl(const QVariant& param)
     if (!player)
         return;
     const QString url = param.toString();
-    if (SettingsManager::getInstance()->getHwdec())
+    if (!url.isEmpty())
     {
-        QStringList decoders = SettingsManager::getInstance()->getDecoders();
-        if (!decoders.contains(QStringLiteral("FFmpeg")))
-            decoders << QStringLiteral("FFmpeg");
-        if (player->videoDecoderPriority() != decoders)
-            player->setVideoDecoderPriority(decoders);
-        if (decoders.contains(QStringLiteral("CUDA")))
+        player->stop();
+        if (SettingsManager::getInstance()->getHwdec())
         {
-            QVariantHash cuda_opt;
-            cuda_opt[QStringLiteral("surfaces")] = 0;
-            cuda_opt[QStringLiteral("copyMode")] = QStringLiteral("ZeroCopy");
-            QVariantHash opt;
-            opt[QStringLiteral("CUDA")] = cuda_opt;
-            player->setOptionsForVideoCodec(opt);
+            QStringList decoders = SettingsManager::getInstance()->getDecoders();
+            if (!decoders.contains(QStringLiteral("FFmpeg")))
+                decoders << QStringLiteral("FFmpeg");
+            if (player->videoDecoderPriority() != decoders)
+                player->setVideoDecoderPriority(decoders);
+            if (decoders.contains(QStringLiteral("CUDA")))
+            {
+                QVariantHash cuda_opt;
+                cuda_opt[QStringLiteral("surfaces")] = 0;
+                cuda_opt[QStringLiteral("copyMode")] = QStringLiteral("ZeroCopy");
+                QVariantHash opt;
+                opt[QStringLiteral("CUDA")] = cuda_opt;
+                player->setOptionsForVideoCodec(opt);
+            }
+            if (decoders.contains(QStringLiteral("D3D11")))
+            {
+                QVariantHash d3d11_opt;
+                //d3d11_opt[QStringLiteral("???")] = ???;
+                d3d11_opt[QStringLiteral("copyMode")] = QStringLiteral("ZeroCopy");
+                QVariantHash opt;
+                opt[QStringLiteral("D3D11")] = d3d11_opt;
+                player->setOptionsForVideoCodec(opt);
+            }
+            if (decoders.contains(QStringLiteral("DXVA")))
+            {
+                QVariantHash dxva_opt;
+                //dxva_opt[QStringLiteral("???")] = ???;
+                dxva_opt[QStringLiteral("copyMode")] = QStringLiteral("ZeroCopy");
+                QVariantHash opt;
+                opt[QStringLiteral("DXVA")] = dxva_opt;
+                player->setOptionsForVideoCodec(opt);
+            }
         }
-        if (decoders.contains(QStringLiteral("D3D11")))
-        {
-            QVariantHash d3d11_opt;
-            //d3d11_opt[QStringLiteral("???")] = ???;
-            d3d11_opt[QStringLiteral("copyMode")] = QStringLiteral("ZeroCopy");
-            QVariantHash opt;
-            opt[QStringLiteral("D3D11")] = d3d11_opt;
-            player->setOptionsForVideoCodec(opt);
-        }
-        if (decoders.contains(QStringLiteral("DXVA")))
-        {
-            QVariantHash dxva_opt;
-            //dxva_opt[QStringLiteral("???")] = ???;
-            dxva_opt[QStringLiteral("copyMode")] = QStringLiteral("ZeroCopy");
-            QVariantHash opt;
-            opt[QStringLiteral("DXVA")] = dxva_opt;
-            player->setOptionsForVideoCodec(opt);
-        }
+        else if (player->videoDecoderPriority() != (QStringList() << QStringLiteral("FFmpeg")))
+            player->setVideoDecoderPriority(QStringList() << QStringLiteral("FFmpeg"));
     }
-    else if (player->videoDecoderPriority() != (QStringList() << QStringLiteral("FFmpeg")))
-        player->setVideoDecoderPriority(QStringList() << QStringLiteral("FFmpeg"));
     if (isHidden())
         show();
     if (!url.isEmpty())

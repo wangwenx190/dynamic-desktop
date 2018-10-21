@@ -37,3 +37,4 @@
 - [x] Show progress and status on taskbar
 - [x] Add more official skins
 - [x] Save and preview settings right after any change happens
+- [ ] Save history
