@@ -99,7 +99,8 @@ int playerMain(int argc, char *argv[])
             // also block our desktop icons, however using
             // "WorkerW" as our parent window will not result
             // in this problem, I don't know why. It's strange.
-            Wallpaper::setWallpaper(reinterpret_cast<HWND>(mainWindow->winId()), currentVersion < win10Version);
+            Wallpaper::setLegacyMode(currentVersion < win10Version);
+            Wallpaper::setWallpaper(reinterpret_cast<HWND>(mainWindow->winId()));
         }
         else
         {
@@ -119,5 +120,5 @@ int playerMain(int argc, char *argv[])
     QObject::connect(&ipcClient, &IPCClient::serverOffline, &app, &QApplication::quit);
     const int exec = QApplication::exec();
     delete mainWindow;
-    return Utils::Exit(exec, false, playerMutex, Wallpaper::getWorkerW());
+    return Utils::Exit(exec, false, playerMutex, Wallpaper::getWallpaper());
 }

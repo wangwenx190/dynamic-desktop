@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include <SettingsManager>
 #include <Utils>
+#include <Wallpaper>
 
 #include <QMessageBox>
 #include <QVBoxLayout>
@@ -349,6 +350,8 @@ void MainWindow::play(const QVariant& param)
     Q_UNUSED(param)
     if (!player)
         return;
+    if (Utils::isPicture(player->file()))
+        return;
     if (player->isPaused())
     {
         player->pause(false);
@@ -395,7 +398,8 @@ void MainWindow::setUrl(const QVariant& param)
     {
         if (url == player->file())
         {
-            play(QVariant());
+            if (!Utils::isPicture(url))
+                play(QVariant());
             return;
         }
         player->stop();
@@ -439,8 +443,19 @@ void MainWindow::setUrl(const QVariant& param)
         player->play(url);
         setWindowTitle(QFileInfo(url).fileName());
     }
-    else if (!player->file().isEmpty())
+    else if (!player->file().isEmpty() && !Utils::isPicture(player->file()))
         play(QVariant());
-    if (!player->file().isEmpty() && isHidden())
-        show();
+    if (!player->file().isEmpty() && (Utils::isVideo(player->file()) || Utils::isPicture(player->file())))
+    {
+        if (Wallpaper::isWallpaperHidden())
+            Wallpaper::showWallpaper();
+        if (isHidden())
+            show();
+    }
+    else if (isVisible())
+    {
+        hide();
+        if (Wallpaper::isWallpaperVisible())
+            Wallpaper::hideWallpaper();
+    }
 }

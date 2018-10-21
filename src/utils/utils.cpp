@@ -172,15 +172,15 @@ bool launchSession1Process(const QString &path, const QString &params)
     return true;
 }
 
-int Exit(int resultCode, bool trulyExit, HANDLE mutex, HWND workerw)
+int Exit(int resultCode, bool trulyExit, HANDLE mutex, HWND wallpaper)
 {
     if (mutex != nullptr)
     {
         ReleaseMutex(mutex);
         CloseHandle(mutex);
     }
-    if (workerw != nullptr)
-        ShowWindow(workerw, SW_HIDE);
+    if (wallpaper != nullptr)
+        ShowWindowAsync(wallpaper, SW_HIDE);
     if (trulyExit)
         exit(resultCode);
     return resultCode;
@@ -204,6 +204,58 @@ bool run(const QString &path, const QStringList &params, bool needAdmin)
     if ((sessionId == static_cast<DWORD>(0)) || (sessionId != static_cast<DWORD>(1)))
         return launchSession1Process(path, paramsInAll);
     return QProcess::startDetached(QDir::toNativeSeparators(path), params, QDir::toNativeSeparators(QFileInfo(path).canonicalPath()));
+}
+
+bool isVideo(const QString &fileName)
+{
+    if (fileName.isEmpty())
+        return false;
+    // This method is stupid.
+    // How to judge whether it's a video file or not?
+    // FIXME
+    return fileName.endsWith(QStringLiteral(".mp4"), Qt::CaseInsensitive)
+            || fileName.endsWith(QStringLiteral(".avi"), Qt::CaseInsensitive)
+            || fileName.endsWith(QStringLiteral(".mov"), Qt::CaseInsensitive)
+            || fileName.endsWith(QStringLiteral(".wmv"), Qt::CaseInsensitive)
+            || fileName.endsWith(QStringLiteral(".rm"), Qt::CaseInsensitive)
+            || fileName.endsWith(QStringLiteral(".rmvb"), Qt::CaseInsensitive)
+            || fileName.endsWith(QStringLiteral(".mkv"), Qt::CaseInsensitive)
+            || fileName.endsWith(QStringLiteral(".flv"), Qt::CaseInsensitive)
+            || fileName.endsWith(QStringLiteral(".asf"), Qt::CaseInsensitive)
+            || fileName.endsWith(QStringLiteral(".3gp"), Qt::CaseInsensitive)
+            || fileName.endsWith(QStringLiteral(".ts"), Qt::CaseInsensitive)
+            || fileName.endsWith(QStringLiteral(".swf"), Qt::CaseInsensitive)
+            || fileName.endsWith(QStringLiteral(".vob"), Qt::CaseInsensitive)
+            || fileName.endsWith(QStringLiteral(".dat"), Qt::CaseInsensitive)
+            || fileName.endsWith(QStringLiteral(".mpeg"), Qt::CaseInsensitive);
+}
+
+bool isAudio(const QString &fileName)
+{
+    if (fileName.isEmpty())
+        return false;
+    // Stupid method
+    // TODO: FIXME
+    return fileName.endsWith(QStringLiteral(".mp3"), Qt::CaseInsensitive)
+            || fileName.endsWith(QStringLiteral(".flac"), Qt::CaseInsensitive)
+            || fileName.endsWith(QStringLiteral(".ape"), Qt::CaseInsensitive)
+            || fileName.endsWith(QStringLiteral(".wav"), Qt::CaseInsensitive)
+            || fileName.endsWith(QStringLiteral(".ogg"), Qt::CaseInsensitive)
+            || fileName.endsWith(QStringLiteral(".midi"), Qt::CaseInsensitive);
+}
+
+bool isPicture(const QString &fileName)
+{
+    if (fileName.isEmpty())
+        return false;
+    // Stupid method
+    // FIXME
+    return fileName.endsWith(QStringLiteral(".bmp"), Qt::CaseInsensitive)
+            || fileName.endsWith(QStringLiteral(".png"), Qt::CaseInsensitive)
+            || fileName.endsWith(QStringLiteral(".jpg"), Qt::CaseInsensitive)
+            || fileName.endsWith(QStringLiteral(".jpeg"), Qt::CaseInsensitive)
+            || fileName.endsWith(QStringLiteral(".webp"), Qt::CaseInsensitive)
+            || fileName.endsWith(QStringLiteral(".gif"), Qt::CaseInsensitive);
 }
 
 /*bool killProcess(const QString &name)
