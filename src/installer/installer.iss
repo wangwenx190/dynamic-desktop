@@ -77,4 +77,4 @@ BeveledLabel={#DDName}
 Source: "..\..\build\{#DDBinDir}\*"; DestDir: "{app}"; Excludes: "vc_redist.x??.exe,vcredist_x??.exe,*.log,*.ini,*.lib"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 [Run]
-Filename: "{app}\{#DDExeName}"; Description: "{cm:LaunchProgram,{#StringChange(DDName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
+Filename: "{app}\{#DDExeName}"; Description: "{cm:LaunchProgram,{#StringChange(DDName, '&', '&&')}}"; WorkingDir: "{app}"; Flags: nowait postinstall skipifdoesntexist
