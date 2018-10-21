@@ -37,4 +37,6 @@
 - [x] Show progress and status on taskbar
 - [x] Add more official skins
 - [x] Save and preview settings right after any change happens
-- [ ] Save history
+- [x] Save and load history
+- [ ] TrayMenu: use custom QWidget instead of QMenu
+- [ ] Support sequential playback/random playback/repeat playlist/repeat current file

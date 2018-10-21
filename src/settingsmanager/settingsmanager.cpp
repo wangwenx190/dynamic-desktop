@@ -7,6 +7,8 @@
 #include <QCoreApplication>
 #include <QStandardPaths>
 
+const quint32 historyMax = 20;
+
 SettingsManager *SettingsManager::getInstance()
 {
     static SettingsManager settingsManager;
@@ -80,14 +82,17 @@ QStringList SettingsManager::supportedMimeTypes() const
 
 QString SettingsManager::getUrl() const
 {
-    QString path = settings->value(QStringLiteral("dd/url"), QString()).toString();
+    const QStringList history = getHistory();
+    if (history.isEmpty())
+        return QString();
+    const QString& path = history.constFirst();
     if (path.isEmpty())
         return QString();
     if (QFileInfo::exists(path))
         if (QFileInfo(path).isDir())
             return QString();
         else if (QFileInfo(path).isFile())
-            return path;
+            return QDir::toNativeSeparators(path);
     QUrl url(path);
     if (!url.isValid())
         return QString();
@@ -113,12 +118,12 @@ QString SettingsManager::lastDir() const
 
 bool SettingsManager::getMute() const
 {
-    return settings->value(QStringLiteral("dd/mute"), false).toBool();
+    return settings->value(QStringLiteral("mute"), false).toBool();
 }
 
 quint32 SettingsManager::getVolume() const
 {
-    int vol = settings->value(QStringLiteral("dd/volume"), 9).toInt();
+    int vol = settings->value(QStringLiteral("volume"), 9).toInt();
     if (vol < 0)
         vol = 0;
     if (vol > 99)
@@ -128,67 +133,92 @@ quint32 SettingsManager::getVolume() const
 
 bool SettingsManager::getHwdec() const
 {
-    return settings->value(QStringLiteral("dd/hwdec"), false).toBool();
+    return settings->value(QStringLiteral("hwdec"), false).toBool();
 }
 
 QStringList SettingsManager::getDecoders() const
 {
-    return settings->value(QStringLiteral("dd/decoders"), defaultDecoders()).toStringList();
+    return settings->value(QStringLiteral("decoders"), defaultDecoders()).toStringList();
 }
 
 bool SettingsManager::getFitDesktop() const
 {
-    return settings->value(QStringLiteral("dd/fit"), true).toBool();
+    return settings->value(QStringLiteral("fit"), true).toBool();
 }
 
 bool SettingsManager::getSubtitle() const
 {
-    return settings->value(QStringLiteral("dd/subtitle"), true).toBool();
+    return settings->value(QStringLiteral("subtitle"), true).toBool();
 }
 
 QString SettingsManager::getCharset() const
 {
-    return settings->value(QStringLiteral("dd/charset"), QStringLiteral("AutoDetect")).toString();
+    return settings->value(QStringLiteral("charset"), QStringLiteral("AutoDetect")).toString();
 }
 
 bool SettingsManager::getSubtitleAutoLoad() const
 {
-    return settings->value(QStringLiteral("dd/subtitleautoload"), true).toBool();
+    return settings->value(QStringLiteral("subtitleautoload"), true).toBool();
 }
 
 bool SettingsManager::getAudioAutoLoad() const
 {
-    return settings->value(QStringLiteral("dd/audioautoload"), true).toBool();
+    return settings->value(QStringLiteral("audioautoload"), true).toBool();
 }
 
 QString SettingsManager::getSkin() const
 {
-    return settings->value(QStringLiteral("dd/skin"), QStringLiteral("Default")).toString();
+    return settings->value(QStringLiteral("skin"), QStringLiteral("Default")).toString();
 }
 
 QString SettingsManager::getLanguage() const
 {
-    return settings->value(QStringLiteral("dd/language"), QStringLiteral("auto")).toString();
+    return settings->value(QStringLiteral("language"), QStringLiteral("auto")).toString();
 }
 
 int SettingsManager::getRenderer() const
 {
-    return settings->value(QStringLiteral("dd/renderer"), QtAV_VId_GLWidget2).toInt();
+    return settings->value(QStringLiteral("renderer"), QtAV_VId_GLWidget2).toInt();
 }
 
 QString SettingsManager::getImageQuality() const
 {
-    return settings->value(QStringLiteral("dd/quality"), QStringLiteral("best")).toString().toLower();
+    return settings->value(QStringLiteral("quality"), QStringLiteral("best")).toString().toLower();
+}
+
+QStringList SettingsManager::getHistory() const
+{
+    QStringList history;
+    const int size = settings->beginReadArray(QStringLiteral("history"));
+    if (size < 1)
+    {
+        settings->endArray();
+        return history;
+    }
+    int first = size > historyMax ? size - historyMax : 0;
+    for (int i = (size - 1); i != (first - 1); --i)
+    {
+        settings->setArrayIndex(i);
+        const QString path = settings->value(QStringLiteral("path")).toString();
+        if (QFileInfo::exists(path))
+            history.append(QDir::toNativeSeparators(path));
+    }
+    settings->endArray();
+    return history;
 }
 
 void SettingsManager::setUrl(const QString &url)
 {
-    settings->setValue(QStringLiteral("dd/url"), url);
+    QStringList history = getHistory();
+    if (!history.isEmpty())
+        history.removeAll(QDir::toNativeSeparators(url));
+    history.append(QDir::toNativeSeparators(url));
+    setHistory(history);
 }
 
 void SettingsManager::setMute(bool mute)
 {
-    settings->setValue(QStringLiteral("dd/mute"), mute);
+    settings->setValue(QStringLiteral("mute"), mute);
 }
 
 void SettingsManager::setVolume(quint32 volume)
@@ -196,62 +226,76 @@ void SettingsManager::setVolume(quint32 volume)
     quint32 vol = volume;
     if (vol > 99)
         vol = 99;
-    settings->setValue(QStringLiteral("dd/volume"), vol);
+    settings->setValue(QStringLiteral("volume"), vol);
 }
 
 void SettingsManager::setHwdec(bool enable)
 {
-    settings->setValue(QStringLiteral("dd/hwdec"), enable);
+    settings->setValue(QStringLiteral("hwdec"), enable);
 }
 
 void SettingsManager::setDecoders(const QStringList &decoders)
 {
-    settings->setValue(QStringLiteral("dd/decoders"), decoders);
+    settings->setValue(QStringLiteral("decoders"), decoders);
 }
 
 void SettingsManager::setFitDesktop(bool fit)
 {
-    settings->setValue(QStringLiteral("dd/fit"), fit);
+    settings->setValue(QStringLiteral("fit"), fit);
 }
 
 void SettingsManager::setSubtitle(bool show)
 {
-    settings->setValue(QStringLiteral("dd/subtitle"), show);
+    settings->setValue(QStringLiteral("subtitle"), show);
 }
 
 void SettingsManager::setCharset(const QString &charset)
 {
-    settings->setValue(QStringLiteral("dd/charset"), charset);
+    settings->setValue(QStringLiteral("charset"), charset);
 }
 
 void SettingsManager::setSubtitleAutoLoad(bool autoload)
 {
-    settings->setValue(QStringLiteral("dd/subtitleautoload"), autoload);
+    settings->setValue(QStringLiteral("subtitleautoload"), autoload);
 }
 
 void SettingsManager::setAudioAutoLoad(bool autoload)
 {
-    settings->setValue(QStringLiteral("dd/audioautoload"), autoload);
+    settings->setValue(QStringLiteral("audioautoload"), autoload);
 }
 
 void SettingsManager::setSkin(const QString &skin)
 {
-    settings->setValue(QStringLiteral("dd/skin"), skin);
+    settings->setValue(QStringLiteral("skin"), skin);
 }
 
 void SettingsManager::setLanguage(const QString &lang)
 {
-    settings->setValue(QStringLiteral("dd/language"), lang);
+    settings->setValue(QStringLiteral("language"), lang);
 }
 
 void SettingsManager::setRenderer(int vid)
 {
-    settings->setValue(QStringLiteral("dd/renderer"), vid);
+    settings->setValue(QStringLiteral("renderer"), vid);
 }
 
 void SettingsManager::setImageQuality(const QString &quality)
 {
-    settings->setValue(QStringLiteral("dd/quality"), quality);
+    settings->setValue(QStringLiteral("quality"), quality);
+}
+
+void SettingsManager::setHistory(const QStringList &history)
+{
+    if (history.isEmpty())
+        return;
+    quint32 first = history.count() > historyMax ? history.count() - historyMax : 0;
+    settings->beginWriteArray(QStringLiteral("history"));
+    for (quint32 i = first, j = 0; i != history.count(); ++i, ++j)
+    {
+        settings->setArrayIndex(j);
+        settings->setValue(QStringLiteral("path"), QDir::toNativeSeparators(history.at(i)));
+    }
+    settings->endArray();
 }
 
 SettingsManager::SettingsManager()
@@ -259,9 +303,11 @@ SettingsManager::SettingsManager()
     QString iniPath = QCoreApplication::applicationDirPath();
     iniPath += QStringLiteral("/config.ini");
     settings = new QSettings(iniPath, QSettings::IniFormat);
+    settings->beginGroup(QStringLiteral("dd"));
 }
 
 SettingsManager::~SettingsManager()
 {
+    settings->endGroup();
     delete settings;
 }

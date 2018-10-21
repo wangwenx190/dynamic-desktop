@@ -393,6 +393,11 @@ void MainWindow::setUrl(const QVariant& param)
     const QString url = param.toString();
     if (!url.isEmpty())
     {
+        if (url == player->file())
+        {
+            play(QVariant());
+            return;
+        }
         player->stop();
         if (SettingsManager::getInstance()->getHwdec())
         {
@@ -431,14 +436,11 @@ void MainWindow::setUrl(const QVariant& param)
         }
         else if (player->videoDecoderPriority() != (QStringList() << QStringLiteral("FFmpeg")))
             player->setVideoDecoderPriority(QStringList() << QStringLiteral("FFmpeg"));
-    }
-    if (isHidden())
-        show();
-    if (!url.isEmpty())
-    {
         player->play(url);
         setWindowTitle(QFileInfo(url).fileName());
     }
-    else
+    else if (!player->file().isEmpty())
         play(QVariant());
+    if (!player->file().isEmpty() && isHidden())
+        show();
 }

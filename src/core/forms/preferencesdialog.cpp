@@ -266,13 +266,15 @@ void PreferencesDialog::dropEvent(QDropEvent *event)
         path = QDir::toNativeSeparators(url.toLocalFile());
     else
         path = url.url();
-    ui->lineEdit_url->setText(path);
+    if (ui->comboBox_url->findText(path) < 0)
+        ui->comboBox_url->addItem(path, path);
+    ui->comboBox_url->setCurrentText(path);
 }
 
 void PreferencesDialog::closeEvent(QCloseEvent *event)
 {
     CFramelessWindow::closeEvent(event);
-    if (ui->lineEdit_url->text().isEmpty())
+    if (ui->comboBox_url->currentText().isEmpty())
         qApp->quit();
 }
 
@@ -337,7 +339,10 @@ void PreferencesDialog::initUI()
         ui->comboBox_language->addItem(tr("<None>"), QStringLiteral("en"));
         ui->comboBox_language->setEnabled(false);
     }
-    ui->lineEdit_url->setText(SettingsManager::getInstance()->getUrl());
+    const QStringList history = SettingsManager::getInstance()->getHistory();
+    if (history.count() > 0)
+        for (auto& filePath : history)
+            ui->comboBox_url->addItem(filePath, filePath);
     if (audioAvailable)
     {
         ui->checkBox_volume->setChecked(!SettingsManager::getInstance()->getMute());
@@ -429,8 +434,11 @@ void PreferencesDialog::initConnections()
     });
     connect(ui->pushButton_play, &QPushButton::clicked, this, [=]
     {
-        if (ui->lineEdit_url->text() != SettingsManager::getInstance()->getUrl())
-            emit this->sendCommand(qMakePair(QStringLiteral("setUrl"), ui->lineEdit_url->text()));
+        if (ui->comboBox_url->currentText() != SettingsManager::getInstance()->getUrl())
+        {
+            SettingsManager::getInstance()->setUrl(ui->comboBox_url->currentText());
+            emit this->sendCommand(qMakePair(QStringLiteral("setUrl"), SettingsManager::getInstance()->getUrl()));
+        }
         else
             emit this->sendCommand(qMakePair(QStringLiteral("play"), QVariant()));
         if (!taskbarProgress->isVisible())
@@ -445,9 +453,13 @@ void PreferencesDialog::initConnections()
     connect(ui->pushButton_cancel, &QPushButton::clicked, this, &PreferencesDialog::close);
     connect(ui->pushButton_url_browse, &QPushButton::clicked, this, [=]
     {
-        QString path = QFileDialog::getOpenFileName(nullptr, tr("Please select a media file"), SettingsManager::getInstance()->lastDir(), tr("Videos (*.avi *.mp4 *.mkv *.flv);;Audios (*.mp3 *.flac *.ape *.wav);;Pictures (*.bmp *.jpg *.jpeg *.png *.gif);;All files (*)"));
+        QString path = QDir::toNativeSeparators(QFileDialog::getOpenFileName(nullptr, tr("Please select a media file"), SettingsManager::getInstance()->lastDir(), tr("Videos (*.avi *.mp4 *.mkv *.flv);;Audios (*.mp3 *.flac *.ape *.wav);;Pictures (*.bmp *.jpg *.jpeg *.png *.gif);;All files (*)")));
         if (!path.isEmpty())
-            ui->lineEdit_url->setText(QDir::toNativeSeparators(path));
+        {
+            if (ui->comboBox_url->findText(path) < 0)
+                ui->comboBox_url->addItem(path, path);
+            ui->comboBox_url->setCurrentText(path);
+        }
     });
     connect(ui->pushButton_url_input, &QPushButton::clicked, this, [=]
     {
@@ -458,9 +470,18 @@ void PreferencesDialog::initConnections()
             QUrl url(input);
             if (url.isValid())
                 if (url.isLocalFile())
-                    ui->lineEdit_url->setText(url.toLocalFile());
+                {
+                    const QString path = QDir::toNativeSeparators(url.toLocalFile());
+                    if (ui->comboBox_url->findText(path) < 0)
+                        ui->comboBox_url->addItem(path, path);
+                    ui->comboBox_url->setCurrentText(path);
+                }
                 else
-                    ui->lineEdit_url->setText(url.url());
+                {
+                    if (ui->comboBox_url->findText(url.url()) < 0)
+                        ui->comboBox_url->addItem(url.url(), url.url());
+                    ui->comboBox_url->setCurrentText(url.url());
+                }
             else
                 QMessageBox::warning(nullptr, QStringLiteral("Dynamic Desktop"), tr("\"%0\" is not a valid URL.").arg(input));
         }
@@ -531,7 +552,7 @@ void PreferencesDialog::initConnections()
             emit this->sendCommand(qMakePair(QStringLiteral("setImageQuality"), SettingsManager::getInstance()->getImageQuality()));
         }
     });
-    connect(ui->lineEdit_url, &QLineEdit::textChanged, this, [=](const QString &text)
+    connect(ui->comboBox_url, &QComboBox::currentTextChanged, this, [=](const QString &text)
     {
         if (text != SettingsManager::getInstance()->getUrl())
         {

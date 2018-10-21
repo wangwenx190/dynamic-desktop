@@ -106,10 +106,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Local files and web urls are all acceptable</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Input</source>
         <translation type="unfinished"></translation>
     </message>

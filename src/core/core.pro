@@ -52,7 +52,7 @@ CONFIG(static_dd) {
         $${ffmpeg_dir}/swscale-*.dll
     isEmpty(windeployqt): windeployqt = $${qttools_dir}/windeployqt.exe
     exists("$${windeployqt}") {
-        libs.commands = $$quote(\"$${windeployqt}\" --plugindir \"$${BIN_DIR}/plugins\" --force --no-translations --compiler-runtime --angle --no-opengl-sw -opengl --no-svg --list source \"$${BIN_DIR}/$${TARGET}$${DD_MAJOR_VERSION}.dll\")
+        libs.commands = $$quote(\"$${windeployqt}\" --plugindir \"$${BIN_DIR}/plugins\" --force --no-translations --compiler-runtime --angle --no-opengl-sw -opengl --list source \"$${BIN_DIR}/$${TARGET}$${DD_MAJOR_VERSION}.dll\")
         libs.commands = $$join(libs.commands, $$escape_expand(\\n\\t))
     }
     INSTALLS *= \

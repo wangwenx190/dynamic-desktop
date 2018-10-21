@@ -30,6 +30,7 @@ public:
     QString getLanguage() const;
     int getRenderer() const;
     QString getImageQuality() const;
+    QStringList getHistory() const;
 
     void setUrl(const QString &url);
     void setMute(bool mute = true);
@@ -45,6 +46,7 @@ public:
     void setLanguage(const QString &lang = QStringLiteral("auto"));
     void setRenderer(int vid = QtAV_VId_GLWidget2);
     void setImageQuality(const QString &quality = QStringLiteral("best"));
+    void setHistory(const QStringList &history);
 
 private:
     SettingsManager();

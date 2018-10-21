@@ -106,10 +106,6 @@
         <translation>路径</translation>
     </message>
     <message>
-        <source>Local files and web urls are all acceptable</source>
-        <translation>可接受本地文件和有效的网址</translation>
-    </message>
-    <message>
         <source>Input</source>
         <translation>输入</translation>
     </message>

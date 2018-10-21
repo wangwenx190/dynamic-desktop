@@ -8,7 +8,7 @@
         } else {
             bin = $$join(bin,,,.exe)
         }
-        libs.commands = $$quote(\"$${windeployqt}\" --plugindir \"$${BIN_DIR}/plugins\" --no-patchqt --no-translations --no-system-d3d-compiler --no-compiler-runtime --no-angle --no-opengl-sw --no-svg --list source \"$${BIN_DIR}/$${bin}\")
+        libs.commands = $$quote(\"$${windeployqt}\" --plugindir \"$${BIN_DIR}/plugins\" --no-patchqt --no-translations --no-system-d3d-compiler --no-compiler-runtime --no-angle --no-opengl-sw --list source \"$${BIN_DIR}/$${bin}\")
         libs.commands = $$join(libs.commands, $$escape_expand(\\n\\t))
     }
     INSTALLS *= libs
