@@ -61,8 +61,8 @@ Microsoft Windows 7 ~ 10(with GUI desktop), both 32 bit and 64 bit systems.
    inno_dir = C:/Program Files (x86)/Inno Setup 5
    CONFIG *= build_installer
    ```
-   You should change `C:/Program Files (x86)/Inno Setup 5` to your own Inno Setup directory. **If there is any whitespace in your Inno Setup's path, you may have some strange errors while jom is installing files.**
-3. Call `build.bat` or run qmake and jom manually.
+   You should change `C:/Program Files (x86)/Inno Setup 5` to your own Inno Setup directory. **Jom/Nmake may report errors while it's installing files if you enabled this feature, currently don't know why, you can use ".\ci\build_installer.bat" instead temporarily.**
+3. Call `build.bat` or run qmake and jom/nmake manually.
 4. You can find the generated installer in *./build*.
 
 ## Contributing
