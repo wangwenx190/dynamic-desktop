@@ -22,10 +22,6 @@
   <property name="windowTitle">
    <string>Preferences</string>
   </property>
-  <property name="windowIcon">
-   <iconset resource="../images.qrc">
-    <normaloff>:/icons/color_palette.ico</normaloff>:/icons/color_palette.ico</iconset>
-  </property>
   <property name="styleSheet">
    <string notr="true"/>
   </property>

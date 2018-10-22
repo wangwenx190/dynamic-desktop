@@ -1,13 +1,11 @@
 include(../common.pri)
-QMAKE_TARGET_PRODUCT = Core
-QMAKE_TARGET_DESCRIPTION = Dynamic Desktop Core Module
-TARGET = core
-QT *= widgets winextras av avwidgets
+DESTDIR = $${BIN_DIR}
+QMAKE_TARGET_PRODUCT = Controller
+QMAKE_TARGET_DESCRIPTION = Dynamic Desktop Controller Module
+TARGET = controller
 CONFIG(debug, debug|release): TARGET = $$join(TARGET,,,d)
-TEMPLATE = lib
-DEFINES *= BUILD_INNER_SHARED_LIBRARY_DD
-CONFIG *= dll
-HEADERS += $$PWD/../dd_dll_global.h
+QT *= widgets winextras
+TEMPLATE = app
 include(../qtniceframelesswindow/qtniceframelesswindow.pri)
 include(../utils/utils.pri)
 include(../settingsmanager/settingsmanager.pri)
@@ -15,19 +13,23 @@ include(../skinsmanager/skinsmanager.pri)
 include(../slider/slider.pri)
 include(../ipc/ipc.pri)
 include(../qtservice/qtservice.pri)
-include(../wallpaper/wallpaper.pri)
-include(../qsimpleupdater/qsimpleupdater.pri)
-include(controller.pri)
-include(player.pri)
-include(service.pri)
-include(updater.pri)
-target.path = $${BIN_DIR}
-INSTALLS *= target
+LIBS *= -lUser32
+HEADERS += \
+    forms/preferencesdialog.h \
+    forms/aboutdialog.h \
+    $$PWD/../common.h
+SOURCES += \
+    controller.cpp \
+    forms/preferencesdialog.cpp \
+    forms/aboutdialog.cpp
+FORMS += \
+    forms/preferencesdialog.ui \
+    forms/aboutdialog.ui
 TRANSLATIONS += \
     ../resources/translations/dd_en.ts \
     ../resources/translations/dd_zh_CN.ts
-include(../translations.pri)
 RESOURCES += images.qrc
+include(../translations.pri)
 CONFIG(static_dd) {
     DEFINES *= BUILD_DD_STATIC
     RESOURCES *= skins.qrc
@@ -52,7 +54,7 @@ CONFIG(static_dd) {
         $${ffmpeg_dir}/swscale-*.dll
     isEmpty(windeployqt): windeployqt = $${qttools_dir}/windeployqt.exe
     exists("$${windeployqt}") {
-        libs.commands = $$quote(\"$${windeployqt}\" --plugindir \"$${BIN_DIR}/plugins\" --force --no-translations --compiler-runtime --angle --no-opengl-sw -opengl --list source \"$${BIN_DIR}/$${TARGET}$${DD_MAJOR_VERSION}.dll\")
+        libs.commands = $$quote(\"$${windeployqt}\" --plugindir \"$${BIN_DIR}/plugins\" --force --no-translations --no-compiler-runtime --angle --no-opengl-sw -opengl --no-svg --list source \"$${BIN_DIR}/$${TARGET}.exe\")
         libs.commands = $$join(libs.commands, $$escape_expand(\\n\\t))
     }
     INSTALLS *= \

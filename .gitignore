@@ -57,3 +57,5 @@ rep_*_source.h
 *.qm
 *.lib
 *.exe
+*.exp
+*.ilk

@@ -58,7 +58,7 @@ void MainWindow::setVolume(const QVariant& param)
         if (ao->volume() != newVolume)
             if (qAbs(static_cast<quint32>(ao->volume() / kVolumeInterval) - volume) >= static_cast<quint32>(0.1 / kVolumeInterval))
                 ao->setVolume(newVolume);
-        emit this->sendCommand(qMakePair(QStringLiteral("setVolumeToolTip"), tr("Volume: %0").arg(QString::number(newVolume))));
+        //emit this->sendCommand(qMakePair(QStringLiteral("setVolumeToolTip"), tr("Volume: %0").arg(QString::number(newVolume))));
     }
 }
 
@@ -152,7 +152,6 @@ void MainWindow::initUI()
     mainLayout->setContentsMargins(0, 0, 0, 0);
     mainLayout->setSpacing(0);
     setLayout(mainLayout);
-    setWindowIcon(QIcon(QStringLiteral(":/icons/color_palette.ico")));
     setWindowTitle(QStringLiteral("Dynamic Desktop"));
     taskbarButton = new QWinTaskbarButton();
     taskbarButton->setWindow(windowHandle());
@@ -208,7 +207,7 @@ bool MainWindow::setRenderer(const QVariant& param)
     QtAV::VideoRenderer *videoRenderer = QtAV::VideoRenderer::create(id);
     if (!videoRenderer || !videoRenderer->isAvailable() || !videoRenderer->widget())
     {
-        QMessageBox::critical(nullptr, QStringLiteral("Dynamic Desktop"), tr("Current renderer is not available on your platform!"));
+        QMessageBox::critical(nullptr, QStringLiteral("Dynamic Desktop"), QStringLiteral("Current renderer is not available on your platform!"));
         return false;
     }
     subtitle->uninstall();

@@ -1,4 +1,5 @@
 include(../common.pri)
+DESTDIR = $${BIN_DIR}
 QMAKE_TARGET_PRODUCT = Utils
 QMAKE_TARGET_DESCRIPTION = Dynamic Desktop Utils Module
 TARGET = utils
@@ -18,6 +19,4 @@ SOURCES += utils.cpp
 HEADERS += \
     utils.h \
     $$PWD/../dd_dll_global.h
-target.path = $${BIN_DIR}
-INSTALLS *= target
 include(../deploy.pri)

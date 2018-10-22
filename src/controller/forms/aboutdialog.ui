@@ -13,10 +13,6 @@
   <property name="windowTitle">
    <string>About</string>
   </property>
-  <property name="windowIcon">
-   <iconset resource="../images.qrc">
-    <normaloff>:/icons/color_palette.ico</normaloff>:/icons/color_palette.ico</iconset>
-  </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QPushButton" name="pushButton_source">

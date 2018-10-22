@@ -621,7 +621,7 @@ void PreferencesDialog::initTrayArea()
 {
     trayMenu = new QMenu();
     trayIcon = new QSystemTrayIcon();
-    trayIcon->setIcon(QIcon(QStringLiteral(":/icons/color_palette.ico")));
+    //trayIcon->setIcon(QIcon(QStringLiteral(":/icons/color_palette.ico")));
     trayIcon->setToolTip(QStringLiteral("Dynamic Desktop"));
     trayIcon->setContextMenu(trayMenu);
     trayIcon->show();

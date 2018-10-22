@@ -1,4 +1,5 @@
 include(../common.pri)
+DESTDIR = $${BIN_DIR}
 QMAKE_TARGET_PRODUCT = IPC
 QMAKE_TARGET_DESCRIPTION = Dynamic Desktop Inter-Process Communication Module
 TARGET = ipc
@@ -19,6 +20,4 @@ SOURCES += \
     ipcserver.cpp \
     ipcclient.cpp \
     ipccore.cpp
-target.path = $${BIN_DIR}
-INSTALLS *= target
 include(../deploy.pri)

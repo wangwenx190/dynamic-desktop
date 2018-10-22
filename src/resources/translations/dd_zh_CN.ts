@@ -65,17 +65,6 @@
     </message>
 </context>
 <context>
-    <name>MainWindow</name>
-    <message>
-        <source>Volume: %0</source>
-        <translation>音量：%0</translation>
-    </message>
-    <message>
-        <source>Current renderer is not available on your platform!</source>
-        <translation>当前渲染引擎在此平台不可用！</translation>
-    </message>
-</context>
-<context>
     <name>PreferencesDialog</name>
     <message>
         <source>Preferences</source>

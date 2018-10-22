@@ -1,13 +1,11 @@
-#include "core.h"
-
 #include <QtService>
 #include <Utils>
 
 #include <Windows.h>
 
-#include <QApplication>
+#include <QCoreApplication>
 
-class DDSvc : public QtService<QApplication>
+class DDSvc : public QtService<QCoreApplication>
 {
 public:
     DDSvc(int argc, char **argv);
@@ -17,7 +15,7 @@ protected:
 };
 
 DDSvc::DDSvc(int argc, char **argv)
-    : QtService<QApplication>(argc, argv, QStringLiteral("Dynamic Desktop Auto Start Service"))
+    : QtService<QCoreApplication>(argc, argv, QStringLiteral("Dynamic Desktop Auto Start Service"))
 {
     setServiceDescription(QStringLiteral("Make Dynamic Desktop auto start. Dynamic Desktop will not auto start if you disable this service."));
     setStartupType(QtServiceController::AutoStartup);
@@ -37,7 +35,7 @@ void DDSvc::start()
     {
         ReleaseMutex(playerMutex);
         CloseHandle(playerMutex);
-        Utils::run(QApplication::applicationFilePath(), QStringList() << QStringLiteral("--controller") << QStringLiteral("--launch"));
+        Utils::run(QCoreApplication::applicationFilePath(), QStringList() << QStringLiteral("--controller") << QStringLiteral("--launch"));
     }
     else
         ReleaseMutex(playerMutex);
@@ -46,7 +44,7 @@ void DDSvc::start()
     qApp->quit();
 }
 
-int serviceMain(int argc, char **argv)
+int main(int argc, char **argv)
 {
     DDSvc ddsvc(argc, argv);
     return ddsvc.exec();

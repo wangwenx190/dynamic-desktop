@@ -1,5 +1,3 @@
-#include "core.h"
-
 #include <Utils>
 
 #include <QApplication>
@@ -8,7 +6,7 @@
 
 //#include <QSimpleUpdater.h>
 
-int updaterMain(int argc, char *argv[])
+int main(int argc, char *argv[])
 {
     QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);

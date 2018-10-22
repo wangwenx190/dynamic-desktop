@@ -1,4 +1,5 @@
 include(../common.pri)
+DESTDIR = $${BIN_DIR}
 QMAKE_TARGET_PRODUCT = QSimpleUpdater
 QMAKE_TARGET_DESCRIPTION = Dynamic Desktop Updater Core Module
 QMAKE_TARGET_COMPANY = Alex Spataru
@@ -9,6 +10,4 @@ TEMPLATE = lib
 DEFINES *= QSU_SHARED
 CONFIG *= dll
 include(../3rdparty/qsimpleupdater/QSimpleUpdater.pri)
-target.path = $${BIN_DIR}
-INSTALLS *= target
 include(../deploy.pri)

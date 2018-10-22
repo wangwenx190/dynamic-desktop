@@ -1,4 +1,5 @@
 include(../common.pri)
+DESTDIR = $${BIN_DIR}
 QMAKE_TARGET_PRODUCT = Wallpaper
 QMAKE_TARGET_DESCRIPTION = Dynamic Desktop Wallpaper Module
 QMAKE_TARGET_COMPANY = ThomasHuai
@@ -12,5 +13,3 @@ CONFIG -= qt
 LIBS *= -lUser32
 HEADERS += $$PWD/../dd_dll_global.h
 include(../3rdparty/wallpaper/wallpaper.pri)
-target.path = $${BIN_DIR}
-INSTALLS *= target

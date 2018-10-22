@@ -1,6 +1,7 @@
 include(../common.pri)
+DESTDIR = $${BIN_DIR}
 QMAKE_TARGET_PRODUCT = Launcher
-QMAKE_TARGET_DESCRIPTION = Dynamic Desktop Launcher
+QMAKE_TARGET_DESCRIPTION = Dynamic Desktop
 RC_ICONS = ../resources/icons/color_palette.ico
 TARGET = launcher
 CONFIG(debug, debug|release): TARGET = $$join(TARGET,,,d)
@@ -12,7 +13,5 @@ LIBS *= \
     -lKernel32 \
     -lUser32
 SOURCES += main.cpp
-target.path = $${BIN_DIR}
-INSTALLS *= target
 CONFIG(upx): include(../upx.pri)
 CONFIG(build_installer): include(../installer.pri)

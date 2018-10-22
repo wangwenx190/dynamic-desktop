@@ -65,17 +65,6 @@
     </message>
 </context>
 <context>
-    <name>MainWindow</name>
-    <message>
-        <source>Volume: %0</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Current renderer is not available on your platform!</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>PreferencesDialog</name>
     <message>
         <source>Preferences</source>

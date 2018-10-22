@@ -1,4 +1,5 @@
 include(../common.pri)
+DESTDIR = $${BIN_DIR}
 QMAKE_TARGET_PRODUCT = Skins Manager
 QMAKE_TARGET_DESCRIPTION = Dynamic Desktop Skins Manager Module
 TARGET = skinsmanager
@@ -11,6 +12,4 @@ SOURCES += skinsmanager.cpp
 HEADERS += \
     skinsmanager.h \
     $$PWD/../dd_dll_global.h
-target.path = $${BIN_DIR}
-INSTALLS *= target
 include(../deploy.pri)

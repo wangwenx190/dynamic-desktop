@@ -1,5 +1,3 @@
-#include "core.h"
-
 #include <SettingsManager>
 #include <SkinsManager>
 #include <Utils>
@@ -20,7 +18,7 @@
 #include <QCommandLineParser>
 #include <QCommandLineOption>
 
-int controllerMain(int argc, char *argv[])
+int main(int argc, char *argv[])
 {
     HANDLE controllerMutex = nullptr;
     QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);

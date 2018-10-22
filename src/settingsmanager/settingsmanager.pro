@@ -1,4 +1,5 @@
 include(../common.pri)
+DESTDIR = $${BIN_DIR}
 QMAKE_TARGET_PRODUCT = Settings Manager
 QMAKE_TARGET_DESCRIPTION = Dynamic Desktop Settings Manager Module
 TARGET = settingsmanager
@@ -12,6 +13,4 @@ HEADERS += \
     settingsmanager.h \
     $$PWD/../dd_dll_global.h \
     $$PWD/../common.h
-target.path = $${BIN_DIR}
-INSTALLS *= target
 include(../deploy.pri)
