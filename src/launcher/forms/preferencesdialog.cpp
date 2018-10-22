@@ -5,7 +5,6 @@
 #include <Utils>
 #include <QtService>
 #include "../common.h"
-#include "forms/aboutdialog.h"
 
 #include <QWinTaskbarButton>
 #include <QWinTaskbarProgress>

@@ -94,6 +94,10 @@ int main(int argc, char *argv[])
     });
     QObject::connect(&ipcClient, &IPCClient::serverOffline, &app, &QApplication::quit);
     const int exec = QApplication::exec();
-    delete mainWindow;
+    if (mainWindow != nullptr)
+    {
+        mainWindow->close();
+        delete mainWindow;
+    }
     return Utils::Exit(exec, false, playerMutex, Wallpaper::getWallpaper());
 }
