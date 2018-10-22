@@ -258,21 +258,15 @@ int main(int argc, char *argv[])
     });
     QObject::connect(&ipcServer, &IPCServer::clientOffline, &app, &QApplication::quit);
     const int exec = QApplication::exec();
-    if (mainWindow != nullptr)
-    {
+    if ((mainWindow != nullptr) && mainWindow->isVisible())
         mainWindow->close();
-        delete mainWindow;
-    }
-    if (aboutDialog != nullptr)
-    {
+    delete mainWindow;
+    if ((aboutDialog != nullptr) && aboutDialog->isVisible())
         aboutDialog->close();
-        delete aboutDialog;
-    }
+    delete aboutDialog;
     delete trayMenu;
-    if (trayIcon != nullptr)
-    {
+    if ((trayIcon != nullptr) && trayIcon->isVisible())
         trayIcon->hide();
-        delete trayIcon;
-    }
+    delete trayIcon;
     return Utils::Exit(exec, false, controllerMutex);
 }
