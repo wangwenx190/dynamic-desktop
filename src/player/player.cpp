@@ -56,7 +56,7 @@ int main(int argc, char *argv[])
         mainWindow = new MainWindow();
         QObject::connect(&ipcClient, &IPCClient::serverMessage, mainWindow, &MainWindow::parseCommand);
         QObject::connect(mainWindow, &MainWindow::sendCommand, &ipcClient, &IPCClient::clientMessage);
-        emit mainWindow->sendCommand(qMakePair(QStringLiteral("playerEcho"), QStringLiteral("Hello, controller. Player is online.")));
+        emit mainWindow->sendCommand(qMakePair(QStringLiteral("clientOnline"), QVariant()));
         const Qt::WindowFlags windowFlags = Qt::FramelessWindowHint;
         const QRect screenGeometry = QApplication::desktop()->screenGeometry(mainWindow);
         if (!windowMode)

@@ -14,5 +14,4 @@ SUBDIRS += \
     src/updater \
     src/service \
     src/player \
-    src/controller \
     src/launcher

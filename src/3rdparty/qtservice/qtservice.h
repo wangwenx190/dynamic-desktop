@@ -118,6 +118,9 @@ public:
     QStringList startupArguments() const;
     void setStartupArguments(const QStringList& arguments);
 
+    QString serviceDisplayName() const;
+    void setServiceDisplayName(const QString &name);
+
     ServiceFlags serviceFlags() const;
     void setServiceFlags(ServiceFlags flags);
 

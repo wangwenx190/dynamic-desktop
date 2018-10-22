@@ -1,7 +1,7 @@
 include(../common.pri)
 DESTDIR = $${BIN_DIR}
-QMAKE_TARGET_PRODUCT = Utils
-QMAKE_TARGET_DESCRIPTION = Dynamic Desktop Utils Module
+QMAKE_TARGET_PRODUCT = Dynamic Desktop Utils Module
+QMAKE_TARGET_DESCRIPTION = Dynamic Desktop
 TARGET = utils
 CONFIG(debug, debug|release): TARGET = $$join(TARGET,,,d)
 QT *= widgets

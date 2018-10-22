@@ -1,7 +1,7 @@
 include(../common.pri)
 DESTDIR = $${BIN_DIR}
-QMAKE_TARGET_PRODUCT = Skins Manager
-QMAKE_TARGET_DESCRIPTION = Dynamic Desktop Skins Manager Module
+QMAKE_TARGET_PRODUCT = Dynamic Desktop Skins Manager Module
+QMAKE_TARGET_DESCRIPTION = Dynamic Desktop
 TARGET = skinsmanager
 CONFIG(debug, debug|release): TARGET = $$join(TARGET,,,d)
 TEMPLATE = lib

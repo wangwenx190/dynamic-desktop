@@ -1,7 +1,9 @@
 #include <SettingsManager>
 #include <SkinsManager>
 #include <Utils>
+#include <IPCServer>
 #include "forms/preferencesdialog.h"
+#include "forms/aboutdialog.h"
 #include "../common.h"
 
 #include <Windows.h>
@@ -17,6 +19,9 @@
 #include <QVersionNumber>
 #include <QCommandLineParser>
 #include <QCommandLineOption>
+#include <QMenu>
+#include <QAction>
+#include <QSystemTrayIcon>
 
 int main(int argc, char *argv[])
 {
@@ -75,7 +80,6 @@ int main(int argc, char *argv[])
         ReleaseMutex(controllerMutex);
         return 0;
     }
-    app.setQuitOnLastWindowClosed(false);
     QCommandLineParser parser;
     parser.setApplicationDescription(QStringLiteral("A tool that make your desktop alive."));
     parser.addHelpOption();
@@ -157,20 +161,106 @@ int main(int argc, char *argv[])
             SettingsManager::getInstance()->setVolume(static_cast<quint32>(volumeOptionValueInt));
     }
     SkinsManager::getInstance()->setSkin(SettingsManager::getInstance()->getSkin());
-    PreferencesDialog preferencesDialog;
-    QStringList playerStartupArguments;
-    playerStartupArguments << QStringLiteral("--player") << QStringLiteral("--runfromlauncher");
+    app.setQuitOnLastWindowClosed(false);
+    IPCServer ipcServer;
+    QStringList playerStartupArguments{ QStringLiteral("--runfromlauncher") };
     if (parser.isSet(windowModeOption))
         playerStartupArguments << QStringLiteral("--window");
-    if (!Utils::run(QApplication::applicationFilePath(), playerStartupArguments))
+    QString playerPath = QApplication::applicationDirPath() + QStringLiteral("/player");
+#ifdef _DEBUG
+    playerPath += QStringLiteral("d");
+#endif
+    playerPath += QStringLiteral(".exe");
+    if (!Utils::run(playerPath, playerStartupArguments))
     {
         QMessageBox::critical(nullptr, QStringLiteral("Dynamic Desktop"), QObject::tr("Cannot start the core module. Application aborting."));
         return Utils::Exit(-1, false, controllerMutex);
     }
-    if (SettingsManager::getInstance()->getUrl().isEmpty())
+    PreferencesDialog *mainWindow = nullptr;
+    AboutDialog *aboutDialog = nullptr;
+    QMenu *trayMenu = nullptr;
+    QSystemTrayIcon *trayIcon = nullptr;
+    QObject::connect(&ipcServer, &IPCServer::clientOnline, [=, &ipcServer, &app]()mutable
     {
-        Utils::moveToCenter(&preferencesDialog);
-        preferencesDialog.show();
-    }
-    return Utils::Exit(QApplication::exec(), false, controllerMutex);
+        mainWindow = new PreferencesDialog();
+        aboutDialog = new AboutDialog();
+        QObject::connect(&ipcServer, &IPCServer::clientMessage, mainWindow, &PreferencesDialog::parseCommand);
+        QObject::connect(mainWindow, &PreferencesDialog::sendCommand, &ipcServer, &IPCServer::serverMessage);
+        trayMenu = new QMenu();
+        trayIcon = new QSystemTrayIcon();
+        trayIcon->setIcon(QIcon(QStringLiteral(":/icons/color_palette.ico")));
+        trayIcon->setToolTip(QStringLiteral("Dynamic Desktop"));
+        trayIcon->setContextMenu(trayMenu);
+        trayIcon->show();
+        QAction *showPreferencesDialogAction = trayMenu->addAction(QObject::tr("Preferences"), [=]
+        {
+            if (mainWindow->isHidden())
+            {
+                Utils::moveToCenter(mainWindow);
+                mainWindow->show();
+            }
+            if (!mainWindow->isActiveWindow())
+                mainWindow->setWindowState(mainWindow->windowState() & ~Qt::WindowMinimized);
+            if (!mainWindow->isActiveWindow())
+            {
+                mainWindow->raise();
+                mainWindow->activateWindow();
+            }
+        });
+        trayMenu->addSeparator();
+        trayMenu->addAction(QObject::tr("Play"), mainWindow, [=]
+        {
+            emit mainWindow->sendCommand(qMakePair(QStringLiteral("play"), QVariant()));
+        });
+        trayMenu->addAction(QObject::tr("Pause"), mainWindow, [=]
+        {
+            emit mainWindow->sendCommand(qMakePair(QStringLiteral("pause"), QVariant()));
+        });
+        QAction *muteAction = trayMenu->addAction(QObject::tr("Mute"));
+        muteAction->setCheckable(true);
+        muteAction->setChecked(SettingsManager::getInstance()->getMute());
+        QObject::connect(muteAction, &QAction::triggered, mainWindow, [=]
+        {
+            emit mainWindow->setMute(muteAction->isChecked());
+        });
+        trayMenu->addSeparator();
+        QAction *aboutAction = trayMenu->addAction(QObject::tr("About"), mainWindow, [=]
+        {
+            if (aboutDialog->isHidden())
+            {
+                Utils::moveToCenter(aboutDialog);
+                aboutDialog->show();
+            }
+            if (!aboutDialog->isActiveWindow())
+                aboutDialog->setWindowState(aboutDialog->windowState() & ~Qt::WindowMinimized);
+            if (!aboutDialog->isActiveWindow())
+            {
+                aboutDialog->raise();
+                aboutDialog->activateWindow();
+            }
+        });
+        QObject::connect(mainWindow, &PreferencesDialog::about, [=]
+        {
+            emit aboutAction->triggered();
+        });
+        trayMenu->addAction(QObject::tr("Exit"), &app, &QApplication::quit);
+        QObject::connect(trayIcon, &QSystemTrayIcon::activated, [=](QSystemTrayIcon::ActivationReason reason)
+        {
+            if (reason != QSystemTrayIcon::Context)
+                emit showPreferencesDialogAction->triggered();
+        });
+        QObject::connect(mainWindow, &PreferencesDialog::muteChanged, muteAction, &QAction::setChecked);
+        if (SettingsManager::getInstance()->getUrl().isEmpty())
+        {
+            Utils::moveToCenter(mainWindow);
+            mainWindow->show();
+        }
+    });
+    QObject::connect(&ipcServer, &IPCServer::clientOffline, &app, &QApplication::quit);
+    const int exec = QApplication::exec();
+    delete mainWindow;
+    delete aboutDialog;
+    delete trayMenu;
+    delete trayIcon;
+    return Utils::Exit(exec, false, controllerMutex);
 }

@@ -742,6 +742,16 @@ void QtServiceBase::setStartupArguments(const QStringList &arguments)
     d_ptr->startupArguments = arguments;
 }
 
+QString QtServiceBase::serviceDisplayName() const
+{
+    return d_ptr->serviceDisplayName;
+}
+
+void QtServiceBase::setServiceDisplayName(const QString &name)
+{
+    d_ptr->serviceDisplayName = name;
+}
+
 /*!
     Returns the service's state which is decribed using the
     ServiceFlag enum.

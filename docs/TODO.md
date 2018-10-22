@@ -40,6 +40,6 @@
 - [x] Save and load history
 - [ ] TrayMenu: use custom QWidget instead of QMenu
 - [ ] Support sequential playback/random playback/repeat playlist/repeat current file
-- [ ] Make the modules(controller, player, service and updater) become different exe and load them dynamically(QLibrary)
-- [ ] Optimize launcher code
-- [ ] Server: wait until client online
+- [x] Make the modules(controller, player, service and updater) become different exe
+- [ ] <del>Optimize launcher code</del>
+- [x] Server: wait until client online

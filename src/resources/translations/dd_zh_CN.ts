@@ -283,14 +283,6 @@
         <translation>您已更改界面翻译。重新运行此应用程序以生效。</translation>
     </message>
     <message>
-        <source>Mute</source>
-        <translation>静音</translation>
-    </message>
-    <message>
-        <source>Exit</source>
-        <translation>退出</translation>
-    </message>
-    <message>
         <source>Reopen this video or play another video to experience it.
 Make sure this application runs in your GPU&apos;s Optimus mode.</source>
         <translation>重新打开这个视频或播放另一个视频来体验此项改变。
@@ -310,6 +302,30 @@ Make sure this application runs in your GPU&apos;s Optimus mode.</source>
     <message>
         <source>Cannot start the core module. Application aborting.</source>
         <translation>无法启动核心模块。应用程序正在退出。</translation>
+    </message>
+    <message>
+        <source>Preferences</source>
+        <translation>首选项</translation>
+    </message>
+    <message>
+        <source>Play</source>
+        <translation>播放</translation>
+    </message>
+    <message>
+        <source>Pause</source>
+        <translation>暂停</translation>
+    </message>
+    <message>
+        <source>Mute</source>
+        <translation>静音</translation>
+    </message>
+    <message>
+        <source>About</source>
+        <translation>关于</translation>
+    </message>
+    <message>
+        <source>Exit</source>
+        <translation>退出</translation>
     </message>
 </context>
 <context>

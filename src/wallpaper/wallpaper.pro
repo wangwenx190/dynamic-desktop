@@ -1,7 +1,7 @@
 include(../common.pri)
 DESTDIR = $${BIN_DIR}
-QMAKE_TARGET_PRODUCT = Wallpaper
-QMAKE_TARGET_DESCRIPTION = Dynamic Desktop Wallpaper Module
+QMAKE_TARGET_PRODUCT = Dynamic Desktop Wallpaper Module
+QMAKE_TARGET_DESCRIPTION = Dynamic Desktop
 QMAKE_TARGET_COMPANY = ThomasHuai
 QMAKE_TARGET_COPYRIGHT = Apache License 2.0
 TARGET = wallpaper

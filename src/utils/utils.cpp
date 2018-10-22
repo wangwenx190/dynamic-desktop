@@ -125,8 +125,12 @@ bool checkUpdate(bool autoUpdate)
     arguments.takeFirst();
     if (autoUpdate)
         arguments << QStringLiteral("--auto-update");
-    arguments.insert(0, QStringLiteral("--updater"));
-    return run(QCoreApplication::applicationFilePath(), arguments);
+    QString updaterPath = QCoreApplication::applicationDirPath() + QStringLiteral("/updater");
+#ifdef _DEBUG
+    updaterPath += QStringLiteral("d");
+#endif
+    updaterPath += QStringLiteral(".exe");
+    return run(updaterPath, arguments);
 }
 
 bool launchSession1Process(const QString &path, const QString &params)

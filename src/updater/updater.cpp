@@ -19,8 +19,8 @@ int main(int argc, char *argv[])
     QApplication::setApplicationDisplayName(QStringLiteral("Dynamic Desktop Updater"));
     QStringList arguments = QApplication::arguments();
     arguments.takeFirst();
-    /*const QString dir = QApplication::applicationDirPath();
-    const QString updateUrl = QStringLiteral("https://raw.githubusercontent.com/wangwenx190/dynamic-desktop/develop/src/updates.json");
+    const QString dir = QApplication::applicationDirPath();
+    /*const QString updateUrl = QStringLiteral("https://raw.githubusercontent.com/wangwenx190/dynamic-desktop/develop/src/updates.json");
     QString ini = dir + QStringLiteral("/config.ini");
     QSettings settings(ini, QSettings::IniFormat);
     QSimpleUpdater *updater = QSimpleUpdater::getInstance();
@@ -31,8 +31,12 @@ int main(int argc, char *argv[])
         arguments.removeAll(QStringLiteral("--auto-update"));
     if (!arguments.contains(QStringLiteral("--launch"), Qt::CaseInsensitive))
         arguments << QStringLiteral("--launch");
-    arguments.insert(0, QStringLiteral("--controller"));
-    if (Utils::run(QApplication::applicationFilePath(), arguments))
+    QString launcherPath = dir + QStringLiteral("/launcher");
+#ifdef _DEBUG
+    launcherPath += QStringLiteral("d");
+#endif
+    launcherPath += QStringLiteral(".exe");
+    if (Utils::run(launcherPath, arguments))
         return 0;
     return QApplication::exec();
 }

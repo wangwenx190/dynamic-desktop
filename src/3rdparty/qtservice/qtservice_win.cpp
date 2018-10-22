@@ -884,7 +884,7 @@ bool QtServiceBasePrivate::install(const QString &account, const QString &passwo
 
         // Create the service
         SC_HANDLE hService = pCreateService(hSCM, (wchar_t *)controller.serviceName().utf16(),
-                                            (wchar_t *)controller.serviceName().utf16(),
+                                            serviceDisplayName.isEmpty() ? (wchar_t *)controller.serviceName().utf16() : (wchar_t *)serviceDisplayName.utf16(),
                                             SERVICE_ALL_ACCESS,
                                             dwServiceType, // QObject::inherits ( const char * className ) for no inter active ????
                                             dwStartType, SERVICE_ERROR_NORMAL, (wchar_t *)filePath().utf16(),

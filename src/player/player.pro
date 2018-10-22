@@ -1,7 +1,8 @@
 include(../common.pri)
 DESTDIR = $${BIN_DIR}
-QMAKE_TARGET_PRODUCT = Player
-QMAKE_TARGET_DESCRIPTION = Dynamic Desktop Player Module
+QMAKE_TARGET_PRODUCT = Dynamic Desktop Player Module
+QMAKE_TARGET_DESCRIPTION = Dynamic Desktop
+RC_ICONS = ../resources/icons/dll_win10.ico
 TARGET = player
 CONFIG(debug, debug|release): TARGET = $$join(TARGET,,,d)
 TEMPLATE = app

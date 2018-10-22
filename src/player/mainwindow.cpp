@@ -10,8 +10,6 @@
 #include <QWinTaskbarButton>
 #include <QWinTaskbarProgress>
 #include <QFileInfo>
-#include <QMetaObject>
-#include <QDebug>
 
 const qreal kVolumeInterval = 0.04;
 
@@ -39,13 +37,6 @@ void MainWindow::parseCommand(const QPair<QString, QVariant> &command)
     const char *name = byteArray.constData();
     QVariant param = command.second;
     QMetaObject::invokeMethod(this, name, Q_ARG(QVariant, param));
-}
-
-void MainWindow::controllerEcho(const QVariant &param)
-{
-    const QString text = param.toString();
-    if (!text.isEmpty())
-        qDebug().noquote() << QStringLiteral("Controller echo:") << text;
 }
 
 void MainWindow::setVolume(const QVariant& param)

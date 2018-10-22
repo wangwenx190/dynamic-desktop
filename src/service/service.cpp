@@ -15,11 +15,11 @@ protected:
 };
 
 DDSvc::DDSvc(int argc, char **argv)
-    : QtService<QCoreApplication>(argc, argv, QStringLiteral("Dynamic Desktop Auto Start Service"))
+    : QtService<QCoreApplication>(argc, argv, QStringLiteral("ddassvc"))
 {
+    setServiceDisplayName(QStringLiteral("Dynamic Desktop Auto Start Service"));
     setServiceDescription(QStringLiteral("Make Dynamic Desktop auto start. Dynamic Desktop will not auto start if you disable this service."));
     setStartupType(QtServiceController::AutoStartup);
-    setStartupArguments(QStringList() << QStringLiteral("--service"));
 }
 
 void DDSvc::start()
@@ -35,7 +35,12 @@ void DDSvc::start()
     {
         ReleaseMutex(playerMutex);
         CloseHandle(playerMutex);
-        Utils::run(QCoreApplication::applicationFilePath(), QStringList() << QStringLiteral("--controller") << QStringLiteral("--launch"));
+        QString launcherPath = QCoreApplication::applicationDirPath() + QStringLiteral("/launcher");
+#ifdef _DEBUG
+        launcherPath += QStringLiteral("d");
+#endif
+        launcherPath += QStringLiteral(".exe");
+        Utils::run(launcherPath, QStringList() << QStringLiteral("--launch"));
     }
     else
         ReleaseMutex(playerMutex);

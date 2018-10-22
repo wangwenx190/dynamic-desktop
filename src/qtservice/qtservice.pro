@@ -1,7 +1,7 @@
 include(../common.pri)
 DESTDIR = $${BIN_DIR}
 QMAKE_TARGET_PRODUCT = Qt Service
-QMAKE_TARGET_DESCRIPTION = Dynamic Desktop Service Core Module
+QMAKE_TARGET_DESCRIPTION = Dynamic Desktop
 QMAKE_TARGET_COMPANY = The Qt Company
 QMAKE_TARGET_COPYRIGHT = LGPLv2.1
 TARGET = qtservice

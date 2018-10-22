@@ -31,7 +31,6 @@ public slots:
     void parseCommand(const QPair<QString, QVariant>& command);
 
 public slots:
-    void controllerEcho(const QVariant& param);
     void setVolume(const QVariant& param);
     void setMute(const QVariant& param);
     void seek(const QVariant& param);

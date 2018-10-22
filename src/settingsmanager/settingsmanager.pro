@@ -1,7 +1,7 @@
 include(../common.pri)
 DESTDIR = $${BIN_DIR}
-QMAKE_TARGET_PRODUCT = Settings Manager
-QMAKE_TARGET_DESCRIPTION = Dynamic Desktop Settings Manager Module
+QMAKE_TARGET_PRODUCT = Dynamic Desktop Settings Manager Module
+QMAKE_TARGET_DESCRIPTION = Dynamic Desktop
 TARGET = settingsmanager
 CONFIG(debug, debug|release): TARGET = $$join(TARGET,,,d)
 QT -= gui

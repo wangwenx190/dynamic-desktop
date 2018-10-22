@@ -83,4 +83,5 @@ public:
     class QtServiceSysPrivate *sysd;
 
     QStringList startupArguments;
+    QString serviceDisplayName;
 };
