@@ -7,8 +7,6 @@
 #include <QCoreApplication>
 #include <QStandardPaths>
 
-const quint32 historyMax = 20;
-
 SettingsManager *SettingsManager::getInstance()
 {
     static SettingsManager settingsManager;
@@ -195,16 +193,32 @@ QStringList SettingsManager::getHistory() const
         settings->endArray();
         return history;
     }
-    int first = size > historyMax ? size - historyMax : 0;
+    int first = size > getHistoryMax() ? size - getHistoryMax() : 0;
     for (int i = (size - 1); i != (first - 1); --i)
     {
         settings->setArrayIndex(i);
         const QString path = settings->value(QStringLiteral("path")).toString();
         if (QFileInfo::exists(path))
+        {
             history.append(QDir::toNativeSeparators(path));
+            if (!isHistoryEnabled())
+                break;
+        }
     }
     settings->endArray();
     return history;
+}
+
+bool SettingsManager::isHistoryEnabled() const
+{
+    return settings->value(QStringLiteral("rememberhistory"), true).toBool();
+}
+
+quint32 SettingsManager::getHistoryMax() const
+{
+    int max = settings->value(QStringLiteral("historymax"), 20).toInt();
+    max = max < 1 ? 0 : max;
+    return max;
 }
 
 void SettingsManager::setUrl(const QString &url)
@@ -288,14 +302,30 @@ void SettingsManager::setHistory(const QStringList &history)
 {
     if (history.isEmpty())
         return;
-    quint32 first = history.count() > historyMax ? history.count() - historyMax : 0;
+    quint32 first = history.count() > getHistoryMax() ? history.count() - getHistoryMax() : 0;
     settings->beginWriteArray(QStringLiteral("history"));
     for (quint32 i = first, j = 0; i != history.count(); ++i, ++j)
     {
         settings->setArrayIndex(j);
-        settings->setValue(QStringLiteral("path"), QDir::toNativeSeparators(history.at(i)));
+        if (isHistoryEnabled())
+            settings->setValue(QStringLiteral("path"), QDir::toNativeSeparators(history.at(i)));
+        else
+        {
+            settings->setValue(QStringLiteral("path"), QDir::toNativeSeparators(history.constLast()));
+            break;
+        }
     }
     settings->endArray();
+}
+
+void SettingsManager::setHistoryEnabled(bool enabled)
+{
+    settings->setValue(QStringLiteral("rememberhistory"), enabled);
+}
+
+void SettingsManager::setHistoryMax(quint32 max)
+{
+    settings->setValue(QStringLiteral("historymax"), max);
 }
 
 SettingsManager::SettingsManager()

@@ -1,7 +1,8 @@
 /*
 Author: Daniel Clarke(https://github.com/u8sand)
 Notice: Originally copied from https://github.com/u8sand/Baka-MPlayer and wangwenx190 made some changes to it.
-Last update date: 2018/10/09
+Create date: 2018/10/09
+Update date: 2018/10/23
 */
 QWidget {
 	font-family: 12px "Noto Sans", "FreeSans";
@@ -35,15 +36,6 @@ QPushButton:disabled {
 }
 
 QPushButton#pushButton_minimize {
-	background: none;
-	border: 0px;
-	border-radius: 0px;
-	color: none;
-	min-width: 8px;
-	min-height: 8px;
-}
-
-QPushButton#pushButton_maximize {
 	background: none;
 	border: 0px;
 	border-radius: 0px;
@@ -158,4 +150,32 @@ QRadioButton::indicator:unchecked {
 QRadioButton::indicator:checked {
 	border: 1px solid #008098;
 	image: url(:/icons/selected.ico);
+}
+
+QSpinBox {
+	background: #454A4D;
+	border: 1px solid #000;
+	border-radius: 2px;
+	padding: 2px;
+}
+
+QSpinBox:focus {
+	border: 1px solid #008098;
+}
+
+QSpinBox::disabled {
+	color: #6F6F6F;
+}
+
+QSpinBox::up-button, QSpinBox::down-button {
+	border: none;
+	width: 10px;
+}
+
+QSpinBox::up-arrow {
+	image: url(:/icons/up-arrow.ico);
+}
+
+QSpinBox::down-arrow {
+	image: url(:/icons/down-arrow.ico);
 }

@@ -216,16 +216,6 @@ bool PreferencesDialog::isAutoStart(const QString &name)
     return controller.isInstalled();
 }
 
-void PreferencesDialog::changeEvent(QEvent *event)
-{
-    CFramelessWindow::changeEvent(event);
-    if (event->type() == QEvent::WindowStateChange)
-        if (windowState() == Qt::WindowMaximized)
-            ui->pushButton_maximize->setIcon(QIcon(QStringLiteral(":/icons/restore.ico")));
-        else
-            ui->pushButton_maximize->setIcon(QIcon(QStringLiteral(":/icons/maximize.ico")));
-}
-
 static bool canHandleDrop(const QDragEnterEvent *event)
 {
     const QList<QUrl> urls = event->mimeData()->urls();
@@ -270,6 +260,9 @@ void PreferencesDialog::initUI()
     taskbarProgress = taskbarButton->progress();
     taskbarProgress->setRange(0, 99);
     taskbarProgress->show();
+    ui->checkBox_history->setChecked(SettingsManager::getInstance()->isHistoryEnabled());
+    ui->spinBox_history->setValue(SettingsManager::getInstance()->getHistoryMax());
+    ui->spinBox_history->setEnabled(ui->checkBox_history->isChecked());
     ui->comboBox_video_track->setEnabled(false);
     ui->comboBox_audio_track->setEnabled(false);
     ui->comboBox_subtitle_track->setEnabled(false);
@@ -366,6 +359,19 @@ void PreferencesDialog::initUI()
 
 void PreferencesDialog::initConnections()
 {
+    connect(ui->checkBox_history, &QCheckBox::clicked, this, [=]
+    {
+        bool rememberHistory = ui->checkBox_history->isChecked();
+        if (rememberHistory != SettingsManager::getInstance()->isHistoryEnabled())
+            SettingsManager::getInstance()->setHistoryEnabled(rememberHistory);
+        if (ui->spinBox_history->isEnabled() != rememberHistory)
+            ui->spinBox_history->setEnabled(rememberHistory);
+    });
+    connect(ui->spinBox_history, qOverload<int>(&QSpinBox::valueChanged), this, [=](int value)
+    {
+        if (value != SettingsManager::getInstance()->getHistoryMax())
+            SettingsManager::getInstance()->setHistoryMax(value);
+    });
     connect(ui->horizontalSlider_video_position, &QSlider::valueChanged, taskbarProgress, &QWinTaskbarProgress::setValue);
     connect(ui->horizontalSlider_video_position, &QSlider::rangeChanged, taskbarProgress, &QWinTaskbarProgress::setRange);
     connect(ui->pushButton_audio_open, &QPushButton::clicked, this, [=]
@@ -400,13 +406,6 @@ void PreferencesDialog::initConnections()
     connect(ui->pushButton_about, &QPushButton::clicked, this, &PreferencesDialog::about);
     connect(ui->pushButton_minimize, &QPushButton::clicked, this, &PreferencesDialog::showMinimized);
     connect(ui->pushButton_close, &QPushButton::clicked, this, &PreferencesDialog::close);
-    connect(ui->pushButton_maximize, &QPushButton::clicked, this, [=]
-    {
-        if (this->isMaximized())
-            this->showNormal();
-        else
-            this->showMaximized();
-    });
     connect(ui->checkBox_volume, &QCheckBox::clicked, this, [=]
     {
         ui->horizontalSlider_volume->setEnabled(ui->checkBox_volume->isChecked());

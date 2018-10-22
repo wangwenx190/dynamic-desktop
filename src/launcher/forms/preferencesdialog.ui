@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>746</width>
-    <height>855</height>
+    <width>744</width>
+    <height>888</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -136,35 +136,6 @@
         <property name="icon">
          <iconset resource="../images.qrc">
           <normaloff>:/icons/minimize.ico</normaloff>:/icons/minimize.ico</iconset>
-        </property>
-        <property name="flat">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="pushButton_maximize">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>30</width>
-          <height>30</height>
-         </size>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="icon">
-         <iconset resource="../images.qrc">
-          <normaloff>:/icons/maximize.ico</normaloff>:/icons/maximize.ico</iconset>
         </property>
         <property name="flat">
          <bool>true</bool>
@@ -310,6 +281,24 @@
          <widget class="QPushButton" name="pushButton_url_browse">
           <property name="text">
            <string>Browse</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_19">
+        <item>
+         <widget class="QCheckBox" name="checkBox_history">
+          <property name="text">
+           <string>Remember history</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QSpinBox" name="spinBox_history">
+          <property name="value">
+           <number>0</number>
           </property>
          </widget>
         </item>

@@ -50,7 +50,6 @@ public:
     bool isAutoStart(const QString &name = QStringLiteral("ddassvc"));
 
 protected:
-    void changeEvent(QEvent *event) override;
     void dragEnterEvent(QDragEnterEvent *event) override;
     void dropEvent(QDropEvent *event) override;
     void closeEvent(QCloseEvent *event) override;

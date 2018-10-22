@@ -288,6 +288,10 @@ Make sure this application runs in your GPU&apos;s Optimus mode.</source>
         <translation>重新打开这个视频或播放另一个视频来体验此项改变。
 请确保此应用程序是以您显卡的高性能模式运行的。</translation>
     </message>
+    <message>
+        <source>Remember history</source>
+        <translation>保存播放历史记录</translation>
+    </message>
 </context>
 <context>
     <name>QObject</name>

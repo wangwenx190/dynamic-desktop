@@ -31,6 +31,8 @@ public:
     int getRenderer() const;
     QString getImageQuality() const;
     QStringList getHistory() const;
+    bool isHistoryEnabled() const;
+    quint32 getHistoryMax() const;
 
     void setUrl(const QString &url);
     void setMute(bool mute = true);
@@ -47,6 +49,8 @@ public:
     void setRenderer(int vid = QtAV_VId_GLWidget2);
     void setImageQuality(const QString &quality = QStringLiteral("best"));
     void setHistory(const QStringList &history);
+    void setHistoryEnabled(bool enabled = true);
+    void setHistoryMax(quint32 max = 20);
 
 private:
     SettingsManager();
