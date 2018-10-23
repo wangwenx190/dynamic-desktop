@@ -300,10 +300,6 @@ Make sure this application runs in your GPU&apos;s Optimus mode.</source>
         <translation>此应用程序仅支持 Windows 7 及更新版本的操作系统。</translation>
     </message>
     <message>
-        <source>There is another instance running. Please do not run twice.</source>
-        <translation>已经有另一个实例在运行。请勿重复运行。</translation>
-    </message>
-    <message>
         <source>Cannot start the core module. Application aborting.</source>
         <translation>无法启动核心模块。应用程序正在退出。</translation>
     </message>
@@ -330,6 +326,10 @@ Make sure this application runs in your GPU&apos;s Optimus mode.</source>
     <message>
         <source>Exit</source>
         <translation>退出</translation>
+    </message>
+    <message>
+        <source>There is another instance running. Please do not run twice.</source>
+        <translation>已经有另一个实例在运行。请勿重复运行。</translation>
     </message>
 </context>
 <context>

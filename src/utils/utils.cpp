@@ -184,7 +184,7 @@ int Exit(int resultCode, bool trulyExit, HANDLE mutex, HWND wallpaper)
         CloseHandle(mutex);
     }
     if (wallpaper != nullptr)
-        ShowWindowAsync(wallpaper, SW_HIDE);
+        ShowWindow(wallpaper, SW_HIDE);
     if (trulyExit)
         exit(resultCode);
     return resultCode;

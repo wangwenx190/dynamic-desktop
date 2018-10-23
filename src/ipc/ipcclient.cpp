@@ -5,6 +5,12 @@
 QRemoteObjectNode *clientNode = nullptr;
 DDIPCReplica *ipcClient = nullptr;
 
+IPCClient *IPCClient::getInstance()
+{
+    static IPCClient client;
+    return &client;
+}
+
 IPCClient::IPCClient(QObject *parent) : QObject(parent)
 {
     clientNode = new QRemoteObjectNode();

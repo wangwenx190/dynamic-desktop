@@ -162,7 +162,85 @@ int main(int argc, char *argv[])
     }
     SkinsManager::getInstance()->setSkin(SettingsManager::getInstance()->getSkin());
     app.setQuitOnLastWindowClosed(false);
-    IPCServer ipcServer;
+    PreferencesDialog mainWindow;
+    AboutDialog aboutDialog;
+    QMenu trayMenu;
+    QSystemTrayIcon trayIcon;
+    trayIcon.setIcon(QIcon(QStringLiteral(":/icons/color_palette.ico")));
+    trayIcon.setToolTip(QStringLiteral("Dynamic Desktop"));
+    trayIcon.setContextMenu(&trayMenu);
+    QAction *showPreferencesDialogAction = trayMenu.addAction(QObject::tr("Preferences"), [=, &mainWindow]
+    {
+        if (mainWindow.isHidden())
+        {
+            Utils::moveToCenter(&mainWindow);
+            mainWindow.show();
+        }
+        if (!mainWindow.isActiveWindow())
+            mainWindow.setWindowState(mainWindow.windowState() & ~Qt::WindowMinimized);
+        if (!mainWindow.isActiveWindow())
+        {
+            mainWindow.raise();
+            mainWindow.activateWindow();
+        }
+    });
+    trayMenu.addSeparator();
+    trayMenu.addAction(QObject::tr("Play"), [=, &mainWindow]
+    {
+        emit mainWindow.sendCommand(qMakePair(QStringLiteral("play"), QVariant()));
+    });
+    trayMenu.addAction(QObject::tr("Pause"), [=, &mainWindow]
+    {
+        emit mainWindow.sendCommand(qMakePair(QStringLiteral("pause"), QVariant()));
+    });
+    QAction *muteAction = trayMenu.addAction(QObject::tr("Mute"));
+    muteAction->setCheckable(true);
+    muteAction->setChecked(SettingsManager::getInstance()->getMute());
+    QObject::connect(muteAction, &QAction::triggered, [=, &mainWindow]
+    {
+        emit mainWindow.setMute(muteAction->isChecked());
+    });
+    trayMenu.addSeparator();
+    QAction *aboutAction = trayMenu.addAction(QObject::tr("About"), [=, &aboutDialog]
+    {
+        if (aboutDialog.isHidden())
+        {
+            Utils::moveToCenter(&aboutDialog);
+            aboutDialog.show();
+        }
+        if (!aboutDialog.isActiveWindow())
+            aboutDialog.setWindowState(aboutDialog.windowState() & ~Qt::WindowMinimized);
+        if (!aboutDialog.isActiveWindow())
+        {
+            aboutDialog.raise();
+            aboutDialog.activateWindow();
+        }
+    });
+    QObject::connect(&mainWindow, &PreferencesDialog::about, [=]
+    {
+        emit aboutAction->triggered();
+    });
+    trayMenu.addAction(QObject::tr("Exit"), &app, &QApplication::quit);
+    QObject::connect(&trayIcon, &QSystemTrayIcon::activated, [=](QSystemTrayIcon::ActivationReason reason)
+    {
+        if (reason != QSystemTrayIcon::Context)
+            emit showPreferencesDialogAction->triggered();
+    });
+    QObject::connect(&mainWindow, &PreferencesDialog::muteChanged, muteAction, &QAction::setChecked);
+    QObject::connect(IPCServer::getInstance(), &IPCServer::clientOnline, [=, &mainWindow, &trayIcon]
+    {
+        if (!trayIcon.isVisible())
+            trayIcon.show();
+        if (SettingsManager::getInstance()->getUrl().isEmpty())
+        {
+            Utils::moveToCenter(&mainWindow);
+            if (!mainWindow.isVisible())
+                mainWindow.show();
+        }
+    });
+    QObject::connect(IPCServer::getInstance(), &IPCServer::clientMessage, &mainWindow, &PreferencesDialog::parseCommand);
+    QObject::connect(&mainWindow, &PreferencesDialog::sendCommand, IPCServer::getInstance(), &IPCServer::serverMessage);
+    QObject::connect(IPCServer::getInstance(), &IPCServer::clientOffline, &app, &QApplication::quit);
     QStringList playerStartupArguments{ QStringLiteral("--runfromlauncher") };
     if (parser.isSet(windowModeOption))
         playerStartupArguments << QStringLiteral("--window");
@@ -176,97 +254,5 @@ int main(int argc, char *argv[])
         QMessageBox::critical(nullptr, QStringLiteral("Dynamic Desktop"), QObject::tr("Cannot start the core module. Application aborting."));
         return Utils::Exit(-1, false, controllerMutex);
     }
-    PreferencesDialog *mainWindow = nullptr;
-    AboutDialog *aboutDialog = nullptr;
-    QMenu *trayMenu = nullptr;
-    QSystemTrayIcon *trayIcon = nullptr;
-    QObject::connect(&ipcServer, &IPCServer::clientOnline, [=, &ipcServer, &app]()mutable
-    {
-        mainWindow = new PreferencesDialog();
-        aboutDialog = new AboutDialog();
-        QObject::connect(&ipcServer, &IPCServer::clientMessage, mainWindow, &PreferencesDialog::parseCommand);
-        QObject::connect(mainWindow, &PreferencesDialog::sendCommand, &ipcServer, &IPCServer::serverMessage);
-        trayMenu = new QMenu();
-        trayIcon = new QSystemTrayIcon();
-        trayIcon->setIcon(QIcon(QStringLiteral(":/icons/color_palette.ico")));
-        trayIcon->setToolTip(QStringLiteral("Dynamic Desktop"));
-        trayIcon->setContextMenu(trayMenu);
-        trayIcon->show();
-        QAction *showPreferencesDialogAction = trayMenu->addAction(QObject::tr("Preferences"), [=]
-        {
-            if (mainWindow->isHidden())
-            {
-                Utils::moveToCenter(mainWindow);
-                mainWindow->show();
-            }
-            if (!mainWindow->isActiveWindow())
-                mainWindow->setWindowState(mainWindow->windowState() & ~Qt::WindowMinimized);
-            if (!mainWindow->isActiveWindow())
-            {
-                mainWindow->raise();
-                mainWindow->activateWindow();
-            }
-        });
-        trayMenu->addSeparator();
-        trayMenu->addAction(QObject::tr("Play"), mainWindow, [=]
-        {
-            emit mainWindow->sendCommand(qMakePair(QStringLiteral("play"), QVariant()));
-        });
-        trayMenu->addAction(QObject::tr("Pause"), mainWindow, [=]
-        {
-            emit mainWindow->sendCommand(qMakePair(QStringLiteral("pause"), QVariant()));
-        });
-        QAction *muteAction = trayMenu->addAction(QObject::tr("Mute"));
-        muteAction->setCheckable(true);
-        muteAction->setChecked(SettingsManager::getInstance()->getMute());
-        QObject::connect(muteAction, &QAction::triggered, mainWindow, [=]
-        {
-            emit mainWindow->setMute(muteAction->isChecked());
-        });
-        trayMenu->addSeparator();
-        QAction *aboutAction = trayMenu->addAction(QObject::tr("About"), mainWindow, [=]
-        {
-            if (aboutDialog->isHidden())
-            {
-                Utils::moveToCenter(aboutDialog);
-                aboutDialog->show();
-            }
-            if (!aboutDialog->isActiveWindow())
-                aboutDialog->setWindowState(aboutDialog->windowState() & ~Qt::WindowMinimized);
-            if (!aboutDialog->isActiveWindow())
-            {
-                aboutDialog->raise();
-                aboutDialog->activateWindow();
-            }
-        });
-        QObject::connect(mainWindow, &PreferencesDialog::about, [=]
-        {
-            emit aboutAction->triggered();
-        });
-        trayMenu->addAction(QObject::tr("Exit"), &app, &QApplication::quit);
-        QObject::connect(trayIcon, &QSystemTrayIcon::activated, [=](QSystemTrayIcon::ActivationReason reason)
-        {
-            if (reason != QSystemTrayIcon::Context)
-                emit showPreferencesDialogAction->triggered();
-        });
-        QObject::connect(mainWindow, &PreferencesDialog::muteChanged, muteAction, &QAction::setChecked);
-        if (SettingsManager::getInstance()->getUrl().isEmpty())
-        {
-            Utils::moveToCenter(mainWindow);
-            mainWindow->show();
-        }
-    });
-    QObject::connect(&ipcServer, &IPCServer::clientOffline, &app, &QApplication::quit);
-    const int exec = QApplication::exec();
-    if ((mainWindow != nullptr) && mainWindow->isVisible())
-        mainWindow->close();
-    delete mainWindow;
-    if ((aboutDialog != nullptr) && aboutDialog->isVisible())
-        aboutDialog->close();
-    delete aboutDialog;
-    delete trayMenu;
-    if ((trayIcon != nullptr) && trayIcon->isVisible())
-        trayIcon->hide();
-    delete trayIcon;
-    return Utils::Exit(exec, false, controllerMutex);
+    return Utils::Exit(QApplication::exec(), false, controllerMutex);
 }

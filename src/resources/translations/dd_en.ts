@@ -299,10 +299,6 @@ Make sure this application runs in your GPU&apos;s Optimus mode.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>There is another instance running. Please do not run twice.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Cannot start the core module. Application aborting.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -328,6 +324,10 @@ Make sure this application runs in your GPU&apos;s Optimus mode.</source>
     </message>
     <message>
         <source>Exit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>There is another instance running. Please do not run twice.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

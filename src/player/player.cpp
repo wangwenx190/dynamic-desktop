@@ -29,7 +29,7 @@ int main(int argc, char *argv[])
     const QStringList arguments = QApplication::arguments();
 #ifndef _DEBUG
     if (!arguments.contains(QStringLiteral("--runfromlauncher"), Qt::CaseInsensitive))
-        return 0;
+        return -1;
     qInstallMessageHandler(Utils::fileLogger);
 #endif
     windowMode = arguments.contains(QStringLiteral("--window"), Qt::CaseInsensitive);
@@ -49,53 +49,47 @@ int main(int argc, char *argv[])
         return 0;
     }
     app.setQuitOnLastWindowClosed(false);
-    IPCClient ipcClient;
-    MainWindow *mainWindow = nullptr;
-    QObject::connect(&ipcClient, &IPCClient::serverOnline, [=, &ipcClient, &app]()mutable
+    MainWindow mainWindow;
+    const Qt::WindowFlags windowFlags = Qt::FramelessWindowHint;
+    const QRect screenGeometry = QApplication::desktop()->screenGeometry(&mainWindow);
+    if (!windowMode)
     {
-        mainWindow = new MainWindow();
-        QObject::connect(&ipcClient, &IPCClient::serverMessage, mainWindow, &MainWindow::parseCommand);
-        QObject::connect(mainWindow, &MainWindow::sendCommand, &ipcClient, &IPCClient::clientMessage);
-        emit mainWindow->sendCommand(qMakePair(QStringLiteral("clientOnline"), QVariant()));
-        const Qt::WindowFlags windowFlags = Qt::FramelessWindowHint;
-        const QRect screenGeometry = QApplication::desktop()->screenGeometry(mainWindow);
-        if (!windowMode)
-        {
-            mainWindow->setWindowFlags(windowFlags);
-            // Why is Direct2D image too large?
-            mainWindow->setGeometry(screenGeometry);
-            QVersionNumber win10Version(10, 0, 10240); // Windows 10 Version 1507
-            // How to place our window under desktop icons:
-            // Use "Program Manager" as our parent window in Win7/8/8.1.
-            // Use "WorkerW" as our parent window in Win10.
-            // Use "Program Manager" as our parent window in
-            // Win10 is also OK, but our window will come
-            // to front if we press "Win + Tab" and it will
-            // also block our desktop icons, however using
-            // "WorkerW" as our parent window will not result
-            // in this problem, I don't know why. It's strange.
-            Wallpaper::setLegacyMode(currentVersion < win10Version);
-            Wallpaper::setWallpaper(reinterpret_cast<HWND>(mainWindow->winId()));
-        }
-        else
-        {
-            app.setQuitOnLastWindowClosed(true);
-            mainWindow->resize(QSize(1280, 720));
-            Utils::moveToCenter(mainWindow);
-            if (mainWindow->isHidden())
-                mainWindow->show();
-        }
+        mainWindow.setWindowFlags(windowFlags);
+        // Why is Direct2D image too large?
+        mainWindow.setGeometry(screenGeometry);
+        QVersionNumber win10Version(10, 0, 10240); // Windows 10 Version 1507
+        // How to place our window under desktop icons:
+        // Use "Program Manager" as our parent window in Win7/8/8.1.
+        // Use "WorkerW" as our parent window in Win10.
+        // Use "Program Manager" as our parent window in
+        // Win10 is also OK, but our window will come
+        // to front if we press "Win + Tab" and it will
+        // also block our desktop icons, however using
+        // "WorkerW" as our parent window will not result
+        // in this problem, I don't know why. It's strange.
+        Wallpaper::setLegacyMode(currentVersion < win10Version);
+        Wallpaper::setWallpaper(reinterpret_cast<HWND>(mainWindow.winId()));
+    }
+    else
+    {
+        app.setQuitOnLastWindowClosed(true);
+        mainWindow.resize(QSize(1280, 720));
+        Utils::moveToCenter(&mainWindow);
+        if (mainWindow.isHidden())
+            mainWindow.show();
+    }
+    QObject::connect(IPCClient::getInstance(), &IPCClient::serverMessage, &mainWindow, &MainWindow::parseCommand);
+    QObject::connect(&mainWindow, &MainWindow::sendCommand, IPCClient::getInstance(), &IPCClient::clientMessage);
+    QObject::connect(IPCClient::getInstance(), &IPCClient::serverOnline, [=, &mainWindow]
+    {
+        emit mainWindow.sendCommand(qMakePair(QStringLiteral("clientOnline"), QVariant()));
         if (!SettingsManager::getInstance()->getUrl().isEmpty())
         {
-            if (mainWindow->isHidden())
-                mainWindow->show();
-            mainWindow->setUrl(SettingsManager::getInstance()->getUrl());
+            if (mainWindow.isHidden())
+                mainWindow.show();
+            mainWindow.setUrl(SettingsManager::getInstance()->getUrl());
         }
     });
-    QObject::connect(&ipcClient, &IPCClient::serverOffline, &app, &QApplication::quit);
-    const int exec = QApplication::exec();
-    if ((mainWindow != nullptr) && mainWindow->isVisible())
-        mainWindow->close();
-    delete mainWindow;
-    return Utils::Exit(exec, false, playerMutex, Wallpaper::getWallpaper());
+    QObject::connect(IPCClient::getInstance(), &IPCClient::serverOffline, &app, &QApplication::quit);
+    return Utils::Exit(QApplication::exec(), false, playerMutex, Wallpaper::getWallpaper());
 }

@@ -9,6 +9,9 @@ class DD_SHARED_EXPORT IPCServer : public QObject
 {
     Q_OBJECT
 public:
+    static IPCServer *getInstance();
+
+private:
     explicit IPCServer(QObject *parent = nullptr);
     ~IPCServer() override;
 

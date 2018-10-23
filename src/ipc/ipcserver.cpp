@@ -5,6 +5,12 @@
 IPCCore *ipcServer = nullptr;
 QRemoteObjectHost *serverNode = nullptr;
 
+IPCServer *IPCServer::getInstance()
+{
+    static IPCServer server;
+    return &server;
+}
+
 IPCServer::IPCServer(QObject *parent) : QObject(parent)
 {
     ipcServer = new IPCCore();

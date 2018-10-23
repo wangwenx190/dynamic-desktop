@@ -9,6 +9,9 @@ class DD_SHARED_EXPORT IPCClient : public QObject
 {
     Q_OBJECT
 public:
+    static IPCClient *getInstance();
+
+private:
     explicit IPCClient(QObject *parent = nullptr);
     ~IPCClient() override;
 

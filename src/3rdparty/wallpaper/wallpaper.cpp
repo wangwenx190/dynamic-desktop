@@ -29,7 +29,7 @@ HWND getDesktop()
     HWND hwnd = getProgman();
     SendMessage(hwnd, 0x052c, 0, 0);
     EnumWindows(EnumWindowsProc, 0);
-    ShowWindowAsync(HWORKERW, legacyMode ? SW_HIDE : SW_SHOW);
+    ShowWindow(HWORKERW, legacyMode ? SW_HIDE : SW_SHOW);
     return legacyMode ? hwnd : HWORKERW;
 }
 
@@ -76,7 +76,7 @@ bool setWallpaperVisible(bool visible)
     if (getWallpaper() == nullptr)
         return false;
     if (visible != isWallpaperVisible())
-        ShowWindowAsync(getWallpaper(), visible ? SW_SHOW : SW_HIDE);
+        ShowWindow(getWallpaper(), visible ? SW_SHOW : SW_HIDE);
 }
 
 void setLegacyMode(bool legacy)

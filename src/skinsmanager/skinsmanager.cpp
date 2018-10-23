@@ -9,8 +9,8 @@
 
 SkinsManager *SkinsManager::getInstance()
 {
-    static SkinsManager SkinsManager;
-    return &SkinsManager;
+    static SkinsManager skinsManager;
+    return &skinsManager;
 }
 
 QString SkinsManager::currentSkinName() const
