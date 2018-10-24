@@ -166,7 +166,7 @@ int main(int argc, char *argv[])
     AboutDialog aboutDialog;
     QMenu trayMenu;
     QSystemTrayIcon trayIcon;
-    trayIcon.setIcon(QIcon(QStringLiteral(":/icons/color_palette.ico")));
+    trayIcon.setIcon(QIcon(QStringLiteral(":/icons/color_palette.svg")));
     trayIcon.setToolTip(QStringLiteral("Dynamic Desktop"));
     trayIcon.setContextMenu(&trayMenu);
     QAction *showPreferencesDialogAction = trayMenu.addAction(QObject::tr("Preferences"), [=, &mainWindow]

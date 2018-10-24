@@ -2,7 +2,7 @@ include(../common.pri)
 DESTDIR = $${BIN_DIR}
 QMAKE_TARGET_PRODUCT = Dynamic Desktop Service Module
 QMAKE_TARGET_DESCRIPTION = Dynamic Desktop
-RC_ICONS = ../resources/icons/dll_win10.ico
+RC_ICONS = ../resources/icons/color_palette.ico
 TARGET = service
 CONFIG(debug, debug|release): TARGET = $$join(TARGET,,,d)
 TEMPLATE = app

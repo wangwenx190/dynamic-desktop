@@ -92,7 +92,7 @@ QCheckBox::indicator:unchecked {
 QCheckBox::indicator:checked {
 	border: 1px solid rgb(161, 117, 156);
 	background: rgb(161, 117, 156);
-	image: url(:/icons/checked.ico);
+	image: url(:/icons/checked.svg);
 }
 
 QLineEdit {
@@ -123,7 +123,7 @@ QComboBox::drop-down {
 }
 
 QComboBox::down-arrow {
-	image: url(:/icons/down-arrow.ico);
+	image: url(:/icons/down-arrow.svg);
 }
 
 QGroupBox {
@@ -155,7 +155,7 @@ QRadioButton::indicator:unchecked {
 
 QRadioButton::indicator:checked {
 	border: 1px solid rgb(161, 117, 156);
-	image: url(:/icons/selected.ico);
+	image: url(:/icons/selected.svg);
 }
 
 QSpinBox {
@@ -179,9 +179,9 @@ QSpinBox::up-button, QSpinBox::down-button {
 }
 
 QSpinBox::up-arrow {
-	image: url(:/icons/up-arrow.ico);
+	image: url(:/icons/up-arrow.svg);
 }
 
 QSpinBox::down-arrow {
-	image: url(:/icons/down-arrow.ico);
+	image: url(:/icons/down-arrow.svg);
 }
