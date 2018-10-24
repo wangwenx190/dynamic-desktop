@@ -18,7 +18,7 @@ DDSvc::DDSvc(int argc, char **argv)
     : QtService<QCoreApplication>(argc, argv, QStringLiteral("ddassvc"))
 {
     setServiceDisplayName(QStringLiteral("Dynamic Desktop Auto Start Service"));
-    setServiceDescription(QStringLiteral("Make Dynamic Desktop auto start. Dynamic Desktop will not auto start if you disable this service."));
+    setServiceDescription(QStringLiteral("Make Dynamic Desktop automatically run when the system starts. Dynamic Desktop will not auto start if you disabled this service."));
     setStartupType(QtServiceController::AutoStartup);
 }
 

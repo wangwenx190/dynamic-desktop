@@ -79,10 +79,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Auto start</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Skin</source>
         <translation type="unfinished"></translation>
     </message>
@@ -296,7 +292,11 @@ Make sure this application runs in your GPU&apos;s Optimus mode.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Check for updates when application starts</source>
+        <source>Automatically run when the system starts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Automatically check for updates when the application starts</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -79,10 +79,6 @@
         <translation>通用</translation>
     </message>
     <message>
-        <source>Auto start</source>
-        <translation>开机自启</translation>
-    </message>
-    <message>
         <source>Skin</source>
         <translation>皮肤</translation>
     </message>
@@ -297,8 +293,12 @@ Make sure this application runs in your GPU&apos;s Optimus mode.</source>
         <translation>保存播放历史记录</translation>
     </message>
     <message>
-        <source>Check for updates when application starts</source>
-        <translation>应用程序启动时检查更新</translation>
+        <source>Automatically run when the system starts</source>
+        <translation>系统启动时自动运行（开机自启）</translation>
+    </message>
+    <message>
+        <source>Automatically check for updates when the application starts</source>
+        <translation>应用程序启动时自动检查更新</translation>
     </message>
 </context>
 <context>
