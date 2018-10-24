@@ -223,7 +223,7 @@ quint32 SettingsManager::getHistoryMax() const
 
 bool SettingsManager::getAutoCheckUpdate() const
 {
-    return settings->value(QStringLiteral("autoupdate"), true).toBool();
+    return settings->value(QStringLiteral("autoupdate"), false).toBool();
 }
 
 void SettingsManager::setUrl(const QString &url)
