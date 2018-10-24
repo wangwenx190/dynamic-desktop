@@ -27,6 +27,7 @@ I created this tool only to play my favorite animation clips on my desktop, so I
 - Multiscreen support
 - Support automatically run when the system starts
 - Support automatically check for updates when the application starts
+- Various beautiful skins
 - Abundant options
 - Pure green: no need to install, no write to registry and no files left in your system
 - No ads, free of charge, open source, etc...
