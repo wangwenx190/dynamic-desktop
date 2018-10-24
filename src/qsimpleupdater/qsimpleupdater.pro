@@ -7,7 +7,8 @@ QMAKE_TARGET_COPYRIGHT = DON\'T BE A DICK PUBLIC LICENSE
 TARGET = qsimpleupdater
 CONFIG(debug, debug|release): TARGET = $$join(TARGET,,,d)
 TEMPLATE = lib
-DEFINES *= QSU_SHARED
+DEFINES *= BUILD_SHARED_LIBRARY_DD
 CONFIG *= dll
-include(../3rdparty/qsimpleupdater/QSimpleUpdater.pri)
+HEADERS += $$PWD/../dd_dll_global.h
+include(../3rdparty/qsimpleupdater/qsimpleupdater.pri)
 include(../deploy.pri)

@@ -1,9 +1,11 @@
 #include "aboutdialog.h"
 #include "ui_aboutdialog.h"
 
+#include <QtGlobal>
 #include <QDesktopServices>
 #include <QUrl>
 #include <QCoreApplication>
+#include <QVersionNumber>
 
 AboutDialog::AboutDialog(QWidget *parent) :
     QWidget(parent),
@@ -13,7 +15,17 @@ AboutDialog::AboutDialog(QWidget *parent) :
     ui->lineEdit_version->setText(QStringLiteral(DD_VERSION));
     ui->lineEdit_commit_id->setText(QStringLiteral(DD_COMMIT_ID));
     ui->lineEdit_commit_time->setText(QStringLiteral(DD_COMMIT_TIME));
-    ui->lineEdit_qt->setText(QStringLiteral(QT_VERSION_STR));
+    const QString qtCompiledVersionText(QStringLiteral(QT_VERSION_STR));
+    const QString qtRuntimeVersionText(qVersion());
+    int suffixIndex;
+    QVersionNumber qtCompiledVersion = QVersionNumber::fromString(qtCompiledVersionText, &suffixIndex);
+    QVersionNumber qtRuntimeVersion = QVersionNumber::fromString(qtRuntimeVersionText, &suffixIndex);
+    QString qtVersionText(qtCompiledVersionText);
+    if (qtCompiledVersion != qtRuntimeVersion)
+        qtVersionText = tr("Run-time version: %0 / Compiled version: %1")
+                .arg(qtRuntimeVersionText)
+                .arg(qtCompiledVersionText);
+    ui->lineEdit_qt->setText(qtVersionText);
     // TODO: Do not hard code QtAV version
     ui->lineEdit_qtav->setText(QStringLiteral("1.12.0"));
     ui->lineEdit_ffmpeg->setText(QStringLiteral(FFMPEG_VERSION_STR));

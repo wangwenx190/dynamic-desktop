@@ -368,7 +368,12 @@ void PreferencesDialog::initConnections()
     });
     connect(ui->spinBox_history, qOverload<int>(&QSpinBox::valueChanged), this, [=](int value)
     {
-        if (value != SettingsManager::getInstance()->getHistoryMax())
+        if (value < 1)
+        {
+            ui->checkBox_history->setChecked(false);
+            ui->checkBox_history->clicked(false);
+        }
+        else if (value != SettingsManager::getInstance()->getHistoryMax())
             SettingsManager::getInstance()->setHistoryMax(value);
     });
     connect(ui->horizontalSlider_video_position, &QSlider::valueChanged, taskbarProgress, &QWinTaskbarProgress::setValue);
@@ -586,7 +591,15 @@ void PreferencesDialog::initConnections()
         ui->checkBox_volume->setChecked(!mute);
         emit ui->checkBox_volume->clicked(!mute);
     });
-    //connect(ui->pushButton_check_update, &QPushButton::clicked, this, &PreferencesDialog::requestUpdate);
+    connect(ui->pushButton_check_update, &QPushButton::clicked, this, [=]
+    {
+        QString updaterPath = QApplication::applicationDirPath() + QStringLiteral("/updater");
+#ifdef _DEBUG
+        updaterPath += QStringLiteral("d");
+#endif
+        updaterPath += QStringLiteral(".exe");
+        Utils::run(updaterPath);
+    });
 }
 
 void PreferencesDialog::setDecoders()

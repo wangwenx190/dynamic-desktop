@@ -2,9 +2,9 @@
   "updates": {
     "windows": {
       "open-url": "",
-      "latest-version": "1.0.0.0",
-      "download-url": "todo",
-      "changelog": "todo"
+      "latest-version": "1.0.0.1",
+      "download-url": "https://sourceforge.net/projects/dynamic-desktop/files/latest/download",
+      "changelog": "Change log for testing."
     }
   }
 }

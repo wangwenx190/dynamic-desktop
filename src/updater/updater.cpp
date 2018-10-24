@@ -1,10 +1,8 @@
 #include <Utils>
+#include <QSimpleUpdater>
 
 #include <QApplication>
-//#include <QSettings>
 #include <QFileInfo>
-
-//#include <QSimpleUpdater.h>
 
 int main(int argc, char *argv[])
 {
@@ -19,24 +17,39 @@ int main(int argc, char *argv[])
     QApplication::setApplicationDisplayName(QStringLiteral("Dynamic Desktop Updater"));
     QStringList arguments = QApplication::arguments();
     arguments.takeFirst();
-    const QString dir = QApplication::applicationDirPath();
-    /*const QString updateUrl = QStringLiteral("https://raw.githubusercontent.com/wangwenx190/dynamic-desktop/develop/src/updates.json");
-    QString ini = dir + QStringLiteral("/config.ini");
-    QSettings settings(ini, QSettings::IniFormat);
-    QSimpleUpdater *updater = QSimpleUpdater::getInstance();
-    updater->setModuleVersion(updateUrl, QStringLiteral(DD_VERSION));
-    updater->setNotifyOnUpdate(updateUrl, true);
-    updater->checkForUpdates(updateUrl);*/
-    if (arguments.contains(QStringLiteral("--auto-update"), Qt::CaseInsensitive))
+    bool autoUpdate = arguments.contains(QStringLiteral("--auto-update"), Qt::CaseInsensitive);
+    if (autoUpdate)
         arguments.removeAll(QStringLiteral("--auto-update"));
     if (!arguments.contains(QStringLiteral("--launch"), Qt::CaseInsensitive))
         arguments << QStringLiteral("--launch");
-    QString launcherPath = dir + QStringLiteral("/launcher");
+    const QString updateUrl = QStringLiteral("https://raw.githubusercontent.com/wangwenx190/dynamic-desktop/develop/src/updates.json");
+    QSimpleUpdater *updater = QSimpleUpdater::getInstance();
+    updater->setModuleName(updateUrl, QStringLiteral("Dynamic Desktop"));
+    updater->setModuleVersion(updateUrl, QStringLiteral(DD_VERSION));
+    updater->setNotifyOnUpdate(updateUrl, true);
+    updater->setNotifyOnFinish(updateUrl, !autoUpdate);
+    updater->setAutoUpdate(updateUrl, autoUpdate);
+    updater->setUseCustomInstallProcedures(updateUrl, true);
+    updater->checkForUpdates(updateUrl);
+    QObject::connect(updater, &QSimpleUpdater::updateAvailable, [=](bool hasUpdates)
+    {
+        QStringList launcherArguments = arguments;
+        QString launcherPath = QApplication::applicationDirPath() + QStringLiteral("/launcher");
 #ifdef _DEBUG
-    launcherPath += QStringLiteral("d");
+        launcherPath += QStringLiteral("d");
 #endif
-    launcherPath += QStringLiteral(".exe");
-    if (Utils::run(launcherPath, arguments))
-        return 0;
+        launcherPath += QStringLiteral(".exe");
+        if (hasUpdates)
+        {
+            launcherPath = updater->getDownloadDir(updateUrl) + QLatin1Char('/') + updater->getDownloadFileName(updateUrl);
+            launcherArguments = QStringList() << QStringLiteral("/ARGS=\"") + arguments.join(QLatin1Char(' ')) + QLatin1Char('"');
+            launcherArguments << QStringLiteral("/SILENT") << QStringLiteral("/DIR=\"") + QDir::toNativeSeparators(QApplication::applicationDirPath()) + QLatin1Char('"');
+        }
+        if (autoUpdate)
+            if (Utils::run(launcherPath, launcherArguments))
+                exit(0);
+            else
+                exit(-1);
+    });
     return QApplication::exec();
 }

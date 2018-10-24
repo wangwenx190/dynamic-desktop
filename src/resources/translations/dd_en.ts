@@ -63,6 +63,10 @@
         <source>OK</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Run-time version: %0 / Compiled version: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PreferencesDialog</name>
@@ -288,7 +292,7 @@ Make sure this application runs in your GPU&apos;s Optimus mode.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Remember history</source>
+        <source>Save playback history</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

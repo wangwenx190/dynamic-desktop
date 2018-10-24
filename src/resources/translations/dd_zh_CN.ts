@@ -63,6 +63,10 @@
         <source>OK</source>
         <translation>确定</translation>
     </message>
+    <message>
+        <source>Run-time version: %0 / Compiled version: %1</source>
+        <translation>运行时版本：%0 / 编译时版本：%1</translation>
+    </message>
 </context>
 <context>
     <name>PreferencesDialog</name>
@@ -289,7 +293,7 @@ Make sure this application runs in your GPU&apos;s Optimus mode.</source>
 请确保此应用程序是以您显卡的高性能模式运行的。</translation>
     </message>
     <message>
-        <source>Remember history</source>
+        <source>Save playback history</source>
         <translation>保存播放历史记录</translation>
     </message>
 </context>

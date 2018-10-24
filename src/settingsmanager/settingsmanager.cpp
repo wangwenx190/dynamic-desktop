@@ -211,7 +211,7 @@ QStringList SettingsManager::getHistory() const
 
 bool SettingsManager::isHistoryEnabled() const
 {
-    return settings->value(QStringLiteral("rememberhistory"), true).toBool();
+    return settings->value(QStringLiteral("savehistory"), true).toBool();
 }
 
 quint32 SettingsManager::getHistoryMax() const
@@ -320,7 +320,7 @@ void SettingsManager::setHistory(const QStringList &history)
 
 void SettingsManager::setHistoryEnabled(bool enabled)
 {
-    settings->setValue(QStringLiteral("rememberhistory"), enabled);
+    settings->setValue(QStringLiteral("savehistory"), enabled);
 }
 
 void SettingsManager::setHistoryMax(quint32 max)

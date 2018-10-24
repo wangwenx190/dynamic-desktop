@@ -1,11 +1,11 @@
 <RCC>
     <qresource prefix="/icons">
         <file alias="color_palette.ico">../resources/icons/color_palette.ico</file>
-        <file alias="close.ico">../resources/icons/close.ico</file>
-        <file alias="minimize.ico">../resources/icons/minimize.ico</file>
-        <file alias="checked.ico">../resources/icons/checked.ico</file>
-        <file alias="down-arrow.ico">../resources/icons/down-arrow.ico</file>
-        <file alias="up-arrow.ico">../resources/icons/up-arrow.ico</file>
-        <file alias="selected.ico">../resources/icons/selected.ico</file>
+        <file alias="close.svg">../resources/icons/close.svg</file>
+        <file alias="minimize.svg">../resources/icons/minimize.svg</file>
+        <file alias="checked.svg">../resources/icons/checked.svg</file>
+        <file alias="down-arrow.svg">../resources/icons/down-arrow.svg</file>
+        <file alias="up-arrow.svg">../resources/icons/up-arrow.svg</file>
+        <file alias="selected.svg">../resources/icons/selected.svg</file>
     </qresource>
 </RCC>

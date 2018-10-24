@@ -77,6 +77,7 @@ bool setWallpaperVisible(bool visible)
         return false;
     if (visible != isWallpaperVisible())
         ShowWindow(getWallpaper(), visible ? SW_SHOW : SW_HIDE);
+    return false;
 }
 
 void setLegacyMode(bool legacy)

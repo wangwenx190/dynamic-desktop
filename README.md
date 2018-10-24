@@ -3,6 +3,10 @@
 [![Bugs](https://img.shields.io/github/issues/wangwenx190/dynamic-desktop/bug.svg)](https://github.com/wangwenx190/dynamic-desktop/issues?utf8=✓&q=is%3Aissue+is%3Aopen+label%3Abug)
 [![Latest release](https://img.shields.io/github/downloads/wangwenx190/dynamic-desktop/total.svg)](https://github.com/wangwenx190/dynamic-desktop/releases/latest)
 
+[![Download dynamic desktop](https://sourceforge.net/sflogo.php?type=16&group_id=3035605)](https://sourceforge.net/p/dynamic-desktop/)
+[![Download dynamic desktop](https://img.shields.io/sourceforge/dt/dynamic-desktop.svg)](https://sourceforge.net/projects/dynamic-desktop/files/latest/download)
+[![Download dynamic desktop](https://a.fsdn.com/con/app/sf-download-button)](https://sourceforge.net/projects/dynamic-desktop/files/latest/download)
+
 ## Overview
 A small tool that can play videos on your desktop. Only for Microsoft Windows 7 ~ 10(with GUI desktop). It may have some limitations because it's just a media player, putting it's window under your desktop icons. Maybe Wallpaper Engine's principle is totally different with this tool.
 

@@ -22,7 +22,6 @@ signals:
     void setMute(bool);
     void muteChanged(bool);
     void about();
-    //void requestUpdate();
 
 public slots:
     void updateVideoSlider(const QVariant& params);

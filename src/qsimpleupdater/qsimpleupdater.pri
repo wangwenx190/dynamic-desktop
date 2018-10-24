@@ -7,5 +7,5 @@ CONFIG(debug, debug|release) {
 }
 #LIBS += -L$$OUT_PWD/../$${qsu_lib_name}/$${qsu_lib_dir} -l$${qsu_lib_file}$${DD_MAJOR_VERSION}
 LIBS *= -L$${DESTDIR} -l$${qsu_lib_file}$${DD_MAJOR_VERSION}
-INCLUDEPATH += $$PWD/../3rdparty/$${qsu_lib_name}/include
-DEPENDPATH += $$PWD/../3rdparty/$${qsu_lib_name}/include
+INCLUDEPATH += $$PWD/../3rdparty/$${qsu_lib_name}
+DEPENDPATH += $$PWD/../3rdparty/$${qsu_lib_name}
