@@ -42,7 +42,8 @@ int main(int argc, char *argv[])
             && !arguments.contains(QStringLiteral("--help"), Qt::CaseInsensitive)
             && !arguments.contains(QStringLiteral("-v"), Qt::CaseInsensitive)
             && !arguments.contains(QStringLiteral("--version"), Qt::CaseInsensitive)
-            && !QApplication::arguments().contains(QStringLiteral("--launch"), Qt::CaseInsensitive))
+            && !QApplication::arguments().contains(QStringLiteral("--launch"), Qt::CaseInsensitive)
+            && SettingsManager::getInstance()->getAutoCheckUpdate())
         if (Utils::checkUpdate())
             return 0;
     qInstallMessageHandler(Utils::fileLogger);
