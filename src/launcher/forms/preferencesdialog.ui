@@ -135,7 +135,7 @@
         </property>
         <property name="icon">
          <iconset resource="../images.qrc">
-          <normaloff>:/icons/minimize.ico</normaloff>:/icons/minimize.ico</iconset>
+          <normaloff>:/icons/minimize.svg</normaloff>:/icons/minimize.svg</iconset>
         </property>
         <property name="flat">
          <bool>true</bool>
@@ -161,7 +161,7 @@
         </property>
         <property name="icon">
          <iconset resource="../images.qrc">
-          <normaloff>:/icons/close.ico</normaloff>:/icons/close.ico</iconset>
+          <normaloff>:/icons/close.svg</normaloff>:/icons/close.svg</iconset>
         </property>
         <property name="flat">
          <bool>true</bool>
