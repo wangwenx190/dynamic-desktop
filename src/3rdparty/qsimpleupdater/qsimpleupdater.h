@@ -59,7 +59,7 @@ class DD_SHARED_EXPORT QSimpleUpdater : public QObject
     Q_OBJECT
 
 signals:
-    void updateAvailable(bool);
+    void updateAvailable (const QString& url);
     void checkingFinished (const QString& url);
     void appcastDownloaded (const QString& url, const QByteArray& data);
     void downloadFinished (const QString& url, const QString& filepath);
@@ -68,7 +68,7 @@ public:
     static QSimpleUpdater* getInstance();
 
     bool usesCustomAppcast (const QString& url) const;
-    bool getAutoUpdate(const QString& url) const;
+    bool getAutoUpdate (const QString& url) const;
     bool getNotifyOnUpdate (const QString& url) const;
     bool getNotifyOnFinish (const QString& url) const;
     bool getUpdateAvailable (const QString& url) const;

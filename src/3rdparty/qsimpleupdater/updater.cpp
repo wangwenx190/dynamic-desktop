@@ -427,7 +427,8 @@ void Updater::setUpdateAvailable (const bool available)
 {
     m_updateAvailable = available;
 
-    emit updateAvailable(isUpdateAvailable());
+    if (isUpdateAvailable())
+        emit updateAvailable (url());
 
     QMessageBox box;
     box.setTextFormat (Qt::RichText);

@@ -296,6 +296,10 @@ Make sure this application runs in your GPU&apos;s Optimus mode.</source>
         <source>Save playback history</source>
         <translation>保存播放历史记录</translation>
     </message>
+    <message>
+        <source>Check for updates when application starts</source>
+        <translation>应用程序启动时检查更新</translation>
+    </message>
 </context>
 <context>
     <name>QObject</name>

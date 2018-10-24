@@ -259,6 +259,7 @@ void PreferencesDialog::initUI()
     taskbarProgress = taskbarButton->progress();
     taskbarProgress->setRange(0, 99);
     taskbarProgress->show();
+    ui->checkBox_auto_update->setChecked(SettingsManager::getInstance()->getAutoCheckUpdate());
     ui->checkBox_history->setChecked(SettingsManager::getInstance()->isHistoryEnabled());
     ui->spinBox_history->setValue(SettingsManager::getInstance()->getHistoryMax());
     ui->spinBox_history->setEnabled(ui->checkBox_history->isChecked());
@@ -299,7 +300,7 @@ void PreferencesDialog::initUI()
         for (auto& languageFile : languageFileList)
         {
             QString fileName = languageFile.completeBaseName();
-            if (fileName.startsWith(QStringLiteral("qt"), Qt::CaseInsensitive))
+            if (!fileName.startsWith(QStringLiteral("dd_"), Qt::CaseInsensitive))
                 continue;
             QString lang = fileName.mid(fileName.indexOf(QLatin1Char('_')) + 1);
             lang = lang.replace('-', '_');
@@ -358,20 +359,28 @@ void PreferencesDialog::initUI()
 
 void PreferencesDialog::initConnections()
 {
+    connect(ui->checkBox_auto_update, &QCheckBox::clicked, this, [=]
+    {
+        bool autoUpdate = ui->checkBox_auto_update->isChecked();
+        if (autoUpdate != SettingsManager::getInstance()->getAutoCheckUpdate())
+            SettingsManager::getInstance()->setAutoCheckUpdate(autoUpdate);
+    });
     connect(ui->checkBox_history, &QCheckBox::clicked, this, [=]
     {
-        bool rememberHistory = ui->checkBox_history->isChecked();
-        if (rememberHistory != SettingsManager::getInstance()->isHistoryEnabled())
-            SettingsManager::getInstance()->setHistoryEnabled(rememberHistory);
-        if (ui->spinBox_history->isEnabled() != rememberHistory)
-            ui->spinBox_history->setEnabled(rememberHistory);
+        bool saveHistory = ui->checkBox_history->isChecked();
+        if (saveHistory != SettingsManager::getInstance()->isHistoryEnabled())
+            SettingsManager::getInstance()->setHistoryEnabled(saveHistory);
+        if (ui->spinBox_history->isEnabled() != saveHistory)
+            ui->spinBox_history->setEnabled(saveHistory);
+        if (saveHistory && ui->spinBox_history->value() < 1)
+            ui->spinBox_history->setValue(SettingsManager::getInstance()->getHistoryMax());
     });
     connect(ui->spinBox_history, qOverload<int>(&QSpinBox::valueChanged), this, [=](int value)
     {
         if (value < 1)
         {
             ui->checkBox_history->setChecked(false);
-            ui->checkBox_history->clicked(false);
+            emit ui->checkBox_history->clicked(false);
         }
         else if (value != SettingsManager::getInstance()->getHistoryMax())
             SettingsManager::getInstance()->setHistoryMax(value);

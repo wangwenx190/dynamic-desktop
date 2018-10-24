@@ -33,6 +33,7 @@ public:
     QStringList getHistory() const;
     bool isHistoryEnabled() const;
     quint32 getHistoryMax() const;
+    bool getAutoCheckUpdate() const;
 
     void setUrl(const QString &url);
     void setMute(bool mute = true);
@@ -50,7 +51,8 @@ public:
     void setImageQuality(const QString &quality = QStringLiteral("best"));
     void setHistory(const QStringList &history);
     void setHistoryEnabled(bool enabled = true);
-    void setHistoryMax(quint32 max = 20);
+    void setHistoryMax(int max = 20);
+    void setAutoCheckUpdate(bool enabled = true);
 
 private:
     SettingsManager();

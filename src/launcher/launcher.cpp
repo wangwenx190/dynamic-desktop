@@ -166,6 +166,7 @@ int main(int argc, char *argv[])
     AboutDialog aboutDialog;
     QMenu trayMenu;
     QSystemTrayIcon trayIcon;
+    IPCServer *ipcServer = IPCServer::getInstance();
     trayIcon.setIcon(QIcon(QStringLiteral(":/icons/color_palette.ico")));
     trayIcon.setToolTip(QStringLiteral("Dynamic Desktop"));
     trayIcon.setContextMenu(&trayMenu);
@@ -227,7 +228,7 @@ int main(int argc, char *argv[])
             emit showPreferencesDialogAction->triggered();
     });
     QObject::connect(&mainWindow, &PreferencesDialog::muteChanged, muteAction, &QAction::setChecked);
-    QObject::connect(IPCServer::getInstance(), &IPCServer::clientOnline, [=, &mainWindow, &trayIcon]
+    QObject::connect(ipcServer, &IPCServer::clientOnline, [=, &mainWindow, &trayIcon]
     {
         if (!trayIcon.isVisible())
             trayIcon.show();
@@ -238,9 +239,9 @@ int main(int argc, char *argv[])
                 mainWindow.show();
         }
     });
-    QObject::connect(IPCServer::getInstance(), &IPCServer::clientMessage, &mainWindow, &PreferencesDialog::parseCommand);
-    QObject::connect(&mainWindow, &PreferencesDialog::sendCommand, IPCServer::getInstance(), &IPCServer::serverMessage);
-    QObject::connect(IPCServer::getInstance(), &IPCServer::clientOffline, &app, &QApplication::quit);
+    QObject::connect(ipcServer, &IPCServer::clientMessage, &mainWindow, &PreferencesDialog::parseCommand);
+    QObject::connect(&mainWindow, &PreferencesDialog::sendCommand, ipcServer, &IPCServer::serverMessage);
+    QObject::connect(ipcServer, &IPCServer::clientOffline, &app, &QApplication::quit);
     QStringList playerStartupArguments{ QStringLiteral("--runfromlauncher") };
     if (parser.isSet(windowModeOption))
         playerStartupArguments << QStringLiteral("--window");

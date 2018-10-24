@@ -217,8 +217,13 @@ bool SettingsManager::isHistoryEnabled() const
 quint32 SettingsManager::getHistoryMax() const
 {
     int max = settings->value(QStringLiteral("historymax"), 20).toInt();
-    max = max < 1 ? 0 : max;
+    max = max < 1 ? 20 : max;
     return max;
+}
+
+bool SettingsManager::getAutoCheckUpdate() const
+{
+    return settings->value(QStringLiteral("autoupdate"), true).toBool();
 }
 
 void SettingsManager::setUrl(const QString &url)
@@ -323,9 +328,15 @@ void SettingsManager::setHistoryEnabled(bool enabled)
     settings->setValue(QStringLiteral("savehistory"), enabled);
 }
 
-void SettingsManager::setHistoryMax(quint32 max)
+void SettingsManager::setHistoryMax(int max)
 {
-    settings->setValue(QStringLiteral("historymax"), max);
+    quint32 newMax = max < 1 ? 20 : max;
+    settings->setValue(QStringLiteral("historymax"), newMax);
+}
+
+void SettingsManager::setAutoCheckUpdate(bool enabled)
+{
+    settings->setValue(QStringLiteral("autoupdate"), enabled);
 }
 
 SettingsManager::SettingsManager()

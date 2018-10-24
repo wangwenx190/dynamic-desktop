@@ -65,7 +65,7 @@ bool QSimpleUpdater::usesCustomAppcast (const QString& url) const
     return getUpdater (url)->customAppcast();
 }
 
-bool QSimpleUpdater::getAutoUpdate(const QString& url) const
+bool QSimpleUpdater::getAutoUpdate (const QString& url) const
 {
     return getUpdater (url)->autoUpdate();
 }
@@ -135,12 +135,12 @@ bool QSimpleUpdater::usesCustomInstallProcedures (const QString& url) const
     return getUpdater (url)->useCustomInstallProcedures();
 }
 
-QString QSimpleUpdater::getDownloadDir(const QString &url) const
+QString QSimpleUpdater::getDownloadDir (const QString &url) const
 {
     return getUpdater (url)->downloadDir();
 }
 
-QString QSimpleUpdater::getDownloadFileName(const QString &url) const
+QString QSimpleUpdater::getDownloadFileName (const QString &url) const
 {
     return getUpdater (url)->fileName();
 }

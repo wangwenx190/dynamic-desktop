@@ -45,7 +45,7 @@ class DD_SHARED_EXPORT Updater : public QObject
     Q_OBJECT
 
 signals:
-    void updateAvailable(bool);
+    void updateAvailable (const QString& url);
     void checkingFinished (const QString& url);
     void downloadFinished (const QString& url, const QString& filepath);
     void appcastDownloaded (const QString& url, const QByteArray& data);

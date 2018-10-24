@@ -31,22 +31,30 @@ int main(int argc, char *argv[])
     updater->setAutoUpdate(updateUrl, autoUpdate);
     updater->setUseCustomInstallProcedures(updateUrl, true);
     updater->checkForUpdates(updateUrl);
-    QObject::connect(updater, &QSimpleUpdater::updateAvailable, [=](bool hasUpdates)
+    QObject::connect(updater, &QSimpleUpdater::checkingFinished, [=](const QString& url)
     {
-        QStringList launcherArguments = arguments;
-        QString launcherPath = QApplication::applicationDirPath() + QStringLiteral("/launcher");
-#ifdef _DEBUG
-        launcherPath += QStringLiteral("d");
-#endif
-        launcherPath += QStringLiteral(".exe");
-        if (hasUpdates)
+        if (!updater->getUpdateAvailable(url) && autoUpdate)
         {
-            launcherPath = updater->getDownloadDir(updateUrl) + QLatin1Char('/') + updater->getDownloadFileName(updateUrl);
-            launcherArguments = QStringList() << QStringLiteral("/ARGS=\"") + arguments.join(QLatin1Char(' ')) + QLatin1Char('"');
-            launcherArguments << QStringLiteral("/SILENT") << QStringLiteral("/DIR=\"") + QDir::toNativeSeparators(QApplication::applicationDirPath()) + QLatin1Char('"');
+            QString launcherPath = QApplication::applicationDirPath() + QStringLiteral("/launcher");
+#ifdef _DEBUG
+            launcherPath += QStringLiteral("d");
+#endif
+            launcherPath += QStringLiteral(".exe");
+            if (Utils::run(launcherPath, arguments))
+                exit(0);
+            else
+                exit(-1);
         }
+    });
+    QObject::connect(updater, &QSimpleUpdater::downloadFinished, [=](const QString& url, const QString& filePath)
+    {
+        Q_UNUSED(url)
+        QStringList installerArguments;
+        installerArguments << QStringLiteral("/SILENT") << QStringLiteral("/DIR=\"") + QDir::toNativeSeparators(QApplication::applicationDirPath()) + QLatin1Char('"');
+        if (!arguments.isEmpty())
+            installerArguments << QStringLiteral("/ARGS=\"") + arguments.join(QLatin1Char(' ')) + QLatin1Char('"');
         if (autoUpdate)
-            if (Utils::run(launcherPath, launcherArguments))
+            if (Utils::run(filePath, installerArguments))
                 exit(0);
             else
                 exit(-1);

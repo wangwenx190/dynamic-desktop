@@ -1,7 +1,7 @@
 include(../common.pri)
 DESTDIR = $${BIN_DIR}
 QMAKE_TARGET_PRODUCT = Dynamic Desktop Updater Module
-QMAKE_TARGET_DESCRIPTION = Dynamic Desktop
+QMAKE_TARGET_DESCRIPTION = Dynamic Desktop Updater
 RC_ICONS = ../resources/icons/color_palette.ico
 TARGET = updater
 CONFIG(debug, debug|release): TARGET = $$join(TARGET,,,d)

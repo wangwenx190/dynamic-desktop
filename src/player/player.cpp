@@ -50,6 +50,7 @@ int main(int argc, char *argv[])
     }
     app.setQuitOnLastWindowClosed(false);
     MainWindow mainWindow;
+    IPCClient *ipcClient = IPCClient::getInstance();
     const Qt::WindowFlags windowFlags = Qt::FramelessWindowHint;
     const QRect screenGeometry = QApplication::desktop()->screenGeometry(&mainWindow);
     if (!windowMode)
@@ -78,9 +79,9 @@ int main(int argc, char *argv[])
         if (mainWindow.isHidden())
             mainWindow.show();
     }
-    QObject::connect(IPCClient::getInstance(), &IPCClient::serverMessage, &mainWindow, &MainWindow::parseCommand);
-    QObject::connect(&mainWindow, &MainWindow::sendCommand, IPCClient::getInstance(), &IPCClient::clientMessage);
-    QObject::connect(IPCClient::getInstance(), &IPCClient::serverOnline, [=, &mainWindow]
+    QObject::connect(ipcClient, &IPCClient::serverMessage, &mainWindow, &MainWindow::parseCommand);
+    QObject::connect(&mainWindow, &MainWindow::sendCommand, ipcClient, &IPCClient::clientMessage);
+    QObject::connect(ipcClient, &IPCClient::serverOnline, [=, &mainWindow]
     {
         emit mainWindow.sendCommand(qMakePair(QStringLiteral("clientOnline"), QVariant()));
         if (!SettingsManager::getInstance()->getUrl().isEmpty())
@@ -90,6 +91,6 @@ int main(int argc, char *argv[])
             mainWindow.setUrl(SettingsManager::getInstance()->getUrl());
         }
     });
-    QObject::connect(IPCClient::getInstance(), &IPCClient::serverOffline, &app, &QApplication::quit);
+    QObject::connect(ipcClient, &IPCClient::serverOffline, &app, &QApplication::quit);
     return Utils::Exit(QApplication::exec(), false, playerMutex, Wallpaper::getWallpaper());
 }
