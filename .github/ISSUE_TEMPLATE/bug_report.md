@@ -28,6 +28,16 @@ See `debug.log` besides the executable file. If the content of the log file is t
 
 If applicable, add screenshots to help explain your problem.
 
+**Media file parameters (please complete the following information):**
+ - Video stream format: [e.g. HEVC]
+ - Audio stream format: [e.g. DobbyAtmos]
+ - Subtitle stream format: [e.g. pgs]
+ - File extension: [e.g. ts]
+ - File size: [e.g. 34GB]
+ - Duration: [e.g. 1h34min]
+ - HDR?
+ - Resolution: [e.g. 4K]
+
 **Dynamic Desktop (please complete the following information):**
  - Version or commit: [e.g. 1.0.0]
  - Qt version or commit: [e.g. 5.12.0]
