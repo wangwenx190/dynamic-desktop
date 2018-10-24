@@ -41,10 +41,7 @@ Microsoft Windows 7 ~ 10(with GUI desktop), both 32 bit and 64 bit systems.
 - Currently, hardware decoding only supports traditional video formats such as AVC/H.264, so please do not attempt to play HEVC videos if you are using hardware decoding.
 
 ## Compilation
-- Clone or download(don't forget submodules) this repository
-   ```bat
-   git clone --recursive https://github.com/wangwenx190/dynamic-desktop.git
-   ```
+- Clone or download this repository
 - Download [Qt5](http://download.qt.io/archive/qt/) and install it.
 - Download [QtAV](https://github.com/wang-bin/QtAV)'s prebuilt SDK and install it, or build yourself.
 - Download [FFmpeg](https://github.com/wang-bin/avbuild)'s prebuilt binaries or build yourself.
