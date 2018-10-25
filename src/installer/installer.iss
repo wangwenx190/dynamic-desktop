@@ -80,7 +80,7 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 Source: "..\..\build\{#DDBinDir}\*"; DestDir: "{app}"; Excludes: "vc_redist.x??.exe,vcredist_x??.exe,*.log,*.ini,*.lib,*.exp,*.ilk"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 [Icons]
-Name: "{userdesktop}\{#DDName}"; Filename: "{app}\{#DDExeName}"; Tasks: desktopicon
+Name: "{userdesktop}\{#DDName}"; Filename: "{app}\{#DDExeName}"; WorkingDir: "{app}"; Tasks: desktopicon
 
 [Run]
 Filename: "{app}\{#DDExeName}"; Description: "{cm:LaunchProgram,{#StringChange(DDName, '&', '&&')}}"; WorkingDir: "{app}"; Flags: nowait postinstall skipifdoesntexist skipifsilent
