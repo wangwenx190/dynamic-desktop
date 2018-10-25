@@ -193,7 +193,7 @@ QStringList SettingsManager::getHistory() const
         settings->endArray();
         return history;
     }
-    int first = size > getHistoryMax() ? size - getHistoryMax() : 0;
+    int first = size > static_cast<int>(getHistoryMax()) ? size - static_cast<int>(getHistoryMax()) : 0;
     for (int i = (size - 1); i != (first - 1); --i)
     {
         settings->setArrayIndex(i);
@@ -307,7 +307,7 @@ void SettingsManager::setHistory(const QStringList &history)
 {
     if (history.isEmpty())
         return;
-    quint32 first = history.count() > getHistoryMax() ? history.count() - getHistoryMax() : 0;
+    quint32 first = history.count() > static_cast<int>(getHistoryMax()) ? history.count() - static_cast<int>(getHistoryMax()) : 0;
     settings->beginWriteArray(QStringLiteral("history"));
     for (quint32 i = first, j = 0; i != history.count(); ++i, ++j)
     {
