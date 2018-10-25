@@ -12,3 +12,4 @@ if exist bin (
 if exist bin64 (
     ISCC /Qp /DWIN64 /DDDVersion=%DDVersion% /O"%CD%" /Fdd_v%DDVersion%_setup_x64 "%iss_path%"
 )
+cd ..
