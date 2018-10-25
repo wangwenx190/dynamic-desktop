@@ -8,6 +8,11 @@
 #include <QFileInfo>
 #include <QProcess>
 #include <QWidget>
+#include <QTranslator>
+#include <QLocale>
+#ifndef BUILD_DD_STATIC
+#include <QLibraryInfo>
+#endif
 
 #include <wtsapi32.h>
 #include <userenv.h>
@@ -16,6 +21,8 @@
 
 namespace Utils
 {
+
+QTranslator *translator = nullptr;
 
 void fileLogger(QtMsgType type, const QMessageLogContext &context, const QString &msg)
 {
@@ -153,7 +160,7 @@ bool launchSession1Process(const QString &path, const QString &params)
     LPVOID lpEnvironment = nullptr;
     if (CreateEnvironmentBlock(&lpEnvironment, hDuplicatedToken, FALSE) == FALSE)
         return false;
-    wchar_t *wcstring;
+    wchar_t *wcstring = nullptr;
     if (!params.isEmpty())
     {
         QByteArray byteArray = params.toLocal8Bit();
@@ -178,6 +185,11 @@ bool launchSession1Process(const QString &path, const QString &params)
 
 int Exit(int resultCode, bool trulyExit, HANDLE mutex, HWND wallpaper)
 {
+    if (translator != nullptr)
+    {
+        delete translator;
+        translator = nullptr;
+    }
     if (mutex != nullptr)
     {
         ReleaseMutex(mutex);
@@ -260,6 +272,38 @@ bool isPicture(const QString &fileName)
             || fileName.endsWith(QStringLiteral(".jpeg"), Qt::CaseInsensitive)
             || fileName.endsWith(QStringLiteral(".webp"), Qt::CaseInsensitive)
             || fileName.endsWith(QStringLiteral(".gif"), Qt::CaseInsensitive);
+}
+
+bool installTranslation(const QString &language, const QString &prefix)
+{
+    if (language.isEmpty() || prefix.isEmpty())
+        return false;
+    if (translator != nullptr)
+    {
+        qApp->removeTranslator(translator);
+        delete translator;
+        translator = nullptr;
+    }
+#ifdef BUILD_DD_STATIC
+    QString qmDir = QStringLiteral(":/i18n");
+#else
+    QString qmDir = QLibraryInfo::location(QLibraryInfo::TranslationsPath);
+#endif
+    translator = new QTranslator();
+    if (language == QStringLiteral("auto"))
+    {
+        if (translator->load(QLocale(), prefix, QStringLiteral("_"), qmDir))
+            return qApp->installTranslator(translator);
+    }
+    else
+    {
+        const QString fileName = QStringLiteral("%0_%1").arg(prefix).arg(language);
+        if (translator->load(fileName, qmDir))
+            return qApp->installTranslator(translator);
+    }
+    delete translator;
+    translator = nullptr;
+    return false;
 }
 
 /*bool killProcess(const QString &name)

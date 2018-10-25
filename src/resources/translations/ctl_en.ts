@@ -279,10 +279,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>You have changed the UI translation. Application restart is needed.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Reopen this video or play another video to experience it.
 Make sure this application runs in your GPU&apos;s Optimus mode.</source>
         <translation type="unfinished"></translation>
@@ -297,6 +293,10 @@ Make sure this application runs in your GPU&apos;s Optimus mode.</source>
     </message>
     <message>
         <source>Automatically check for updates when the application starts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Some texts will not refresh their translation until you restart this application.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

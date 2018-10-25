@@ -25,5 +25,6 @@ bool DD_SHARED_EXPORT run(const QString &path, const QStringList &params = QStri
 bool DD_SHARED_EXPORT isVideo(const QString &fileName);
 bool DD_SHARED_EXPORT isAudio(const QString &fileName);
 bool DD_SHARED_EXPORT isPicture(const QString &fileName);
+bool DD_SHARED_EXPORT installTranslation(const QString &language, const QString &prefix);
 
 }

@@ -29,7 +29,7 @@
 - [x] Support changing skins during running
 - [ ] <del>Detect runtime QtAV and FFmpeg version</del>
 - [ ] <del>Add options: Desktop OpenGL, ANGLE, software</del>
-- [ ] Support changing language during running
+- [x] Support changing language during running
 - [ ] Bug reporter? (**maybe useless, we have github**)
 - [x] Output detailed log to local file
 - [ ] Support favorite playlists

@@ -47,6 +47,7 @@ public slots:
     bool setRenderer(const QVariant& param);
     void setImageQuality(const QVariant& param);
     void setImageRatio(const QVariant& param);
+    void setTranslation(const QVariant& param);
 
 private slots:
     void initUI();

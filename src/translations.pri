@@ -3,7 +3,7 @@ isEmpty(lrelease): lrelease = $${qttools_dir}/lrelease.exe
 lrelease_params = -nounfinished -removeidentical
 CONFIG(small): lrelease_params = $${lrelease_params} -compress
 exists("$${lupdate}") {
-    system("$${lupdate} -no-obsolete $${_PRO_FILE_}")
+    system("$${lupdate} -no-obsolete -locations none -no-ui-lines $${_PRO_FILE_}")
     system("$${lrelease} $${lrelease_params} $${_PRO_FILE_}")
 }
 CONFIG(static_dd) {

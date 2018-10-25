@@ -11,11 +11,6 @@
 #include <QVersionNumber>
 #include <QDesktopWidget>
 #include <QSysInfo>
-#include <QTranslator>
-#include <QLocale>
-#ifndef BUILD_DD_STATIC
-#include <QLibraryInfo>
-#endif
 
 int main(int argc, char *argv[])
 {
@@ -38,24 +33,7 @@ int main(int argc, char *argv[])
     qInstallMessageHandler(Utils::fileLogger);
 #endif
     windowMode = arguments.contains(QStringLiteral("--window"), Qt::CaseInsensitive);
-#ifdef BUILD_DD_STATIC
-    QString qmDir = QStringLiteral(":/i18n");
-#else
-    QString qmDir = QLibraryInfo::location(QLibraryInfo::TranslationsPath);
-#endif
-    QString language = SettingsManager::getInstance()->getLanguage();
-    QTranslator translator;
-    if (language == QStringLiteral("auto"))
-    {
-        if (translator.load(QLocale(), QStringLiteral("ply"), QStringLiteral("_"), qmDir))
-            QApplication::installTranslator(&translator);
-    }
-    else
-    {
-        language = QStringLiteral("ply_%0").arg(language);
-        if (translator.load(language, qmDir))
-            QApplication::installTranslator(&translator);
-    }
+    Utils::installTranslation(SettingsManager::getInstance()->getLanguage(), QStringLiteral("ply"));
     int suffixIndex;
     QVersionNumber currentVersion = QVersionNumber::fromString(QSysInfo::kernelVersion(), &suffixIndex);
     QVersionNumber win7Version(6, 1, 7600);

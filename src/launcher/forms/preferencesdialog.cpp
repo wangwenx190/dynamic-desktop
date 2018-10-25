@@ -513,7 +513,10 @@ void PreferencesDialog::initConnections()
         if (ui->comboBox_language->currentData().toString() != SettingsManager::getInstance()->getLanguage())
         {
             SettingsManager::getInstance()->setLanguage(ui->comboBox_language->currentData().toString());
-            QMessageBox::information(nullptr, QStringLiteral("Dynamic Desktop"), tr("You have changed the UI translation. Application restart is needed."));
+            Utils::installTranslation(SettingsManager::getInstance()->getLanguage(), QStringLiteral("ctl"));
+            ui->retranslateUi(this);
+            emit this->sendCommand(qMakePair(QStringLiteral("setTranslation"), SettingsManager::getInstance()->getLanguage()));
+            QMessageBox::information(nullptr, QStringLiteral("Dynamic Desktop"), tr("Some texts will not refresh their translation until you restart this application."));
         }
     });
     connect(ui->comboBox_video_track, qOverload<int>(&QComboBox::currentIndexChanged), this, [=](int index)

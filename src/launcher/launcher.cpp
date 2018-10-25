@@ -10,11 +10,6 @@
 
 #include <QApplication>
 #include <QMessageBox>
-#include <QTranslator>
-#include <QLocale>
-#ifndef BUILD_DD_STATIC
-#include <QLibraryInfo>
-#endif
 #include <QSysInfo>
 #include <QVersionNumber>
 #include <QCommandLineParser>
@@ -48,24 +43,7 @@ int main(int argc, char *argv[])
             return 0;
     qInstallMessageHandler(Utils::fileLogger);
 #endif
-#ifdef BUILD_DD_STATIC
-    QString qmDir = QStringLiteral(":/i18n");
-#else
-    QString qmDir = QLibraryInfo::location(QLibraryInfo::TranslationsPath);
-#endif
-    QString language = SettingsManager::getInstance()->getLanguage();
-    QTranslator translator;
-    if (language == QStringLiteral("auto"))
-    {
-        if (translator.load(QLocale(), QStringLiteral("ctl"), QStringLiteral("_"), qmDir))
-            QApplication::installTranslator(&translator);
-    }
-    else
-    {
-        language = QStringLiteral("ctl_%0").arg(language);
-        if (translator.load(language, qmDir))
-            QApplication::installTranslator(&translator);
-    }
+    Utils::installTranslation(SettingsManager::getInstance()->getLanguage(), QStringLiteral("ctl"));
     int suffixIndex;
     QVersionNumber currentVersion = QVersionNumber::fromString(QSysInfo::kernelVersion(), &suffixIndex);
     QVersionNumber win7Version(6, 1, 7600);
@@ -168,7 +146,7 @@ int main(int argc, char *argv[])
     QMenu trayMenu;
     QSystemTrayIcon trayIcon;
     IPCServer *ipcServer = IPCServer::getInstance();
-    trayIcon.setIcon(QIcon(QStringLiteral(":/icons/color_palette.ico")));
+    trayIcon.setIcon(QIcon(QStringLiteral(":/icons/color_palette.svg")));
     trayIcon.setToolTip(QStringLiteral("Dynamic Desktop"));
     trayIcon.setContextMenu(&trayMenu);
     QAction *showPreferencesDialogAction = trayMenu.addAction(QObject::tr("Preferences"), [=, &mainWindow]

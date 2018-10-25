@@ -18,23 +18,34 @@ init:
   - set "QTVER=5.9"
   - set "QTDIR=C:\Qt\%QTVER%\msvc2017_64"
   - set "QTAVID=7ddf6db"
+  - set "SMP_LIBASS_VERSION=0.14.0-11"
   - call "%QTDIR%\bin\qtenv2.bat"
-  - call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat" x64
+  - call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat" x86_x64
 install:
   - cd /d "%APPVEYOR_BUILD_FOLDER%"
   - cd ci
   - if exist build rd /s /q build
   - md build
   - cd build
-  - call ..\install.bat
-  - powershell ..\patch.ps1
+  - call ..\install_dep.bat
+  - powershell ..\patch_qtav.ps1
   - cd ..
   - rd /s /q build
   - call update_version.bat
   - cd ..
 build_script:
   - call build.bat
+after_build:
+  - call ci\prepare_deploy.bat
 test: off
 artifacts:
-  - path: .qmake.conf
-deploy: off
+  - path: build\dd-*.7z
+deploy:
+  provider: FTP
+  protocol: sftp
+  host: frs.sourceforge.net
+  username: wangwenx190
+  password:
+    secure: awR+dRiLYrwqcPDhhQC/uQ==
+  folder: /home/frs/project/d/dy/dynamic-desktop/beta
+  active_mode: false

@@ -279,10 +279,6 @@
         <translation>系统</translation>
     </message>
     <message>
-        <source>You have changed the UI translation. Application restart is needed.</source>
-        <translation>您已更改界面翻译。重新运行此应用程序以生效。</translation>
-    </message>
-    <message>
         <source>Reopen this video or play another video to experience it.
 Make sure this application runs in your GPU&apos;s Optimus mode.</source>
         <translation>重新打开这个视频或播放另一个视频来体验此项改变。
@@ -299,6 +295,10 @@ Make sure this application runs in your GPU&apos;s Optimus mode.</source>
     <message>
         <source>Automatically check for updates when the application starts</source>
         <translation>应用程序启动时自动检查更新</translation>
+    </message>
+    <message>
+        <source>Some texts will not refresh their translation until you restart this application.</source>
+        <translation>部分文本将不会刷新它们的翻译直到您重启此应用程序。</translation>
     </message>
 </context>
 <context>

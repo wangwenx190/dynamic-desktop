@@ -4,11 +4,6 @@
 
 #include <QApplication>
 #include <QFileInfo>
-#include <QTranslator>
-#include <QLocale>
-#ifndef BUILD_DD_STATIC
-#include <QLibraryInfo>
-#endif
 
 int main(int argc, char *argv[])
 {
@@ -21,24 +16,7 @@ int main(int argc, char *argv[])
     QApplication::setOrganizationName(QStringLiteral("wangwenx190"));
     QApplication::setOrganizationDomain(QStringLiteral("wangwenx190.github.io"));
     QApplication::setApplicationDisplayName(QStringLiteral("Dynamic Desktop Updater"));
-#ifdef BUILD_DD_STATIC
-    QString qmDir = QStringLiteral(":/i18n");
-#else
-    QString qmDir = QLibraryInfo::location(QLibraryInfo::TranslationsPath);
-#endif
-    QString language = SettingsManager::getInstance()->getLanguage();
-    QTranslator translator;
-    if (language == QStringLiteral("auto"))
-    {
-        if (translator.load(QLocale(), QStringLiteral("udt"), QStringLiteral("_"), qmDir))
-            QApplication::installTranslator(&translator);
-    }
-    else
-    {
-        language = QStringLiteral("udt_%0").arg(language);
-        if (translator.load(language, qmDir))
-            QApplication::installTranslator(&translator);
-    }
+    Utils::installTranslation(SettingsManager::getInstance()->getLanguage(), QStringLiteral("udt"));
     QStringList arguments = QApplication::arguments();
     arguments.takeFirst();
     bool autoUpdate = arguments.contains(QStringLiteral("--auto-update"), Qt::CaseInsensitive);
@@ -65,9 +43,9 @@ int main(int argc, char *argv[])
 #endif
             launcherPath += QStringLiteral(".exe");
             if (Utils::run(launcherPath, arguments))
-                exit(0);
+                Utils::Exit(0, true);
             else
-                exit(-1);
+                Utils::Exit(-1, true);
         }
     });
     QObject::connect(updater, &QSimpleUpdater::downloadFinished, [=](const QString& url, const QString& filePath)
@@ -79,9 +57,9 @@ int main(int argc, char *argv[])
             installerArguments << QStringLiteral("/ARGS=\"") + arguments.join(QLatin1Char(' ')) + QLatin1Char('"');
         if (autoUpdate)
             if (Utils::run(filePath, installerArguments))
-                exit(0);
+                Utils::Exit(0, true);
             else
-                exit(-1);
+                Utils::Exit(-1, true);
     });
-    return QApplication::exec();
+    return Utils::Exit(QApplication::exec());
 }

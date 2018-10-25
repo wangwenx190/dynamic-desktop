@@ -26,7 +26,7 @@ I created this tool only to play my favorite animation clips on my desktop, so I
 - HiDPI support
 - Multiscreen support
 - Support automatically run when the system starts
-- Support automatically check for updates when the application starts
+- Support auto update
 - Various beautiful skins
 - Abundant options
 - Pure green: no need to install, no write to registry and no files left in your system
@@ -80,7 +80,7 @@ See [CONTRIBUTING.md](/CONTRIBUTING.md) for more information.
 - [QSimpleUpdater](/src/3rdparty/qsimpleupdater): https://github.com/alex-spataru/QSimpleUpdater , DON'T BE A DICK PUBLIC LICENSE, thanks to [Alex Spataru](https://github.com/alex-spataru)!
 - [src/resources/stylesheets/Default.css](/src/resources/stylesheets/Default.css): copied from https://github.com/u8sand/Baka-MPlayer , GPLv2, thanks to [Daniel Clarke](https://github.com/u8sand)!
 - [src/resources/stylesheets/Greenery.css](/src/resources/stylesheets/Greenery.css), [src/resources/stylesheets/Marsala.css](/src/resources/stylesheets/Marsala.css), [src/resources/stylesheets/Rose&nbsp;Quartz&nbsp;&amp;&nbsp;Serenity.css](/src/resources/stylesheets/Rose%20Quartz%20&%20Serenity.css), [src/resources/stylesheets/Ultra&nbsp;Violet.css](/src/resources/stylesheets/Ultra%20Violet.css): created by [Yuriko](https://github.com/GA-1101), thanks a lot!
-- [src/resources/icons/color_palette.ico](/src/resources/icons/color_palette.ico): downloaded from https://www.easyicon.net/
+- [src/resources/icons/color_palette.ico](/src/resources/icons/color_palette.ico) and [src/resources/icons/color_palette.svg](/src/resources/icons/color_palette.svg): downloaded from https://www.easyicon.net/
 - [src/resources/icons/minimize.svg](/src/resources/icons/minimize.svg), [src/resources/icons/close.svg](/src/resources/icons/close.svg): downloaded from http://www.svgnfont.cn/
 - [src/resources/icons/checked.svg](/src/resources/icons/checked.svg), [src/resources/icons/down-arrow.svg](/src/resources/icons/down-arrow.svg), [src/resources/icons/selected.svg](/src/resources/icons/selected.svg): copied from https://github.com/u8sand/Baka-MPlayer
 - Dynamic Desktop: [GPLv3](/LICENSE.md)

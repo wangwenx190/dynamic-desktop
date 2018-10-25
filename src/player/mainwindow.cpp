@@ -249,6 +249,11 @@ void MainWindow::setImageRatio(const QVariant& param)
         renderer->setOutAspectRatioMode(QtAV::VideoRenderer::VideoAspectRatio);
 }
 
+void MainWindow::setTranslation(const QVariant &param)
+{
+    Utils::installTranslation(param.toString(), QStringLiteral("ply"));
+}
+
 void MainWindow::onStartPlay()
 {
     if (!player || !subtitle)
