@@ -56,7 +56,7 @@ Microsoft Windows 7 ~ 10(with GUI desktop), both 32 bit and 64 bit systems.
 
 **IMPORTANT NOTES**
 - You can also use Intel C++ Compiler(ICC), Clang or MinGW to compile it, just remember to set up environment variables. Cross compile on other platforms may also work, but it will never run on platforms other than MS Windows.
-- Submodule *core* depends on *Qt Windows Extras* module, *ipc* depends on *Qt Remote Objects* module, *QSimpleUpdater* depends on *Qt Network* module, please make sure your Qt has these modules. However, you could also change the source code to remove these dependences.
+- Submodule *launcher* depends on *Qt Windows Extras* module, *ipc* depends on *Qt Remote Objects* module, *QSimpleUpdater* depends on *Qt Network* module, please make sure your Qt has these modules. However, you could also change the source code to remove these dependences.
 
 ### How to build installer
 1. Download and install the latest version of [Inno Setup](http://jrsoftware.org/isdl.php).

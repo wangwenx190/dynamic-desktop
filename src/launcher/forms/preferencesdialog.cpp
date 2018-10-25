@@ -300,7 +300,7 @@ void PreferencesDialog::initUI()
         for (auto& languageFile : languageFileList)
         {
             QString fileName = languageFile.completeBaseName();
-            if (!fileName.startsWith(QStringLiteral("dd_"), Qt::CaseInsensitive))
+            if (!fileName.startsWith(QStringLiteral("ctl_"), Qt::CaseInsensitive))
                 continue;
             QString lang = fileName.mid(fileName.indexOf(QLatin1Char('_')) + 1);
             lang = lang.replace('-', '_');

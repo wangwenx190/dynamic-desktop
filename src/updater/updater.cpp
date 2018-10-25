@@ -1,8 +1,14 @@
 #include <Utils>
 #include <QSimpleUpdater>
+#include <SettingsManager>
 
 #include <QApplication>
 #include <QFileInfo>
+#include <QTranslator>
+#include <QLocale>
+#ifndef BUILD_DD_STATIC
+#include <QLibraryInfo>
+#endif
 
 int main(int argc, char *argv[])
 {
@@ -15,6 +21,24 @@ int main(int argc, char *argv[])
     QApplication::setOrganizationName(QStringLiteral("wangwenx190"));
     QApplication::setOrganizationDomain(QStringLiteral("wangwenx190.github.io"));
     QApplication::setApplicationDisplayName(QStringLiteral("Dynamic Desktop Updater"));
+#ifdef BUILD_DD_STATIC
+    QString qmDir = QStringLiteral(":/i18n");
+#else
+    QString qmDir = QLibraryInfo::location(QLibraryInfo::TranslationsPath);
+#endif
+    QString language = SettingsManager::getInstance()->getLanguage();
+    QTranslator translator;
+    if (language == QStringLiteral("auto"))
+    {
+        if (translator.load(QLocale(), QStringLiteral("udt"), QStringLiteral("_"), qmDir))
+            QApplication::installTranslator(&translator);
+    }
+    else
+    {
+        language = QStringLiteral("udt_%0").arg(language);
+        if (translator.load(language, qmDir))
+            QApplication::installTranslator(&translator);
+    }
     QStringList arguments = QApplication::arguments();
     arguments.takeFirst();
     bool autoUpdate = arguments.contains(QStringLiteral("--auto-update"), Qt::CaseInsensitive);

@@ -7,6 +7,7 @@ TARGET = updater
 CONFIG(debug, debug|release): TARGET = $$join(TARGET,,,d)
 TEMPLATE = app
 QT *= widgets
+include(../settingsmanager/settingsmanager.pri)
 include(../qsimpleupdater/qsimpleupdater.pri)
 include(../utils/utils.pri)
 SOURCES += updater.cpp

@@ -5,8 +5,6 @@
 
 QT_BEGIN_NAMESPACE
 QT_FORWARD_DECLARE_CLASS(QVBoxLayout)
-QT_FORWARD_DECLARE_CLASS(QWinTaskbarButton)
-QT_FORWARD_DECLARE_CLASS(QWinTaskbarProgress)
 QT_END_NAMESPACE
 
 namespace QtAV
@@ -62,6 +60,4 @@ private:
     QtAV::VideoRenderer *renderer = nullptr;
     QtAV::SubtitleFilter *subtitle = nullptr;
     QVBoxLayout *mainLayout = nullptr;
-    QWinTaskbarButton *taskbarButton = nullptr;
-    QWinTaskbarProgress *taskbarProgress = nullptr;
 };

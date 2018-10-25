@@ -11,6 +11,11 @@
 #include <QVersionNumber>
 #include <QDesktopWidget>
 #include <QSysInfo>
+#include <QTranslator>
+#include <QLocale>
+#ifndef BUILD_DD_STATIC
+#include <QLibraryInfo>
+#endif
 
 int main(int argc, char *argv[])
 {
@@ -33,18 +38,36 @@ int main(int argc, char *argv[])
     qInstallMessageHandler(Utils::fileLogger);
 #endif
     windowMode = arguments.contains(QStringLiteral("--window"), Qt::CaseInsensitive);
+#ifdef BUILD_DD_STATIC
+    QString qmDir = QStringLiteral(":/i18n");
+#else
+    QString qmDir = QLibraryInfo::location(QLibraryInfo::TranslationsPath);
+#endif
+    QString language = SettingsManager::getInstance()->getLanguage();
+    QTranslator translator;
+    if (language == QStringLiteral("auto"))
+    {
+        if (translator.load(QLocale(), QStringLiteral("ply"), QStringLiteral("_"), qmDir))
+            QApplication::installTranslator(&translator);
+    }
+    else
+    {
+        language = QStringLiteral("ply_%0").arg(language);
+        if (translator.load(language, qmDir))
+            QApplication::installTranslator(&translator);
+    }
     int suffixIndex;
     QVersionNumber currentVersion = QVersionNumber::fromString(QSysInfo::kernelVersion(), &suffixIndex);
     QVersionNumber win7Version(6, 1, 7600);
     if (currentVersion < win7Version)
     {
-        QMessageBox::critical(nullptr, QStringLiteral("Dynamic Desktop"), QStringLiteral("This application only supports Windows 7 and newer."));
+        QMessageBox::critical(nullptr, QStringLiteral("Dynamic Desktop"), QObject::tr("This application only supports Windows 7 and newer."));
         return Utils::Exit(-1, false, playerMutex);
     }
     playerMutex = CreateMutex(nullptr, FALSE, TEXT("wangwenx190.DynamicDesktop.Player.1000.AppMutex"));
     if ((playerMutex != nullptr) && (GetLastError() == ERROR_ALREADY_EXISTS))
     {
-        QMessageBox::critical(nullptr, QStringLiteral("Dynamic Desktop"), QStringLiteral("There is another instance running. Please do not run twice."));
+        QMessageBox::critical(nullptr, QStringLiteral("Dynamic Desktop"), QObject::tr("There is another instance running. Please do not run twice."));
         ReleaseMutex(playerMutex);
         return 0;
     }

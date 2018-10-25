@@ -57,12 +57,12 @@ int main(int argc, char *argv[])
     QTranslator translator;
     if (language == QStringLiteral("auto"))
     {
-        if (translator.load(QLocale(), QStringLiteral("dd"), QStringLiteral("_"), qmDir))
+        if (translator.load(QLocale(), QStringLiteral("ctl"), QStringLiteral("_"), qmDir))
             QApplication::installTranslator(&translator);
     }
     else
     {
-        language = QStringLiteral("dd_%0").arg(language);
+        language = QStringLiteral("ctl_%0").arg(language);
         if (translator.load(language, qmDir))
             QApplication::installTranslator(&translator);
     }

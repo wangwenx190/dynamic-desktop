@@ -7,8 +7,6 @@
 #include <QVBoxLayout>
 #include <QtAV>
 #include <QtAVWidgets>
-#include <QWinTaskbarButton>
-#include <QWinTaskbarProgress>
 #include <QFileInfo>
 
 const qreal kVolumeInterval = 0.04;
@@ -27,7 +25,6 @@ MainWindow::~MainWindow()
     delete renderer;
     delete player;
     delete mainLayout;
-    delete taskbarButton;
 }
 
 void MainWindow::parseCommand(const QPair<QString, QVariant> &command)
@@ -144,11 +141,6 @@ void MainWindow::initUI()
     mainLayout->setSpacing(0);
     setLayout(mainLayout);
     setWindowTitle(QStringLiteral("Dynamic Desktop"));
-    taskbarButton = new QWinTaskbarButton();
-    taskbarButton->setWindow(windowHandle());
-    taskbarProgress = taskbarButton->progress();
-    taskbarProgress->setRange(0, 99);
-    taskbarProgress->show();
 }
 
 void MainWindow::initPlayer()
@@ -171,7 +163,6 @@ void MainWindow::initConnections()
     connect(player, &QtAV::AVPlayer::loaded, this, &MainWindow::onStartPlay);
     connect(player, &QtAV::AVPlayer::positionChanged, this, [=](qint64 pos)
     {
-        taskbarProgress->setValue(pos);
         emit this->sendCommand(qMakePair(QStringLiteral("updateVideoSlider"), pos));
         emit this->sendCommand(qMakePair(QStringLiteral("setVideoPositionText"), QTime(0, 0, 0).addMSecs(pos).toString(QStringLiteral("HH:mm:ss"))));
     });
@@ -198,7 +189,7 @@ bool MainWindow::setRenderer(const QVariant& param)
     QtAV::VideoRenderer *videoRenderer = QtAV::VideoRenderer::create(id);
     if (!videoRenderer || !videoRenderer->isAvailable() || !videoRenderer->widget())
     {
-        QMessageBox::critical(nullptr, QStringLiteral("Dynamic Desktop"), QStringLiteral("Current renderer is not available on your platform!"));
+        QMessageBox::critical(nullptr, QStringLiteral("Dynamic Desktop"), tr("Current renderer is not available on your platform!"));
         return false;
     }
     subtitle->uninstall();
@@ -265,10 +256,6 @@ void MainWindow::onStartPlay()
     emit this->sendCommand(qMakePair(QStringLiteral("clearAllTracks"), QVariant()));
     emit this->sendCommand(qMakePair(QStringLiteral("updateVideoSliderUnit"), player->notifyInterval()));
     emit this->sendCommand(qMakePair(QStringLiteral("updateVideoSliderRange"), player->duration()));
-    taskbarProgress->setRange(0, player->duration());
-    if (!taskbarProgress->isVisible())
-        taskbarProgress->show();
-    taskbarProgress->resume();
     emit this->sendCommand(qMakePair(QStringLiteral("updateVideoSlider"), player->position()));
     emit this->sendCommand(qMakePair(QStringLiteral("setSeekAreaEnabled"), player->isSeekable()));
     emit this->sendCommand(qMakePair(QStringLiteral("setAudioAreaEnabled"), player->audio() ? true : false));
@@ -343,12 +330,7 @@ void MainWindow::play(const QVariant& param)
     if (Utils::isPicture(player->file()))
         return;
     if (player->isPaused())
-    {
         player->pause(false);
-        taskbarProgress->resume();
-        if (!taskbarProgress->isVisible())
-            taskbarProgress->show();
-    }
 }
 
 void MainWindow::pause(const QVariant& param)
@@ -357,12 +339,7 @@ void MainWindow::pause(const QVariant& param)
     if (!player)
         return;
     if (player->isPlaying())
-    {
         player->pause();
-        taskbarProgress->pause();
-        if (!taskbarProgress->isVisible())
-            taskbarProgress->show();
-    }
 }
 
 /*void MainWindow::stop(const QVariant& param)
@@ -371,12 +348,7 @@ void MainWindow::pause(const QVariant& param)
     if (!player)
         return;
     if (player->isLoaded())
-    {
         player->stop();
-        taskbarProgress->stop();
-        if (!taskbarProgress->isVisible())
-            taskbarProgress->show();
-    }
 }*/
 
 void MainWindow::setUrl(const QVariant& param)

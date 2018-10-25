@@ -11,4 +11,8 @@ DEFINES *= BUILD_SHARED_LIBRARY_DD
 CONFIG *= dll
 HEADERS += $$PWD/../dd_dll_global.h
 include(../3rdparty/qsimpleupdater/qsimpleupdater.pri)
+TRANSLATIONS += \
+    ../resources/translations/udt_en.ts \
+    ../resources/translations/udt_zh_CN.ts
+include(../translations.pri)
 include(../deploy.pri)

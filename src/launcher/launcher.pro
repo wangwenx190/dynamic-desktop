@@ -27,8 +27,8 @@ FORMS += \
     forms/preferencesdialog.ui \
     forms/aboutdialog.ui
 TRANSLATIONS += \
-    ../resources/translations/dd_en.ts \
-    ../resources/translations/dd_zh_CN.ts
+    ../resources/translations/ctl_en.ts \
+    ../resources/translations/ctl_zh_CN.ts
 RESOURCES += images.qrc
 include(../translations.pri)
 CONFIG(static_dd) {
