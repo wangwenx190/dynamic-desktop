@@ -73,8 +73,14 @@ Name: "zh_TW"; MessagesFile: ".\languages\zh_TW.isl"
 [Messages]
 BeveledLabel={#DDName}
 
+[Tasks]
+Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
+
 [Files]
 Source: "..\..\build\{#DDBinDir}\*"; DestDir: "{app}"; Excludes: "vc_redist.x??.exe,vcredist_x??.exe,*.log,*.ini,*.lib,*.exp,*.ilk"; Flags: ignoreversion recursesubdirs createallsubdirs
+
+[Icons]
+Name: "{userdesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon
 
 [Run]
 Filename: "{app}\{#DDExeName}"; Description: "{cm:LaunchProgram,{#StringChange(DDName, '&', '&&')}}"; WorkingDir: "{app}"; Flags: nowait postinstall skipifdoesntexist skipifsilent
