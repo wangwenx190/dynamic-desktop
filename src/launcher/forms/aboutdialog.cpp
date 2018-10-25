@@ -62,7 +62,7 @@ AboutDialog::AboutDialog(QWidget *parent) :
     });
     connect(ui->pushButton_release, &QPushButton::clicked, this, [=]
     {
-        QDesktopServices::openUrl(QUrl(QStringLiteral("https://github.com/wangwenx190/dynamic-desktop/releases/latest")));
+        QDesktopServices::openUrl(QUrl(QStringLiteral("https://sourceforge.net/p/dynamic-desktop/")));
     });
 }
 
