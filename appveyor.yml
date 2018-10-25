@@ -39,7 +39,7 @@ after_build:
   - call ci\prepare_deploy.bat
 test: off
 artifacts:
-  - path: build\dd-*.7z
+  - path: dd-*.7z
 deploy:
   provider: FTP
   protocol: sftp

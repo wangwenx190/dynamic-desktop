@@ -9,3 +9,4 @@ if exist bin64\launcher.exe (
     move bin64 %DD_ZIP_BASENAME%-x64
     7z a %DD_ZIP_BASENAME%-x64 > NUL
 )
+copy /y *.7z ..
