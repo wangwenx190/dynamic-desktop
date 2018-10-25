@@ -49,7 +49,7 @@
     </message>
     <message>
         <source>The installer will open separately</source>
-        <translation>安装程序将分别运行</translation>
+        <translation>安装程序将单独启动</translation>
     </message>
     <message>
         <source>Click &quot;OK&quot; to begin installing the update</source>
@@ -128,7 +128,7 @@
     </message>
     <message>
         <source>Version %1 of %2 has been released!</source>
-        <translation>%2 V%1 已经发布！</translation>
+        <translation>%2 最新版本 V%1 已经发布！</translation>
     </message>
     <message>
         <source>No updates are available for the moment</source>
