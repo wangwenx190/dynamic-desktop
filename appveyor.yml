@@ -38,14 +38,17 @@ build_script:
 after_build:
   - call ci\prepare_deploy.bat
 test: off
+#artifacts:
+  #- path: dd-*.7z
+#deploy:
+  #provider: FTP
+  #protocol: sftp
+  #host: frs.sourceforge.net
+  #username: wangwenx190
+  #password:
+    #secure: awR+dRiLYrwqcPDhhQC/uQ==
+  #folder: /home/frs/project/d/dy/dynamic-desktop/beta
+  #active_mode: false
 artifacts:
-  - path: dd-*.7z
-deploy:
-  provider: FTP
-  protocol: sftp
-  host: frs.sourceforge.net
-  username: wangwenx190
-  password:
-    secure: awR+dRiLYrwqcPDhhQC/uQ==
-  folder: /home/frs/project/d/dy/dynamic-desktop/beta
-  active_mode: false
+  - path: .qmake.conf
+deploy: off
