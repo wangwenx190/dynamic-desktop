@@ -30,7 +30,7 @@ If applicable, add screenshots to help explain your problem.
 
 **Media file parameters (please complete the following information):**
  - Video stream format: [e.g. HEVC]
- - Audio stream format: [e.g. DobbyAtmos]
+ - Audio stream format: [e.g. TrueHD 7.1 DolbyAtmos]
  - Subtitle stream format: [e.g. pgs]
  - File extension: [e.g. ts]
  - File size: [e.g. 34GB]
