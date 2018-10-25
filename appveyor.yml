@@ -47,5 +47,5 @@ deploy:
   username: wangwenx190
   password:
     secure: awR+dRiLYrwqcPDhhQC/uQ==
-  folder: /home/frs/project/dynamic-desktop/beta
+  folder: /home/frs/project/d/dy/dynamic-desktop/beta
   active_mode: false
