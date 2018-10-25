@@ -35,8 +35,8 @@ install:
   - cd ..
 build_script:
   - call build.bat
-after_build:
-  - call ci\prepare_deploy.bat
+#after_build:
+  #- call ci\prepare_deploy.bat
 test: off
 #artifacts:
   #- path: dd-*.7z
