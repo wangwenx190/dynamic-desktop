@@ -6,7 +6,5 @@ lupdate -no-obsolete -locations none -no-ui-lines "%~dp0..\src\launcher\launcher
 lrelease -compress -nounfinished -removeidentical "%~dp0..\src\launcher\launcher.pro"
 lupdate -no-obsolete -locations none -no-ui-lines "%~dp0..\src\player\player.pro"
 lrelease -compress -nounfinished -removeidentical "%~dp0..\src\player\player.pro"
-lupdate -no-obsolete -locations none -no-ui-lines "%~dp0..\src\qsimpleupdater\qsimpleupdater.pro"
-lrelease -compress -nounfinished -removeidentical "%~dp0..\src\qsimpleupdater\qsimpleupdater.pro"
 cd ..
 rd /s /q build
