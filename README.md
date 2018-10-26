@@ -35,6 +35,9 @@ I created this tool only to play my favorite animation clips on my desktop, so I
 ## Supported platforms
 Microsoft Windows 7 ~ 10(with GUI desktop), both 32 bit and 64 bit systems.
 
+## Downloads
+For official builds and third-party packages please see https://sourceforge.net/p/dynamic-desktop/ .
+
 ## Important notes
 - Windows Vista and XP are not supported.
 - This tool won't run if Windows Aero is disabled.
