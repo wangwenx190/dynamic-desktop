@@ -4,7 +4,7 @@
 #include <QtGlobal>
 #include <QDesktopServices>
 #include <QUrl>
-#include <QCoreApplication>
+#include <QApplication>
 #include <QVersionNumber>
 
 AboutDialog::AboutDialog(QWidget *parent) :
@@ -47,10 +47,7 @@ AboutDialog::AboutDialog(QWidget *parent) :
 #endif
     ui->lineEdit_arch->setText(arch);
     ui->lineEdit_build_time->setText(QStringLiteral("%0 %1").arg(QStringLiteral(__DATE__)).arg(QStringLiteral(__TIME__)));
-    connect(ui->pushButton_aboutQt, &QPushButton::clicked, this, [=]
-    {
-        qApp->aboutQt();
-    });
+    connect(ui->pushButton_aboutQt, &QPushButton::clicked, qApp, &QApplication::aboutQt);
     connect(ui->pushButton_ok, &QPushButton::clicked, this, &AboutDialog::close);
     connect(ui->pushButton_source, &QPushButton::clicked, this, [=]
     {

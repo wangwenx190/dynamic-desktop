@@ -385,9 +385,5 @@ Make sure this application runs in your GPU&apos;s Optimus mode.</source>
         <source>volume</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>Skip checking for updates, launch directly.</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 </TS>

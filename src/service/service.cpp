@@ -28,7 +28,7 @@ void DDSvc::start()
     if ((serviceMutex != nullptr) && (GetLastError() == ERROR_ALREADY_EXISTS))
     {
         ReleaseMutex(serviceMutex);
-        qApp->quit();
+        QCoreApplication::quit();
     }
     HANDLE playerMutex = CreateMutex(nullptr, FALSE, TEXT("wangwenx190.DynamicDesktop.Player.1000.AppMutex"));
     if ((playerMutex == nullptr) || (GetLastError() != ERROR_ALREADY_EXISTS))
@@ -46,7 +46,7 @@ void DDSvc::start()
         ReleaseMutex(playerMutex);
     ReleaseMutex(serviceMutex);
     CloseHandle(serviceMutex);
-    qApp->quit();
+    QCoreApplication::quit();
 }
 
 int main(int argc, char **argv)

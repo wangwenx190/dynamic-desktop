@@ -386,9 +386,5 @@ Make sure this application runs in your GPU&apos;s Optimus mode.</source>
         <source>volume</source>
         <translation>音量</translation>
     </message>
-    <message>
-        <source>Skip checking for updates, launch directly.</source>
-        <translation>跳过更新检查，直接启动。</translation>
-    </message>
 </context>
 </TS>

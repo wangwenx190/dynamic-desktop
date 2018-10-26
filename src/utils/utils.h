@@ -17,7 +17,6 @@ void DD_SHARED_EXPORT fileLogger(QtMsgType type, const QMessageLogContext &conte
 QStringList DD_SHARED_EXPORT externalFilesToLoad(const QFileInfo &originalMediaFile, const QString &fileType);
 void DD_SHARED_EXPORT moveToCenter(QObject *window);
 bool DD_SHARED_EXPORT adminRun(const QString &path, const QString &params);
-bool DD_SHARED_EXPORT checkUpdate(bool autoUpdate = true);
 bool DD_SHARED_EXPORT launchSession1Process(const QString &path, const QString &params);
 int DD_SHARED_EXPORT Exit(int resultCode = 0, bool trulyExit = false, HANDLE mutex = nullptr, HWND wallpaper = nullptr);
 bool DD_SHARED_EXPORT run(const QString &path, const QStringList &params = QStringList{}, bool needAdmin = false);

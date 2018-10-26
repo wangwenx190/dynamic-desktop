@@ -31,16 +31,6 @@ int main(int argc, char *argv[])
     QApplication::setOrganizationName(QStringLiteral("wangwenx190"));
     QApplication::setOrganizationDomain(QStringLiteral("wangwenx190.github.io"));
 #ifndef _DEBUG
-    const QStringList arguments = QApplication::arguments();
-    if (!arguments.contains(QStringLiteral("-?"))
-            && !arguments.contains(QStringLiteral("-h"), Qt::CaseInsensitive)
-            && !arguments.contains(QStringLiteral("--help"), Qt::CaseInsensitive)
-            && !arguments.contains(QStringLiteral("-v"), Qt::CaseInsensitive)
-            && !arguments.contains(QStringLiteral("--version"), Qt::CaseInsensitive)
-            && !QApplication::arguments().contains(QStringLiteral("--launch"), Qt::CaseInsensitive)
-            && SettingsManager::getInstance()->getAutoCheckUpdate())
-        if (Utils::checkUpdate())
-            return 0;
     qInstallMessageHandler(Utils::fileLogger);
 #endif
     Utils::installTranslation(SettingsManager::getInstance()->getLanguage(), QStringLiteral("ctl"));
@@ -89,9 +79,6 @@ int main(int argc, char *argv[])
                                     QApplication::translate("main", "Set volume. It must be a positive integer between 0 and 99. Default is 9."),
                                     QApplication::translate("main", "volume"));
     parser.addOption(volumeOption);
-    QCommandLineOption launchOption(QStringLiteral("launch"),
-                                    QApplication::translate("main", "Skip checking for updates, launch directly."));
-    parser.addOption(launchOption);
     parser.process(app);
     QString skinOptionValue = parser.value(skinOption);
     if (!skinOptionValue.isEmpty())

@@ -192,6 +192,9 @@
       </item>
       <item>
        <widget class="QCheckBox" name="checkBox_auto_update">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="text">
          <string>Automatically check for updates when the application starts</string>
         </property>
@@ -695,7 +698,7 @@
      <item>
       <widget class="QPushButton" name="pushButton_check_update">
        <property name="enabled">
-        <bool>true</bool>
+        <bool>false</bool>
        </property>
        <property name="text">
         <string>Check update</string>

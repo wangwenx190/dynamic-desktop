@@ -22,6 +22,7 @@
 #include <QLibraryInfo>
 #endif
 #include <QTimer>
+#include <QApplication>
 
 void PreferencesDialog::updateVideoSlider(const QVariant &params)
 {
@@ -249,7 +250,7 @@ void PreferencesDialog::closeEvent(QCloseEvent *event)
 {
     CFramelessWindow::closeEvent(event);
     if (ui->comboBox_url->currentText().isEmpty())
-        qApp->quit();
+        QApplication::quit();
 }
 
 void PreferencesDialog::initUI()

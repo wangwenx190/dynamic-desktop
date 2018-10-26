@@ -2,7 +2,6 @@
 TEMPLATE = subdirs
 CONFIG *= ordered
 SUBDIRS += \
-    src/qsimpleupdater \
     src/qtniceframelesswindow \
     src/qtservice \
     src/wallpaper \
@@ -11,7 +10,6 @@ SUBDIRS += \
     src/skinsmanager \
     src/settingsmanager \
     src/ipc \
-    src/updater \
     src/service \
     src/player \
     src/launcher

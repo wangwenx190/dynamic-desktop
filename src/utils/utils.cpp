@@ -126,20 +126,6 @@ bool adminRun(const QString &path, const QString &params)
     return ShellExecuteEx(&execInfo);
 }
 
-bool checkUpdate(bool autoUpdate)
-{
-    QStringList arguments = QCoreApplication::arguments();
-    arguments.takeFirst();
-    if (autoUpdate)
-        arguments << QStringLiteral("--auto-update");
-    QString updaterPath = QCoreApplication::applicationDirPath() + QStringLiteral("/updater");
-#ifdef _DEBUG
-    updaterPath += QStringLiteral("d");
-#endif
-    updaterPath += QStringLiteral(".exe");
-    return run(updaterPath, arguments);
-}
-
 bool launchSession1Process(const QString &path, const QString &params)
 {
     if (path.isEmpty())
@@ -198,7 +184,7 @@ int Exit(int resultCode, bool trulyExit, HANDLE mutex, HWND wallpaper)
     if (wallpaper != nullptr)
         ShowWindow(wallpaper, SW_HIDE);
     if (trulyExit)
-        exit(resultCode);
+        QCoreApplication::exit(resultCode);
     return resultCode;
 }
 
@@ -280,7 +266,7 @@ bool installTranslation(const QString &language, const QString &prefix)
         return false;
     if (translator != nullptr)
     {
-        qApp->removeTranslator(translator);
+        QCoreApplication::removeTranslator(translator);
         delete translator;
         translator = nullptr;
     }
@@ -293,13 +279,13 @@ bool installTranslation(const QString &language, const QString &prefix)
     if (language == QStringLiteral("auto"))
     {
         if (translator->load(QLocale(), prefix, QStringLiteral("_"), qmDir))
-            return qApp->installTranslator(translator);
+            return QCoreApplication::installTranslator(translator);
     }
     else
     {
         const QString fileName = QStringLiteral("%0_%1").arg(prefix).arg(language);
         if (translator->load(fileName, qmDir))
-            return qApp->installTranslator(translator);
+            return QCoreApplication::installTranslator(translator);
     }
     delete translator;
     translator = nullptr;
