@@ -59,7 +59,7 @@ For official builds and third-party packages please see https://sourceforge.net/
 
 **IMPORTANT NOTES**
 - You can also use Intel C++ Compiler(ICC), Clang or MinGW to compile it, just remember to set up environment variables. Cross compile on other platforms may also work, but it will never run on platforms other than MS Windows.
-- Submodule *launcher* depends on *Qt Windows Extras* module, *ipc* depends on *Qt Remote Objects* module, *QSimpleUpdater* depends on *Qt Network* module, please make sure your Qt has these modules. However, you could also change the source code to remove these dependences.
+- Submodule *launcher* depends on *Qt Windows Extras* module, *ipc* depends on *Qt Remote Objects* module, please make sure your Qt has these modules. However, you could also change the source code to remove these dependences.
 
 ### How to build installer
 1. Download and install the latest version of [Inno Setup](http://jrsoftware.org/isdl.php).
@@ -72,15 +72,11 @@ For official builds and third-party packages please see https://sourceforge.net/
 3. Call `build.bat` or run qmake and jom/nmake manually.
 4. You can find the generated installer in *./build*.
 
-## Contributing
-See [CONTRIBUTING.md](/CONTRIBUTING.md) for more information.
-
 ## Licenses
 - [Wallpaper](/src/3rdparty/wallpaper): https://github.com/ThomasHuai/Wallpaper , Apache License 2.0, thanks to [ThomasHuai](https://github.com/ThomasHuai)!
 - [QtAV](https://github.com/wang-bin/QtAV) and [FFmpeg](https://github.com/wang-bin/avbuild): LGPLv2.1, thanks to [wang bin](https://github.com/wang-bin)!
 - [Qt Nice Frameless Window](/src/3rdparty/qtniceframelesswindow): https://github.com/Bringer-of-Light/Qt-Nice-Frameless-Window , MIT, thanks to [Bringer of Light](https://github.com/Bringer-of-Light)!
 - [Qt](http://download.qt.io/archive/qt/) and [Qt Service](/src/3rdparty/qtservice): https://github.com/qtproject/qt-solutions , LGPLv2.1, thanks to [the Qt Company](https://www.qt.io/)!
-- [QSimpleUpdater](/src/3rdparty/qsimpleupdater): https://github.com/alex-spataru/QSimpleUpdater , DON'T BE A DICK PUBLIC LICENSE, thanks to [Alex Spataru](https://github.com/alex-spataru)!
 - [src/resources/stylesheets/Default.css](/src/resources/stylesheets/Default.css): copied from https://github.com/u8sand/Baka-MPlayer , GPLv2, thanks to [Daniel Clarke](https://github.com/u8sand)!
 - [src/resources/stylesheets/Greenery.css](/src/resources/stylesheets/Greenery.css), [src/resources/stylesheets/Marsala.css](/src/resources/stylesheets/Marsala.css), [src/resources/stylesheets/Rose&nbsp;Quartz&nbsp;&amp;&nbsp;Serenity.css](/src/resources/stylesheets/Rose%20Quartz%20&%20Serenity.css), [src/resources/stylesheets/Ultra&nbsp;Violet.css](/src/resources/stylesheets/Ultra%20Violet.css): created by [Yuriko](https://github.com/GA-1101), thanks a lot!
 - [src/resources/icons/color_palette.ico](/src/resources/icons/color_palette.ico) and [src/resources/icons/color_palette.svg](/src/resources/icons/color_palette.svg): downloaded from https://www.easyicon.net/
