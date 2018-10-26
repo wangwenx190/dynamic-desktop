@@ -84,4 +84,4 @@ Name: "{userdesktop}\{#DDName}"; Filename: "{app}\{#DDExeName}"; WorkingDir: "{a
 
 [Run]
 Filename: "{app}\{#DDExeName}"; Description: "{cm:LaunchProgram,{#StringChange(DDName, '&', '&&')}}"; WorkingDir: "{app}"; Flags: nowait postinstall skipifdoesntexist skipifsilent
-Filename: "{app}\{#DDExeName}"; Parameters: "{param:ARGS|--launch}"; WorkingDir: "{app}"; Flags: nowait skipifdoesntexist skipifnotsilent
+Filename: "{app}\{#DDExeName}"; WorkingDir: "{app}"; Flags: nowait skipifdoesntexist skipifnotsilent
