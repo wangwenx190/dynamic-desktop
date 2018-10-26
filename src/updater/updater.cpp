@@ -31,7 +31,7 @@ int main(int argc, char *argv[])
     updater->setNotifyOnUpdate(updateUrl, true);
     updater->setNotifyOnFinish(updateUrl, !autoUpdate);
     updater->setAutoUpdate(updateUrl, autoUpdate);
-    updater->setUseCustomInstallProcedures(updateUrl, true);
+    updater->setUseCustomInstallProcedures(updateUrl, autoUpdate);
     updater->checkForUpdates(updateUrl);
     QObject::connect(updater, &QSimpleUpdater::checkingFinished, [=](const QString& url)
     {

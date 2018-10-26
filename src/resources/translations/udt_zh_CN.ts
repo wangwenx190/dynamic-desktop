@@ -109,7 +109,7 @@
     </message>
     <message>
         <source>1 minute</source>
-        <translation>一分钟</translation>
+        <translation>1 分钟</translation>
     </message>
     <message>
         <source>%1 seconds</source>
@@ -117,7 +117,7 @@
     </message>
     <message>
         <source>1 second</source>
-        <translation>一秒钟</translation>
+        <translation>1 秒钟</translation>
     </message>
 </context>
 <context>
