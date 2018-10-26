@@ -1,6 +1,6 @@
 include(../common.pri)
 DESTDIR = $${BIN_DIR}
-QMAKE_TARGET_PRODUCT = Dynamic Desktop Controller Module
+QMAKE_TARGET_PRODUCT = Dynamic Desktop
 QMAKE_TARGET_DESCRIPTION = Dynamic Desktop Controller
 RC_ICONS = ../resources/icons/color_palette.ico
 TARGET = launcher
@@ -55,7 +55,7 @@ CONFIG(static_dd) {
         $${ffmpeg_dir}/swscale-*.dll
     isEmpty(windeployqt): windeployqt = $${qttools_dir}/windeployqt.exe
     exists("$${windeployqt}") {
-        libs.commands = $$quote(\"$${windeployqt}\" --plugindir \"$${BIN_DIR}/plugins\" --force --no-translations --no-compiler-runtime --angle --no-opengl-sw -opengl --no-svg --list source \"$${BIN_DIR}/$${TARGET}.exe\")
+        libs.commands = $$quote(\"$${windeployqt}\" --plugindir \"$${BIN_DIR}/plugins\" --force --no-translations --no-system-d3d-compiler --no-compiler-runtime --no-angle --no-opengl-sw -opengl --list source \"$${BIN_DIR}/$${TARGET}.exe\")
         libs.commands = $$join(libs.commands, $$escape_expand(\\n\\t))
     }
     INSTALLS *= \

@@ -1,6 +1,6 @@
 include(../common.pri)
 DESTDIR = $${BIN_DIR}
-QMAKE_TARGET_PRODUCT = Dynamic Desktop Service Module
+QMAKE_TARGET_PRODUCT = Dynamic Desktop
 QMAKE_TARGET_DESCRIPTION = Dynamic Desktop Service
 RC_ICONS = ../resources/icons/color_palette.ico
 TARGET = service

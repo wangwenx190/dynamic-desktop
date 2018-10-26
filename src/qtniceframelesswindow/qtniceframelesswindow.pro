@@ -1,7 +1,7 @@
 include(../common.pri)
 DESTDIR = $${BIN_DIR}
 QMAKE_TARGET_PRODUCT = Qt Nice Frameless Window
-QMAKE_TARGET_DESCRIPTION = Dynamic Desktop
+QMAKE_TARGET_DESCRIPTION = Dynamic Desktop Frameless Window Module
 QMAKE_TARGET_COMPANY = Bringer of Light
 QMAKE_TARGET_COPYRIGHT = MIT
 TARGET = qtniceframelesswindow

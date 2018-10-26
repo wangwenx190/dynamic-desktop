@@ -1,7 +1,7 @@
 include(../common.pri)
 DESTDIR = $${BIN_DIR}
-QMAKE_TARGET_PRODUCT = Dynamic Desktop Slider Module
-QMAKE_TARGET_DESCRIPTION = Dynamic Desktop
+QMAKE_TARGET_PRODUCT = Dynamic Desktop
+QMAKE_TARGET_DESCRIPTION = Dynamic Desktop Custom Slider Module
 TARGET = slider
 CONFIG(debug, debug|release): TARGET = $$join(TARGET,,,d)
 TEMPLATE = lib

@@ -1,7 +1,7 @@
 include(../common.pri)
 DESTDIR = $${BIN_DIR}
-QMAKE_TARGET_PRODUCT = Dynamic Desktop Inter-Process Communication Module
-QMAKE_TARGET_DESCRIPTION = Dynamic Desktop
+QMAKE_TARGET_PRODUCT = Dynamic Desktop
+QMAKE_TARGET_DESCRIPTION = Dynamic Desktop Inter-Process Communication Module
 TARGET = ipc
 CONFIG(debug, debug|release): TARGET = $$join(TARGET,,,d)
 TEMPLATE = lib
