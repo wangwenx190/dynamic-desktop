@@ -44,7 +44,7 @@ void MainWindow::setVolume(const QVariant& param)
     {
         qreal newVolume = static_cast<qreal>(volume) * kVolumeInterval;
         if (ao->volume() != newVolume)
-            if (qAbs(static_cast<int>(ao->volume() / kVolumeInterval) - volume) >= static_cast<int>(0.1 / kVolumeInterval))
+            if (qAbs(static_cast<int>(ao->volume() / kVolumeInterval) - static_cast<int>(volume)) >= static_cast<int>(0.1 / kVolumeInterval))
                 ao->setVolume(newVolume);
         //emit this->sendCommand(qMakePair(QStringLiteral("setVolumeToolTip"), tr("Volume: %0").arg(QString::number(newVolume))));
     }

@@ -120,6 +120,7 @@ void Downloader::startDownload (const QUrl& url)
 
     /* Configure the network request */
     QNetworkRequest request (url);
+    request.setAttribute(QNetworkRequest::FollowRedirectsAttribute, true);
     if (!m_userAgentString.isEmpty())
         request.setRawHeader ("User-Agent", m_userAgentString.toUtf8());
 
@@ -258,13 +259,13 @@ void Downloader::cancelDownload()
         box.setText (tr ("Are you sure you want to cancel the download?"));
 
         if (box.exec() == QMessageBox::Yes) {
-            hide();
             m_reply->abort();
+            close();
         }
     }
 
     else
-        hide();
+        close();
 }
 
 /**

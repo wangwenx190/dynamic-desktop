@@ -2,8 +2,8 @@
   "updates": {
     "windows": {
       "open-url": "",
-      "latest-version": "1.0.0.1",
-      "download-url": "https://github.com/wangwenx190/dynamic-desktop/releases/download/v1.0.0p16/dd-v1.0.0p16-x64.exe",
+      "latest-version": "1.0.0.153",
+      "download-url": "https://sourceforge.net/projects/dynamic-desktop/files/beta/dd-v1.0.0p19-x64.exe/download",
       "changelog": "Change log for testing."
     }
   }
