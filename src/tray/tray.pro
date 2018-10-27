@@ -1,22 +1,22 @@
 include(../common.pri)
 DESTDIR = $${BIN_DIR}
 QMAKE_TARGET_PRODUCT = Dynamic Desktop
-QMAKE_TARGET_DESCRIPTION = Dynamic Desktop Player
+QMAKE_TARGET_DESCRIPTION = Dynamic Desktop Tray
 RC_ICONS = ../resources/icons/color_palette.ico
-TARGET = ddply
+TARGET = ddtry
 CONFIG(debug, debug|release): TARGET = $$join(TARGET,,,d)
 TEMPLATE = app
-QT *= widgets avwidgets
-include(../ipc/ipc.pri)
+QT *= widgets
 include(../settingsmanager/settingsmanager.pri)
 include(../utils/utils.pri)
-include(../wallpaper/wallpaper.pri)
-HEADERS += mainwindow.h
+HEADERS += forms\traymenu.h
 SOURCES += \
-    player.cpp \
-    mainwindow.cpp
+    tray.cpp \
+    forms\traymenu.cpp
+FORMS += forms\traymenu.ui
+RESOURCES += images.qrc
 TRANSLATIONS += \
-    ../resources/translations/ply_en.ts \
-    ../resources/translations/ply_zh_CN.ts
+    ../resources/translations/try_en.ts \
+    ../resources/translations/try_zh_CN.ts
 include(../translations.pri)
 include(../deploy.pri)

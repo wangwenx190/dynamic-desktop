@@ -35,12 +35,12 @@ void DDSvc::start()
     {
         ReleaseMutex(playerMutex);
         CloseHandle(playerMutex);
-        QString launcherPath = QCoreApplication::applicationDirPath() + QStringLiteral("/launcher");
+        QString controllerPath = QCoreApplication::applicationDirPath() + QStringLiteral("/ddmain");
 #ifdef _DEBUG
-        launcherPath += QStringLiteral("d");
+        controllerPath += QStringLiteral("d");
 #endif
-        launcherPath += QStringLiteral(".exe");
-        Utils::run(launcherPath, QStringList() << QStringLiteral("--launch"));
+        controllerPath += QStringLiteral(".exe");
+        Utils::run(controllerPath);
     }
     else
         ReleaseMutex(playerMutex);

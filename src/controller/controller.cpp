@@ -207,10 +207,10 @@ int main(int argc, char *argv[])
     QObject::connect(ipcServer, &IPCServer::clientMessage, &mainWindow, &PreferencesDialog::parseCommand);
     QObject::connect(&mainWindow, &PreferencesDialog::sendCommand, ipcServer, &IPCServer::serverMessage);
     QObject::connect(ipcServer, &IPCServer::clientOffline, &app, &QApplication::quit);
-    QStringList playerStartupArguments{ QStringLiteral("--runfromlauncher") };
+    QStringList playerStartupArguments{ QStringLiteral("--runfromcontroller") };
     if (parser.isSet(windowModeOption))
         playerStartupArguments << QStringLiteral("--window");
-    QString playerPath = QApplication::applicationDirPath() + QStringLiteral("/player");
+    QString playerPath = QApplication::applicationDirPath() + QStringLiteral("/ddply");
 #ifdef _DEBUG
     playerPath += QStringLiteral("d");
 #endif

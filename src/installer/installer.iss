@@ -5,9 +5,9 @@
 #define DDPublisher "wangwenx190"
 #define DDURL "https://github.com/wangwenx190/dynamic-desktop"
 #ifdef _DEBUG
-#define DDExeName "launcherd.exe"
+#define DDExeName "ddmaind.exe"
 #else
-#define DDExeName "launcher.exe"
+#define DDExeName "ddmain.exe"
 #endif
 #ifdef WIN64
 #define DDInstallerName "dd_x64"

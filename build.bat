@@ -39,12 +39,12 @@ if %ERRORLEVEL% neq 0 set _buildtool=nmake
 %_buildtool% && %_buildtool% install
 cd "%~dp0"
 rd /s /q build\build
-if exist build\bin (
+if exist build\bin\ddmain.exe (
     del /f /s /q build\bin\*.lib
     del /f /s /q build\bin\*.exp
     del /f /s /q build\bin\*.ilk
 )
-if exist build\bin64 (
+if exist build\bin64\ddmain.exe (
     del /f /s /q build\bin64\*.lib
     del /f /s /q build\bin64\*.exp
     del /f /s /q build\bin64\*.ilk

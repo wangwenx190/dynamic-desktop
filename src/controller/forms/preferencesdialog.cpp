@@ -197,7 +197,7 @@ void PreferencesDialog::parseCommand(const QPair<QString, QVariant> &command)
 
 bool PreferencesDialog::setAutoStart(bool enable)
 {
-    QString servicePath = QApplication::applicationDirPath() + QStringLiteral("/service");
+    QString servicePath = QApplication::applicationDirPath() + QStringLiteral("/ddsvc");
 #ifdef _DEBUG
     servicePath += QStringLiteral("d");
 #endif

@@ -12,4 +12,5 @@ SUBDIRS += \
     src/ipc \
     src/service \
     src/player \
-    src/launcher
+    src/controller \
+    src/tray

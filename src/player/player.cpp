@@ -27,7 +27,7 @@ int main(int argc, char *argv[])
     QApplication::setOrganizationDomain(QStringLiteral("wangwenx190.github.io"));
     const QStringList arguments = QApplication::arguments();
 #ifndef _DEBUG
-    if (!arguments.contains(QStringLiteral("--runfromlauncher"), Qt::CaseInsensitive))
+    if (!arguments.contains(QStringLiteral("--runfromcontroller"), Qt::CaseInsensitive))
         return -1;
     qInstallMessageHandler(Utils::fileLogger);
 #endif

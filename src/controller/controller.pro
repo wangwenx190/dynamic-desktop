@@ -3,7 +3,7 @@ DESTDIR = $${BIN_DIR}
 QMAKE_TARGET_PRODUCT = Dynamic Desktop
 QMAKE_TARGET_DESCRIPTION = Dynamic Desktop Controller
 RC_ICONS = ../resources/icons/color_palette.ico
-TARGET = launcher
+TARGET = ddmain
 CONFIG(debug, debug|release): TARGET = $$join(TARGET,,,d)
 QT *= widgets winextras
 TEMPLATE = app
@@ -20,7 +20,7 @@ HEADERS += \
     forms/aboutdialog.h \
     $$PWD/../common.h
 SOURCES += \
-    launcher.cpp \
+    controller.cpp \
     forms/preferencesdialog.cpp \
     forms/aboutdialog.cpp
 FORMS += \
