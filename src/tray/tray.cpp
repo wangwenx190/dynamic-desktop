@@ -22,9 +22,6 @@ int main(int argc, char *argv[])
     trayIcon.setIcon(QIcon(QStringLiteral(":/icons/color_palette.svg")));
     trayIcon.setToolTip(QStringLiteral("Dynamic Desktop"));
     trayIcon.setContextMenu(&trayMenu);
-    QObject::connect(&trayMenu, &TrayMenu::onExitClicked, [=]
-    {
-        QApplication::quit();
-    });
+    QObject::connect(&trayMenu, &TrayMenu::onExitClicked, qApp, &QApplication::quit);
     return QApplication::exec();
 }
