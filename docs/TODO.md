@@ -42,4 +42,5 @@
 - [ ] Support sequential playback/random playback/repeat playlist/repeat current file
 - [x] Make the modules(controller, player, service and updater) become different exe
 - [ ] <del>Optimize launcher code</del>
-- [x] Server: wait until client online
+- [x] Controller: wait until player online
+- [ ] Make controller and tray icon different exe: Controller process and tray icon process
