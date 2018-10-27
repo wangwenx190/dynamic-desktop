@@ -12,7 +12,7 @@ AboutDialog::AboutDialog(QWidget *parent) :
     ui(new Ui::AboutDialog)
 {
     ui->setupUi(this);
-    ui->lineEdit_version->setText(QStringLiteral(DD_VERSION));
+    ui->lineEdit_version->setText(QApplication::applicationVersion());
     ui->lineEdit_commit_id->setText(QStringLiteral(DD_COMMIT_ID));
     ui->lineEdit_commit_time->setText(QStringLiteral(DD_COMMIT_TIME));
     const QString qtCompiledVersionText(QStringLiteral(QT_VERSION_STR));

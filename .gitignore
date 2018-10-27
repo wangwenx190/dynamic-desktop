@@ -51,7 +51,7 @@ CMakeLists.txt.user*
 *.rc
 Thumbs.db
 version_ci.pri
-.qmake.conf
+*.conf
 rep_*_replica.h
 rep_*_source.h
 *.qm
@@ -61,3 +61,4 @@ rep_*_source.h
 *.ilk
 *.7z
 *.zip
+*.rar

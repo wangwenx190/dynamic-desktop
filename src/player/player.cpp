@@ -23,7 +23,6 @@ int main(int argc, char *argv[])
     QApplication app(argc, argv);
     QApplication::setApplicationName(QStringLiteral("Dynamic Desktop Player"));
     QApplication::setApplicationDisplayName(QStringLiteral("Dynamic Desktop Player"));
-    QApplication::setApplicationVersion(QStringLiteral(DD_VERSION));
     QApplication::setOrganizationName(QStringLiteral("wangwenx190"));
     QApplication::setOrganizationDomain(QStringLiteral("wangwenx190.github.io"));
     const QStringList arguments = QApplication::arguments();

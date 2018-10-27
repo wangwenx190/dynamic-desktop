@@ -27,7 +27,6 @@ int main(int argc, char *argv[])
     QApplication app(argc, argv);
     QApplication::setApplicationName(QStringLiteral("Dynamic Desktop Controller"));
     QApplication::setApplicationDisplayName(QStringLiteral("Dynamic Desktop Controller"));
-    QApplication::setApplicationVersion(QStringLiteral(DD_VERSION));
     QApplication::setOrganizationName(QStringLiteral("wangwenx190"));
     QApplication::setOrganizationDomain(QStringLiteral("wangwenx190.github.io"));
 #ifndef _DEBUG

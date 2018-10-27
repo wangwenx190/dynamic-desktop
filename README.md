@@ -14,6 +14,8 @@ I created this tool only to play my favorite animation clips on my desktop, so I
 
 **Suggestions are welcome. And I'll be very happy if anyone reports any issue to me.**
 
+**Pull requests are welcome.**
+
 ## Features
 - Relatively small
 - Multilingual support(**translators needed**)
@@ -74,9 +76,9 @@ For official builds and third-party packages please see https://sourceforge.net/
 
 ## Licenses
 - [Wallpaper](/src/3rdparty/wallpaper): some code is copied from https://github.com/ThomasHuai/Wallpaper , Apache License 2.0, thanks to [ThomasHuai](https://github.com/ThomasHuai)!
-- [QtAV](https://github.com/wang-bin/QtAV) and [FFmpeg](https://github.com/wang-bin/avbuild): LGPL, thanks to [wang bin](https://github.com/wang-bin)!
+- [QtAV](https://github.com/wang-bin/QtAV) and [FFmpeg](https://github.com/wang-bin/avbuild): LGPLv3, thanks to [wang bin](https://github.com/wang-bin)!
 - [Qt Nice Frameless Window](/src/3rdparty/qtniceframelesswindow): some code is copied from https://github.com/Bringer-of-Light/Qt-Nice-Frameless-Window , MIT, thanks to [Bringer of Light](https://github.com/Bringer-of-Light)!
-- [Qt](http://download.qt.io/archive/qt/) and [Qt Service](/src/3rdparty/qtservice): some code is copied from https://github.com/qtproject/qt-solutions , LGPL, thanks to [the Qt Company](https://www.qt.io/)!
+- [Qt](http://download.qt.io/archive/qt/) and [Qt Service](/src/3rdparty/qtservice): some code is copied from https://github.com/qtproject/qt-solutions , LGPLv3, thanks to [the Qt Company](https://www.qt.io/)!
 - [src/resources/stylesheets/Default.css](/src/resources/stylesheets/Default.css): copied from https://github.com/u8sand/Baka-MPlayer , GPLv2, thanks to [Daniel Clarke](https://github.com/u8sand)!
 - [src/resources/stylesheets/Greenery.css](/src/resources/stylesheets/Greenery.css), [src/resources/stylesheets/Marsala.css](/src/resources/stylesheets/Marsala.css), [src/resources/stylesheets/Rose&nbsp;Quartz&nbsp;&amp;&nbsp;Serenity.css](/src/resources/stylesheets/Rose%20Quartz%20&%20Serenity.css), [src/resources/stylesheets/Ultra&nbsp;Violet.css](/src/resources/stylesheets/Ultra%20Violet.css): created by [Yuriko](https://github.com/GA-1101), thanks a lot!
 - [src/resources/icons/color_palette.ico](/src/resources/icons/color_palette.ico) and [src/resources/icons/color_palette.svg](/src/resources/icons/color_palette.svg): downloaded from https://www.easyicon.net/
