@@ -10,10 +10,10 @@
 #define DDExeName "launcher.exe"
 #endif
 #ifdef WIN64
-#define DDInstallerName "dd_setup_x64"
+#define DDInstallerName "dd_x64"
 #define DDBinDir "bin64"
 #else
-#define DDInstallerName "dd_setup_x86"
+#define DDInstallerName "dd_x86"
 #define DDBinDir "bin"
 #endif
 
@@ -33,8 +33,9 @@ OutputBaseFilename={#DDInstallerName}
 SetupIconFile=..\resources\icons\color_palette.ico
 Compression=lzma2/ultra64
 SolidCompression=yes
-AppCopyright=GPLv3
-AppMutex=wangwenx190.DynamicDesktop.Launcher.1000.AppMutex
+AppCopyright=GNU General Public License version 3
+AppMutex=wangwenx190.DynamicDesktop.Controller.1000.AppMutex
+SetupMutex=wangwenx190.DynamicDesktop.Extractor.1000.SetupMutex,Global\wangwenx190.DynamicDesktop.Extractor.1000.SetupMutex
 PrivilegesRequired=lowest
 RestartIfNeededByRun=False
 TimeStampsInUTC=True
@@ -42,9 +43,9 @@ ShowLanguageDialog=no
 Uninstallable=no
 VersionInfoVersion={#DDVersion}
 VersionInfoCompany=wangwenx190
-VersionInfoDescription=Dynamic Desktop Installer
+VersionInfoDescription=Dynamic Desktop Self-Extractor
 VersionInfoTextVersion={#DDVersion}
-VersionInfoCopyright=GPLv3
+VersionInfoCopyright=GNU General Public License version 3
 VersionInfoProductName=Dynamic Desktop
 VersionInfoProductVersion={#DDVersion}
 VersionInfoProductTextVersion={#DDVersion}
@@ -58,7 +59,7 @@ DirExistsWarning=yes
 ArchitecturesInstallIn64BitMode=x64
 ArchitecturesAllowed=x64
 #else
-ArchitecturesAllowed=x86
+ArchitecturesAllowed=x86 x64
 #endif
 WizardImageFile=.\images\wizardimage@250.bmp
 WizardSmallImageFile=.\images\wizardsmallimage@250.bmp
