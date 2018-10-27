@@ -3,17 +3,23 @@ Skin: Rose Quartz & Serenity
 PantoneCode: 13-1520 15-3919 (13-3820)
 Author: Yuriko
 Create date: 2018/10/09
-Update date: 2018/10/23
+Update date: 2018/10/27
 
 隆重介绍！水晶粉与宁静蓝
 追求正念与幸福以做为现代生活压力的解药之时，能在心理上满足对安心与安全渴望的友善色彩变得愈加重要。
 将水晶粉与宁静蓝结合，在温暖亲和的玫瑰色调与冷静安详的蓝色之间显现一种固有的平衡，反映出连结、幸福，还有一种秩序与和平的抚慰感觉
 
 */
+
 QWidget {
 	font-family: 12px "Noto Sans", "FreeSans";
 	background: rgb(247, 202, 201);
 	color: rgb(131, 70, 85);
+}
+
+QWidget:disabled {
+	background: transparent;
+	color: #6F6F6F;
 }
 
 QPushButton {
@@ -33,12 +39,6 @@ QPushButton:focus {
 
 QPushButton:pressed {
 	background: rgb(210, 196, 214);
-}
-
-QPushButton:disabled {
-	background: transparent;
-	border: 1px solid #454A4D;
-	color: #6F6F6F;
 }
 
 QPushButton#pushButton_minimize {
@@ -167,10 +167,6 @@ QSpinBox {
 
 QSpinBox:focus {
 	border: 1px solid rgb(145, 168, 208);
-}
-
-QSpinBox::disabled {
-	color: #6F6F6F;
 }
 
 QSpinBox::up-button, QSpinBox::down-button {
