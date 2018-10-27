@@ -22,7 +22,7 @@ AboutDialog::AboutDialog(QWidget *parent) :
     QVersionNumber qtRuntimeVersion = QVersionNumber::fromString(qtRuntimeVersionText, &suffixIndex);
     QString qtVersionText(qtCompiledVersionText);
     if (qtCompiledVersion != qtRuntimeVersion)
-        qtVersionText = tr("Run-time version: %0 / Compiled version: %1")
+        qtVersionText = tr("Run-time version: %0 / Compile-time version: %1")
                 .arg(qtRuntimeVersionText)
                 .arg(qtCompiledVersionText);
     ui->lineEdit_qt->setText(qtVersionText);

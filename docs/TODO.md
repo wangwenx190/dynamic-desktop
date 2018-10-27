@@ -44,3 +44,4 @@
 - [ ] <del>Optimize launcher code</del>
 - [x] Controller: wait until player online
 - [ ] Make controller and tray icon different exe: Controller process and tray icon process
+- [ ] How to get run-time and compile-time versions of QtAV and FFmpeg: use IPC, player send version message to controller
