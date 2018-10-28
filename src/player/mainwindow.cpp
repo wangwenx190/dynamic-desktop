@@ -306,6 +306,8 @@ void MainWindow::onStartPlay()
             emit this->sendCommand(qMakePair(QStringLiteral("updateSubtitleTracks"), qMakePair(externalSubtitleTracks, true)));
         }
     }*/
+    if (!subtitle->file().isEmpty())
+        subtitle->setFile(QString());
     subtitle->setEnabled(false);
     if (SettingsManager::getInstance()->getSubtitle())
     {
@@ -320,8 +322,7 @@ void MainWindow::onStartPlay()
             if (!externalSubtitles.isEmpty())
             {
                 subtitle->setEnabled(true);
-                if (subtitle->file() != externalSubtitles.constFirst())
-                    subtitle->setFile(externalSubtitles.constFirst());
+                subtitle->setFile(externalSubtitles.constFirst());
             }
         }
     }
