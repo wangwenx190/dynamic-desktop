@@ -14,7 +14,7 @@ I created this tool only to play my favorite animation clips on my desktop, so I
 
 **Suggestions and pull requests are both welcome.**
 
-**My native language is Chinese and I'm not good at English. I use Google Translate to translate Chinese into English. I'm not sure about the accuracy of the translated texts. So if there is anything wrong in English translation, please inform me using [GitHub issues](https://github.com/wangwenx190/dynamic-desktop/issues). Thanks a lot.**
+**My native language is Chinese and I'm not good at English. I use Google Translate to translate Chinese into English. I'm not sure about the accuracy of the translated texts. So if there is anything wrong in English translation, please inform me using [GitHub Issues](https://github.com/wangwenx190/dynamic-desktop/issues). Thanks a lot.**
 
 ## Features
 - Relatively small
