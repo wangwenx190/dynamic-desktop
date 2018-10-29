@@ -12,9 +12,7 @@ A small tool that can play videos on your desktop. Only for Microsoft Windows 7 
 
 I created this tool only to play my favorite animation clips on my desktop, so I will never make it just like Wallpaper Engine. This tool will stay simple and will only play videos. It doesn't have as many functions as Wallpaper Engine has, but that's indeed what I want. Although this tool has the ability to show executables and web pages on your desktop, I don't want to add this kind of functions. However, if you really need it, you can fork this repository and do it yourself.
 
-**Suggestions are welcome. And I'll be very happy if anyone reports any issue to me.**
-
-**Pull requests are welcome.**
+**Suggestions and pull requests are both welcome.**
 
 **My native language is Chinese and I'm not good at English. I use Google Translate to translate Chinese into English. I'm not sure about the accuracy of the translated texts. So if there is anything wrong in English translation, please inform me using [GitHub issues](https://github.com/wangwenx190/dynamic-desktop/issues). Thanks a lot.**
 
