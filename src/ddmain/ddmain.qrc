@@ -1,0 +1,33 @@
+<RCC>
+    <qresource prefix="/i18n">
+        <file alias="dd_zh_CN.qm">resources/translations/dd_zh_CN.qm</file>
+    </qresource>
+    <qresource prefix="/icons">
+        <file alias="color_palette.svg">resources/icons/color_palette.svg</file>
+        <file alias="close.svg">resources/icons/close.svg</file>
+        <file alias="minimize.svg">resources/icons/minimize.svg</file>
+        <file alias="checked.svg">resources/icons/checked.svg</file>
+        <file alias="down-arrow.svg">resources/icons/down-arrow.svg</file>
+        <file alias="up-arrow.svg">resources/icons/up-arrow.svg</file>
+        <file alias="selected.svg">resources/icons/selected.svg</file>
+        <file alias="exit.svg">resources/icons/exit.svg</file>
+        <file alias="circle.svg">resources/icons/circle.svg</file>
+        <file alias="next.svg">resources/icons/next.svg</file>
+        <file alias="options.svg">resources/icons/options.svg</file>
+        <file alias="pause.svg">resources/icons/pause.svg</file>
+        <file alias="play.svg">resources/icons/play.svg</file>
+        <file alias="playing.svg">resources/icons/playing.svg</file>
+        <file alias="playlist.svg">resources/icons/playlist.svg</file>
+        <file alias="previous.svg">resources/icons/previous.svg</file>
+        <file alias="mute.svg">resources/icons/mute.svg</file>
+        <file alias="sound.svg">resources/icons/sound.svg</file>
+        <file alias="info.svg">resources/icons/info.svg</file>
+    </qresource>
+    <qresource prefix="/skins">
+        <file alias="Default.css">resources/stylesheets/Default.css</file>
+        <file alias="Greenery.css">resources/stylesheets/Greenery.css</file>
+        <file alias="Marsala.css">resources/stylesheets/Marsala.css</file>
+        <file alias="Rose Quartz &amp; Serenity.css">resources/stylesheets/Rose Quartz &amp; Serenity.css</file>
+        <file alias="Ultra Violet.css">resources/stylesheets/Ultra Violet.css</file>
+    </qresource>
+</RCC>
