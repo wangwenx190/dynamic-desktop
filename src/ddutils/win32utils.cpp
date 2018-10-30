@@ -56,32 +56,6 @@ bool isSession1Process()
     return (sessionId == DWORD(1));
 }
 
-bool installAutoStartServiceA(const char *path)
-{
-    wchar_t *pathW = toW(path);
-    bool result = installAutoStartServiceW(pathW);
-    delete [] pathW;
-    return result;
-}
-
-bool uninstallAutoStartService()
-{
-    bool result = false;
-    SC_HANDLE hSCM = OpenSCManagerW(nullptr, nullptr, SC_MANAGER_ALL_ACCESS);
-    if (hSCM != nullptr)
-    {
-        SC_HANDLE hService = OpenServiceW(hSCM, _T("ddassvc"), DELETE);
-        if (hService != nullptr)
-        {
-            if (DeleteService(hService) != FALSE)
-                result = true;
-            CloseServiceHandle(hService);
-        }
-        CloseServiceHandle(hSCM);
-    }
-    return result;
-}
-
 bool launchSession1ProcessW(const wchar_t *path, const wchar_t *params, const wchar_t *dir)
 {
     STARTUPINFO si = { 0 };
@@ -102,28 +76,6 @@ bool launchSession1ProcessW(const wchar_t *path, const wchar_t *params, const wc
     CloseHandle(pi.hProcess);
     CloseHandle(pi.hThread);
     return true;
-}
-
-bool installAutoStartServiceW(const wchar_t *path)
-{
-    if (isAutoStartServiceInstalled())
-        return false;
-    bool result = false;
-    SC_HANDLE hSCM = OpenSCManagerW(nullptr, nullptr, SC_MANAGER_ALL_ACCESS);
-    if (hSCM != nullptr)
-    {
-        SC_HANDLE hService = CreateServiceW(hSCM, _T("ddassvc"), _T("Dynamic Desktop Auto Start Service"), SERVICE_ALL_ACCESS, SERVICE_WIN32_OWN_PROCESS | SERVICE_INTERACTIVE_PROCESS, SERVICE_AUTO_START, SERVICE_ERROR_NORMAL, path, nullptr, nullptr, nullptr, nullptr, nullptr);
-        if (hService != nullptr)
-        {
-            result = true;
-            SERVICE_DESCRIPTION sdesc;
-            sdesc.lpDescription = const_cast<LPWSTR>(_T("Make Dynamic Desktop automatically run when the system starts. Dynamic Desktop will not auto start if you disabled this service."));
-            ChangeServiceConfig2W(hService, SERVICE_CONFIG_DESCRIPTION, &sdesc);
-            CloseServiceHandle(hService);
-        }
-        CloseServiceHandle(hSCM);
-    }
-    return result;
 }
 
 }
