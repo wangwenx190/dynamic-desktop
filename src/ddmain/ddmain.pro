@@ -62,35 +62,36 @@ isEmpty(lupdate): lupdate = $$[QT_INSTALL_BINS]/lupdate.exe
 exists("$${lupdate}"): system("$${lupdate} -no-obsolete -locations none -no-ui-lines $${_PRO_FILE_}")
 isEmpty(lrelease): lrelease = $$[QT_INSTALL_BINS]/lrelease.exe
 exists("$${lrelease}"): system("$${lrelease} -compress -nounfinished -removeidentical $${_PRO_FILE_}")
-!CONFIG(static) {
-    libs.path = $${BIN_DIR}
-    isEmpty(ffmpeg_dir): ffmpeg_dir = $$[QT_INSTALL_BINS]
-    libs.files = \
-        $${ffmpeg_dir}/avcodec-*.dll \
-        $${ffmpeg_dir}/avdevice-*.dll \
-        $${ffmpeg_dir}/avfilter-*.dll \
-        $${ffmpeg_dir}/avformat-*.dll \
-        $${ffmpeg_dir}/avresample-*.dll \
-        $${ffmpeg_dir}/avutil-*.dll \
-        $${ffmpeg_dir}/ass.dll \
-        $${ffmpeg_dir}/libass.dll \
-        $${ffmpeg_dir}/OpenAL32*.dll \
-        $${ffmpeg_dir}/postproc-*.dll \
-        $${ffmpeg_dir}/swresample-*.dll \
-        $${ffmpeg_dir}/swscale-*.dll
-    CONFIG(debug, debug|release) {
-        libs.files *= \
-            $$[QT_INSTALL_BINS]/QtAVd?.dll \
-            $$[QT_INSTALL_BINS]/QtAVWidgetsd?.dll
-    } else {
-        libs.files *= \
-            $$[QT_INSTALL_BINS]/QtAV?.dll \
-            $$[QT_INSTALL_BINS]/QtAVWidgets?.dll
-    }
+libs.path = $${BIN_DIR}
+isEmpty(ffmpeg_dir): ffmpeg_dir = $$[QT_INSTALL_BINS]
+libs.files = \
+    $${ffmpeg_dir}/avcodec-*.dll \
+    $${ffmpeg_dir}/avdevice-*.dll \
+    $${ffmpeg_dir}/avfilter-*.dll \
+    $${ffmpeg_dir}/avformat-*.dll \
+    $${ffmpeg_dir}/avresample-*.dll \
+    $${ffmpeg_dir}/avutil-*.dll \
+    $${ffmpeg_dir}/ass.dll \
+    $${ffmpeg_dir}/libass.dll \
+    $${ffmpeg_dir}/OpenAL32*.dll \
+    $${ffmpeg_dir}/postproc-*.dll \
+    $${ffmpeg_dir}/swresample-*.dll \
+    $${ffmpeg_dir}/swscale-*.dll
+CONFIG(shared, static|shared):CONFIG(debug, debug|release) {
+    libs.files *= \
+        $$[QT_INSTALL_BINS]/QtAVd?.dll \
+        $$[QT_INSTALL_BINS]/QtAVWidgetsd?.dll
+}
+CONFIG(shared, static|shared):CONFIG(release, debug|release) {
+    libs.files *= \
+        $$[QT_INSTALL_BINS]/QtAV?.dll \
+        $$[QT_INSTALL_BINS]/QtAVWidgets?.dll
+}
+CONFIG(shared, static|shared) {
     isEmpty(windeployqt): windeployqt = $$[QT_INSTALL_BINS]/windeployqt.exe
     exists("$${windeployqt}") {
         libs.commands = $$quote(\"$${windeployqt}\" --plugindir \"$${BIN_DIR}/plugins\" --force --no-translations --no-system-d3d-compiler --no-compiler-runtime --no-angle --no-opengl-sw -opengl --list source \"$${BIN_DIR}/$${TARGET}.exe\")
         libs.commands = $$join(libs.commands, $$escape_expand(\\n\\t))
     }
-    INSTALLS *= libs
 }
+INSTALLS *= libs
