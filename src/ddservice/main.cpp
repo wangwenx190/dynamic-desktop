@@ -30,8 +30,6 @@ int _tmain(int argc, TCHAR *argv[])
             Uninstall();
             break;
         }
-        else
-            break;
     return 0;
 }
 
@@ -92,6 +90,7 @@ VOID WINAPI ServiceMain(DWORD argc, LPTSTR *argv)
     if (!SetServiceStatus(serviceStatusHandle, &serviceStatus))
         return;
     RunDDMain();
+    exit(0);
 }
 
 VOID WINAPI ServiceHandler(DWORD control)
