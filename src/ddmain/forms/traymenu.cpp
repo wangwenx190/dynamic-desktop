@@ -25,6 +25,6 @@ TrayMenu::~TrayMenu()
 
 void TrayMenu::showEvent(QShowEvent *event)
 {
-    move(geometry().left() + 5, geometry().top() - height() + 5);
+    move(QCursor::pos().x() + 30, QCursor::pos().y() - height() + 30);
     QMenu::showEvent(event);
 }
