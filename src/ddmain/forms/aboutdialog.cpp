@@ -61,3 +61,8 @@ AboutDialog::~AboutDialog()
 {
     delete ui;
 }
+
+void AboutDialog::refreshTexts()
+{
+    ui->retranslateUi(this);
+}

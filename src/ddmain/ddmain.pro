@@ -12,7 +12,7 @@ QMAKE_TARGET_COMPANY = "wangwenx190"
 QMAKE_TARGET_COPYRIGHT = "GNU General Public License version 3.0"
 QMAKE_TARGET_PRODUCT = "Dynamic Desktop"
 QMAKE_TARGET_DESCRIPTION = "Dynamic Desktop"
-RC_ICONS = resources/icons/color_palette.ico
+RC_ICONS = ../resources/icons/color_palette.ico
 CONFIG *= c++1z
 DEFINES *= \
     QT_DEPRECATED_WARNINGS \
@@ -23,18 +23,12 @@ CONFIG(debug, debug|release): TARGET = $$join(TARGET,,,d)
 QT *= \
     widgets \
     winextras \
-    avwidgets \
-    opengl \
-    svg
+    avwidgets
 LIBS *= \
     -lUser32 \
-    -lKernel32 \
-    -lShell32 \
-    -lDwmapi \
-    -lAdvapi32 \
-    -lWtsapi32 \
-    -lUserenv
+    -lDwmapi
 TEMPLATE = app
+include(../ddutils/ddutils.pri)
 HEADERS += \
     forms/preferencesdialog.h \
     forms/aboutdialog.h \
@@ -62,7 +56,7 @@ FORMS += \
     forms/preferencesdialog.ui \
     forms/aboutdialog.ui \
     forms/traymenu.ui
-TRANSLATIONS += resources/translations/dd_zh_CN.ts
+TRANSLATIONS += ../resources/translations/dd_zh_CN.ts
 RESOURCES += ddmain.qrc
 isEmpty(lupdate): lupdate = $$[QT_INSTALL_BINS]/lupdate.exe
 exists("$${lupdate}"): system("$${lupdate} -no-obsolete -locations none -no-ui-lines $${_PRO_FILE_}")
@@ -72,8 +66,6 @@ exists("$${lrelease}"): system("$${lrelease} -compress -nounfinished -removeiden
     libs.path = $${BIN_DIR}
     isEmpty(ffmpeg_dir): ffmpeg_dir = $$[QT_INSTALL_BINS]
     libs.files = \
-        $$[QT_INSTALL_BINS]/QtAV*.dll \
-        $$[QT_INSTALL_BINS]/QtAVWidgets*.dll \
         $${ffmpeg_dir}/avcodec-*.dll \
         $${ffmpeg_dir}/avdevice-*.dll \
         $${ffmpeg_dir}/avfilter-*.dll \
@@ -86,6 +78,15 @@ exists("$${lrelease}"): system("$${lrelease} -compress -nounfinished -removeiden
         $${ffmpeg_dir}/postproc-*.dll \
         $${ffmpeg_dir}/swresample-*.dll \
         $${ffmpeg_dir}/swscale-*.dll
+    CONFIG(debug, debug|release) {
+        libs.files *= \
+            $$[QT_INSTALL_BINS]/QtAVd?.dll \
+            $$[QT_INSTALL_BINS]/QtAVWidgetsd?.dll
+    } else {
+        libs.files *= \
+            $$[QT_INSTALL_BINS]/QtAV?.dll \
+            $$[QT_INSTALL_BINS]/QtAVWidgets?.dll
+    }
     isEmpty(windeployqt): windeployqt = $$[QT_INSTALL_BINS]/windeployqt.exe
     exists("$${windeployqt}") {
         libs.commands = $$quote(\"$${windeployqt}\" --plugindir \"$${BIN_DIR}/plugins\" --force --no-translations --no-system-d3d-compiler --no-compiler-runtime --no-angle --no-opengl-sw -opengl --list source \"$${BIN_DIR}/$${TARGET}.exe\")

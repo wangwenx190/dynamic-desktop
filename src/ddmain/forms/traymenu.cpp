@@ -23,6 +23,11 @@ TrayMenu::~TrayMenu()
     delete ui;
 }
 
+void TrayMenu::refreshTexts()
+{
+    ui->retranslateUi(this);
+}
+
 void TrayMenu::showEvent(QShowEvent *event)
 {
     move(QCursor::pos().x() + 30, QCursor::pos().y() - height() + 30);

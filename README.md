@@ -59,26 +59,14 @@ For official builds and third-party packages please see https://sourceforge.net/
 - Download [FFmpeg](https://github.com/wang-bin/avbuild)'s prebuilt binaries or build yourself.
 - Open "dynamic-desktop.pro" and start compiling or call "build.bat". But remember to call "vcvarsall.bat" and add Qt's directories to your path variables before calling "build.bat".
 
-**IMPORTANT NOTES**
-- You can also use Intel C++ Compiler(ICC), Clang or MinGW to compile it, just remember to set up environment variables. Cross compile on other platforms may also work, but it will never run on platforms other than MS Windows.
-- Submodule *launcher* depends on *Qt Windows Extras* module, *ipc* depends on *Qt Remote Objects* module, please make sure your Qt has these modules. However, you could also change the source code to remove these dependences.
-
-### How to build installer
-1. Download and install the latest version of [Inno Setup](http://jrsoftware.org/isdl.php).
-2. Create a plain text file named **.qmake.conf** in the root directory of this repository and write:
-   ```text
-   inno_dir = C:/Program Files (x86)/Inno Setup 5
-   CONFIG *= build_installer
-   ```
-   You should change `C:/Program Files (x86)/Inno Setup 5` to your own Inno Setup directory. **Jom/Nmake may report errors while it's installing files if you enabled this feature, currently don't know why, you can use ".\ci\build_installer.bat" instead temporarily.**
-3. Call `build.bat` or run qmake and jom/nmake manually.
-4. You can find the generated installer in *./build*.
+**IMPORTANT NOTE**
+You can also use Intel C++ Compiler(ICC), Clang or MinGW to compile it, just remember to set up environment variables. Cross compile on other platforms may also work, but it will never run on platforms other than MS Windows.
 
 ## Licenses
-- [Wallpaper](/src/3rdparty/wallpaper): some code is copied from https://github.com/ThomasHuai/Wallpaper , Apache License 2.0, thanks to [ThomasHuai](https://github.com/ThomasHuai)!
+- [Wallpaper](/src/ddmain/wallpaper.h): some code is copied from https://github.com/ThomasHuai/Wallpaper , Apache License 2.0, thanks to [ThomasHuai](https://github.com/ThomasHuai)!
 - [QtAV](https://github.com/wang-bin/QtAV) and [FFmpeg](https://github.com/wang-bin/avbuild): LGPLv3, thanks to [wang bin](https://github.com/wang-bin)!
-- [Qt Nice Frameless Window](/src/3rdparty/qtniceframelesswindow): some code is copied from https://github.com/Bringer-of-Light/Qt-Nice-Frameless-Window , MIT, thanks to [Bringer of Light](https://github.com/Bringer-of-Light)!
-- [Qt](http://download.qt.io/archive/qt/) and [Qt Service](/src/3rdparty/qtservice): some code is copied from https://github.com/qtproject/qt-solutions , LGPLv3, thanks to [the Qt Company](https://www.qt.io/)!
+- [Qt Nice Frameless Window](/src/ddmain/qtniceframelesswindow.h): some code is copied from https://github.com/Bringer-of-Light/Qt-Nice-Frameless-Window , MIT, thanks to [Bringer of Light](https://github.com/Bringer-of-Light)!
+- [Qt](http://download.qt.io/archive/qt/): some code is copied from https://github.com/qtproject/qt-solutions , LGPLv3, thanks to [the Qt Company](https://www.qt.io/)!
 - [src/resources/stylesheets/Default.css](/src/resources/stylesheets/Default.css): copied from https://github.com/u8sand/Baka-MPlayer , GPLv2, thanks to [Daniel Clarke](https://github.com/u8sand)!
 - [src/resources/stylesheets/Greenery.css](/src/resources/stylesheets/Greenery.css), [src/resources/stylesheets/Marsala.css](/src/resources/stylesheets/Marsala.css), [src/resources/stylesheets/Rose&nbsp;Quartz&nbsp;&amp;&nbsp;Serenity.css](/src/resources/stylesheets/Rose%20Quartz%20&%20Serenity.css), [src/resources/stylesheets/Ultra&nbsp;Violet.css](/src/resources/stylesheets/Ultra%20Violet.css): created by [Yuriko](https://github.com/GA-1101), thanks a lot!
 - [src/resources/icons/color_palette.ico](/src/resources/icons/color_palette.ico), [src/resources/icons/circle.svg](/src/resources/icons/circle.svg), [src/resources/icons/exit.svg](/src/resources/icons/exit.svg), [src/resources/icons/info.svg](/src/resources/icons/info.svg), [src/resources/icons/mute.svg](/src/resources/icons/mute.svg), [src/resources/icons/next.svg](/src/resources/icons/next.svg), [src/resources/icons/options.svg](/src/resources/icons/options.svg), [src/resources/icons/pause.svg](/src/resources/icons/pause.svg), [src/resources/icons/play.svg](/src/resources/icons/play.svg), [src/resources/icons/playing.svg](/src/resources/icons/playing.svg), [src/resources/icons/playlist.svg](/src/resources/icons/playlist.svg), [src/resources/icons/previous.svg](/src/resources/icons/previous.svg), [src/resources/icons/sound.svg](/src/resources/icons/sound.svg): downloaded from https://www.easyicon.net/

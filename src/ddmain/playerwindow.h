@@ -46,6 +46,7 @@ public slots:
     bool setRenderer(QtAV::VideoRendererId id);
     void setImageQuality(const QString &quality);
     void setImageRatio(bool fit);
+    void setWindowMode(bool enabled = true);
 
 private slots:
     void initUI();
@@ -59,4 +60,5 @@ private:
     QtAV::SubtitleFilter *subtitle = nullptr;
     QVBoxLayout *mainLayout = nullptr;
     PreferencesDialog *preferencesDialog = nullptr;
+    bool windowMode = false;
 };

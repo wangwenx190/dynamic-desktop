@@ -4,6 +4,9 @@
 #include "skinsmanager.h"
 #include "utils.h"
 #include "playerwindow.h"
+#include "aboutdialog.h"
+#include "traymenu.h"
+#include <Win32Utils>
 
 #include <QWinTaskbarButton>
 #include <QWinTaskbarProgress>
@@ -23,6 +26,16 @@
 void PreferencesDialog::setPlayerWindow(PlayerWindow *player)
 {
     playerWindow = player;
+}
+
+void PreferencesDialog::setAboutDialog(AboutDialog *abtdlg)
+{
+    aboutDialog = abtdlg;
+}
+
+void PreferencesDialog::setTrayMenu(TrayMenu *trymeu)
+{
+    trayMenu = trymeu;
 }
 
 void PreferencesDialog::updateVideoSlider(qint64 position)
@@ -277,7 +290,7 @@ void PreferencesDialog::initUI()
         ui->horizontalSlider_volume->setEnabled(ui->checkBox_volume->isChecked());
         ui->horizontalSlider_volume->setValue(SettingsManager::getInstance()->getVolume());
     }
-    ui->checkBox_autoStart->setChecked(Utils::isAutoStart());
+    ui->checkBox_autoStart->setChecked(Win32Utils::isAutoStartServiceInstalled());
     QStringList decoders = SettingsManager::getInstance()->getDecoders();
     ui->checkBox_hwdec_cuda->setChecked(decoders.contains(QStringLiteral("CUDA")));
     ui->checkBox_hwdec_d3d11->setChecked(decoders.contains(QStringLiteral("D3D11")));
@@ -465,6 +478,8 @@ void PreferencesDialog::initConnections()
             SettingsManager::getInstance()->setLanguage(ui->comboBox_language->currentData().toString());
             Utils::installTranslation(SettingsManager::getInstance()->getLanguage(), QStringLiteral("dd"));
             ui->retranslateUi(this);
+            aboutDialog->refreshTexts();
+            trayMenu->refreshTexts();
             QMessageBox::information(nullptr, QStringLiteral("Dynamic Desktop"), tr("Some texts will not refresh their translation until you restart this application."));
         }
     });
@@ -511,13 +526,25 @@ void PreferencesDialog::initConnections()
     });
     connect(ui->checkBox_autoStart, &QCheckBox::clicked, this, [=]
     {
-        if (ui->checkBox_autoStart->isChecked() && !Utils::isAutoStart())
-            Utils::setAutoStart(true);
-        else if (!ui->checkBox_autoStart->isChecked() && Utils::isAutoStart())
-            Utils::setAutoStart(false);
+        QString servicePath = QApplication::applicationDirPath() + QStringLiteral("/ddservice");
+#ifdef _DEBUG
+        servicePath += QStringLiteral("d");
+#endif
+        servicePath += QStringLiteral(".exe");
+        servicePath = QDir::toNativeSeparators(servicePath);
+        if (!QFileInfo::exists(servicePath))
+        {
+            ui->checkBox_autoStart->setChecked(false);
+            ui->checkBox_autoStart->setEnabled(false);
+            return;
+        }
+        if (ui->checkBox_autoStart->isChecked() && !Win32Utils::isAutoStartServiceInstalled())
+            Utils::run(servicePath, QStringList() << QStringLiteral("-i"), true);
+        else if (!ui->checkBox_autoStart->isChecked() && Win32Utils::isAutoStartServiceInstalled())
+            Utils::run(servicePath, QStringList() << QStringLiteral("-u"), true);
         QTimer::singleShot(2500, this, [=]
         {
-            ui->checkBox_autoStart->setChecked(Utils::isAutoStart());
+            ui->checkBox_autoStart->setChecked(Win32Utils::isAutoStartServiceInstalled());
         });
     });
     connect(ui->radioButton_ratio_fitDesktop, &QRadioButton::clicked, this, &PreferencesDialog::setRatio);

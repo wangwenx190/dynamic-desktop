@@ -1,4 +1,5 @@
 #include "utils.h"
+#include <Win32Utils>
 
 #include <QMutex>
 #include <QApplication>
@@ -10,11 +11,6 @@
 #include <QWidget>
 #include <QTranslator>
 #include <QLocale>
-
-#include <wtsapi32.h>
-#include <userenv.h>
-#include <tlhelp32.h>
-#include <tchar.h>
 
 namespace Utils
 {
@@ -109,63 +105,6 @@ void moveToCenter(QObject *window)
     win->move(newX, newY);
 }
 
-bool adminRun(const QString &path, const QString &params)
-{
-    if (path.isEmpty())
-        return false;
-    if (!QFileInfo::exists(path))
-        return false;
-    SHELLEXECUTEINFO execInfo{ sizeof(SHELLEXECUTEINFO) };
-    execInfo.lpVerb = TEXT("runas");
-    execInfo.lpFile = reinterpret_cast<const wchar_t *>(QDir::toNativeSeparators(path).utf16());
-    execInfo.nShow = SW_HIDE;
-    execInfo.lpParameters = params.isEmpty() ? nullptr : reinterpret_cast<const wchar_t *>(params.utf16());
-    return ShellExecuteEx(&execInfo);
-}
-
-bool launchSession1Process(const QString &path, const QString &params)
-{
-    if (path.isEmpty())
-        return false;
-    if (!QFileInfo::exists(path))
-        return false;
-    const QString dir = QDir::toNativeSeparators(QFileInfo(path).canonicalPath());
-    STARTUPINFO si = { 0 };
-    PROCESS_INFORMATION pi = { nullptr };
-    si.cb = sizeof(si);
-    DWORD dwSessionID = WTSGetActiveConsoleSessionId();
-    HANDLE hToken = nullptr;
-    if (WTSQueryUserToken(dwSessionID, &hToken) == FALSE)
-        return false;
-    HANDLE hDuplicatedToken = nullptr;
-    if (DuplicateTokenEx(hToken, MAXIMUM_ALLOWED, nullptr, SecurityIdentification, TokenPrimary, &hDuplicatedToken) == FALSE)
-        return false;
-    LPVOID lpEnvironment = nullptr;
-    if (CreateEnvironmentBlock(&lpEnvironment, hDuplicatedToken, FALSE) == FALSE)
-        return false;
-    wchar_t *wcstring = nullptr;
-    if (!params.isEmpty())
-    {
-        QByteArray byteArray = params.toLocal8Bit();
-        char *param = byteArray.data();
-        size_t newsize = strlen(param) + 1;
-        wcstring = new wchar_t[newsize];
-        size_t convertedChars = 0;
-        mbstowcs_s(&convertedChars, wcstring, newsize, param, _TRUNCATE);
-    }
-    if (CreateProcessAsUser(hDuplicatedToken,
-                            reinterpret_cast<const wchar_t *>(QDir::toNativeSeparators(path).utf16()),
-                            params.isEmpty() ? nullptr : wcstring, nullptr, nullptr, FALSE,
-                            NORMAL_PRIORITY_CLASS | CREATE_NEW_CONSOLE | CREATE_UNICODE_ENVIRONMENT,
-                            lpEnvironment,
-                            reinterpret_cast<const wchar_t *>(dir.utf16()),
-                            &si, &pi) == FALSE)
-        return false;
-    CloseHandle(pi.hProcess);
-    CloseHandle(pi.hThread);
-    return true;
-}
-
 int Exit(int resultCode, bool trulyExit, HANDLE mutex, HWND wallpaper)
 {
     if (translator != nullptr)
@@ -185,6 +124,20 @@ int Exit(int resultCode, bool trulyExit, HANDLE mutex, HWND wallpaper)
     return resultCode;
 }
 
+bool adminRun(const QString &path, const QString &params)
+{
+    if (path.isEmpty())
+        return false;
+    if (!QFileInfo::exists(path))
+        return false;
+    SHELLEXECUTEINFO execInfo{ sizeof(SHELLEXECUTEINFO) };
+    execInfo.lpVerb = TEXT("runas");
+    execInfo.lpFile = reinterpret_cast<const wchar_t *>(QDir::toNativeSeparators(path).utf16());
+    execInfo.nShow = SW_HIDE;
+    execInfo.lpParameters = params.isEmpty() ? nullptr : reinterpret_cast<const wchar_t *>(params.utf16());
+    return ShellExecuteEx(&execInfo);
+}
+
 bool run(const QString &path, const QStringList &params, bool needAdmin)
 {
     if (path.isEmpty())
@@ -196,12 +149,8 @@ bool run(const QString &path, const QStringList &params, bool needAdmin)
         paramsInAll = params.join(QLatin1Char(' '));
     if (needAdmin)
         return adminRun(path, paramsInAll);
-    DWORD processId = GetCurrentProcessId();
-    DWORD sessionId;
-    if (!ProcessIdToSessionId(processId, &sessionId))
-        return false;
-    if ((sessionId == static_cast<DWORD>(0)) || (sessionId != static_cast<DWORD>(1)))
-        return launchSession1Process(path, paramsInAll);
+    if (!Win32Utils::isSession1Process())
+        return Win32Utils::launchSession1ProcessA(QDir::toNativeSeparators(path).toLocal8Bit().constData(), paramsInAll.isEmpty() ? nullptr : paramsInAll.toLocal8Bit().constData(), QDir::toNativeSeparators(QFileInfo(path).canonicalPath()).toLocal8Bit().constData());
     return QProcess::startDetached(QDir::toNativeSeparators(path), params, QDir::toNativeSeparators(QFileInfo(path).canonicalPath()));
 }
 
@@ -284,47 +233,5 @@ bool installTranslation(const QString &language, const QString &prefix)
     translator = nullptr;
     return false;
 }
-
-bool isAutoStart()
-{
-    return false;
-}
-
-bool setAutoStart(bool autoStart)
-{
-    Q_UNUSED(autoStart)
-    return true;
-}
-
-/*bool killProcess(const QString &name)
-{
-    if (name.isEmpty())
-        return false;
-    PROCESSENTRY32 pe;
-    DWORD id = 0;
-    HANDLE hSnapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
-    pe.dwSize = sizeof(PROCESSENTRY32);
-    if (!Process32First(hSnapshot, &pe))
-        return false;
-    while (true)
-    {
-        pe.dwSize = sizeof(PROCESSENTRY32);
-        if (Process32Next(hSnapshot, &pe) == FALSE)
-            break;
-        if (_tcscmp(pe.szExeFile, reinterpret_cast<const wchar_t *>(name.utf16())) == 0)
-        {
-            id = pe.th32ProcessID;
-            break;
-        }
-    }
-    CloseHandle(hSnapshot);
-    HANDLE hProcess = OpenProcess(PROCESS_ALL_ACCESS, FALSE, id);
-    if (hProcess != nullptr)
-    {
-        TerminateProcess(hProcess, 0);
-        CloseHandle(hProcess);
-    }
-    return true;
-}*/
 
 }

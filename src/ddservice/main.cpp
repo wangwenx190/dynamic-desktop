@@ -1,10 +1,13 @@
 #include <Windows.h>
 #include <tchar.h>
 
+#include <Win32Utils>
+
 VOID WINAPI ServiceMain(DWORD argc, LPTSTR *argv);
 VOID WINAPI ServiceHandler(DWORD control);
 VOID Install();
 VOID Uninstall();
+VOID RunDDMain();
 
 SERVICE_STATUS serviceStatus;
 SERVICE_STATUS_HANDLE serviceStatusHandle;
@@ -17,12 +20,12 @@ int _tmain(int argc, TCHAR *argv[])
         {nullptr, nullptr}
     };
     for (unsigned int i = 1; i != argc; ++i)
-        if ((_tcscmp(argv[i], _T("-i")) == 0) || (_tcscmp(argv[i], _T("-I")) == 0))
+        if ((_tcscmp(argv[i], _T("-i")) == 0) || (_tcscmp(argv[i], _T("-I")) == 0) || (_tcscmp(argv[i], _T("-install")) == 0) || (_tcscmp(argv[i], _T("-INSTALL")) == 0) || (_tcscmp(argv[i], _T("-Install")) == 0))
         {
             Install();
             break;
         }
-        else if ((_tcscmp(argv[i], _T("-u")) == 0) || (_tcscmp(argv[i], _T("-U")) == 0))
+        else if ((_tcscmp(argv[i], _T("-u")) == 0) || (_tcscmp(argv[i], _T("-U")) == 0) || (_tcscmp(argv[i], _T("-uninstall")) == 0) || (_tcscmp(argv[i], _T("-UNINSTALL")) == 0) || (_tcscmp(argv[i], _T("-Uninstall")) == 0))
         {
             Uninstall();
             break;
@@ -36,30 +39,37 @@ VOID Install()
 {
     TCHAR filePath[MAX_PATH + 1];
     DWORD dwSize = GetModuleFileName(nullptr, filePath, MAX_PATH);
-    filePath[dwSize] = '\0';
-    SC_HANDLE manager = OpenSCManager(nullptr, nullptr, SC_MANAGER_CREATE_SERVICE);
-    if (manager != nullptr)
-    {
-        SC_HANDLE service = CreateService(manager, _T("ddassvc"), _T("Dynamic Desktop Auto Start Service"), SERVICE_ALL_ACCESS, SERVICE_WIN32_OWN_PROCESS | SERVICE_INTERACTIVE_PROCESS, SERVICE_AUTO_START, SERVICE_ERROR_NORMAL, filePath, nullptr, nullptr, nullptr, nullptr, nullptr);
-        if (service != nullptr)
-            CloseServiceHandle(service);
-        CloseServiceHandle(manager);
-    }
+    filePath[dwSize] = 0;
+    Win32Utils::installAutoStartService(filePath);
 }
 
 VOID Uninstall()
 {
-    SC_HANDLE manager = OpenSCManager(nullptr, nullptr, SC_MANAGER_ALL_ACCESS);
-    if (manager != nullptr)
+    Win32Utils::uninstallAutoStartService();
+}
+
+VOID RunDDMain()
+{
+    auto ddmainDir = new TCHAR[MAX_PATH];
+    memset(ddmainDir, 0x00, sizeof(ddmainDir));
+    DWORD dwSize = GetModuleFileName(nullptr, ddmainDir, MAX_PATH);
+    ddmainDir[dwSize] = 0;
+    while (ddmainDir[dwSize] != '\\' && dwSize != 0)
     {
-        SC_HANDLE service = OpenService(manager, _T("ddassvc"), SERVICE_ALL_ACCESS);
-        if (service != nullptr)
-        {
-            DeleteService(service);
-            CloseServiceHandle(service);
-        }
-        CloseServiceHandle(manager);
+        ddmainDir[dwSize] = 0;
+        --dwSize;
     }
+    if ((dwSize - 1) > 0)
+        ddmainDir[dwSize - 1] = 0;
+    auto ddmainPath = (TCHAR*)malloc(MAX_PATH);
+    memset(ddmainPath, 0x00, MAX_PATH);
+    _tcscpy(ddmainPath, ddmainDir);
+#ifdef _DEBUG
+    _tcscat(ddmainPath, _T("\\ddmaind.exe"));
+#else
+    _tcscat(ddmainPath, _T("\\ddmain.exe"));
+#endif
+    Win32Utils::launchSession1Process(ddmainPath, nullptr, ddmainDir);
 }
 
 VOID WINAPI ServiceMain(DWORD argc, LPTSTR *argv)
@@ -81,6 +91,7 @@ VOID WINAPI ServiceMain(DWORD argc, LPTSTR *argv)
     serviceStatus.dwWaitHint = 0;
     if (!SetServiceStatus(serviceStatusHandle, &serviceStatus))
         return;
+    RunDDMain();
 }
 
 VOID WINAPI ServiceHandler(DWORD control)
@@ -105,6 +116,5 @@ VOID WINAPI ServiceHandler(DWORD control)
     default:
         break;
     };
-    if (!SetServiceStatus(serviceStatusHandle, &serviceStatus))
-        return;
+    SetServiceStatus(serviceStatusHandle, &serviceStatus);
 }

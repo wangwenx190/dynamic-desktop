@@ -234,6 +234,12 @@ void PlayerWindow::setImageRatio(bool fit)
         renderer->setOutAspectRatioMode(QtAV::VideoRenderer::VideoAspectRatio);
 }
 
+void PlayerWindow::setWindowMode(bool enabled)
+{
+    if (windowMode != enabled)
+        windowMode = enabled;
+}
+
 void PlayerWindow::onStartPlay()
 {
     if (!player || !subtitle)
@@ -392,15 +398,17 @@ void PlayerWindow::setUrl(const QString& url)
         play();
     if (!player->file().isEmpty() && (Utils::isVideo(player->file()) || Utils::isPicture(player->file())))
     {
-        if (Wallpaper::isWallpaperHidden())
-            Wallpaper::showWallpaper();
+        if (!windowMode)
+            if (Wallpaper::isWallpaperHidden())
+                Wallpaper::showWallpaper();
         if (isHidden())
             show();
     }
     else if (isVisible())
     {
         hide();
-        if (Wallpaper::isWallpaperVisible())
-            Wallpaper::hideWallpaper();
+        if (!windowMode)
+            if (Wallpaper::isWallpaperVisible())
+                Wallpaper::hideWallpaper();
     }
 }

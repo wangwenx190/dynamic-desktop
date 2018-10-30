@@ -15,6 +15,9 @@ public:
     explicit AboutDialog(QWidget *parent = nullptr);
     ~AboutDialog() override;
 
+public slots:
+    void refreshTexts();
+
 private:
     Ui::AboutDialog *ui;
 };

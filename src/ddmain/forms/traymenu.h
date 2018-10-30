@@ -24,6 +24,9 @@ public:
     explicit TrayMenu(QWidget *parent = nullptr);
     ~TrayMenu() override;
 
+public slots:
+    void refreshTexts();
+
 protected:
     void showEvent(QShowEvent *event) override;
 
