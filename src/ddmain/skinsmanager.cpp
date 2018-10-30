@@ -43,12 +43,7 @@ bool SkinsManager::setSkin(const QString &skin)
     if (skin.contains(QStringLiteral("/")) || skin.contains(QStringLiteral("\\")))
         filePath = skin;
     else
-#ifndef BUILD_DD_STATIC
-        filePath = QApplication::applicationDirPath() + QDir::separator() + QStringLiteral("skins")
-                + QDir::separator() + skin + QStringLiteral(".css");
-#else
         filePath = QStringLiteral(":/skins/") + skin + QStringLiteral(".css");
-#endif
     if (!QFileInfo::exists(filePath))
         return false;
     if (!QFileInfo(filePath).isFile())

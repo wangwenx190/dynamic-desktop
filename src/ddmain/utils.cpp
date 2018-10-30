@@ -10,9 +10,6 @@
 #include <QWidget>
 #include <QTranslator>
 #include <QLocale>
-#ifndef BUILD_DD_STATIC
-#include <QLibraryInfo>
-#endif
 
 #include <wtsapi32.h>
 #include <userenv.h>
@@ -270,11 +267,7 @@ bool installTranslation(const QString &language, const QString &prefix)
         delete translator;
         translator = nullptr;
     }
-#ifdef BUILD_DD_STATIC
-    QString qmDir = QStringLiteral(":/i18n");
-#else
-    QString qmDir = QLibraryInfo::location(QLibraryInfo::TranslationsPath);
-#endif
+    const QString qmDir = QStringLiteral(":/i18n");
     translator = new QTranslator();
     if (language == QStringLiteral("auto"))
     {
@@ -290,6 +283,17 @@ bool installTranslation(const QString &language, const QString &prefix)
     delete translator;
     translator = nullptr;
     return false;
+}
+
+bool isAutoStart()
+{
+    return false;
+}
+
+bool setAutoStart(bool autoStart)
+{
+    Q_UNUSED(autoStart)
+    return true;
 }
 
 /*bool killProcess(const QString &name)

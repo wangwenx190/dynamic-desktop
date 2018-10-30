@@ -2,11 +2,10 @@
 #include "settingsmanager.h"
 #include "utils.h"
 #include "wallpaper.h"
+#include "forms/preferencesdialog.h"
 
 #include <QMessageBox>
 #include <QVBoxLayout>
-#include <QtAV>
-#include <QtAVWidgets>
 #include <QFileInfo>
 
 const qreal kVolumeInterval = 0.04;
@@ -15,8 +14,6 @@ PlayerWindow::PlayerWindow(QWidget *parent) : QWidget(parent)
 {
     initUI();
     initPlayer();
-    initConnections();
-    initAudio();
 }
 
 PlayerWindow::~PlayerWindow()
@@ -27,18 +24,13 @@ PlayerWindow::~PlayerWindow()
     delete mainLayout;
 }
 
-void PlayerWindow::parseCommand(const QPair<QString, QVariant> &command)
+void PlayerWindow::setPreferencesDialog(PreferencesDialog *preferences)
 {
-    QString action = command.first;
-    QByteArray byteArray = action.toLatin1();
-    const char *name = byteArray.constData();
-    QVariant param = command.second;
-    QMetaObject::invokeMethod(this, name, Q_ARG(QVariant, param));
+    preferencesDialog = preferences;
 }
 
-void PlayerWindow::setVolume(const QVariant& param)
+void PlayerWindow::setVolume(quint32 volume)
 {
-    quint32 volume = param.toUInt();
     QtAV::AudioOutput *ao = player ? player->audio() : nullptr;
     if (ao)
     {
@@ -46,36 +38,32 @@ void PlayerWindow::setVolume(const QVariant& param)
         if (ao->volume() != newVolume)
             if (qAbs(static_cast<int>(ao->volume() / kVolumeInterval) - static_cast<int>(volume)) >= static_cast<int>(0.1 / kVolumeInterval))
                 ao->setVolume(newVolume);
-        //emit this->sendCommand(qMakePair(QStringLiteral("setVolumeToolTip"), tr("Volume: %0").arg(QString::number(newVolume))));
+        preferencesDialog->setVolumeToolTip(tr("Volume: %0").arg(QString::number(newVolume)));
     }
 }
 
-void PlayerWindow::setMute(const QVariant& param)
+void PlayerWindow::setMute(bool mute)
 {
-    bool mute = param.toBool();
     if (player->audio())
         if (player->audio()->isMute() != mute)
             player->audio()->setMute(mute);
 }
 
-void PlayerWindow::seek(const QVariant& param)
+void PlayerWindow::seek(qint64 value)
 {
-    qint64 value = param.toLongLong();
     if (player->isLoaded() && player->isSeekable())
         player->seek(value);
 }
 
-void PlayerWindow::setVideoTrack(const QVariant& param)
+void PlayerWindow::setVideoTrack(quint32 id)
 {
-    quint32 id = param.toUInt();
     if (player->isLoaded())
         if (id != player->currentVideoStream())
             player->setVideoStream(id);
 }
 
-void PlayerWindow::setAudioTrack(const QVariant& param)
+void PlayerWindow::setAudioTrack(quint32 id)
 {
-    quint32 id = param.toUInt();
     if (player->isLoaded())
         if (id != player->currentAudioStream())
             player->setAudioStream(id);
@@ -92,44 +80,43 @@ void PlayerWindow::setSubtitleTrack(const QVariant& param)
         {
             quint32 id = param.toUInt();
             if (id != player->currentSubtitleStream())
+            {
+                if (!subtitle->file().isEmpty())
+                    subtitle->setFile(QString());
                 player->setSubtitleStream(id);
+            }
         }
     }
 }
 
-void PlayerWindow::setSubtitle(const QVariant& param)
+void PlayerWindow::setSubtitle(const QString& subPath)
 {
-    const QString subPath = param.toString();
     if (player->isLoaded())
         if (subtitle->file() != subPath)
             subtitle->setFile(subPath);
 }
 
-void PlayerWindow::setAudio(const QVariant& param)
+void PlayerWindow::setAudio(const QString& audioPath)
 {
-    const QString audioPath = param.toString();
     if (player->isLoaded() && player->audio())
         player->setExternalAudio(audioPath);
 }
 
-void PlayerWindow::setCharset(const QVariant& param)
+void PlayerWindow::setCharset(const QString& charset)
 {
-    const QString charset = param.toString();
     if (SettingsManager::getInstance()->getSubtitle())
         if (subtitle->codec() != charset.toLatin1())
             subtitle->setCodec(charset.toLatin1());
 }
 
-void PlayerWindow::setSubtitleAutoLoad(const QVariant& param)
+void PlayerWindow::setSubtitleAutoLoad(bool autoload)
 {
-    bool autoload = param.toBool();
     if (subtitle->autoLoad() != autoload)
         subtitle->setAutoLoad(autoload);
 }
 
-void PlayerWindow::setSubtitleEnabled(const QVariant& param)
+void PlayerWindow::setSubtitleEnabled(bool enabled)
 {
-    bool enabled = param.toBool();
     if (subtitle->isEnabled() != enabled)
         subtitle->setEnabled(enabled);
 }
@@ -163,9 +150,10 @@ void PlayerWindow::initConnections()
     connect(player, &QtAV::AVPlayer::loaded, this, &PlayerWindow::onStartPlay);
     connect(player, &QtAV::AVPlayer::positionChanged, this, [=](qint64 pos)
     {
-        emit this->sendCommand(qMakePair(QStringLiteral("updateVideoSlider"), pos));
-        emit this->sendCommand(qMakePair(QStringLiteral("setVideoPositionText"), QTime(0, 0, 0).addMSecs(pos).toString(QStringLiteral("HH:mm:ss"))));
+        preferencesDialog->updateVideoSlider(pos);
+        preferencesDialog->setVideoPositionText(QTime(0, 0, 0).addMSecs(pos).toString(QStringLiteral("HH:mm:ss")));
     });
+    initAudio();
 }
 
 void PlayerWindow::initAudio()
@@ -176,14 +164,13 @@ void PlayerWindow::initAudio()
         setMute(SettingsManager::getInstance()->getMute());
     }
     else
-        emit this->sendCommand(qMakePair(QStringLiteral("setAudioAreaEnabled"), false));
+        preferencesDialog->setAudioAreaEnabled(false);
 }
 
-bool PlayerWindow::setRenderer(const QVariant& param)
+bool PlayerWindow::setRenderer(QtAV::VideoRendererId id)
 {
     if (!player || !subtitle)
         return false;
-    auto id = static_cast<QtAV::VideoRendererId>(param.toInt());
     if ((renderer != nullptr) && (id == renderer->id()))
         return false;
     QtAV::VideoRenderer *videoRenderer = QtAV::VideoRenderer::create(id);
@@ -222,11 +209,10 @@ bool PlayerWindow::setRenderer(const QVariant& param)
     return true;
 }
 
-void PlayerWindow::setImageQuality(const QVariant& param)
+void PlayerWindow::setImageQuality(const QString& quality)
 {
     if (!renderer)
         return;
-    const QString quality = param.toString().toLower();
     if ((quality == QStringLiteral("default")) &&
             (renderer->quality() != QtAV::VideoRenderer::QualityDefault))
         renderer->setQuality(QtAV::VideoRenderer::QualityDefault);
@@ -238,42 +224,36 @@ void PlayerWindow::setImageQuality(const QVariant& param)
         renderer->setQuality(QtAV::VideoRenderer::QualityFastest);
 }
 
-void PlayerWindow::setImageRatio(const QVariant& param)
+void PlayerWindow::setImageRatio(bool fit)
 {
     if (!renderer)
         return;
-    bool fit = param.toBool();
     if (fit && (renderer->outAspectRatioMode() != QtAV::VideoRenderer::RendererAspectRatio))
         renderer->setOutAspectRatioMode(QtAV::VideoRenderer::RendererAspectRatio);
     else if (!fit && (renderer->outAspectRatioMode() != QtAV::VideoRenderer::VideoAspectRatio))
         renderer->setOutAspectRatioMode(QtAV::VideoRenderer::VideoAspectRatio);
 }
 
-void PlayerWindow::setTranslation(const QVariant &param)
-{
-    Utils::installTranslation(param.toString(), QStringLiteral("ply"));
-}
-
 void PlayerWindow::onStartPlay()
 {
     if (!player || !subtitle)
         return;
-    emit this->sendCommand(qMakePair(QStringLiteral("clearAllTracks"), QVariant()));
-    emit this->sendCommand(qMakePair(QStringLiteral("updateVideoSliderUnit"), player->notifyInterval()));
-    emit this->sendCommand(qMakePair(QStringLiteral("updateVideoSliderRange"), player->duration()));
-    emit this->sendCommand(qMakePair(QStringLiteral("updateVideoSlider"), player->position()));
-    emit this->sendCommand(qMakePair(QStringLiteral("setSeekAreaEnabled"), player->isSeekable()));
-    emit this->sendCommand(qMakePair(QStringLiteral("setAudioAreaEnabled"), player->audio() ? true : false));
-    emit this->sendCommand(qMakePair(QStringLiteral("updateVideoTracks"), player->internalVideoTracks()));
-    emit this->sendCommand(qMakePair(QStringLiteral("updateAudioTracks"), player->internalAudioTracks()));
-    emit this->sendCommand(qMakePair(QStringLiteral("setVideoDurationText"), QTime(0, 0, 0).addMSecs(player->mediaStopPosition()).toString(QStringLiteral("HH:mm:ss"))));
-    //if (SettingsManager::getInstance()->getAudioAutoLoad())
-    //emit this->sendCommand(qMakePair(QStringLiteral("updateAudioTracks"), qMakePair(player->externalAudioTracks(), true)));
+    preferencesDialog->clearAllTracks();
+    preferencesDialog->updateVideoSliderUnit(player->notifyInterval());
+    preferencesDialog->updateVideoSliderRange(player->duration());
+    preferencesDialog->updateVideoSlider(player->position());
+    preferencesDialog->setSeekAreaEnabled(player->isSeekable());
+    preferencesDialog->setAudioAreaEnabled(player->audio() ? true : false);
+    preferencesDialog->updateVideoTracks(player->internalVideoTracks());
+    preferencesDialog->updateAudioTracks(player->internalAudioTracks(), false);
+    preferencesDialog->setVideoDurationText(QTime(0, 0, 0).addMSecs(player->mediaStopPosition()).toString(QStringLiteral("HH:mm:ss")));
     bool externalAudioLoaded = false;
     if (SettingsManager::getInstance()->getAudioAutoLoad())
     {
         QVariantList externalAudioTracks = player->externalAudioTracks();
         if (!externalAudioTracks.isEmpty())
+        {
+            preferencesDialog->updateAudioTracks(player->externalAudioTracks(), true);
             for (auto& track : externalAudioTracks)
             {
                 QVariantMap trackData = track.toMap();
@@ -287,11 +267,12 @@ void PlayerWindow::onStartPlay()
                     else
                         continue;
             }
+        }
     }
     if (!externalAudioLoaded)
         player->setExternalAudio(QString());
-    emit this->sendCommand(qMakePair(QStringLiteral("updateSubtitleTracks"), player->internalSubtitleTracks()));
-    /*if (SettingsManager::getInstance()->getSubtitleAutoLoad())
+    preferencesDialog->updateSubtitleTracks(player->internalSubtitleTracks(), false);
+    if (SettingsManager::getInstance()->getSubtitleAutoLoad())
     {
         QVariantList externalSubtitleTracks;
         QStringList externalSubtitlePaths = Utils::externalFilesToLoad(QFileInfo(player->file()), QStringLiteral("sub"));
@@ -303,9 +284,9 @@ void PlayerWindow::onStartPlay()
                 externalSubtitle[QStringLiteral("file")] = subPath;
                 externalSubtitleTracks.append(externalSubtitle);
             }
-            emit this->sendCommand(qMakePair(QStringLiteral("updateSubtitleTracks"), qMakePair(externalSubtitleTracks, true)));
+            preferencesDialog->updateSubtitleTracks(externalSubtitleTracks, true);
         }
-    }*/
+    }
     if (!subtitle->file().isEmpty())
         subtitle->setFile(QString());
     subtitle->setEnabled(false);
@@ -328,9 +309,8 @@ void PlayerWindow::onStartPlay()
     }
 }
 
-void PlayerWindow::play(const QVariant& param)
+void PlayerWindow::play()
 {
-    Q_UNUSED(param)
     if (!player)
         return;
     if (Utils::isPicture(player->file()))
@@ -339,35 +319,32 @@ void PlayerWindow::play(const QVariant& param)
         player->pause(false);
 }
 
-void PlayerWindow::pause(const QVariant& param)
+void PlayerWindow::pause()
 {
-    Q_UNUSED(param)
     if (!player)
         return;
     if (player->isPlaying())
         player->pause();
 }
 
-/*void PlayerWindow::stop(const QVariant& param)
+/*void PlayerWindow::stop()
 {
-    Q_UNUSED(param)
     if (!player)
         return;
     if (player->isLoaded())
         player->stop();
 }*/
 
-void PlayerWindow::setUrl(const QVariant& param)
+void PlayerWindow::setUrl(const QString& url)
 {
     if (!player)
         return;
-    const QString url = param.toString();
     if (!url.isEmpty())
     {
         if (url == player->file())
         {
             if (!Utils::isPicture(url))
-                play(QVariant());
+                play();
             return;
         }
         player->stop();
@@ -412,7 +389,7 @@ void PlayerWindow::setUrl(const QVariant& param)
         setWindowTitle(QFileInfo(url).fileName());
     }
     else if (!player->file().isEmpty() && !Utils::isPicture(player->file()))
-        play(QVariant());
+        play();
     if (!player->file().isEmpty() && (Utils::isVideo(player->file()) || Utils::isPicture(player->file())))
     {
         if (Wallpaper::isWallpaperHidden())

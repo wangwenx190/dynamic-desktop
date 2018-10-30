@@ -1,11 +1,14 @@
 #pragma once
 
 #include <QWidget>
-#include <QVariant>
+#include <QtAV>
+#include <QtAVWidgets>
 
 QT_BEGIN_NAMESPACE
 QT_FORWARD_DECLARE_CLASS(QVBoxLayout)
 QT_END_NAMESPACE
+
+QT_FORWARD_DECLARE_CLASS(PreferencesDialog)
 
 namespace QtAV
 {
@@ -22,37 +25,31 @@ public:
     explicit PlayerWindow(QWidget *parent = nullptr);
     ~PlayerWindow() override;
 
-signals:
-    void sendCommand(QPair<QString, QVariant>);
-
 public slots:
-    void parseCommand(const QPair<QString, QVariant>& command);
-
-public slots:
-    void setVolume(const QVariant& param);
-    void setMute(const QVariant& param);
-    void seek(const QVariant& param);
-    void setVideoTrack(const QVariant& param);
-    void setAudioTrack(const QVariant& param);
+    void initConnections();
+    void setPreferencesDialog(PreferencesDialog *preferences);
+    void setVolume(quint32 volume);
+    void setMute(bool mute = true);
+    void seek(qint64 value);
+    void setVideoTrack(quint32 id);
+    void setAudioTrack(quint32 id);
     void setSubtitleTrack(const QVariant& param);
-    void setSubtitle(const QVariant& param);
-    void setAudio(const QVariant& param);
-    void setCharset(const QVariant& param);
-    void setSubtitleAutoLoad(const QVariant& param);
-    void setSubtitleEnabled(const QVariant& param);
-    void play(const QVariant& param);
-    void pause(const QVariant& param);
-    //void stop(const QVariant& param);
-    void setUrl(const QVariant& param);
-    bool setRenderer(const QVariant& param);
-    void setImageQuality(const QVariant& param);
-    void setImageRatio(const QVariant& param);
-    void setTranslation(const QVariant& param);
+    void setSubtitle(const QString &subPath);
+    void setAudio(const QString &audioPath);
+    void setCharset(const QString &charset);
+    void setSubtitleAutoLoad(bool autoload = true);
+    void setSubtitleEnabled(bool enabled = true);
+    void play();
+    void pause();
+    //void stop();
+    void setUrl(const QString &url);
+    bool setRenderer(QtAV::VideoRendererId id);
+    void setImageQuality(const QString &quality);
+    void setImageRatio(bool fit);
 
 private slots:
     void initUI();
     void initPlayer();
-    void initConnections();
     void initAudio();
     void onStartPlay();
 
@@ -61,4 +58,5 @@ private:
     QtAV::VideoRenderer *renderer = nullptr;
     QtAV::SubtitleFilter *subtitle = nullptr;
     QVBoxLayout *mainLayout = nullptr;
+    PreferencesDialog *preferencesDialog = nullptr;
 };

@@ -1,12 +1,13 @@
 #pragma once
 
-#include <QtNiceFramelessWindow>
-#include <QVariant>
+#include "qtniceframelesswindow.h"
 
 QT_BEGIN_NAMESPACE
 QT_FORWARD_DECLARE_CLASS(QWinTaskbarButton)
 QT_FORWARD_DECLARE_CLASS(QWinTaskbarProgress)
 QT_END_NAMESPACE
+
+QT_FORWARD_DECLARE_CLASS(PlayerWindow)
 
 namespace Ui
 {
@@ -18,35 +19,29 @@ class PreferencesDialog : public CFramelessWindow
     Q_OBJECT
 
 signals:
-    void sendCommand(QPair<QString, QVariant>);
     void setMute(bool);
     void muteChanged(bool);
     void about();
 
 public slots:
-    void updateVideoSlider(const QVariant& params);
-    void updateVideoSliderUnit(const QVariant& params);
-    void updateVideoSliderRange(const QVariant& params);
-    void setSeekAreaEnabled(const QVariant& params);
-    void setAudioAreaEnabled(const QVariant& params);
-    void updateVideoTracks(const QVariant& params);
-    void updateAudioTracks(const QVariant& params);
-    void updateSubtitleTracks(const QVariant& params);
-    void clearAllTracks(const QVariant& params);
-    void setVolumeToolTip(const QVariant& params);
-    void setVideoPositionText(const QVariant& params);
-    void setVideoDurationText(const QVariant& params);
+    void initConnections();
+    void setPlayerWindow(PlayerWindow *player);
+    void updateVideoSlider(qint64 position);
+    void updateVideoSliderUnit(quint32 unit);
+    void updateVideoSliderRange(qint64 duration);
+    void setSeekAreaEnabled(bool enabled);
+    void setAudioAreaEnabled(bool available);
+    void updateVideoTracks(const QVariantList &videoTracks);
+    void updateAudioTracks(const QVariantList &audioTracks, bool add = false);
+    void updateSubtitleTracks(const QVariantList &subtitleTracks, bool add = false);
+    void clearAllTracks();
+    void setVolumeToolTip(const QString &text);
+    void setVideoPositionText(const QString &text);
+    void setVideoDurationText(const QString &text);
 
 public:
     explicit PreferencesDialog(QWidget *parent = nullptr);
     ~PreferencesDialog() override;
-
-public slots:
-    void parseCommand(const QPair<QString, QVariant>& command);
-
-public:
-    bool setAutoStart(bool enable = true);
-    bool isAutoStart(const QString &name = QStringLiteral("ddassvc"));
 
 protected:
     void dragEnterEvent(QDragEnterEvent *event) override;
@@ -55,7 +50,6 @@ protected:
 
 private slots:
     void initUI();
-    void initConnections();
     void setDecoders();
     void setRatio();
 
@@ -65,4 +59,5 @@ private:
     quint32 sliderUnit = 1000;
     QWinTaskbarButton *taskbarButton = nullptr;
     QWinTaskbarProgress *taskbarProgress = nullptr;
+    PlayerWindow *playerWindow = nullptr;
 };

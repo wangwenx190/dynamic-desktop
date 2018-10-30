@@ -56,16 +56,27 @@
         <translation>架构</translation>
     </message>
     <message>
-        <source>About Qt</source>
-        <translation>关于 Qt</translation>
-    </message>
-    <message>
         <source>OK</source>
         <translation>确定</translation>
     </message>
     <message>
-        <source>Run-time version: %0 / Compiled version: %1</source>
+        <source>Run-time version: %0 / Compile-time version: %1</source>
         <translation>运行时版本：%0 / 编译时版本：%1</translation>
+    </message>
+    <message>
+        <source>About QtAV</source>
+        <translation>关于 QtAV</translation>
+    </message>
+</context>
+<context>
+    <name>PlayerWindow</name>
+    <message>
+        <source>Current renderer is not available on your platform!</source>
+        <translation>当前渲染引擎在您的平台不可用！</translation>
+    </message>
+    <message>
+        <source>Volume: %0</source>
+        <translation>音量：%0</translation>
     </message>
 </context>
 <context>
@@ -300,6 +311,10 @@ Make sure this application runs in your GPU&apos;s Optimus mode.</source>
         <source>Some texts will not refresh their translation until you restart this application.</source>
         <translation>部分文本将不会刷新它们的翻译直到您重启此应用程序。</translation>
     </message>
+    <message>
+        <source>American English</source>
+        <translation>美式英语</translation>
+    </message>
 </context>
 <context>
     <name>QObject</name>
@@ -308,24 +323,27 @@ Make sure this application runs in your GPU&apos;s Optimus mode.</source>
         <translation>此应用程序仅支持 Windows 7 及更新版本的操作系统。</translation>
     </message>
     <message>
-        <source>Cannot start the core module. Application aborting.</source>
-        <translation>无法启动核心模块。应用程序正在退出。</translation>
+        <source>There is another instance running. Please do not run twice.</source>
+        <translation>已经有另一个实例在运行。请勿重复运行。</translation>
+    </message>
+</context>
+<context>
+    <name>TrayMenu</name>
+    <message>
+        <source>Playlist</source>
+        <translation>播放列表</translation>
     </message>
     <message>
-        <source>Preferences</source>
-        <translation>首选项</translation>
-    </message>
-    <message>
-        <source>Play</source>
-        <translation>播放</translation>
-    </message>
-    <message>
-        <source>Pause</source>
-        <translation>暂停</translation>
+        <source>Loop mode</source>
+        <translation>循环模式</translation>
     </message>
     <message>
         <source>Mute</source>
         <translation>静音</translation>
+    </message>
+    <message>
+        <source>Options</source>
+        <translation>选项</translation>
     </message>
     <message>
         <source>About</source>
@@ -334,10 +352,6 @@ Make sure this application runs in your GPU&apos;s Optimus mode.</source>
     <message>
         <source>Exit</source>
         <translation>退出</translation>
-    </message>
-    <message>
-        <source>There is another instance running. Please do not run twice.</source>
-        <translation>已经有另一个实例在运行。请勿重复运行。</translation>
     </message>
 </context>
 <context>

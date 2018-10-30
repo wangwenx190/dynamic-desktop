@@ -1,10 +1,8 @@
 #pragma once
 
-#include "../dd_dll_global.h"
-
 #include <QSlider>
 
-class DD_SHARED_EXPORT Slider : public QSlider
+class Slider : public QSlider
 {
     Q_OBJECT
 public:

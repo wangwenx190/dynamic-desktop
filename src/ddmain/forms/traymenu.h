@@ -13,6 +13,12 @@ class TrayMenu : public QMenu
 
 signals:
     void onExitClicked();
+    void onOptionsClicked();
+    void onPlayClicked();
+    void onNextClicked();
+    void onPreviousClicked();
+    void onMuteClicked();
+    void onAboutClicked();
 
 public:
     explicit TrayMenu(QWidget *parent = nullptr);

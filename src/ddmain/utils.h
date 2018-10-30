@@ -23,5 +23,7 @@ bool isVideo(const QString &fileName);
 bool isAudio(const QString &fileName);
 bool isPicture(const QString &fileName);
 bool installTranslation(const QString &language, const QString &prefix);
+bool isAutoStart();
+bool setAutoStart(bool autoStart = true);
 
 }

@@ -1,9 +1,11 @@
 #include "settingsmanager.h"
 #include "skinsmanager.h"
 #include "utils.h"
+#include "wallpaper.h"
 #include "forms/preferencesdialog.h"
 #include "forms/aboutdialog.h"
 #include "forms/traymenu.h"
+#include "playerwindow.h"
 
 #include <Windows.h>
 
@@ -13,9 +15,10 @@
 #include <QVersionNumber>
 #include <QCommandLineParser>
 #include <QCommandLineOption>
-#include <QMenu>
-#include <QAction>
 #include <QSystemTrayIcon>
+#include <QtAV>
+#include <QtAVWidgets>
+#include <QDesktopWidget>
 
 int main(int argc, char *argv[])
 {
@@ -33,7 +36,7 @@ int main(int argc, char *argv[])
 #ifndef _DEBUG
     qInstallMessageHandler(Utils::fileLogger);
 #endif
-    Utils::installTranslation(SettingsManager::getInstance()->getLanguage(), QStringLiteral("ctl"));
+    Utils::installTranslation(SettingsManager::getInstance()->getLanguage(), QStringLiteral("dd"));
     int suffixIndex;
     QVersionNumber currentVersion = QVersionNumber::fromString(QSysInfo::kernelVersion(), &suffixIndex);
     QVersionNumber win7Version(6, 1, 7600);
@@ -42,7 +45,7 @@ int main(int argc, char *argv[])
         QMessageBox::critical(nullptr, QStringLiteral("Dynamic Desktop"), QObject::tr("This application only supports Windows 7 and newer."));
         return Utils::Exit(-1, false, appMutex);
     }
-    appMutex = CreateMutex(nullptr, FALSE, TEXT("wangwenx190.DynamicDesktop.Controller.1000.AppMutex"));
+    appMutex = CreateMutex(nullptr, FALSE, TEXT("wangwenx190.DynamicDesktop.Main.1000.AppMutex"));
     if ((appMutex != nullptr) && (GetLastError() == ERROR_ALREADY_EXISTS))
     {
         QMessageBox::critical(nullptr, QStringLiteral("Dynamic Desktop"), QObject::tr("There is another instance running. Please do not run twice."));
@@ -80,6 +83,7 @@ int main(int argc, char *argv[])
                                     QApplication::translate("main", "volume"));
     parser.addOption(volumeOption);
     parser.process(app);
+    windowMode = parser.isSet(windowModeOption);
     QString skinOptionValue = parser.value(skinOption);
     if (!skinOptionValue.isEmpty())
         if (skinOptionValue != SettingsManager::getInstance()->getSkin())
@@ -101,20 +105,20 @@ int main(int argc, char *argv[])
     QString rendererOptionValue = parser.value(rendererOption).toLower();
     if (!rendererOptionValue.isEmpty())
         if ((rendererOptionValue == QStringLiteral("opengl")) &&
-                (SettingsManager::getInstance()->getRenderer() != QtAV_VId_OpenGLWidget))
-            SettingsManager::getInstance()->setRenderer(QtAV_VId_OpenGLWidget);
+                (SettingsManager::getInstance()->getRenderer() != QtAV::VideoRendererId_OpenGLWidget))
+            SettingsManager::getInstance()->setRenderer(QtAV::VideoRendererId_OpenGLWidget);
         else if ((rendererOptionValue == QStringLiteral("gl")) &&
-                 (SettingsManager::getInstance()->getRenderer() != QtAV_VId_GLWidget2))
-            SettingsManager::getInstance()->setRenderer(QtAV_VId_GLWidget2);
+                 (SettingsManager::getInstance()->getRenderer() != QtAV::VideoRendererId_GLWidget2))
+            SettingsManager::getInstance()->setRenderer(QtAV::VideoRendererId_GLWidget2);
         else if ((rendererOptionValue == QStringLiteral("qt")) &&
-                 (SettingsManager::getInstance()->getRenderer() != QtAV_VId_Widget))
-            SettingsManager::getInstance()->setRenderer(QtAV_VId_Widget);
+                 (SettingsManager::getInstance()->getRenderer() != QtAV::VideoRendererId_Widget))
+            SettingsManager::getInstance()->setRenderer(QtAV::VideoRendererId_Widget);
         else if ((rendererOptionValue == QStringLiteral("gdi")) &&
-                 (SettingsManager::getInstance()->getRenderer() != QtAV_VId_GDI))
-            SettingsManager::getInstance()->setRenderer(QtAV_VId_GDI);
+                 (SettingsManager::getInstance()->getRenderer() != QtAV::VideoRendererId_GDI))
+            SettingsManager::getInstance()->setRenderer(QtAV::VideoRendererId_GDI);
         else if ((rendererOptionValue == QStringLiteral("d2d")) &&
-                 (SettingsManager::getInstance()->getRenderer() != QtAV_VId_Direct2D))
-            SettingsManager::getInstance()->setRenderer(QtAV_VId_Direct2D);
+                 (SettingsManager::getInstance()->getRenderer() != QtAV::VideoRendererId_Direct2D))
+            SettingsManager::getInstance()->setRenderer(QtAV::VideoRendererId_Direct2D);
     QString volumeOptionValue = parser.value(volumeOption);
     if (!volumeOptionValue.isEmpty())
     {
@@ -127,47 +131,49 @@ int main(int argc, char *argv[])
             SettingsManager::getInstance()->setVolume(static_cast<quint32>(volumeOptionValueInt));
     }
     SkinsManager::getInstance()->setSkin(SettingsManager::getInstance()->getSkin());
-    app.setQuitOnLastWindowClosed(false);
-    PreferencesDialog mainWindow;
+    PlayerWindow playerWindow;
+    PreferencesDialog preferencesDialog;
+    preferencesDialog.setPlayerWindow(&playerWindow);
+    playerWindow.setPreferencesDialog(&preferencesDialog);
+    preferencesDialog.initConnections();
+    playerWindow.initConnections();
     AboutDialog aboutDialog;
-    QMenu trayMenu;
+    TrayMenu trayMenu;
     QSystemTrayIcon trayIcon;
     trayIcon.setIcon(QIcon(QStringLiteral(":/icons/color_palette.svg")));
     trayIcon.setToolTip(QStringLiteral("Dynamic Desktop"));
     trayIcon.setContextMenu(&trayMenu);
-    QAction *showPreferencesDialogAction = trayMenu.addAction(QObject::tr("Preferences"), [=, &mainWindow]
+    QObject::connect(&trayMenu, &TrayMenu::onOptionsClicked, [=, &preferencesDialog]
     {
-        if (mainWindow.isHidden())
+        if (preferencesDialog.isHidden())
         {
-            Utils::moveToCenter(&mainWindow);
-            mainWindow.show();
+            Utils::moveToCenter(&preferencesDialog);
+            preferencesDialog.show();
         }
-        if (!mainWindow.isActiveWindow())
-            mainWindow.setWindowState(mainWindow.windowState() & ~Qt::WindowMinimized);
-        if (!mainWindow.isActiveWindow())
+        if (!preferencesDialog.isActiveWindow())
+            preferencesDialog.setWindowState(preferencesDialog.windowState() & ~Qt::WindowMinimized);
+        if (!preferencesDialog.isActiveWindow())
         {
-            mainWindow.raise();
-            mainWindow.activateWindow();
+            preferencesDialog.raise();
+            preferencesDialog.activateWindow();
         }
     });
-    trayMenu.addSeparator();
-    trayMenu.addAction(QObject::tr("Play"), [=, &mainWindow]
+    /*QObject::connect(&trayMenu, &TrayMenu::onPlayClicked, [=, &playerWindow]
     {
-        emit mainWindow.sendCommand(qMakePair(QStringLiteral("play"), QVariant()));
+        playerWindow.play();
     });
-    trayMenu.addAction(QObject::tr("Pause"), [=, &mainWindow]
+    QObject::connect(&trayMenu, &TrayMenu::onPlayClicked, [=, &playerWindow]
     {
-        emit mainWindow.sendCommand(qMakePair(QStringLiteral("pause"), QVariant()));
-    });
-    QAction *muteAction = trayMenu.addAction(QObject::tr("Mute"));
+        emit preferencesDialog.sendCommand(qMakePair(QStringLiteral("pause"), QVariant()));
+    });*/
+    /*QAction *muteAction = trayMenu.addAction(QObject::tr("Mute"));
     muteAction->setCheckable(true);
     muteAction->setChecked(SettingsManager::getInstance()->getMute());
-    QObject::connect(muteAction, &QAction::triggered, [=, &mainWindow]
+    QObject::connect(muteAction, &QAction::triggered, [=, &preferencesDialog]
     {
-        emit mainWindow.setMute(muteAction->isChecked());
-    });
-    trayMenu.addSeparator();
-    QAction *aboutAction = trayMenu.addAction(QObject::tr("About"), [=, &aboutDialog]
+        emit preferencesDialog.setMute(muteAction->isChecked());
+    });*/
+    QObject::connect(&trayMenu, &TrayMenu::onAboutClicked, [=, &aboutDialog]
     {
         if (aboutDialog.isHidden())
         {
@@ -182,43 +188,53 @@ int main(int argc, char *argv[])
             aboutDialog.activateWindow();
         }
     });
-    QObject::connect(&mainWindow, &PreferencesDialog::about, [=]
-    {
-        emit aboutAction->triggered();
-    });
-    trayMenu.addAction(QObject::tr("Exit"), &app, &QApplication::quit);
-    QObject::connect(&trayIcon, &QSystemTrayIcon::activated, [=](QSystemTrayIcon::ActivationReason reason)
+    QObject::connect(&preferencesDialog, &PreferencesDialog::about, &trayMenu, &TrayMenu::onAboutClicked);
+    QObject::connect(&trayMenu, &TrayMenu::onExitClicked, &app, &QApplication::quit);
+    QObject::connect(&trayIcon, &QSystemTrayIcon::activated, [=, &trayMenu](QSystemTrayIcon::ActivationReason reason)
     {
         if (reason != QSystemTrayIcon::Context)
-            emit showPreferencesDialogAction->triggered();
+            emit trayMenu.onOptionsClicked();
     });
-    QObject::connect(&mainWindow, &PreferencesDialog::muteChanged, muteAction, &QAction::setChecked);
-    QObject::connect(ipcServer, &IPCServer::clientOnline, [=, &mainWindow, &trayIcon]
+    //QObject::connect(&preferencesDialog, &PreferencesDialog::muteChanged, muteAction, &QAction::setChecked);
+    trayIcon.show();
+    const Qt::WindowFlags windowFlags = Qt::FramelessWindowHint;
+    const QRect screenGeometry = QApplication::desktop()->screenGeometry(&playerWindow);
+    if (!windowMode)
     {
-        if (!trayIcon.isVisible())
-            trayIcon.show();
-        if (SettingsManager::getInstance()->getUrl().isEmpty())
-        {
-            Utils::moveToCenter(&mainWindow);
-            if (!mainWindow.isVisible())
-                mainWindow.show();
-        }
-    });
-    QObject::connect(ipcServer, &IPCServer::clientMessage, &mainWindow, &PreferencesDialog::parseCommand);
-    QObject::connect(&mainWindow, &PreferencesDialog::sendCommand, ipcServer, &IPCServer::serverMessage);
-    QObject::connect(ipcServer, &IPCServer::clientOffline, &app, &QApplication::quit);
-    QStringList playerStartupArguments{ QStringLiteral("--runfromcontroller") };
-    if (parser.isSet(windowModeOption))
-        playerStartupArguments << QStringLiteral("--window");
-    QString playerPath = QApplication::applicationDirPath() + QStringLiteral("/ddply");
-#ifdef _DEBUG
-    playerPath += QStringLiteral("d");
-#endif
-    playerPath += QStringLiteral(".exe");
-    if (!Utils::run(playerPath, playerStartupArguments))
-    {
-        QMessageBox::critical(nullptr, QStringLiteral("Dynamic Desktop"), QObject::tr("Cannot start the core module. Application aborting."));
-        return Utils::Exit(-1, false, appMutex);
+        playerWindow.setWindowFlags(windowFlags);
+        // Why is Direct2D image too large?
+        playerWindow.setGeometry(screenGeometry);
+        QVersionNumber win10Version(10, 0, 10240); // Windows 10 Version 1507
+        // How to place our window under desktop icons:
+        // Use "Program Manager" as our parent window in Win7/8/8.1.
+        // Use "WorkerW" as our parent window in Win10.
+        // Use "Program Manager" as our parent window in
+        // Win10 is also OK, but our window will come
+        // to front if we press "Win + Tab" and it will
+        // also block our desktop icons, however using
+        // "WorkerW" as our parent window will not result
+        // in this problem, I don't know why. It's strange.
+        Wallpaper::setLegacyMode(currentVersion < win10Version);
+        Wallpaper::setWallpaper(reinterpret_cast<HWND>(playerWindow.winId()));
     }
-    return Utils::Exit(QApplication::exec(), false, appMutex);
+    else
+    {
+        playerWindow.resize(1280, 720);
+        Utils::moveToCenter(&playerWindow);
+        if (playerWindow.isHidden())
+            playerWindow.show();
+    }
+    if (SettingsManager::getInstance()->getUrl().isEmpty())
+    {
+        Utils::moveToCenter(&preferencesDialog);
+        if (preferencesDialog.isHidden())
+            preferencesDialog.show();
+    }
+    else
+    {
+        if (playerWindow.isHidden())
+            playerWindow.show();
+        playerWindow.setUrl(SettingsManager::getInstance()->getUrl());
+    }
+    return Utils::Exit(QApplication::exec(), false, appMutex, Wallpaper::getWallpaper());
 }

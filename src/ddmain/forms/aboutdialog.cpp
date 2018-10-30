@@ -6,6 +6,7 @@
 #include <QUrl>
 #include <QApplication>
 #include <QVersionNumber>
+#include <QtAV>
 
 AboutDialog::AboutDialog(QWidget *parent) :
     QWidget(parent),
@@ -26,9 +27,8 @@ AboutDialog::AboutDialog(QWidget *parent) :
                 .arg(qtRuntimeVersionText)
                 .arg(qtCompiledVersionText);
     ui->lineEdit_qt->setText(qtVersionText);
-    // TODO: Do not hard code QtAV version
-    ui->lineEdit_qtav->setText(QStringLiteral("1.12.0"));
-    ui->lineEdit_ffmpeg->setText(QStringLiteral(FFMPEG_VERSION_STR));
+    ui->lineEdit_qtav->setText(QtAV_Version_String());
+    ui->lineEdit_ffmpeg->setText(QStringLiteral("4.1-git"));
     QString compiler;
 #ifdef __clang__
     compiler = QStringLiteral("Clang v%0.%1.%2").arg(__clang_major__).arg(__clang_minor__).arg(__clang_patchlevel__);
@@ -47,7 +47,10 @@ AboutDialog::AboutDialog(QWidget *parent) :
 #endif
     ui->lineEdit_arch->setText(arch);
     ui->lineEdit_build_time->setText(QStringLiteral("%0 %1").arg(QStringLiteral(__DATE__)).arg(QStringLiteral(__TIME__)));
-    connect(ui->pushButton_aboutQt, &QPushButton::clicked, qApp, &QApplication::aboutQt);
+    connect(ui->pushButton_aboutQtAV, &QPushButton::clicked, [=]
+    {
+        //about();
+    });
     connect(ui->pushButton_ok, &QPushButton::clicked, this, &AboutDialog::close);
     connect(ui->pushButton_source, &QPushButton::clicked, this, [=]
     {
