@@ -23,7 +23,9 @@ CONFIG(debug, debug|release): TARGET = $$join(TARGET,,,d)
 QT *= \
     widgets \
     winextras \
-    avwidgets
+    avwidgets \
+    svg \
+    opengl
 LIBS *= \
     -lUser32 \
     -lDwmapi
