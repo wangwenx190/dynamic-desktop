@@ -139,13 +139,13 @@ int main(int argc, char *argv[])
     preferencesDialog.setPlayerWindow(&playerWindow);
     playerWindow.setPreferencesDialog(&preferencesDialog);
     playerWindow.setWindowMode(windowMode);
-    preferencesDialog.setAboutDialog(&aboutDialog);
-    preferencesDialog.setTrayMenu(&trayMenu);
     preferencesDialog.initConnections();
     playerWindow.initConnections();
     trayIcon.setIcon(QIcon(QStringLiteral(":/icons/color_palette.svg")));
     trayIcon.setToolTip(QStringLiteral("Dynamic Desktop"));
     trayIcon.setContextMenu(&trayMenu);
+    QObject::connect(&preferencesDialog, &PreferencesDialog::languageChanged, &aboutDialog, &AboutDialog::refreshTexts);
+    QObject::connect(&preferencesDialog, &PreferencesDialog::languageChanged, &trayMenu, &TrayMenu::refreshTexts);
     QObject::connect(&trayMenu, &TrayMenu::onOptionsClicked, [=, &preferencesDialog]
     {
         if (preferencesDialog.isHidden())

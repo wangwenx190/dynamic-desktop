@@ -8,8 +8,6 @@ QT_FORWARD_DECLARE_CLASS(QWinTaskbarProgress)
 QT_END_NAMESPACE
 
 QT_FORWARD_DECLARE_CLASS(PlayerWindow)
-QT_FORWARD_DECLARE_CLASS(AboutDialog)
-QT_FORWARD_DECLARE_CLASS(TrayMenu)
 
 namespace Ui
 {
@@ -24,12 +22,11 @@ signals:
     void setMute(bool);
     void muteChanged(bool);
     void about();
+    void languageChanged();
 
 public slots:
     void initConnections();
     void setPlayerWindow(PlayerWindow *player);
-    void setAboutDialog(AboutDialog *abtdlg);
-    void setTrayMenu(TrayMenu *trymeu);
     void updateVideoSlider(qint64 position);
     void updateVideoSliderUnit(quint32 unit);
     void updateVideoSliderRange(qint64 duration);
@@ -64,6 +61,4 @@ private:
     QWinTaskbarButton *taskbarButton = nullptr;
     QWinTaskbarProgress *taskbarProgress = nullptr;
     PlayerWindow *playerWindow = nullptr;
-    AboutDialog *aboutDialog = nullptr;
-    TrayMenu *trayMenu = nullptr;
 };

@@ -4,8 +4,6 @@
 #include "skinsmanager.h"
 #include "utils.h"
 #include "playerwindow.h"
-#include "aboutdialog.h"
-#include "traymenu.h"
 #include <Win32Utils>
 
 #include <QWinTaskbarButton>
@@ -26,16 +24,6 @@
 void PreferencesDialog::setPlayerWindow(PlayerWindow *player)
 {
     playerWindow = player;
-}
-
-void PreferencesDialog::setAboutDialog(AboutDialog *abtdlg)
-{
-    aboutDialog = abtdlg;
-}
-
-void PreferencesDialog::setTrayMenu(TrayMenu *trymeu)
-{
-    trayMenu = trymeu;
 }
 
 void PreferencesDialog::updateVideoSlider(qint64 position)
@@ -478,8 +466,7 @@ void PreferencesDialog::initConnections()
             SettingsManager::getInstance()->setLanguage(ui->comboBox_language->currentData().toString());
             Utils::installTranslation(SettingsManager::getInstance()->getLanguage(), QStringLiteral("dd"));
             ui->retranslateUi(this);
-            aboutDialog->refreshTexts();
-            trayMenu->refreshTexts();
+            emit this->languageChanged();
             QMessageBox::information(nullptr, QStringLiteral("Dynamic Desktop"), tr("Some texts will not refresh their translation until you restart this application."));
         }
     });
