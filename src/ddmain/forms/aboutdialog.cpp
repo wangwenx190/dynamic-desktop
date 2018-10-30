@@ -5,8 +5,7 @@
 #include <QDesktopServices>
 #include <QUrl>
 #include <QApplication>
-#include <QVersionNumber>
-#include <QtAV>
+#include <QtAVWidgets>
 
 AboutDialog::AboutDialog(QWidget *parent) :
     QWidget(parent),
@@ -16,19 +15,6 @@ AboutDialog::AboutDialog(QWidget *parent) :
     ui->lineEdit_version->setText(QApplication::applicationVersion());
     ui->lineEdit_commit_id->setText(QStringLiteral(DD_COMMIT_ID));
     ui->lineEdit_commit_time->setText(QStringLiteral(DD_COMMIT_TIME));
-    const QString qtCompiledVersionText(QStringLiteral(QT_VERSION_STR));
-    const QString qtRuntimeVersionText(qVersion());
-    int suffixIndex;
-    QVersionNumber qtCompiledVersion = QVersionNumber::fromString(qtCompiledVersionText, &suffixIndex);
-    QVersionNumber qtRuntimeVersion = QVersionNumber::fromString(qtRuntimeVersionText, &suffixIndex);
-    QString qtVersionText(qtCompiledVersionText);
-    if (qtCompiledVersion != qtRuntimeVersion)
-        qtVersionText = tr("Run-time version: %0 / Compile-time version: %1")
-                .arg(qtRuntimeVersionText)
-                .arg(qtCompiledVersionText);
-    ui->lineEdit_qt->setText(qtVersionText);
-    ui->lineEdit_qtav->setText(QtAV_Version_String());
-    ui->lineEdit_ffmpeg->setText(QStringLiteral("4.1-git"));
     QString compiler;
 #ifdef __clang__
     compiler = QStringLiteral("Clang v%0.%1.%2").arg(__clang_major__).arg(__clang_minor__).arg(__clang_patchlevel__);
@@ -47,9 +33,14 @@ AboutDialog::AboutDialog(QWidget *parent) :
 #endif
     ui->lineEdit_arch->setText(arch);
     ui->lineEdit_build_time->setText(QStringLiteral("%0 %1").arg(QStringLiteral(__DATE__)).arg(QStringLiteral(__TIME__)));
-    connect(ui->pushButton_aboutQtAV, &QPushButton::clicked, [=]
+    connect(ui->pushButton_aboutQt, &QPushButton::clicked, qApp, &QApplication::aboutQt);
+    connect(ui->pushButton_aboutQtAV, &QPushButton::clicked, this, [=]
     {
-        //about();
+        QtAV::aboutQtAV();
+    });
+    connect(ui->pushButton_aboutFFmpeg, &QPushButton::clicked, this, [=]
+    {
+        QtAV::aboutFFmpeg();
     });
     connect(ui->pushButton_ok, &QPushButton::clicked, this, &AboutDialog::close);
     connect(ui->pushButton_source, &QPushButton::clicked, this, [=]

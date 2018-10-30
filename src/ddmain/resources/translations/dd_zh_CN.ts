@@ -36,18 +36,6 @@
         <translation>构建时间</translation>
     </message>
     <message>
-        <source>Qt</source>
-        <translation>Qt</translation>
-    </message>
-    <message>
-        <source>QtAV</source>
-        <translation>QtAV</translation>
-    </message>
-    <message>
-        <source>FFmpeg</source>
-        <translation>FFmpeg</translation>
-    </message>
-    <message>
         <source>Compiler</source>
         <translation>编译器</translation>
     </message>
@@ -60,12 +48,16 @@
         <translation>确定</translation>
     </message>
     <message>
-        <source>Run-time version: %0 / Compile-time version: %1</source>
-        <translation>运行时版本：%0 / 编译时版本：%1</translation>
-    </message>
-    <message>
         <source>About QtAV</source>
         <translation>关于 QtAV</translation>
+    </message>
+    <message>
+        <source>About Qt</source>
+        <translation>关于 Qt</translation>
+    </message>
+    <message>
+        <source>About FFmpeg</source>
+        <translation>关于 FFmpeg</translation>
     </message>
 </context>
 <context>
