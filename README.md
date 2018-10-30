@@ -60,6 +60,7 @@ For official builds and third-party packages please see https://sourceforge.net/
 - Open "dynamic-desktop.pro" and start compiling or call "build.bat". But remember to call "vcvarsall.bat" and add Qt's directories to your path variables before calling "build.bat".
 
 **IMPORTANT NOTE**
+
 You can also use Intel C++ Compiler(ICC), Clang or MinGW to compile it, just remember to set up environment variables. Cross compile on other platforms may also work, but it will never run on platforms other than MS Windows.
 
 ## Licenses
