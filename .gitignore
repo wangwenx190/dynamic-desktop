@@ -54,7 +54,6 @@ version_ci.pri
 *.conf
 rep_*_replica.h
 rep_*_source.h
-*.qm
 *.lib
 *.exe
 *.exp

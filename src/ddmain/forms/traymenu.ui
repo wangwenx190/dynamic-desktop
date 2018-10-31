@@ -163,7 +163,7 @@
       </sizepolicy>
      </property>
      <property name="text">
-      <string>Mute</string>
+      <string/>
      </property>
      <property name="icon">
       <iconset resource="../ddmain.qrc">

@@ -146,7 +146,6 @@ int main(int argc, char *argv[])
     preferencesDialog.initConnections();
     playerWindow.initConnections();
     trayIcon.setIcon(QIcon(QStringLiteral(":/icons/color_palette.svg")));
-    trayIcon.setToolTip(QStringLiteral("Dynamic Desktop"));
     trayIcon.setContextMenu(&trayMenu);
     QObject::connect(&preferencesDialog, &PreferencesDialog::languageChanged, &aboutDialog, &AboutDialog::refreshTexts);
     QObject::connect(&preferencesDialog, &PreferencesDialog::languageChanged, &trayMenu, &TrayMenu::refreshTexts);
@@ -165,21 +164,12 @@ int main(int argc, char *argv[])
             preferencesDialog.activateWindow();
         }
     });
-    /*QObject::connect(&trayMenu, &TrayMenu::onPlayClicked, [=, &playerWindow]
+    QObject::connect(&trayMenu, &TrayMenu::onPlayClicked, &preferencesDialog, &PreferencesDialog::togglePlayPause);
+    trayMenu.setMute(SettingsManager::getInstance()->getMute());
+    QObject::connect(&trayMenu, &TrayMenu::onMuteClicked, [=, &preferencesDialog]
     {
-        playerWindow.play();
+        emit preferencesDialog.setMute(!SettingsManager::getInstance()->getMute());
     });
-    QObject::connect(&trayMenu, &TrayMenu::onPlayClicked, [=, &playerWindow]
-    {
-        emit preferencesDialog.sendCommand(qMakePair(QStringLiteral("pause"), QVariant()));
-    });*/
-    /*QAction *muteAction = trayMenu.addAction(QObject::tr("Mute"));
-    muteAction->setCheckable(true);
-    muteAction->setChecked(SettingsManager::getInstance()->getMute());
-    QObject::connect(muteAction, &QAction::triggered, [=, &preferencesDialog]
-    {
-        emit preferencesDialog.setMute(muteAction->isChecked());
-    });*/
     QObject::connect(&trayMenu, &TrayMenu::onAboutClicked, [=, &aboutDialog]
     {
         if (aboutDialog.isHidden())
@@ -202,7 +192,9 @@ int main(int argc, char *argv[])
         if (reason != QSystemTrayIcon::Context)
             emit trayMenu.onOptionsClicked();
     });
-    //QObject::connect(&preferencesDialog, &PreferencesDialog::muteChanged, muteAction, &QAction::setChecked);
+    QObject::connect(&preferencesDialog, &PreferencesDialog::muteChanged, &trayMenu, &TrayMenu::setMute);
+    QObject::connect(&preferencesDialog, &PreferencesDialog::urlChanged, &trayIcon, &QSystemTrayIcon::setToolTip);
+    QObject::connect(&playerWindow, &PlayerWindow::playStateChanged, &trayMenu, &TrayMenu::setPlaying);
     trayIcon.show();
     const Qt::WindowFlags windowFlags = Qt::FramelessWindowHint;
     const QRect screenGeometry = QApplication::desktop()->screenGeometry(&playerWindow);
@@ -233,15 +225,20 @@ int main(int argc, char *argv[])
     }
     if (SettingsManager::getInstance()->getUrl().isEmpty())
     {
+        trayIcon.setToolTip(QStringLiteral("Dynamic Desktop"));
         Utils::moveToCenter(&preferencesDialog);
-        preferencesDialog.show();
+        if (preferencesDialog.isHidden())
+            preferencesDialog.show();
         splash.finish(&preferencesDialog);
     }
     else
     {
-        playerWindow.show();
+        const QString url = SettingsManager::getInstance()->getUrl();
+        trayIcon.setToolTip(url);
+        if (playerWindow.isHidden())
+            playerWindow.show();
         splash.finish(&playerWindow);
-        playerWindow.setUrl(SettingsManager::getInstance()->getUrl());
+        playerWindow.setUrl(url);
     }
     return Utils::Exit(QApplication::exec(), false, appMutex, Wallpaper::getWallpaper());
 }

@@ -21,6 +21,9 @@ class PlayerWindow : public QWidget
 {
     Q_OBJECT
 
+signals:
+    void playStateChanged(bool);
+
 public:
     explicit PlayerWindow(QWidget *parent = nullptr);
     ~PlayerWindow() override;
@@ -47,6 +50,9 @@ public slots:
     void setImageQuality(const QString &quality);
     void setImageRatio(bool fit);
     void setWindowMode(bool enabled = true);
+    bool isMediaLoaded();
+    bool isMediaPlaying();
+    bool isMediaPaused();
 
 private slots:
     void initUI();

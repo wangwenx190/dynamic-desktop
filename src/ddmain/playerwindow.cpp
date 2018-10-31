@@ -153,6 +153,13 @@ void PlayerWindow::initConnections()
         preferencesDialog->updateVideoSlider(pos);
         preferencesDialog->setVideoPositionText(QTime(0, 0, 0).addMSecs(pos).toString(QStringLiteral("HH:mm:ss")));
     });
+    connect(player, &QtAV::AVPlayer::stateChanged, this, [=](QtAV::AVPlayer::State state)
+    {
+        if ((state == QtAV::AVPlayer::StoppedState) || (state == QtAV::AVPlayer::PausedState))
+            emit this->playStateChanged(false);
+        else if (state == QtAV::AVPlayer::PlayingState)
+            emit this->playStateChanged(true);
+    });
     initAudio();
 }
 
@@ -238,6 +245,27 @@ void PlayerWindow::setWindowMode(bool enabled)
 {
     if (windowMode != enabled)
         windowMode = enabled;
+}
+
+bool PlayerWindow::isMediaLoaded()
+{
+    if (player == nullptr)
+        return false;
+    return player->isLoaded();
+}
+
+bool PlayerWindow::isMediaPlaying()
+{
+    if (!isMediaLoaded())
+        return false;
+    return player->isPlaying();
+}
+
+bool PlayerWindow::isMediaPaused()
+{
+    if (!isMediaLoaded())
+        return false;
+    return player->isPaused();
 }
 
 void PlayerWindow::onStartPlay()

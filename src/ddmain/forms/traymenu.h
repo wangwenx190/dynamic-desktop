@@ -26,6 +26,8 @@ public:
 
 public slots:
     void refreshTexts();
+    void setMute(bool mute = true);
+    void setPlaying(bool playing = true);
 
 protected:
     void showEvent(QShowEvent *event) override;

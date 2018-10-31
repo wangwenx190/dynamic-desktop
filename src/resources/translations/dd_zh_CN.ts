@@ -345,6 +345,10 @@ Make sure this application runs in your GPU&apos;s Optimus mode.</source>
         <source>Exit</source>
         <translation>退出</translation>
     </message>
+    <message>
+        <source>Unmute</source>
+        <translation>取消静音</translation>
+    </message>
 </context>
 <context>
     <name>main</name>

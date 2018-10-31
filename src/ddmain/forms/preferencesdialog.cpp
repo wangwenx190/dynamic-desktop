@@ -386,6 +386,7 @@ void PreferencesDialog::initConnections()
         {
             SettingsManager::getInstance()->setUrl(ui->comboBox_url->currentText());
             playerWindow->setUrl(SettingsManager::getInstance()->getUrl());
+            emit this->urlChanged(SettingsManager::getInstance()->getUrl());
         }
         else
             playerWindow->play();
@@ -509,6 +510,7 @@ void PreferencesDialog::initConnections()
         {
             SettingsManager::getInstance()->setUrl(text);
             playerWindow->setUrl(SettingsManager::getInstance()->getUrl());
+            emit this->urlChanged(SettingsManager::getInstance()->getUrl());
         }
     });
     connect(ui->checkBox_autoStart, &QCheckBox::clicked, this, [=]
@@ -597,4 +599,14 @@ void PreferencesDialog::setRatio()
         SettingsManager::getInstance()->setFitDesktop(ui->radioButton_ratio_fitDesktop->isChecked());
         playerWindow->setImageRatio(SettingsManager::getInstance()->getFitDesktop());
     }
+}
+
+void PreferencesDialog::togglePlayPause()
+{
+    if (!playerWindow->isMediaLoaded())
+        return;
+    if (playerWindow->isMediaPlaying())
+        emit ui->pushButton_pause->clicked();
+    else if (playerWindow->isMediaPaused())
+        emit ui->pushButton_play->clicked();
 }

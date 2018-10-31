@@ -23,6 +23,7 @@ signals:
     void muteChanged(bool);
     void about();
     void languageChanged();
+    void urlChanged(QString);
 
 public slots:
     void initConnections();
@@ -39,6 +40,7 @@ public slots:
     void setVolumeToolTip(const QString &text);
     void setVideoPositionText(const QString &text);
     void setVideoDurationText(const QString &text);
+    void togglePlayPause();
 
 public:
     explicit PreferencesDialog(QWidget *parent = nullptr);
