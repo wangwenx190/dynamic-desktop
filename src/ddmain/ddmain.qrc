@@ -10,18 +10,20 @@
         <file alias="down-arrow.svg">../resources/icons/down-arrow.svg</file>
         <file alias="up-arrow.svg">../resources/icons/up-arrow.svg</file>
         <file alias="selected.svg">../resources/icons/selected.svg</file>
-        <file alias="exit.svg">../resources/icons/exit.svg</file>
-        <file alias="circle.svg">../resources/icons/circle.svg</file>
-        <file alias="next.svg">../resources/icons/next.svg</file>
-        <file alias="options.svg">../resources/icons/options.svg</file>
-        <file alias="pause.svg">../resources/icons/pause.svg</file>
-        <file alias="play.svg">../resources/icons/play.svg</file>
-        <file alias="playing.svg">../resources/icons/playing.svg</file>
-        <file alias="playlist.svg">../resources/icons/playlist.svg</file>
-        <file alias="previous.svg">../resources/icons/previous.svg</file>
-        <file alias="mute.svg">../resources/icons/mute.svg</file>
-        <file alias="sound.svg">../resources/icons/sound.svg</file>
+        <file alias="exit-light.svg">../resources/icons/exit-light.svg</file>
+        <file alias="circle-light.svg">../resources/icons/circle-light.svg</file>
+        <file alias="next-light.svg">../resources/icons/next-light.svg</file>
+        <file alias="options-light.svg">../resources/icons/options-light.svg</file>
+        <file alias="pause-light.svg">../resources/icons/pause-light.svg</file>
+        <file alias="play-light.svg">../resources/icons/play-light.svg</file>
+        <file alias="playlist-light.svg">../resources/icons/playlist-light.svg</file>
+        <file alias="previous-light.svg">../resources/icons/previous-light.svg</file>
+        <file alias="mute-light.svg">../resources/icons/mute-light.svg</file>
+        <file alias="sound-light.svg">../resources/icons/sound-light.svg</file>
         <file alias="info.svg">../resources/icons/info.svg</file>
+    </qresource>
+    <qresource prefix="/images">
+        <file alias="colorful.png">../resources/images/colorful.png</file>
     </qresource>
     <qresource prefix="/skins">
         <file alias="Default.css">../resources/stylesheets/Default.css</file>

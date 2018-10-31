@@ -28,6 +28,10 @@ QToolButton {
 	color: whitesmoke;
 }
 
+QToolButton:hover {
+	background: rgb(163, 169, 221);
+}
+
 QPushButton {
 	background: rgb(161, 117, 156);
 	border: 1px solid #000;

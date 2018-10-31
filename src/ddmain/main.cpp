@@ -19,16 +19,18 @@
 #include <QtAV>
 #include <QtAVWidgets>
 #include <QDesktopWidget>
+#include <QSplashScreen>
 
 int main(int argc, char *argv[])
 {
-    bool windowMode = false;
-    HANDLE appMutex = nullptr;
     QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
     QApplication::setAttribute(Qt::AA_UseOpenGLES);
-    QApplication::setAttribute(Qt::AA_DontCreateNativeWidgetSiblings);
     QApplication app(argc, argv);
+    QPixmap pixmap(QStringLiteral(":/images/colorful.png"));
+    QSplashScreen splash(pixmap);
+    splash.show();
+    app.processEvents();
     QApplication::setApplicationName(QStringLiteral("Dynamic Desktop"));
     QApplication::setApplicationDisplayName(QStringLiteral("Dynamic Desktop"));
     QApplication::setOrganizationName(QStringLiteral("wangwenx190"));
@@ -36,6 +38,8 @@ int main(int argc, char *argv[])
 #ifndef _DEBUG
     qInstallMessageHandler(Utils::fileLogger);
 #endif
+    bool windowMode = false;
+    HANDLE appMutex = nullptr;
     Utils::installTranslation(SettingsManager::getInstance()->getLanguage(), QStringLiteral("dd"));
     int suffixIndex;
     QVersionNumber currentVersion = QVersionNumber::fromString(QSysInfo::kernelVersion(), &suffixIndex);
@@ -230,13 +234,13 @@ int main(int argc, char *argv[])
     if (SettingsManager::getInstance()->getUrl().isEmpty())
     {
         Utils::moveToCenter(&preferencesDialog);
-        if (preferencesDialog.isHidden())
-            preferencesDialog.show();
+        preferencesDialog.show();
+        splash.finish(&preferencesDialog);
     }
     else
     {
-        if (playerWindow.isHidden())
-            playerWindow.show();
+        playerWindow.show();
+        splash.finish(&playerWindow);
         playerWindow.setUrl(SettingsManager::getInstance()->getUrl());
     }
     return Utils::Exit(QApplication::exec(), false, appMutex, Wallpaper::getWallpaper());

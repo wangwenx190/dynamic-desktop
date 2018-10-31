@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>205</width>
-    <height>334</height>
+    <width>191</width>
+    <height>401</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -30,35 +30,6 @@
     <number>0</number>
    </property>
    <item>
-    <widget class="QToolButton" name="toolButton_playing">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="icon">
-      <iconset resource="../ddmain.qrc">
-       <normaloff>:/icons/playing.svg</normaloff>:/icons/playing.svg</iconset>
-     </property>
-     <property name="iconSize">
-      <size>
-       <width>50</width>
-       <height>50</height>
-      </size>
-     </property>
-     <property name="toolButtonStyle">
-      <enum>Qt::ToolButtonTextBesideIcon</enum>
-     </property>
-     <property name="autoRaise">
-      <bool>true</bool>
-     </property>
-    </widget>
-   </item>
-   <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <property name="spacing">
       <number>0</number>
@@ -70,7 +41,7 @@
        </property>
        <property name="icon">
         <iconset resource="../ddmain.qrc">
-         <normaloff>:/icons/previous.svg</normaloff>:/icons/previous.svg</iconset>
+         <normaloff>:/icons/previous-light.svg</normaloff>:/icons/previous-light.svg</iconset>
        </property>
        <property name="iconSize">
         <size>
@@ -90,7 +61,7 @@
        </property>
        <property name="icon">
         <iconset resource="../ddmain.qrc">
-         <normaloff>:/icons/play.svg</normaloff>:/icons/play.svg</iconset>
+         <normaloff>:/icons/play-light.svg</normaloff>:/icons/play-light.svg</iconset>
        </property>
        <property name="iconSize">
         <size>
@@ -110,7 +81,7 @@
        </property>
        <property name="icon">
         <iconset resource="../ddmain.qrc">
-         <normaloff>:/icons/next.svg</normaloff>:/icons/next.svg</iconset>
+         <normaloff>:/icons/next-light.svg</normaloff>:/icons/next-light.svg</iconset>
        </property>
        <property name="iconSize">
         <size>
@@ -138,7 +109,7 @@
      </property>
      <property name="icon">
       <iconset resource="../ddmain.qrc">
-       <normaloff>:/icons/playlist.svg</normaloff>:/icons/playlist.svg</iconset>
+       <normaloff>:/icons/playlist-light.svg</normaloff>:/icons/playlist-light.svg</iconset>
      </property>
      <property name="iconSize">
       <size>
@@ -167,7 +138,7 @@
      </property>
      <property name="icon">
       <iconset resource="../ddmain.qrc">
-       <normaloff>:/icons/circle.svg</normaloff>:/icons/circle.svg</iconset>
+       <normaloff>:/icons/circle-light.svg</normaloff>:/icons/circle-light.svg</iconset>
      </property>
      <property name="iconSize">
       <size>
@@ -196,7 +167,7 @@
      </property>
      <property name="icon">
       <iconset resource="../ddmain.qrc">
-       <normaloff>:/icons/mute.svg</normaloff>:/icons/mute.svg</iconset>
+       <normaloff>:/icons/mute-light.svg</normaloff>:/icons/mute-light.svg</iconset>
      </property>
      <property name="iconSize">
       <size>
@@ -225,7 +196,7 @@
      </property>
      <property name="icon">
       <iconset resource="../ddmain.qrc">
-       <normaloff>:/icons/options.svg</normaloff>:/icons/options.svg</iconset>
+       <normaloff>:/icons/options-light.svg</normaloff>:/icons/options-light.svg</iconset>
      </property>
      <property name="iconSize">
       <size>
@@ -283,7 +254,7 @@
      </property>
      <property name="icon">
       <iconset resource="../ddmain.qrc">
-       <normaloff>:/icons/exit.svg</normaloff>:/icons/exit.svg</iconset>
+       <normaloff>:/icons/exit-light.svg</normaloff>:/icons/exit-light.svg</iconset>
      </property>
      <property name="iconSize">
       <size>

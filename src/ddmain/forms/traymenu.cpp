@@ -8,7 +8,6 @@ TrayMenu::TrayMenu(QWidget *parent) :
     ui(new Ui::TrayMenu)
 {
     ui->setupUi(this);
-    connect(ui->toolButton_playing, &QToolButton::clicked, ui->toolButton_options, &QToolButton::clicked);
     connect(ui->toolButton_options, &QToolButton::clicked, this, &TrayMenu::onOptionsClicked);
     connect(ui->toolButton_about, &QToolButton::clicked, this, &TrayMenu::onAboutClicked);
     connect(ui->toolButton_mute, &QToolButton::clicked, this, &TrayMenu::onMuteClicked);
