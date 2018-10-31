@@ -25,19 +25,27 @@ TrayMenu::~TrayMenu()
 void TrayMenu::refreshTexts()
 {
     ui->retranslateUi(this);
+    if (muted)
+        ui->toolButton_mute->setText(tr("Unmute"));
+    else
+        ui->toolButton_mute->setText(tr("Mute"));
 }
 
 void TrayMenu::setMute(bool mute)
 {
-    if (mute)
+    if (muted != mute)
     {
-        ui->toolButton_mute->setText(tr("Unmute"));
-        ui->toolButton_mute->setIcon(QIcon(QStringLiteral(":/icons/sound-light.svg")));
-    }
-    else
-    {
-        ui->toolButton_mute->setText(tr("Mute"));
-        ui->toolButton_mute->setIcon(QIcon(QStringLiteral(":/icons/mute-light.svg")));
+        muted = mute;
+        if (muted)
+        {
+            ui->toolButton_mute->setText(tr("Unmute"));
+            ui->toolButton_mute->setIcon(QIcon(QStringLiteral(":/icons/sound-light.svg")));
+        }
+        else
+        {
+            ui->toolButton_mute->setText(tr("Mute"));
+            ui->toolButton_mute->setIcon(QIcon(QStringLiteral(":/icons/mute-light.svg")));
+        }
     }
 }
 

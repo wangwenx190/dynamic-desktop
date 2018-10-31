@@ -34,4 +34,5 @@ protected:
 
 private:
     Ui::TrayMenu *ui;
+    bool muted = false;
 };
