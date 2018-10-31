@@ -1,0 +1,13 @@
+isEmpty(ROOT): ROOT = $$PWD/..
+isEmpty(BUILD_DIR): BUILD_DIR = $${ROOT}/build
+isEmpty(BIN_DIR): BIN_DIR = $${BUILD_DIR}/bin
+contains(QT_ARCH, x86_64): BIN_DIR = $$join(BIN_DIR,,,64)
+isEmpty(VERSION): VERSION = 1.0.0
+QMAKE_TARGET_COMPANY = "wangwenx190"
+QMAKE_TARGET_COPYRIGHT = "GNU General Public License version 3.0"
+QMAKE_TARGET_PRODUCT = "Dynamic Desktop"
+DESTDIR = $${BIN_DIR}
+CONFIG *= c++1z
+DEFINES *= \
+    QT_DEPRECATED_WARNINGS \
+    QT_DISABLE_DEPRECATED_BEFORE=0x050603

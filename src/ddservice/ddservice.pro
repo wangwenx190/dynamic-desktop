@@ -1,18 +1,10 @@
-isEmpty(ROOT): ROOT = $$PWD/../..
-isEmpty(BUILD_DIR): BUILD_DIR = $${ROOT}/build
-isEmpty(BIN_DIR): BIN_DIR = $${BUILD_DIR}/bin
-contains(QT_ARCH, x86_64): BIN_DIR = $$join(BIN_DIR,,,64)
-isEmpty(VERSION): VERSION = 1.0.0
-QMAKE_TARGET_COMPANY = "wangwenx190"
-QMAKE_TARGET_COPYRIGHT = "GNU General Public License version 3.0"
-QMAKE_TARGET_PRODUCT = "Dynamic Desktop"
+include(../common.pri)
 QMAKE_TARGET_DESCRIPTION = "Dynamic Desktop Auto Start Service"
 RC_ICONS = ../resources/icons/color_palette.ico
-DESTDIR = $${BIN_DIR}
 TARGET = ddservice
 CONFIG(debug, debug|release): TARGET = $$join(TARGET,,,d)
 CONFIG -= qt
-CONFIG *= console c++1z
+CONFIG *= console
 LIBS *= -lAdvapi32
 include(../ddutils/ddutils.pri)
 TEMPLATE = app
