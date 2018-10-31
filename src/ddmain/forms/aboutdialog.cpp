@@ -1,9 +1,7 @@
 #include "aboutdialog.h"
 #include "ui_aboutdialog.h"
 
-#include <QtGlobal>
 #include <QDesktopServices>
-#include <QUrl>
 #include <QApplication>
 #include <QtAVWidgets>
 
