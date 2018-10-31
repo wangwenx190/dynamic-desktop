@@ -74,7 +74,7 @@ exists("$${ffmpeg_dir}/avcodec-*.dll") {
         $${ffmpeg_dir}/swresample-*.dll \
         $${ffmpeg_dir}/swscale-*.dll
 } else {
-    message("qmake can\'t find FFmpeg's run-time libraries in \"$${ffmpeg_dir}\".")
+    message("qmake can\'t find FFmpeg\'s run-time libraries in \"$${ffmpeg_dir}\".")
     message("You may have to copy them manually.")
     message("You can set the \"ffmpeg_dir\" variable to let qmake copy them automatically.")
 }
@@ -90,7 +90,7 @@ CONFIG(shared, static|shared) {
                 $$[QT_INSTALL_BINS]/QtAVWidgets?.dll
         }
     } else {
-        message("qmake can\'t find QtAV's run-time libraries in \"$$[QT_INSTALL_BINS]\".")
+        message("qmake can\'t find QtAV\'s run-time libraries in \"$$[QT_INSTALL_BINS]\".")
         message("You may have to copy them manually.")
         message("Currently(QtAV 1.12.0) they are QtAV[d]1.dll and QtAVWidgets[d]1.dll.")
     }
