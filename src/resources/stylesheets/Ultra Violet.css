@@ -3,7 +3,7 @@ Skin: Ultra Violet
 PantoneCode: 18-3838 (17-3313)
 Author: Yuriko
 Create date: 2018/10/09
-Update date: 2018/10/27
+Update date: 2018/10/31
 
 紫外光照亮了通往未来的道路！
 一个强烈挑动思绪与深思的紫色调! 紫外光传达独创性、创造力和前瞻性的思维，为我们指向未来。
@@ -12,7 +12,8 @@ Update date: 2018/10/27
 */
 
 QWidget {
-	font-family: 12px "Noto Sans", "FreeSans";
+	font-weight: bold;
+	font-size: 16px;
 	background: rgb(95, 75, 139);
 	color: whitesmoke;
 }
@@ -41,19 +42,10 @@ QPushButton:pressed {
 	background: rgb(118, 123, 165);
 }
 
-QPushButton#pushButton_minimize {
+QPushButton:flat {
 	background: none;
-	border: 0px;
-	border-radius: 0px;
-	color: none;
-	min-width: 8px;
-	min-height: 8px;
-}
-
-QPushButton#pushButton_close {
-	background: none;
-	border: 0px;
-	border-radius: 0px;
+	border: none;
+	border-radius: none;
 	color: none;
 	min-width: 8px;
 	min-height: 8px;

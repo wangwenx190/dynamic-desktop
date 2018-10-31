@@ -3,7 +3,7 @@ Skin: Greenery
 PantoneCode: 15-0343 (13-0220 12-0525)
 Author: Yuriko
 Create date: 2018/10/10
-Update date: 2018/10/27
+Update date: 2018/10/31
 
 清新活力之色，草木绿是新生的象徵
 草木绿是一个代表初春时节万物复苏、欣欣向荣的颜色，清新而充满活力，如同身处于繁茂的绿植之中，让人情不自禁地开始深呼吸，感受新鲜空气，振作精神。
@@ -12,7 +12,8 @@ Update date: 2018/10/27
 */
 
 QWidget {
-	font-family: 12px "Noto Sans", "FreeSans";
+	font-weight: bold;
+	font-size: 16px;
 	background: rgb(136, 176, 75);
 	color: rgb(105, 45, 93);
 }
@@ -41,19 +42,10 @@ QPushButton:pressed {
 	background: rgb(227, 234, 165);
 }
 
-QPushButton#pushButton_minimize {
+QPushButton:flat {
 	background: none;
-	border: 0px;
-	border-radius: 0px;
-	color: none;
-	min-width: 8px;
-	min-height: 8px;
-}
-
-QPushButton#pushButton_close {
-	background: none;
-	border: 0px;
-	border-radius: 0px;
+	border: none;
+	border-radius: none;
 	color: none;
 	min-width: 8px;
 	min-height: 8px;
