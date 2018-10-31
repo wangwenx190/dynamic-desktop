@@ -237,8 +237,8 @@ int main(int argc, char *argv[])
         trayIcon.setToolTip(url);
         if (playerWindow.isHidden())
             playerWindow.show();
-        splash.finish(&playerWindow);
         playerWindow.setUrl(url);
+        splash.finish(&playerWindow);
     }
     return Utils::Exit(QApplication::exec(), false, appMutex, Wallpaper::getWallpaper());
 }
