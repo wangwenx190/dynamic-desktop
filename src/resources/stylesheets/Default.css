@@ -41,6 +41,8 @@ QPushButton:flat {
 	border: none;
 	border-radius: none;
 	color: none;
+	min-width: 8px;
+	min-height: 8px;
 }
 
 QSlider::groove:horizontal {
