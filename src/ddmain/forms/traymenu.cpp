@@ -47,7 +47,6 @@ void TrayMenu::setPlaying(bool playing)
         ui->pushButton_play->setIcon(QIcon(QStringLiteral(":/icons/pause-light.svg")));
     else
         ui->pushButton_play->setIcon(QIcon(QStringLiteral(":/icons/play-light.svg")));
-    update();
 }
 
 void TrayMenu::showEvent(QShowEvent *event)
