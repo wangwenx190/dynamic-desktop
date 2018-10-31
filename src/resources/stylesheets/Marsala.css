@@ -23,6 +23,11 @@ QWidget:disabled {
 	color: #6F6F6F;
 }
 
+QToolButton {
+	font-size: 20px;
+	color: whitesmoke;
+}
+
 QPushButton {
 	background: rgb(218, 181, 143);
 	border: 1px solid #000;
@@ -42,13 +47,20 @@ QPushButton:pressed {
 	background: rgb(236, 147, 94);
 }
 
-QPushButton:flat {
+QPushButton[flat="true"] {
 	background: none;
-	border: none;
-	border-radius: none;
+	border: 0px;
+	border-radius: 0px;
 	color: none;
-	min-width: 8px;
-	min-height: 8px;
+	min-width: 0px;
+	min-height: 0px;
+}
+
+QPushButton#pushButton_previous,
+QPushButton#pushButton_playing,
+QPushButton#pushButton_next {
+	min-width: 50px;
+	min-height: 50px;
 }
 
 QSlider::groove:horizontal {
