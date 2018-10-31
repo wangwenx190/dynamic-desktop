@@ -1,4 +1,3 @@
-isEmpty(DD_MAJOR_VERSION): DD_MAJOR_VERSION = 1
 ddu_lib_name = ddutils
 ddu_lib_file = ddutils
 ddu_lib_dir = release
