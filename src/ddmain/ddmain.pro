@@ -1,9 +1,4 @@
 include(../common.pri)
-isEmpty(DD_COMMIT_ID): DD_COMMIT_ID = -
-isEmpty(DD_COMMIT_TIME): DD_COMMIT_TIME = -
-DEFINES *= \
-    DD_COMMIT_ID=\\\"$${DD_COMMIT_ID}\\\" \
-    DD_COMMIT_TIME=\\\"$${DD_COMMIT_TIME}\\\"
 QMAKE_TARGET_DESCRIPTION = "Dynamic Desktop"
 RC_ICONS = ../resources/icons/color_palette.ico
 TARGET = ddmain
