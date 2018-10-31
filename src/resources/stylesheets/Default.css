@@ -2,11 +2,12 @@
 Author: Daniel Clarke(https://github.com/u8sand)
 Notice: Originally copied from https://github.com/u8sand/Baka-MPlayer and wangwenx190 made some changes to it.
 Create date: 2018/10/09
-Update date: 2018/10/27
+Update date: 2018/10/31
 */
 
 QWidget {
-	font-family: 12px "Noto Sans", "FreeSans";
+	font-weight: bold;
+	font-size: 16px;
 	background: #1A1A1A;
 	color: whitesmoke;
 }
@@ -35,22 +36,11 @@ QPushButton:pressed {
 	background: #2E3133;
 }
 
-QPushButton#pushButton_minimize {
+QPushButton:flat {
 	background: none;
-	border: 0px;
-	border-radius: 0px;
+	border: none;
+	border-radius: none;
 	color: none;
-	min-width: 8px;
-	min-height: 8px;
-}
-
-QPushButton#pushButton_close {
-	background: none;
-	border: 0px;
-	border-radius: 0px;
-	color: none;
-	min-width: 8px;
-	min-height: 8px;
 }
 
 QSlider::groove:horizontal {

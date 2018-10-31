@@ -278,7 +278,7 @@ void PreferencesDialog::initUI()
         ui->horizontalSlider_volume->setEnabled(ui->checkBox_volume->isChecked());
         ui->horizontalSlider_volume->setValue(SettingsManager::getInstance()->getVolume());
     }
-    ui->checkBox_autoStart->setChecked(Win32Utils::isAutoStartServiceInstalled());
+    ui->checkBox_autoStart->setChecked(Win32Utils::isAutoStartServiceInstalledA("ddassvc"));
     QStringList decoders = SettingsManager::getInstance()->getDecoders();
     ui->checkBox_hwdec_cuda->setChecked(decoders.contains(QStringLiteral("CUDA")));
     ui->checkBox_hwdec_d3d11->setChecked(decoders.contains(QStringLiteral("D3D11")));
@@ -525,13 +525,15 @@ void PreferencesDialog::initConnections()
             ui->checkBox_autoStart->setEnabled(false);
             return;
         }
-        if (ui->checkBox_autoStart->isChecked() && !Win32Utils::isAutoStartServiceInstalled())
+        if (ui->checkBox_autoStart->isChecked() && !Win32Utils::isAutoStartServiceInstalledA("ddassvc"))
             Utils::run(servicePath, QStringList() << QStringLiteral("-i"), true);
-        else if (!ui->checkBox_autoStart->isChecked() && Win32Utils::isAutoStartServiceInstalled())
+        else if (!ui->checkBox_autoStart->isChecked() && Win32Utils::isAutoStartServiceInstalledA("ddassvc"))
             Utils::run(servicePath, QStringList() << QStringLiteral("-u"), true);
         QTimer::singleShot(2500, this, [=]
         {
-            ui->checkBox_autoStart->setChecked(Win32Utils::isAutoStartServiceInstalled());
+            bool isAutoStart = Win32Utils::isAutoStartServiceInstalledA("ddassvc");
+            if (ui->checkBox_autoStart->isChecked() != isAutoStart)
+                ui->checkBox_autoStart->setChecked(isAutoStart);
         });
     });
     connect(ui->radioButton_ratio_fitDesktop, &QRadioButton::clicked, this, &PreferencesDialog::setRatio);

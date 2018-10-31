@@ -30,20 +30,11 @@ bool launchSession1ProcessA(const char *path, const char *params, const char *di
     return result;
 }
 
-bool isAutoStartServiceInstalled()
+bool isAutoStartServiceInstalledA(const char *name)
 {
-    bool result = false;
-    SC_HANDLE hSCM = OpenSCManagerW(nullptr, nullptr, 0);
-    if (hSCM != nullptr)
-    {
-        SC_HANDLE hService = OpenServiceW(hSCM, _T("ddassvc"), SERVICE_QUERY_CONFIG);
-        if (hService != nullptr)
-        {
-            result = true;
-            CloseServiceHandle(hService);
-        }
-        CloseServiceHandle(hSCM);
-    }
+    wchar_t *nameW = toW(name);
+    bool result = isAutoStartServiceInstalledW(nameW);
+    delete [] nameW;
     return result;
 }
 
@@ -76,6 +67,23 @@ bool launchSession1ProcessW(const wchar_t *path, const wchar_t *params, const wc
     CloseHandle(pi.hProcess);
     CloseHandle(pi.hThread);
     return true;
+}
+
+bool isAutoStartServiceInstalledW(const wchar_t *name)
+{
+    bool result = false;
+    SC_HANDLE hSCM = OpenSCManagerW(nullptr, nullptr, 0);
+    if (hSCM != nullptr)
+    {
+        SC_HANDLE hService = OpenServiceW(hSCM, name, SERVICE_QUERY_CONFIG);
+        if (hService != nullptr)
+        {
+            result = true;
+            CloseServiceHandle(hService);
+        }
+        CloseServiceHandle(hSCM);
+    }
+    return result;
 }
 
 }
