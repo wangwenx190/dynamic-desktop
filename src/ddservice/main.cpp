@@ -146,6 +146,7 @@ DWORD WINAPI ServiceWorkerThread(LPVOID lpParam)
     _tcscat(ddmainPath, _T("ddmain.exe"));
 #endif
     Win32Utils::launchSession1Process(ddmainPath, nullptr, ddmainDir);
+    delete [] ddmainDir;
     free(ddmainPath);
     return ERROR_SUCCESS;
 }

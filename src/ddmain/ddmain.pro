@@ -5,15 +5,17 @@ exists("$${ROOT}/.qmake.conf") {
 } else {
     message("qmake can\'t find \".qmake.conf\", this build is for testing only.")
 }
-CONFIG(static, static|shared): message("You are building static version of Dynamic Desktop.")
 QMAKE_TARGET_DESCRIPTION = "Dynamic Desktop"
 RC_ICONS = ../resources/icons/color_palette.ico
 QT *= \
     widgets \
     winextras \
-    avwidgets \
-    svg \
-    opengl
+    avwidgets
+CONFIG(static, static|shared) {
+    QT *= \
+        svg \
+        opengl
+}
 LIBS *= \
     -lUser32 \
     -lDwmapi
