@@ -1,4 +1,10 @@
 include(../common.pri)
+exists("$${ROOT}/.qmake.conf") {
+    message("\".qmake.conf\" detected, you are building Dynamic Desktop version $${VERSION}.")
+} else {
+    message("qmake can\'t find \".qmake.conf\", this build is for testing only.")
+}
+CONFIG(static, static|shared): message("You are building static version of Dynamic Desktop.")
 QMAKE_TARGET_DESCRIPTION = "Dynamic Desktop"
 RC_ICONS = ../resources/icons/color_palette.ico
 TARGET = ddmain
@@ -105,4 +111,4 @@ CONFIG(shared, static|shared) {
         message("d3dcompiler_XX.dll, libEGL.dll, libGLESv2.dll and opengl32sw.dll may be useful as well.")
     }
 }
-!isEmpty(libs.files):!isEmpty(libs.path): INSTALLS *= libs
+!isEmpty(libs.files): INSTALLS *= libs

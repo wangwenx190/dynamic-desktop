@@ -303,10 +303,6 @@ Make sure this application runs in your GPU&apos;s Optimus mode.</source>
         <source>Some texts will not refresh their translation until you restart this application.</source>
         <translation>部分文本将不会刷新它们的翻译直到您重启此应用程序。</translation>
     </message>
-    <message>
-        <source>American English</source>
-        <translation>美式英语</translation>
-    </message>
 </context>
 <context>
     <name>QObject</name>

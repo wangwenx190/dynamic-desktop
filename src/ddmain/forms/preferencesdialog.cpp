@@ -260,7 +260,7 @@ void PreferencesDialog::initUI()
     if (ui->comboBox_language->count() > 0)
     {
         ui->comboBox_language->insertItem(0, tr("Auto"), QStringLiteral("auto"));
-        ui->comboBox_language->insertItem(1, tr("American English"), QStringLiteral("en"));
+        ui->comboBox_language->insertItem(1, QStringLiteral("American English"), QStringLiteral("en"));
         ui->comboBox_language->setEnabled(true);
     }
     else
