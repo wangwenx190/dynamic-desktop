@@ -1,3 +1,4 @@
+TARGET = ddmain
 include(../common.pri)
 exists("$${ROOT}/.qmake.conf") {
     message("\".qmake.conf\" detected, you are building Dynamic Desktop version $${VERSION}.")
@@ -7,8 +8,6 @@ exists("$${ROOT}/.qmake.conf") {
 CONFIG(static, static|shared): message("You are building static version of Dynamic Desktop.")
 QMAKE_TARGET_DESCRIPTION = "Dynamic Desktop"
 RC_ICONS = ../resources/icons/color_palette.ico
-TARGET = ddmain
-CONFIG(debug, debug|release): TARGET = $$join(TARGET,,,d)
 QT *= \
     widgets \
     winextras \

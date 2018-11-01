@@ -23,7 +23,7 @@
         <file alias="info.svg">../resources/icons/info.svg</file>
     </qresource>
     <qresource prefix="/images">
-        <file alias="colorful.png">../resources/images/colorful.png</file>
+        <file alias="colorful.jpg">../resources/images/colorful.jpg</file>
     </qresource>
     <qresource prefix="/skins">
         <file alias="Default.css">../resources/stylesheets/Default.css</file>

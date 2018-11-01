@@ -27,7 +27,7 @@ int main(int argc, char *argv[])
     QApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
     QApplication::setAttribute(Qt::AA_UseOpenGLES);
     QApplication app(argc, argv);
-    QPixmap pixmap(QStringLiteral(":/images/colorful.png"));
+    QPixmap pixmap(QStringLiteral(":/images/colorful.jpg"));
     QSplashScreen splash(pixmap);
     splash.show();
     app.processEvents();
