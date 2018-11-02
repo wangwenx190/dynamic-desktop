@@ -1,8 +1,6 @@
 #include "traymenu.h"
 #include "ui_traymenu.h"
 
-#include <QCursor>
-
 TrayMenu::TrayMenu(QWidget *parent) : QMenu(parent)
 {
     ui = new Ui::TrayMenu();
@@ -59,6 +57,6 @@ void TrayMenu::setPlaying(bool playing)
 
 void TrayMenu::showEvent(QShowEvent *event)
 {
-    move(QCursor::pos().x() + 30, QCursor::pos().y() - height() - 30);
+    move(geometry().left() + 30, geometry().top() - height() - 30);
     QMenu::showEvent(event);
 }

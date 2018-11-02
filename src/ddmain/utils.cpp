@@ -7,7 +7,6 @@
 #include <QDir>
 #include <QDesktopWidget>
 #include <QFileInfo>
-#include <QProcess>
 #include <QWidget>
 #include <QTranslator>
 #include <QLocale>
@@ -124,17 +123,17 @@ int Exit(int resultCode, bool trulyExit, HANDLE mutex, HWND wallpaper)
     return resultCode;
 }
 
-bool adminRun(const QString &path, const QString &params)
+bool win32Run(const QString &path, const QString &params = QString(), bool needAdmin = false, bool hide = false)
 {
     if (path.isEmpty())
         return false;
     if (!QFileInfo::exists(path))
         return false;
     SHELLEXECUTEINFO execInfo{ sizeof(SHELLEXECUTEINFO) };
-    execInfo.lpVerb = TEXT("runas");
-    execInfo.lpFile = reinterpret_cast<const wchar_t *>(QDir::toNativeSeparators(path).utf16());
-    execInfo.nShow = SW_HIDE;
-    execInfo.lpParameters = params.isEmpty() ? nullptr : reinterpret_cast<const wchar_t *>(params.utf16());
+    execInfo.lpVerb = needAdmin ? TEXT("runas") : nullptr;
+    execInfo.lpFile = reinterpret_cast<LPCTSTR>(QDir::toNativeSeparators(path).utf16());
+    execInfo.nShow = hide ? SW_HIDE : SW_SHOW;
+    execInfo.lpParameters = params.isEmpty() ? nullptr : reinterpret_cast<LPCTSTR>(params.utf16());
     return ShellExecuteEx(&execInfo);
 }
 
@@ -148,10 +147,10 @@ bool run(const QString &path, const QStringList &params, bool needAdmin)
     if (!params.isEmpty())
         paramsInAll = params.join(QLatin1Char(' '));
     if (needAdmin)
-        return adminRun(path, paramsInAll);
+        return win32Run(path, paramsInAll, true);
     if (!Win32Utils::isSession1Process())
         return Win32Utils::launchSession1ProcessA(QDir::toNativeSeparators(path).toLocal8Bit().constData(), paramsInAll.isEmpty() ? nullptr : paramsInAll.toLocal8Bit().constData(), QDir::toNativeSeparators(QFileInfo(path).canonicalPath()).toLocal8Bit().constData());
-    return QProcess::startDetached(QDir::toNativeSeparators(path), params, QDir::toNativeSeparators(QFileInfo(path).canonicalPath()));
+    return win32Run(path, paramsInAll);
 }
 
 bool isVideo(const QString &fileName)
