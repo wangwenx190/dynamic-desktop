@@ -5,7 +5,7 @@
 namespace Win32Utils
 {
 
-#if defined(UNICODE) || defined(_UNICODE)
+#ifdef UNICODE
     #define launchSession1Process launchSession1ProcessW
     #define isAutoStartServiceInstalled isAutoStartServiceInstalledW
 #else

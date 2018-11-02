@@ -12,6 +12,7 @@ DWORD WINAPI ServiceWorkerThread(LPVOID lpParam);
 
 VOID Install();
 VOID Uninstall();
+VOID Start();
 
 #define SERVICE_NAME_DD _T("ddassvc")
 #define SERVICE_DISPLAY_NAME_DD _T("Dynamic Desktop Auto Start Service")
@@ -73,6 +74,21 @@ VOID Uninstall()
         if (hService != nullptr)
         {
             DeleteService(hService);
+            CloseServiceHandle(hService);
+        }
+        CloseServiceHandle(hSCM);
+    }
+}
+
+VOID Start()
+{
+    SC_HANDLE hSCM = OpenSCManager(nullptr, nullptr, SC_MANAGER_CONNECT);
+    if (hSCM != nullptr)
+    {
+        SC_HANDLE hService = OpenService(hSCM, SERVICE_NAME_DD, SERVICE_START);
+        if (hService != nullptr)
+        {
+            StartService(hService, 0, nullptr);
             CloseServiceHandle(hService);
         }
         CloseServiceHandle(hSCM);

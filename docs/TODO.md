@@ -38,10 +38,10 @@
 - [x] Add more official skins
 - [x] Save and preview settings right after any change happens
 - [x] Save and load history
-- [ ] TrayMenu: use custom QWidget instead of QMenu
+- [x] TrayMenu: use custom QWidget instead of QMenu
 - [ ] Support sequential playback/random playback/repeat playlist/repeat current file
-- [x] Make the modules(controller, player, service and updater) become different exe
+- [x] <del>Make the modules(controller, player, service and updater) become different exe</del>
 - [ ] <del>Optimize launcher code</del>
 - [x] Controller: wait until player online
-- [ ] <del>Make controller and tray icon different exe: Controller process and tray icon process</del>
-- [ ] <del>How to get run-time and compile-time versions of QtAV and FFmpeg: use IPC, player send version message to controller</del>
+- [x] <del>Make controller and tray icon different exe: Controller process and tray icon process</del>
+- [x] <del>How to get run-time and compile-time versions of QtAV and FFmpeg: use IPC, player send version message to controller</del>
