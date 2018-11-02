@@ -71,9 +71,6 @@ int main(int argc, char *argv[])
                                  QApplication::translate("main", "Play the given url. It can be a local file or a valid web url. Default is empty."),
                                  QApplication::translate("main", "url"));
     parser.addOption(urlOption);
-    /*QCommandLineOption keepRatioOption(QStringLiteral("keepratio"),
-                                        QApplication::translate("main", "Make the output image keep original video aspect ratio instead of fitting the whole renderer window."));
-    parser.addOption(keepRatioOption);*/
     QCommandLineOption imageQualityOption(QStringLiteral("quality"),
                                           QApplication::translate("main", "Set the quality of the output image. It can be default/best/fastest. Default is best. Case insensitive."),
                                           QApplication::translate("main", "Image quality"));
@@ -96,9 +93,6 @@ int main(int argc, char *argv[])
     if (!urlOptionValue.isEmpty())
         if (urlOptionValue != SettingsManager::getInstance()->getUrl())
             SettingsManager::getInstance()->setUrl(urlOptionValue);
-    /*bool keepRatioOptionValue = parser.isSet(keepRatioOption);
-    if (keepRatioOptionValue != !SettingsManager::getInstance()->getFitDesktop())
-        SettingsManager::getInstance()->setFitDesktop(!keepRatioOptionValue);*/
     QString imageQualityOptionValue = parser.value(imageQualityOption).toLower();
     if (!imageQualityOptionValue.isEmpty())
         if (((imageQualityOptionValue == QStringLiteral("default")) ||
@@ -140,15 +134,44 @@ int main(int argc, char *argv[])
     AboutDialog aboutDialog;
     TrayMenu trayMenu;
     QSystemTrayIcon trayIcon;
-    preferencesDialog.setPlayerWindow(&playerWindow);
-    playerWindow.setPreferencesDialog(&preferencesDialog);
     playerWindow.setWindowMode(windowMode);
-    preferencesDialog.initConnections();
-    playerWindow.initConnections();
     trayIcon.setIcon(QIcon(QStringLiteral(":/icons/color_palette.svg")));
     trayIcon.setContextMenu(&trayMenu);
+    QObject::connect(&preferencesDialog, &PreferencesDialog::muteChanged, &trayMenu, &TrayMenu::setMute);
+    QObject::connect(&preferencesDialog, &PreferencesDialog::about, &trayMenu, &TrayMenu::onAboutClicked);
+    QObject::connect(&preferencesDialog, &PreferencesDialog::play, &playerWindow, &PlayerWindow::play);
+    QObject::connect(&preferencesDialog, &PreferencesDialog::pause, &playerWindow, &PlayerWindow::pause);
     QObject::connect(&preferencesDialog, &PreferencesDialog::languageChanged, &aboutDialog, &AboutDialog::refreshTexts);
     QObject::connect(&preferencesDialog, &PreferencesDialog::languageChanged, &trayMenu, &TrayMenu::refreshTexts);
+    QObject::connect(&preferencesDialog, &PreferencesDialog::urlChanged, &playerWindow, &PlayerWindow::setUrl);
+    QObject::connect(&preferencesDialog, &PreferencesDialog::urlChanged, &trayIcon, &QSystemTrayIcon::setToolTip);
+    QObject::connect(&preferencesDialog, &PreferencesDialog::audioFileChanged, &playerWindow, &PlayerWindow::setAudio);
+    QObject::connect(&preferencesDialog, &PreferencesDialog::subtitleFileChanged, &playerWindow, &PlayerWindow::setSubtitle);
+    QObject::connect(&preferencesDialog, &PreferencesDialog::volumeChanged, &playerWindow, &PlayerWindow::setVolume);
+    QObject::connect(&preferencesDialog, &PreferencesDialog::seek, &playerWindow, &PlayerWindow::seek);
+    QObject::connect(&preferencesDialog, &PreferencesDialog::videoTrackChanged, &playerWindow, &PlayerWindow::setVideoTrack);
+    QObject::connect(&preferencesDialog, &PreferencesDialog::audioTrackChanged, &playerWindow, &PlayerWindow::setAudioTrack);
+    QObject::connect(&preferencesDialog, &PreferencesDialog::subtitleTrackChanged, &playerWindow, &PlayerWindow::setSubtitleTrack);
+    QObject::connect(&preferencesDialog, &PreferencesDialog::rendererChanged, &playerWindow, &PlayerWindow::setRenderer);
+    QObject::connect(&preferencesDialog, &PreferencesDialog::imageQualityChanged, &playerWindow, &PlayerWindow::setImageQuality);
+    QObject::connect(&preferencesDialog, &PreferencesDialog::charsetChanged, &playerWindow, &PlayerWindow::setCharset);
+    QObject::connect(&preferencesDialog, &PreferencesDialog::subtitleAutoLoadChanged, &playerWindow, &PlayerWindow::setSubtitleAutoLoad);
+    QObject::connect(&preferencesDialog, &PreferencesDialog::subtitleEnableChanged, &playerWindow, &PlayerWindow::setSubtitleEnabled);
+    QObject::connect(&preferencesDialog, &PreferencesDialog::imageRatioChanged, &playerWindow, &PlayerWindow::setImageRatio);
+    QObject::connect(&playerWindow, &PlayerWindow::playStateChanged, &preferencesDialog, &PreferencesDialog::setPlaying);
+    QObject::connect(&playerWindow, &PlayerWindow::playStateChanged, &trayMenu, &TrayMenu::setPlaying);
+    QObject::connect(&playerWindow, &PlayerWindow::volumeToolTipChanged, &preferencesDialog, &PreferencesDialog::setVolumeToolTip);
+    QObject::connect(&playerWindow, &PlayerWindow::mediaPositionChanged, &preferencesDialog, &PreferencesDialog::setMediaSliderPosition);
+    QObject::connect(&playerWindow, &PlayerWindow::videoPositionTextChanged, &preferencesDialog, &PreferencesDialog::setVideoPositionText);
+    QObject::connect(&playerWindow, &PlayerWindow::audioAreaEnableChanged, &preferencesDialog, &PreferencesDialog::setAudioAreaEnabled);
+    QObject::connect(&playerWindow, &PlayerWindow::clearAllTracks, &preferencesDialog, &PreferencesDialog::clearAllTracks);
+    QObject::connect(&playerWindow, &PlayerWindow::mediaSliderUnitChanged, &preferencesDialog, &PreferencesDialog::setMediaSliderUnit);
+    QObject::connect(&playerWindow, &PlayerWindow::mediaSliderRangeChanged, &preferencesDialog, &PreferencesDialog::setMediaSliderRange);
+    QObject::connect(&playerWindow, &PlayerWindow::seekAreaEnableChanged, &preferencesDialog, &PreferencesDialog::setSeekAreaEnabled);
+    QObject::connect(&playerWindow, &PlayerWindow::videoTracksChanged, &preferencesDialog, &PreferencesDialog::setVideoTracks);
+    QObject::connect(&playerWindow, &PlayerWindow::audioTracksChanged, &preferencesDialog, &PreferencesDialog::setAudioTracks);
+    QObject::connect(&playerWindow, &PlayerWindow::subtitleTracksChanged, &preferencesDialog, &PreferencesDialog::setSubtitleTracks);
+    QObject::connect(&playerWindow, &PlayerWindow::videoDurationTextChanged, &preferencesDialog, &PreferencesDialog::setVideoDurationText);
     QObject::connect(&trayMenu, &TrayMenu::onOptionsClicked, [=, &preferencesDialog]
     {
         if (preferencesDialog.isHidden())
@@ -168,7 +191,7 @@ int main(int argc, char *argv[])
     trayMenu.setMute(SettingsManager::getInstance()->getMute());
     QObject::connect(&trayMenu, &TrayMenu::onMuteClicked, [=, &preferencesDialog]
     {
-        emit preferencesDialog.setMute(!SettingsManager::getInstance()->getMute());
+        preferencesDialog.setMute(!SettingsManager::getInstance()->getMute());
     });
     QObject::connect(&trayMenu, &TrayMenu::onAboutClicked, [=, &aboutDialog]
     {
@@ -185,16 +208,12 @@ int main(int argc, char *argv[])
             aboutDialog.activateWindow();
         }
     });
-    QObject::connect(&preferencesDialog, &PreferencesDialog::about, &trayMenu, &TrayMenu::onAboutClicked);
     QObject::connect(&trayMenu, &TrayMenu::onExitClicked, &app, &QApplication::quit);
     QObject::connect(&trayIcon, &QSystemTrayIcon::activated, [=, &trayMenu](QSystemTrayIcon::ActivationReason reason)
     {
         if (reason != QSystemTrayIcon::Context)
             emit trayMenu.onOptionsClicked();
     });
-    QObject::connect(&preferencesDialog, &PreferencesDialog::muteChanged, &trayMenu, &TrayMenu::setMute);
-    QObject::connect(&preferencesDialog, &PreferencesDialog::urlChanged, &trayIcon, &QSystemTrayIcon::setToolTip);
-    QObject::connect(&playerWindow, &PlayerWindow::playStateChanged, &trayMenu, &TrayMenu::setPlaying);
     trayIcon.show();
     const Qt::WindowFlags windowFlags = Qt::FramelessWindowHint;
     const QRect screenGeometry = QApplication::desktop()->screenGeometry(&playerWindow);

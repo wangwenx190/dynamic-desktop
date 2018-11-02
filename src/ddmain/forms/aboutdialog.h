@@ -16,8 +16,8 @@ public:
     ~AboutDialog() override;
 
 public slots:
-    void refreshTexts();
+    void refreshTexts(const QString &language);
 
 private:
-    Ui::AboutDialog *ui;
+    Ui::AboutDialog *ui = nullptr;
 };

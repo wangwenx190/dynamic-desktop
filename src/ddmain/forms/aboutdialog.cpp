@@ -1,14 +1,12 @@
 #include "aboutdialog.h"
 #include "ui_aboutdialog.h"
 
-#include <QDesktopServices>
 #include <QApplication>
 #include <QtAVWidgets>
 
-AboutDialog::AboutDialog(QWidget *parent) :
-    QWidget(parent),
-    ui(new Ui::AboutDialog)
+AboutDialog::AboutDialog(QWidget *parent) : QWidget(parent)
 {
+    ui = new Ui::AboutDialog();
     ui->setupUi(this);
     ui->lineEdit_version->setText(QApplication::applicationVersion());
     ui->lineEdit_commit_id->setText(QStringLiteral(DD_COMMIT_ID));
@@ -40,19 +38,6 @@ AboutDialog::AboutDialog(QWidget *parent) :
     {
         QtAV::aboutFFmpeg();
     });
-    connect(ui->pushButton_ok, &QPushButton::clicked, this, &AboutDialog::close);
-    connect(ui->pushButton_source, &QPushButton::clicked, this, [=]
-    {
-        QDesktopServices::openUrl(QUrl(QStringLiteral("https://github.com/wangwenx190/dynamic-desktop")));
-    });
-    connect(ui->pushButton_issues, &QPushButton::clicked, this, [=]
-    {
-        QDesktopServices::openUrl(QUrl(QStringLiteral("https://github.com/wangwenx190/dynamic-desktop/issues")));
-    });
-    connect(ui->pushButton_release, &QPushButton::clicked, this, [=]
-    {
-        QDesktopServices::openUrl(QUrl(QStringLiteral("https://sourceforge.net/p/dynamic-desktop/")));
-    });
 }
 
 AboutDialog::~AboutDialog()
@@ -60,7 +45,8 @@ AboutDialog::~AboutDialog()
     delete ui;
 }
 
-void AboutDialog::refreshTexts()
+void AboutDialog::refreshTexts(const QString &language)
 {
+    Q_UNUSED(language)
     ui->retranslateUi(this);
 }

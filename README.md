@@ -61,14 +61,6 @@ For official builds and third-party packages please see https://sourceforge.net/
 ### IMPORTANT NOTES
 - You can also use Intel C++ Compiler(ICC), Clang or MinGW to compile it, just remember to set up environment variables. Cross compile on other platforms may also work, but it will never run on platforms other than MS Windows.
 - You will need to build the static version of Qt by yourself if you want to get rid of the Qt dlls. Currently, this project only needs 4 repositories: **`qtbase`**(Qt modules needed: core, gui, widgets and opengl), **`qtimageformats`**(can't work normally without this repository), **`qtsvg`**(SVG support) and **`qtwinextras`**(Taskbar Progress support). You can skip all other repositories to speed up the compiling process.
-- You should write the detailed version information to **`.qmake.conf`** and save it to the root directory of this repository. qmake will automatically copy FFmpeg run-time libraries if you set the **`ffmpeg_dir`** variable and remember to use double quotation marks if there are any whitespaces in it. Using **`/`** instead of **`\`** is highly recommended as well. Example:
-   ```text
-   DD_MAJOR_VERSION = 2
-   DD_MINOR_VERSION = 3
-   DD_PATCH_VERSION = 4
-   DD_BUILD_VERSION = 5
-   ffmpeg_dir = "D:/sample code/ffmpeg/bin/x86"
-   ```
 
 ## Licenses
 - [Wallpaper](/src/ddmain/wallpaper.h): some code is copied from https://github.com/ThomasHuai/Wallpaper , Apache License 2.0, thanks to [ThomasHuai](https://github.com/ThomasHuai)!

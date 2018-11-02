@@ -8,18 +8,6 @@
         <translation>关于</translation>
     </message>
     <message>
-        <source>Get source code</source>
-        <translation>获取源码</translation>
-    </message>
-    <message>
-        <source>Report suggestions or issues</source>
-        <translation>提出建议或报告问题</translation>
-    </message>
-    <message>
-        <source>Get the latest release</source>
-        <translation>获取最新版本</translation>
-    </message>
-    <message>
         <source>Version</source>
         <translation>版本</translation>
     </message>
@@ -42,10 +30,6 @@
     <message>
         <source>Architecture</source>
         <translation>架构</translation>
-    </message>
-    <message>
-        <source>OK</source>
-        <translation>确定</translation>
     </message>
     <message>
         <source>About QtAV</source>

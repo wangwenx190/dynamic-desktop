@@ -7,8 +7,6 @@ QT_FORWARD_DECLARE_CLASS(QWinTaskbarButton)
 QT_FORWARD_DECLARE_CLASS(QWinTaskbarProgress)
 QT_END_NAMESPACE
 
-QT_FORWARD_DECLARE_CLASS(PlayerWindow)
-
 namespace Ui
 {
     class PreferencesDialog;
@@ -19,28 +17,42 @@ class PreferencesDialog : public CFramelessWindow
     Q_OBJECT
 
 signals:
-    void setMute(bool);
     void muteChanged(bool);
     void about();
-    void languageChanged();
-    void urlChanged(QString);
+    void play();
+    void pause();
+    void languageChanged(const QString &);
+    void urlChanged(const QString &);
+    void audioFileChanged(const QString &);
+    void subtitleFileChanged(const QString &);
+    void volumeChanged(quint32);
+    void seek(qint64);
+    void videoTrackChanged(quint32);
+    void audioTrackChanged(quint32);
+    void subtitleTrackChanged(const QVariant &);
+    void rendererChanged(int);
+    void imageQualityChanged(const QString &);
+    void charsetChanged(const QString &);
+    void subtitleAutoLoadChanged(bool);
+    void subtitleEnableChanged(bool);
+    void imageRatioChanged(bool);
 
 public slots:
-    void initConnections();
-    void setPlayerWindow(PlayerWindow *player);
-    void updateVideoSlider(qint64 position);
-    void updateVideoSliderUnit(quint32 unit);
-    void updateVideoSliderRange(qint64 duration);
-    void setSeekAreaEnabled(bool enabled);
-    void setAudioAreaEnabled(bool available);
-    void updateVideoTracks(const QVariantList &videoTracks);
-    void updateAudioTracks(const QVariantList &audioTracks, bool add = false);
-    void updateSubtitleTracks(const QVariantList &subtitleTracks, bool add = false);
+    void setMute(bool mute = true);
+    void setPlaying(bool playing = true);
+    void togglePlayPause();
     void clearAllTracks();
+    void setMediaSliderPosition(qint64 position = 0);
+    void setMediaSliderUnit(quint32 unit = 1000);
+    void setMediaSliderRange(qint64 duration);
+    void setSeekAreaEnabled(bool enabled = true);
+    void setAudioAreaEnabled(bool available = true);
+    void setVideoTracks(const QVariantList &videoTracks);
+    void setAudioTracks(const QVariantList &audioTracks, bool add = false);
+    void setSubtitleTracks(const QVariantList &subtitleTracks, bool add = false);
     void setVolumeToolTip(const QString &text);
     void setVideoPositionText(const QString &text);
     void setVideoDurationText(const QString &text);
-    void togglePlayPause();
 
 public:
     explicit PreferencesDialog(QWidget *parent = nullptr);
@@ -53,14 +65,14 @@ protected:
 
 private slots:
     void initUI();
+    void initConnections();
     void setDecoders();
     void setRatio();
 
 private:
-    Ui::PreferencesDialog *ui;
-    bool audioAvailable = true;
+    Ui::PreferencesDialog *ui = nullptr;
+    bool audioAvailable = true, isPlaying = false;
     quint32 sliderUnit = 1000;
     QWinTaskbarButton *taskbarButton = nullptr;
     QWinTaskbarProgress *taskbarProgress = nullptr;
-    PlayerWindow *playerWindow = nullptr;
 };

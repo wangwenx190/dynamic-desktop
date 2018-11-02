@@ -25,7 +25,7 @@ public:
     ~TrayMenu() override;
 
 public slots:
-    void refreshTexts();
+    void refreshTexts(const QString &language);
     void setMute(bool mute = true);
     void setPlaying(bool playing = true);
 
@@ -33,6 +33,6 @@ protected:
     void showEvent(QShowEvent *event) override;
 
 private:
-    Ui::TrayMenu *ui;
+    Ui::TrayMenu *ui = nullptr;
     bool muted = false;
 };

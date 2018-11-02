@@ -3,10 +3,9 @@
 
 #include <QCursor>
 
-TrayMenu::TrayMenu(QWidget *parent) :
-    QMenu(parent),
-    ui(new Ui::TrayMenu)
+TrayMenu::TrayMenu(QWidget *parent) : QMenu(parent)
 {
+    ui = new Ui::TrayMenu();
     ui->setupUi(this);
     connect(ui->toolButton_options, &QToolButton::clicked, this, &TrayMenu::onOptionsClicked);
     connect(ui->toolButton_about, &QToolButton::clicked, this, &TrayMenu::onAboutClicked);
@@ -22,8 +21,9 @@ TrayMenu::~TrayMenu()
     delete ui;
 }
 
-void TrayMenu::refreshTexts()
+void TrayMenu::refreshTexts(const QString &language)
 {
+    Q_UNUSED(language)
     ui->retranslateUi(this);
     if (muted)
         ui->toolButton_mute->setText(tr("Unmute"));

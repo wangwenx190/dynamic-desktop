@@ -1,10 +1,5 @@
 TARGET = ddmain
 include(../common.pri)
-exists("$${ROOT}/.qmake.conf") {
-    message("\".qmake.conf\" detected, you are building Dynamic Desktop version $${VERSION}.")
-} else {
-    message("qmake can\'t find \".qmake.conf\", this build is for testing only.")
-}
 QMAKE_TARGET_DESCRIPTION = "Dynamic Desktop"
 RC_ICONS = ../resources/icons/color_palette.ico
 QT *= \

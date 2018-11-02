@@ -2,7 +2,6 @@
 #include "settingsmanager.h"
 #include "utils.h"
 #include "wallpaper.h"
-#include "forms/preferencesdialog.h"
 
 #include <QMessageBox>
 #include <QVBoxLayout>
@@ -14,6 +13,8 @@ PlayerWindow::PlayerWindow(QWidget *parent) : QWidget(parent)
 {
     initUI();
     initPlayer();
+    initConnections();
+    initAudio();
 }
 
 PlayerWindow::~PlayerWindow()
@@ -22,11 +23,6 @@ PlayerWindow::~PlayerWindow()
     delete renderer;
     delete player;
     delete mainLayout;
-}
-
-void PlayerWindow::setPreferencesDialog(PreferencesDialog *preferences)
-{
-    preferencesDialog = preferences;
 }
 
 void PlayerWindow::setVolume(quint32 volume)
@@ -38,7 +34,7 @@ void PlayerWindow::setVolume(quint32 volume)
         if (ao->volume() != newVolume)
             if (qAbs(static_cast<int>(ao->volume() / kVolumeInterval) - static_cast<int>(volume)) >= static_cast<int>(0.1 / kVolumeInterval))
                 ao->setVolume(newVolume);
-        preferencesDialog->setVolumeToolTip(tr("Volume: %0").arg(QString::number(newVolume)));
+        emit this->volumeToolTipChanged(tr("Volume: %0").arg(QString::number(newVolume)));
     }
 }
 
@@ -150,8 +146,8 @@ void PlayerWindow::initConnections()
     connect(player, &QtAV::AVPlayer::loaded, this, &PlayerWindow::onStartPlay);
     connect(player, &QtAV::AVPlayer::positionChanged, this, [=](qint64 pos)
     {
-        preferencesDialog->updateVideoSlider(pos);
-        preferencesDialog->setVideoPositionText(QTime(0, 0, 0).addMSecs(pos).toString(QStringLiteral("HH:mm:ss")));
+        emit this->mediaPositionChanged(pos);
+        emit this->videoPositionTextChanged(QTime(0, 0, 0).addMSecs(pos).toString(QStringLiteral("HH:mm:ss")));
     });
     connect(player, &QtAV::AVPlayer::stateChanged, this, [=](QtAV::AVPlayer::State state)
     {
@@ -160,7 +156,6 @@ void PlayerWindow::initConnections()
         else if (state == QtAV::AVPlayer::PlayingState)
             emit this->playStateChanged(true);
     });
-    initAudio();
 }
 
 void PlayerWindow::initAudio()
@@ -171,7 +166,7 @@ void PlayerWindow::initAudio()
         setMute(SettingsManager::getInstance()->getMute());
     }
     else
-        preferencesDialog->setAudioAreaEnabled(false);
+       emit this->audioAreaEnableChanged(false);
 }
 
 bool PlayerWindow::setRenderer(QtAV::VideoRendererId id)
@@ -247,47 +242,26 @@ void PlayerWindow::setWindowMode(bool enabled)
         windowMode = enabled;
 }
 
-bool PlayerWindow::isMediaLoaded()
-{
-    if (player == nullptr)
-        return false;
-    return player->isLoaded();
-}
-
-bool PlayerWindow::isMediaPlaying()
-{
-    if (!isMediaLoaded())
-        return false;
-    return player->isPlaying();
-}
-
-bool PlayerWindow::isMediaPaused()
-{
-    if (!isMediaLoaded())
-        return false;
-    return player->isPaused();
-}
-
 void PlayerWindow::onStartPlay()
 {
     if (!player || !subtitle)
         return;
-    preferencesDialog->clearAllTracks();
-    preferencesDialog->updateVideoSliderUnit(player->notifyInterval());
-    preferencesDialog->updateVideoSliderRange(player->duration());
-    preferencesDialog->updateVideoSlider(player->position());
-    preferencesDialog->setSeekAreaEnabled(player->isSeekable());
-    preferencesDialog->setAudioAreaEnabled(player->audio() ? true : false);
-    preferencesDialog->updateVideoTracks(player->internalVideoTracks());
-    preferencesDialog->updateAudioTracks(player->internalAudioTracks(), false);
-    preferencesDialog->setVideoDurationText(QTime(0, 0, 0).addMSecs(player->mediaStopPosition()).toString(QStringLiteral("HH:mm:ss")));
+    emit this->clearAllTracks();
+    emit this->mediaSliderUnitChanged(player->notifyInterval());
+    emit this->mediaSliderRangeChanged(player->duration());
+    emit this->mediaPositionChanged(player->position());
+    emit this->seekAreaEnableChanged(player->isSeekable());
+    emit this->audioAreaEnableChanged(player->audio() ? true : false);
+    emit this->videoTracksChanged(player->internalVideoTracks());
+    emit this->audioTracksChanged(player->internalAudioTracks(), false);
+    emit this->videoDurationTextChanged(QTime(0, 0, 0).addMSecs(player->mediaStopPosition()).toString(QStringLiteral("HH:mm:ss")));
     bool externalAudioLoaded = false;
     if (SettingsManager::getInstance()->getAudioAutoLoad())
     {
         QVariantList externalAudioTracks = player->externalAudioTracks();
         if (!externalAudioTracks.isEmpty())
         {
-            preferencesDialog->updateAudioTracks(player->externalAudioTracks(), true);
+            emit this->audioTracksChanged(player->externalAudioTracks(), true);
             for (auto& track : externalAudioTracks)
             {
                 QVariantMap trackData = track.toMap();
@@ -305,7 +279,7 @@ void PlayerWindow::onStartPlay()
     }
     if (!externalAudioLoaded)
         player->setExternalAudio(QString());
-    preferencesDialog->updateSubtitleTracks(player->internalSubtitleTracks(), false);
+    emit this->subtitleTracksChanged(player->internalSubtitleTracks(), false);
     if (SettingsManager::getInstance()->getSubtitleAutoLoad())
     {
         QVariantList externalSubtitleTracks;
@@ -318,7 +292,7 @@ void PlayerWindow::onStartPlay()
                 externalSubtitle[QStringLiteral("file")] = subPath;
                 externalSubtitleTracks.append(externalSubtitle);
             }
-            preferencesDialog->updateSubtitleTracks(externalSubtitleTracks, true);
+            emit this->subtitleTracksChanged(externalSubtitleTracks, true);
         }
     }
     if (!subtitle->file().isEmpty())
@@ -361,13 +335,13 @@ void PlayerWindow::pause()
         player->pause();
 }
 
-/*void PlayerWindow::stop()
+void PlayerWindow::stop()
 {
     if (!player)
         return;
     if (player->isLoaded())
         player->stop();
-}*/
+}
 
 void PlayerWindow::setUrl(const QString& url)
 {
