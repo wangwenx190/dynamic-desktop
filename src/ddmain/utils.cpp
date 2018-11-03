@@ -64,7 +64,7 @@ QStringList externalFilesToLoad(const QFileInfo &originalMediaFile, const QStrin
     if (!originalMediaFile.exists() || originalMediaFile.isDir() || fileType.isEmpty())
         return QStringList();
     QDir subDir(originalMediaFile.absoluteDir());
-    QFileInfoList fileList = subDir.entryInfoList(QDir::Files | QDir::NoSymLinks, QDir::Name);
+    QFileInfoList fileList = subDir.entryInfoList(QDir::Files, QDir::Name);
     if (fileList.count() < 2)
         return QStringList();
     const QString fileBaseName = originalMediaFile.baseName().toLower();
@@ -102,25 +102,6 @@ void moveToCenter(QObject *window)
     quint32 newX = (screenWidth - windowWidth) / 2;
     quint32 newY = (screenHeight - windowHeight) / 2;
     win->move(newX, newY);
-}
-
-int Exit(int resultCode, bool trulyExit, HANDLE mutex, HWND wallpaper)
-{
-    if (translator != nullptr)
-    {
-        delete translator;
-        translator = nullptr;
-    }
-    if (mutex != nullptr)
-    {
-        ReleaseMutex(mutex);
-        CloseHandle(mutex);
-    }
-    if (wallpaper != nullptr)
-        ShowWindow(wallpaper, SW_HIDE);
-    if (trulyExit)
-        QCoreApplication::exit(resultCode);
-    return resultCode;
 }
 
 static LPCWSTR toWide(LPCSTR from)

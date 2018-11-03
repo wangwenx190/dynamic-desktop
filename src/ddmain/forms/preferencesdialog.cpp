@@ -20,6 +20,69 @@
 #include <QTextCodec>
 #include <QTimer>
 #include <QApplication>
+#ifndef BUILD_DD_STATIC
+#include <QLibraryInfo>
+#endif
+
+void PreferencesDialog::populateSkins(const QString &dirPath, bool add)
+{
+    if (dirPath.isEmpty())
+        return;
+    if (!QFileInfo::exists(dirPath) || !QFileInfo(dirPath).isDir())
+        return;
+    QDir skinDir(dirPath);
+    QFileInfoList skinFileList = skinDir.entryInfoList(QDir::Files, QDir::Name);
+    if (skinFileList.count() > 0)
+    {
+        if (!add)
+        {
+            ui->comboBox_skin->clear();
+            ui->comboBox_skin->addItem(tr("<None>"), QStringLiteral("none"));
+        }
+        for (auto& skinFile : skinFileList)
+            ui->comboBox_skin->addItem(skinFile.completeBaseName(), skinFile.completeBaseName());
+    }
+    if (ui->comboBox_skin->count() > 1)
+        ui->comboBox_skin->setEnabled(true);
+    else
+        ui->comboBox_skin->setEnabled(false);
+}
+
+void PreferencesDialog::populateLanguages(const QString &dirPath, bool add)
+{
+    if (dirPath.isEmpty())
+        return;
+    if (!QFileInfo::exists(dirPath) || !QFileInfo(dirPath).isDir())
+        return;
+    QDir languageDir(dirPath);
+    QFileInfoList languageFileList = languageDir.entryInfoList(QDir::Files, QDir::Name);
+    if (languageFileList.count() > 0)
+    {
+        if (!add)
+        {
+            ui->comboBox_language->clear();
+            ui->comboBox_language->addItem(tr("Auto"), QStringLiteral("auto"));
+            ui->comboBox_language->addItem(QStringLiteral("American English"), QStringLiteral("en"));
+        }
+        for (auto& languageFile : languageFileList)
+        {
+            QString fileName = languageFile.completeBaseName();
+            if (!fileName.startsWith(QStringLiteral("dd_"), Qt::CaseInsensitive))
+                continue;
+            QString lang = fileName.mid(fileName.indexOf(QLatin1Char('_')) + 1);
+            lang = lang.replace('-', '_');
+            QLocale locale(lang);
+            ui->comboBox_language->addItem(locale.nativeLanguageName(), lang);
+        }
+    }
+    if (ui->comboBox_language->count() > 2)
+        ui->comboBox_language->setEnabled(true);
+    else
+    {
+        ui->comboBox_language->setCurrentIndex(1);
+        ui->comboBox_language->setEnabled(false);
+    }
+}
 
 void PreferencesDialog::setMediaSliderPosition(qint64 position)
 {
@@ -234,39 +297,18 @@ void PreferencesDialog::initUI()
     ui->comboBox_video_renderer->addItem(QStringLiteral("GDI"), QtAV::VideoRendererId_GDI);
     ui->comboBox_video_renderer->addItem(QStringLiteral("Direct2D"), QtAV::VideoRendererId_Direct2D);
     ui->comboBox_skin->addItem(tr("<None>"), QStringLiteral("none"));
-    QDir skinDir(QStringLiteral(":/skins"));
-    QFileInfoList skinFileList = skinDir.entryInfoList(QDir::Files | QDir::NoSymLinks, QDir::Name);
-    if (skinFileList.count() > 0)
-        for (auto& skinFile : skinFileList)
-            ui->comboBox_skin->addItem(skinFile.completeBaseName(), skinFile.completeBaseName());
-    if (ui->comboBox_skin->count() > 1)
-        ui->comboBox_skin->setEnabled(true);
-    else
-        ui->comboBox_skin->setEnabled(false);
-    QDir languageDir(QStringLiteral(":/i18n"));
-    QFileInfoList languageFileList = languageDir.entryInfoList(QDir::Files | QDir::NoSymLinks, QDir::Name);
-    if (languageFileList.count() > 0)
-        for (auto& languageFile : languageFileList)
-        {
-            QString fileName = languageFile.completeBaseName();
-            if (!fileName.startsWith(QStringLiteral("dd_"), Qt::CaseInsensitive))
-                continue;
-            QString lang = fileName.mid(fileName.indexOf(QLatin1Char('_')) + 1);
-            lang = lang.replace('-', '_');
-            QLocale locale(lang);
-            ui->comboBox_language->addItem(locale.nativeLanguageName(), lang);
-        }
-    if (ui->comboBox_language->count() > 0)
-    {
-        ui->comboBox_language->insertItem(0, tr("Auto"), QStringLiteral("auto"));
-        ui->comboBox_language->insertItem(1, QStringLiteral("American English"), QStringLiteral("en"));
-        ui->comboBox_language->setEnabled(true);
-    }
-    else
-    {
-        ui->comboBox_language->addItem(tr("<None>"), QStringLiteral("en"));
-        ui->comboBox_language->setEnabled(false);
-    }
+    populateSkins(QStringLiteral(":/skins"));
+    const QString skinDirPath = QApplication::applicationDirPath() + QStringLiteral("/skins");
+    populateSkins(skinDirPath);
+    ui->comboBox_language->addItem(tr("Auto"), QStringLiteral("auto"));
+    ui->comboBox_language->addItem(QStringLiteral("American English"), QStringLiteral("en"));
+    populateLanguages(QStringLiteral(":/i18n"));
+#ifdef BUILD_DD_STATIC
+    const QString i18nDirPath = QApplication::applicationDirPath() + QStringLiteral("/translations");
+#else
+    const QString i18nDirPath = QLibraryInfo::location(QLibraryInfo::TranslationsPath);
+#endif
+    populateLanguages(i18nDirPath);
     ui->comboBox_subtitle_charset->addItem(tr("Auto detect"), QStringLiteral("AutoDetect"));
     ui->comboBox_subtitle_charset->addItem(tr("System"), QStringLiteral("System"));
     for (auto& codec : QTextCodec::availableCodecs())

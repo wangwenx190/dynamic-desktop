@@ -1,7 +1,7 @@
 #include "playerwindow.h"
 #include "settingsmanager.h"
 #include "utils.h"
-#include "wallpaper.h"
+#include <Wallpaper>
 
 #include <QMessageBox>
 #include <QVBoxLayout>

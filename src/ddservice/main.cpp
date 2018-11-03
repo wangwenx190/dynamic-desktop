@@ -13,7 +13,6 @@ DWORD WINAPI ServiceWorkerThread(LPVOID lpParam);
 
 VOID Install();
 VOID Uninstall();
-VOID Start();
 VOID Help();
 
 #define SERVICE_NAME_DD _T("ddassvc")
@@ -38,16 +37,7 @@ int _tmain(int argc, TCHAR *argv[])
             Uninstall();
             break;
         }
-        else if ((_tcscmp(argv[i], _T("-s")) == 0) || (_tcscmp(argv[i], _T("-S")) == 0) || (_tcscmp(argv[i], _T("-start")) == 0) || (_tcscmp(argv[i], _T("-START")) == 0) || (_tcscmp(argv[i], _T("-Start")) == 0))
-        {
-            Start();
-            break;
-        }
-        else
-        {
-            Help();
-            break;
-        }
+    Help();
     if (StartServiceCtrlDispatcher(ServiceTable) != TRUE)
         return GetLastError();
     return 0;
@@ -108,37 +98,11 @@ VOID Uninstall()
         std::wcout << _T("Uninstallation failed. Administrator privilege is needed.") << std::endl;
 }
 
-VOID Start()
-{
-    if (!Win32Utils::isAutoStartServiceInstalled(SERVICE_NAME_DD))
-    {
-        std::wcout << _T("Service not installed. Can\'t be started.") << std::endl;
-        return;
-    }
-    bool result = false;
-    SC_HANDLE hSCM = OpenSCManager(nullptr, nullptr, SC_MANAGER_CONNECT);
-    if (hSCM != nullptr)
-    {
-        SC_HANDLE hService = OpenService(hSCM, SERVICE_NAME_DD, SERVICE_START);
-        if (hService != nullptr)
-        {
-            result = StartService(hService, 0, nullptr);
-            CloseServiceHandle(hService);
-        }
-        CloseServiceHandle(hSCM);
-    }
-    if (result)
-        std::wcout << _T("Service started.") << std::endl;
-    else
-        std::wcout << _T("Service can\'t be started.") << std::endl;
-}
-
 VOID Help()
 {
-    std::wcout << _T("-h(elp)\t\t: Show this information.") << std::endl;
+    std::wcout << _T("Usage:") << std::endl;
     std::wcout << _T("-i(nstall)\t: Install this service.") << std::endl;
     std::wcout << _T("-u(ninstall)\t: Uninstall this service.") << std::endl;
-    std::wcout << _T("-s(tart)\t: Start this service.") << std::endl;
 }
 
 VOID WINAPI ServiceMain(DWORD argc, LPTSTR *argv)
@@ -190,18 +154,6 @@ VOID WINAPI ServiceCtrlHandler(DWORD code)
 DWORD WINAPI ServiceWorkerThread(LPVOID lpParam)
 {
     (void)lpParam;
-    HANDLE appMutex = CreateMutex(nullptr, FALSE, _T("wangwenx190.DynamicDesktop.Main.1000.AppMutex"));
-    if ((appMutex != nullptr) && (GetLastError() == ERROR_ALREADY_EXISTS))
-    {
-        ReleaseMutex(appMutex);
-        std::wcout << _T("Application already running. Don\'t run twice.") << std::endl;
-        return ERROR_SUCCESS;
-    }
-    else if ((appMutex != nullptr) && (GetLastError() != ERROR_ALREADY_EXISTS))
-    {
-        ReleaseMutex(appMutex);
-        CloseHandle(appMutex);
-    }
     TCHAR filePath[MAX_PATH + 1];
     DWORD dwSize = GetModuleFileName(nullptr, filePath, MAX_PATH);
     for (;(filePath[dwSize] != '\\') && (dwSize != 0); --dwSize)

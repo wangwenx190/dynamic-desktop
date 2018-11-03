@@ -55,7 +55,7 @@ For official builds and third-party packages please see https://sourceforge.net/
 - Clone or download this repository.
 - Download [Qt5](http://download.qt.io/archive/qt/) and install it.
 - Download [QtAV](https://github.com/wang-bin/QtAV)'s prebuilt SDK and install it, or build yourself.
-- Download [FFmpeg](https://github.com/wang-bin/avbuild)'s prebuilt binaries or build yourself.
+- Download [FFmpeg](https://ffmpeg.zeranoe.com/builds/)'s prebuilt binaries or build yourself.
 - Open "dynamic-desktop.pro" and start compiling or call "build.bat". But remember to call "vcvarsall.bat" and add Qt's directories to your path variables before calling "build.bat".
 
 ### IMPORTANT NOTES
@@ -63,15 +63,15 @@ For official builds and third-party packages please see https://sourceforge.net/
 - You will need to build the static version of Qt by yourself if you want to get rid of the Qt dlls. Currently, this project only needs 4 repositories: **`qtbase`**(Qt modules needed: core, gui, widgets and opengl), **`qtimageformats`**(can't work normally without this repository), **`qtsvg`**(SVG support) and **`qtwinextras`**(Taskbar Progress support). You can skip all other repositories to speed up the compiling process.
 
 ## Licenses
-- [Wallpaper](/src/ddmain/wallpaper.h): some code is copied from https://github.com/ThomasHuai/Wallpaper , Apache License 2.0, thanks to [ThomasHuai](https://github.com/ThomasHuai)!
-- [FFmpeg](https://github.com/wang-bin/avbuild): LGPLv3, thanks to [FFmpeg project](http://ffmpeg.org/)!
+- [Wallpaper](/src/wallpaper): some code is copied from https://github.com/ThomasHuai/Wallpaper , Apache License 2.0, thanks to [ThomasHuai](https://github.com/ThomasHuai)!
+- [FFmpeg](https://ffmpeg.zeranoe.com/builds/): LGPLv3, thanks to [FFmpeg project](http://ffmpeg.org/)!
 - [QtAV](https://github.com/wang-bin/QtAV): LGPLv3, thanks to [wang bin](https://github.com/wang-bin)!
-- [Qt Nice Frameless Window](/src/ddmain/qtniceframelesswindow.h): some code is copied from https://github.com/Bringer-of-Light/Qt-Nice-Frameless-Window , MIT, thanks to [Bringer of Light](https://github.com/Bringer-of-Light)!
-- [Qt](http://download.qt.io/archive/qt/): some code is copied from https://github.com/qtproject/qt-solutions , LGPLv3, thanks to [the Qt Company](https://www.qt.io/)!
+- [Qt Nice Frameless Window](/src/qtniceframelesswindow): some code is copied from https://github.com/Bringer-of-Light/Qt-Nice-Frameless-Window , MIT, thanks to [Bringer of Light](https://github.com/Bringer-of-Light)!
+- [Qt](http://download.qt.io/archive/qt/) and [QtSingleApplication](/src/qtsingleapplication): some code is copied from https://github.com/qtproject/qt-solutions , LGPLv3, thanks to [the Qt Company](https://www.qt.io/)!
 - [src/resources/stylesheets/Default.css](/src/resources/stylesheets/Default.css): copied from https://github.com/u8sand/Baka-MPlayer , GPLv2, thanks to [Daniel Clarke](https://github.com/u8sand)!
 - [src/resources/stylesheets/Greenery.css](/src/resources/stylesheets/Greenery.css), [src/resources/stylesheets/Marsala.css](/src/resources/stylesheets/Marsala.css), [src/resources/stylesheets/Rose&nbsp;Quartz&nbsp;&amp;&nbsp;Serenity.css](/src/resources/stylesheets/Rose%20Quartz%20&%20Serenity.css), [src/resources/stylesheets/Ultra&nbsp;Violet.css](/src/resources/stylesheets/Ultra%20Violet.css): created by [Yuriko](https://github.com/GA-1101), thanks a lot!
 - [src/resources/icons/color_palette.ico](/src/resources/icons/color_palette.ico), [src/resources/icons/color_palette.svg](/src/resources/icons/color_palette.svg): downloaded from https://www.easyicon.net/
 - [src/resources/icons/minimize.svg](/src/resources/icons/minimize.svg), [src/resources/icons/close.svg](/src/resources/icons/close.svg), [src/resources/icons/circle-light.svg](/src/resources/icons/circle-light.svg), [src/resources/icons/exit-light.svg](/src/resources/icons/exit-light.svg), [src/resources/icons/info.svg](/src/resources/icons/info.svg), [src/resources/icons/mute-light.svg](/src/resources/icons/mute-light.svg), [src/resources/icons/next-light.svg](/src/resources/icons/next-light.svg), [src/resources/icons/options-light.svg](/src/resources/icons/options-light.svg), [src/resources/icons/pause-light.svg](/src/resources/icons/pause-light.svg), [src/resources/icons/play-light.svg](/src/resources/icons/play-light.svg), [src/resources/icons/playlist-light.svg](/src/resources/icons/playlist-light.svg), [src/resources/icons/previous-light.svg](/src/resources/icons/previous-light.svg), [src/resources/icons/sound-light.svg](/src/resources/icons/sound-light.svg): downloaded from http://www.iconfont.cn/
 - [src/resources/icons/checked.svg](/src/resources/icons/checked.svg), [src/resources/icons/down-arrow.svg](/src/resources/icons/down-arrow.svg), [src/resources/icons/selected.svg](/src/resources/icons/selected.svg): copied from https://github.com/u8sand/Baka-MPlayer
-- [src/resources/images/colorful.jpg](/src/resources/images/colorful.jpg): downloaded from http://www.58pic.com/
+- [src/resources/images/colorful-triangles.png](/src/resources/images/colorful-triangles.png): downloaded from http://www.58pic.com/
 - Dynamic Desktop: [GPLv3](/LICENSE.md)

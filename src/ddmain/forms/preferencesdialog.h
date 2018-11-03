@@ -1,6 +1,6 @@
 #pragma once
 
-#include "qtniceframelesswindow.h"
+#include <QtNiceFramelessWindow>
 
 QT_BEGIN_NAMESPACE
 QT_FORWARD_DECLARE_CLASS(QWinTaskbarButton)
@@ -68,6 +68,8 @@ private slots:
     void initConnections();
     void setDecoders();
     void setRatio();
+    void populateSkins(const QString &dirPath, bool add = true);
+    void populateLanguages(const QString &dirPath, bool add = true);
 
 private:
     Ui::PreferencesDialog *ui = nullptr;

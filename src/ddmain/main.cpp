@@ -1,15 +1,13 @@
 #include "settingsmanager.h"
 #include "skinsmanager.h"
 #include "utils.h"
-#include "wallpaper.h"
+#include <Wallpaper>
 #include "forms/preferencesdialog.h"
 #include "forms/aboutdialog.h"
 #include "forms/traymenu.h"
 #include "playerwindow.h"
+#include <QtSingleApplication>
 
-#include <Windows.h>
-
-#include <QApplication>
 #include <QMessageBox>
 #include <QSysInfo>
 #include <QVersionNumber>
@@ -23,23 +21,23 @@
 
 int main(int argc, char *argv[])
 {
-    QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
-    QApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
-    QApplication::setAttribute(Qt::AA_UseOpenGLES);
-    QApplication app(argc, argv);
-    QPixmap pixmap(QStringLiteral(":/images/colorful.jpg"));
+    QtSingleApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+    QtSingleApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
+    QtSingleApplication::setAttribute(Qt::AA_UseOpenGLES);
+    QtSingleApplication app(QStringLiteral("wangwenx190.DynamicDesktop.Main.1000.AppMutex"), argc, argv);
+    QtSingleApplication::setApplicationName(QStringLiteral("Dynamic Desktop"));
+    QtSingleApplication::setApplicationDisplayName(QStringLiteral("Dynamic Desktop"));
+    QtSingleApplication::setOrganizationName(QStringLiteral("wangwenx190"));
+    QtSingleApplication::setOrganizationDomain(QStringLiteral("wangwenx190.github.io"));
+    if (app.sendMessage(QStringLiteral("Dynamic Desktop starting ...")))
+        return 0;
+    QPixmap pixmap(QStringLiteral(":/images/colorful-triangles.png"));
     QSplashScreen splash(pixmap);
     splash.show();
     app.processEvents();
-    QApplication::setApplicationName(QStringLiteral("Dynamic Desktop"));
-    QApplication::setApplicationDisplayName(QStringLiteral("Dynamic Desktop"));
-    QApplication::setOrganizationName(QStringLiteral("wangwenx190"));
-    QApplication::setOrganizationDomain(QStringLiteral("wangwenx190.github.io"));
 #ifndef _DEBUG
     qInstallMessageHandler(Utils::fileLogger);
 #endif
-    bool windowMode = false;
-    HANDLE appMutex = nullptr;
     Utils::installTranslation(SettingsManager::getInstance()->getLanguage(), QStringLiteral("dd"));
     int suffixIndex;
     QVersionNumber currentVersion = QVersionNumber::fromString(QSysInfo::kernelVersion(), &suffixIndex);
@@ -47,44 +45,37 @@ int main(int argc, char *argv[])
     if (currentVersion < win7Version)
     {
         QMessageBox::critical(nullptr, QStringLiteral("Dynamic Desktop"), QObject::tr("This application only supports Windows 7 and newer."));
-        return Utils::Exit(-1, false, appMutex);
-    }
-    appMutex = CreateMutex(nullptr, FALSE, TEXT("wangwenx190.DynamicDesktop.Main.1000.AppMutex"));
-    if ((appMutex != nullptr) && (GetLastError() == ERROR_ALREADY_EXISTS))
-    {
-        QMessageBox::critical(nullptr, QStringLiteral("Dynamic Desktop"), QObject::tr("There is another instance running. Please do not run twice."));
-        ReleaseMutex(appMutex);
-        return 0;
+        return -1;
     }
     QCommandLineParser parser;
-    parser.setApplicationDescription(QStringLiteral("A tool that make your desktop alive."));
+    parser.setApplicationDescription(QObject::tr("A tool that make your desktop alive."));
     parser.addHelpOption();
     parser.addVersionOption();
     QCommandLineOption windowModeOption(QStringLiteral("window"),
-                                        QApplication::translate("main", "Show a normal window instead of placing it under the desktop icons."));
+                                        QtSingleApplication::translate("main", "Show a normal window instead of placing it under the desktop icons."));
     parser.addOption(windowModeOption);
     QCommandLineOption skinOption(QStringLiteral("skin"),
-                                  QApplication::translate("main", "Set skin. The value is the file name of the skin file, excluding the file extension. If it's not under the \"skins\" folder, please give the absolute path of the file."),
-                                  QApplication::translate("main", "Skin file name"));
+                                  QtSingleApplication::translate("main", "Set skin. The value is the file name of the skin file, excluding the file extension. If it's not under the \"skins\" folder, please give the absolute path of the file."),
+                                  QtSingleApplication::translate("main", "Skin file name"));
     parser.addOption(skinOption);
     QCommandLineOption urlOption(QStringLiteral("url"),
-                                 QApplication::translate("main", "Play the given url. It can be a local file or a valid web url. Default is empty."),
-                                 QApplication::translate("main", "url"));
+                                 QtSingleApplication::translate("main", "Play the given url. It can be a local file or a valid web url. Default is empty."),
+                                 QtSingleApplication::translate("main", "url"));
     parser.addOption(urlOption);
     QCommandLineOption imageQualityOption(QStringLiteral("quality"),
-                                          QApplication::translate("main", "Set the quality of the output image. It can be default/best/fastest. Default is best. Case insensitive."),
-                                          QApplication::translate("main", "Image quality"));
+                                          QtSingleApplication::translate("main", "Set the quality of the output image. It can be default/best/fastest. Default is best. Case insensitive."),
+                                          QtSingleApplication::translate("main", "Image quality"));
     parser.addOption(imageQualityOption);
     QCommandLineOption rendererOption(QStringLiteral("renderer"),
-                                      QApplication::translate("main", "Set rendering engine. It can be opengl/gl/qt/gdi/d2d. Default is gl. Case insensitive."),
-                                      QApplication::translate("main", "renderer"));
+                                      QtSingleApplication::translate("main", "Set rendering engine. It can be opengl/gl/qt/gdi/d2d. Default is gl. Case insensitive."),
+                                      QtSingleApplication::translate("main", "renderer"));
     parser.addOption(rendererOption);
     QCommandLineOption volumeOption(QStringLiteral("volume"),
-                                    QApplication::translate("main", "Set volume. It must be a positive integer between 0 and 99. Default is 9."),
-                                    QApplication::translate("main", "volume"));
+                                    QtSingleApplication::translate("main", "Set volume. It must be a positive integer between 0 and 99. Default is 9."),
+                                    QtSingleApplication::translate("main", "volume"));
     parser.addOption(volumeOption);
     parser.process(app);
-    windowMode = parser.isSet(windowModeOption);
+    const bool windowMode = parser.isSet(windowModeOption);
     QString skinOptionValue = parser.value(skinOption);
     if (!skinOptionValue.isEmpty())
         if (skinOptionValue != SettingsManager::getInstance()->getSkin())
@@ -208,15 +199,25 @@ int main(int argc, char *argv[])
             aboutDialog.activateWindow();
         }
     });
-    QObject::connect(&trayMenu, &TrayMenu::onExitClicked, &app, &QApplication::quit);
+    QObject::connect(&trayMenu, &TrayMenu::onExitClicked, &app, &QtSingleApplication::quit);
     QObject::connect(&trayIcon, &QSystemTrayIcon::activated, [=, &trayMenu](QSystemTrayIcon::ActivationReason reason)
     {
         if (reason != QSystemTrayIcon::Context)
             emit trayMenu.onOptionsClicked();
     });
+    QObject::connect(qApp, &QtSingleApplication::aboutToQuit, [=]
+    {
+        Utils::installTranslation(QStringLiteral("en"), QStringLiteral("dd"));
+        Wallpaper::hideWallpaper();
+    });
+    QObject::connect(&app, &QtSingleApplication::messageReceived, [=, &trayMenu](const QString &message)
+    {
+        Q_UNUSED(message)
+        emit trayMenu.onOptionsClicked();
+    });
     trayIcon.show();
     const Qt::WindowFlags windowFlags = Qt::FramelessWindowHint;
-    const QRect screenGeometry = QApplication::desktop()->screenGeometry(&playerWindow);
+    const QRect screenGeometry = QtSingleApplication::desktop()->screenGeometry(&playerWindow);
     if (!windowMode)
     {
         playerWindow.setWindowFlags(windowFlags);
@@ -259,5 +260,5 @@ int main(int argc, char *argv[])
         playerWindow.setUrl(url);
         splash.finish(&playerWindow);
     }
-    return Utils::Exit(QApplication::exec(), false, appMutex, Wallpaper::getWallpaper());
+    return QtSingleApplication::exec();
 }

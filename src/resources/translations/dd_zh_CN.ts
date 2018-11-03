@@ -222,10 +222,6 @@
         <translation>&lt;无&gt;</translation>
     </message>
     <message>
-        <source>Auto</source>
-        <translation>自动</translation>
-    </message>
-    <message>
         <source>Please select an audio file</source>
         <translation>请选择一个音频文件</translation>
     </message>
@@ -287,6 +283,10 @@ Make sure this application runs in your GPU&apos;s Optimus mode.</source>
         <source>Some texts will not refresh their translation until you restart this application.</source>
         <translation>部分文本将不会刷新它们的翻译直到您重启此应用程序。</translation>
     </message>
+    <message>
+        <source>Auto</source>
+        <translation>自动</translation>
+    </message>
 </context>
 <context>
     <name>QObject</name>
@@ -295,8 +295,8 @@ Make sure this application runs in your GPU&apos;s Optimus mode.</source>
         <translation>此应用程序仅支持 Windows 7 及更新版本的操作系统。</translation>
     </message>
     <message>
-        <source>There is another instance running. Please do not run twice.</source>
-        <translation>已经有另一个实例在运行。请勿重复运行。</translation>
+        <source>A tool that make your desktop alive.</source>
+        <translation>一个能让您的桌面更加丰富多彩的工具。</translation>
     </message>
 </context>
 <context>
