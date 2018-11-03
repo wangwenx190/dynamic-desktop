@@ -98,7 +98,7 @@ CONFIG(shared, static|shared) {
     }
     isEmpty(windeployqt): windeployqt = $$[QT_INSTALL_BINS]/windeployqt.exe
     exists("$${windeployqt}") {
-        libs.commands = $$quote(\"$${windeployqt}\" --plugindir \"$${BIN_DIR}/plugins\" --force --no-translations --no-system-d3d-compiler --no-compiler-runtime --no-angle --no-opengl-sw -opengl --list source \"$${BIN_DIR}/$${TARGET}.exe\")
+        libs.commands = $$quote(\"$${windeployqt}\" --plugindir \"$${BIN_DIR}/plugins\" --force --no-translations --no-compiler-runtime --angle --no-opengl-sw -opengl --list source \"$${BIN_DIR}/$${TARGET}.exe\")
         libs.commands = $$join(libs.commands, $$escape_expand(\\n\\t))
     } else {
         message("It seems that there is no \"windeployqt.exe\" in \"$$[QT_INSTALL_BINS]\".")
@@ -106,5 +106,10 @@ CONFIG(shared, static|shared) {
         message("Qt5Svg.dll, Qt5OpenGL.dll and plugins\\iconengines\\qsvgicon.dll are the necessary dlls you must copy.")
         message("d3dcompiler_XX.dll, libEGL.dll, libGLESv2.dll and opengl32sw.dll may be useful as well.")
     }
+} else:CONFIG(static, static|shared) {
+    libs.files *= \
+        $$[QT_INSTALL_BINS]/d3dcompiler_??.dll \
+        $$[QT_INSTALL_BINS]/libEGL.dll \
+        $$[QT_INSTALL_BINS]/libGLESv2.dll
 }
 !isEmpty(libs.files): INSTALLS *= libs

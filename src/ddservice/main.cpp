@@ -50,8 +50,6 @@ int _tmain(int argc, TCHAR *argv[])
         }
     if (StartServiceCtrlDispatcher(ServiceTable) != TRUE)
         return GetLastError();
-    if (Win32Utils::isAutoStartServiceInstalled(SERVICE_NAME_DD))
-        Start();
     return 0;
 }
 
@@ -59,7 +57,7 @@ VOID Install()
 {
     if (Win32Utils::isAutoStartServiceInstalled(SERVICE_NAME_DD))
     {
-        std::wcout << _T("Already installed. No need to install again.") << std::endl;
+        std::wcout << _T("Service already installed. No need to install again.") << std::endl;
         return;
     }
     TCHAR filePath[MAX_PATH + 1];
@@ -89,7 +87,7 @@ VOID Uninstall()
 {
     if (!Win32Utils::isAutoStartServiceInstalled(SERVICE_NAME_DD))
     {
-        std::wcout << _T("Not installed. No need to uninstall.") << std::endl;
+        std::wcout << _T("Service not installed. No need to uninstall.") << std::endl;
         return;
     }
     bool result = false;
@@ -114,7 +112,7 @@ VOID Start()
 {
     if (!Win32Utils::isAutoStartServiceInstalled(SERVICE_NAME_DD))
     {
-        std::wcout << _T("Not installed. Service can\'t be started.") << std::endl;
+        std::wcout << _T("Service not installed. Can\'t be started.") << std::endl;
         return;
     }
     bool result = false;
@@ -137,10 +135,10 @@ VOID Start()
 
 VOID Help()
 {
-    std::wcout << _T("-h(elp)\t\t\t: Show this information.") << std::endl;
-    std::wcout << _T("-i(nstall)\t\t: Install this service.") << std::endl;
+    std::wcout << _T("-h(elp)\t\t: Show this information.") << std::endl;
+    std::wcout << _T("-i(nstall)\t: Install this service.") << std::endl;
     std::wcout << _T("-u(ninstall)\t: Uninstall this service.") << std::endl;
-    std::wcout << _T("-s(tart)\t\t\t: Start this service.") << std::endl;
+    std::wcout << _T("-s(tart)\t: Start this service.") << std::endl;
 }
 
 VOID WINAPI ServiceMain(DWORD argc, LPTSTR *argv)
@@ -192,37 +190,27 @@ VOID WINAPI ServiceCtrlHandler(DWORD code)
 DWORD WINAPI ServiceWorkerThread(LPVOID lpParam)
 {
     (void)lpParam;
-    HANDLE appMutex = CreateMutex(nullptr, FALSE, TEXT("wangwenx190.DynamicDesktop.Main.1000.AppMutex"));
+    HANDLE appMutex = CreateMutex(nullptr, FALSE, _T("wangwenx190.DynamicDesktop.Main.1000.AppMutex"));
     if ((appMutex != nullptr) && (GetLastError() == ERROR_ALREADY_EXISTS))
     {
         ReleaseMutex(appMutex);
-        std::wcout << _T("Already running. Don\'t run twice.") << std::endl;
+        std::wcout << _T("Application already running. Don\'t run twice.") << std::endl;
         return ERROR_SUCCESS;
     }
-    else if (appMutex != nullptr)
+    else if ((appMutex != nullptr) && (GetLastError() != ERROR_ALREADY_EXISTS))
     {
         ReleaseMutex(appMutex);
         CloseHandle(appMutex);
     }
-    auto ddmainDir = new TCHAR[MAX_PATH];
-    memset(ddmainDir, 0x00, sizeof(ddmainDir));
-    DWORD dwSize = GetModuleFileName(nullptr, ddmainDir, MAX_PATH);
-    ddmainDir[dwSize] = 0;
-    while (ddmainDir[dwSize] != '\\' && dwSize != 0)
-    {
-        ddmainDir[dwSize] = 0;
-        --dwSize;
-    }
-    auto ddmainPath = (LPTSTR)malloc(MAX_PATH);
-    memset(ddmainPath, 0x00, MAX_PATH);
-    _tcscpy(ddmainPath, ddmainDir);
+    TCHAR filePath[MAX_PATH + 1];
+    DWORD dwSize = GetModuleFileName(nullptr, filePath, MAX_PATH);
+    for (;(filePath[dwSize] != '\\') && (dwSize != 0); --dwSize)
+        filePath[dwSize] = 0;
 #ifdef _DEBUG
-    _tcscat(ddmainPath, _T("ddmaind.exe"));
+    _tcscat(filePath, _T("\\ddmaind.exe"));
 #else
-    _tcscat(ddmainPath, _T("ddmain.exe"));
+    _tcscat(filePath, _T("\\ddmain.exe"));
 #endif
-    Win32Utils::launchSession1Process(ddmainPath, nullptr, ddmainDir);
-    delete [] ddmainDir;
-    free(ddmainPath);
+    Win32Utils::launchSession1Process(filePath, nullptr);
     return ERROR_SUCCESS;
 }

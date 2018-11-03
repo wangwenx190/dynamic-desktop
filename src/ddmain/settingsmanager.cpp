@@ -104,7 +104,7 @@ QString SettingsManager::lastDir() const
     const QString url = getUrl();
     if (!url.isEmpty())
     {
-        const QString dir = QFileInfo(url).canonicalPath();
+        const QString dir = QDir::cleanPath(QFileInfo(url).absolutePath());
         if (QFileInfo::exists(dir) && QFileInfo(dir).isDir())
             return QDir::toNativeSeparators(dir);
     }

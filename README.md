@@ -64,7 +64,8 @@ For official builds and third-party packages please see https://sourceforge.net/
 
 ## Licenses
 - [Wallpaper](/src/ddmain/wallpaper.h): some code is copied from https://github.com/ThomasHuai/Wallpaper , Apache License 2.0, thanks to [ThomasHuai](https://github.com/ThomasHuai)!
-- [QtAV](https://github.com/wang-bin/QtAV) and [FFmpeg](https://github.com/wang-bin/avbuild): LGPLv3, thanks to [wang bin](https://github.com/wang-bin)!
+- [FFmpeg](https://github.com/wang-bin/avbuild): LGPLv3, thanks to [FFmpeg project](http://ffmpeg.org/)!
+- [QtAV](https://github.com/wang-bin/QtAV): LGPLv3, thanks to [wang bin](https://github.com/wang-bin)!
 - [Qt Nice Frameless Window](/src/ddmain/qtniceframelesswindow.h): some code is copied from https://github.com/Bringer-of-Light/Qt-Nice-Frameless-Window , MIT, thanks to [Bringer of Light](https://github.com/Bringer-of-Light)!
 - [Qt](http://download.qt.io/archive/qt/): some code is copied from https://github.com/qtproject/qt-solutions , LGPLv3, thanks to [the Qt Company](https://www.qt.io/)!
 - [src/resources/stylesheets/Default.css](/src/resources/stylesheets/Default.css): copied from https://github.com/u8sand/Baka-MPlayer , GPLv2, thanks to [Daniel Clarke](https://github.com/u8sand)!

@@ -123,7 +123,16 @@ int Exit(int resultCode, bool trulyExit, HANDLE mutex, HWND wallpaper)
     return resultCode;
 }
 
-bool win32Run(const QString &path, const QString &params = QString(), bool needAdmin = false, bool hide = false)
+static LPCWSTR toWide(LPCSTR from)
+{
+    size_t newSizeW = strlen(from) + 1;
+    auto resultW = new wchar_t[newSizeW];
+    size_t convertedChars = 0;
+    mbstowcs_s(&convertedChars, resultW, newSizeW, from, _TRUNCATE);
+    return resultW;
+}
+
+bool win32Run(const QString &path, const QString &params = QString(), bool needAdmin = false, bool needHide = false)
 {
     if (path.isEmpty())
         return false;
@@ -132,12 +141,12 @@ bool win32Run(const QString &path, const QString &params = QString(), bool needA
     SHELLEXECUTEINFO execInfo{ sizeof(SHELLEXECUTEINFO) };
     execInfo.lpVerb = needAdmin ? TEXT("runas") : nullptr;
     execInfo.lpFile = reinterpret_cast<LPCTSTR>(QDir::toNativeSeparators(path).utf16());
-    execInfo.nShow = hide ? SW_HIDE : SW_SHOW;
+    execInfo.nShow = needHide ? SW_HIDE : SW_SHOW;
     execInfo.lpParameters = params.isEmpty() ? nullptr : reinterpret_cast<LPCTSTR>(params.utf16());
     return ShellExecuteEx(&execInfo);
 }
 
-bool run(const QString &path, const QStringList &params, bool needAdmin)
+bool run(const QString &path, const QStringList &params, bool needAdmin, bool needHide)
 {
     if (path.isEmpty())
         return false;
@@ -147,10 +156,22 @@ bool run(const QString &path, const QStringList &params, bool needAdmin)
     if (!params.isEmpty())
         paramsInAll = params.join(QLatin1Char(' '));
     if (needAdmin)
-        return win32Run(path, paramsInAll, true);
+        return win32Run(path, paramsInAll, true, needHide);
     if (!Win32Utils::isSession1Process())
-        return Win32Utils::launchSession1ProcessA(QDir::toNativeSeparators(path).toLocal8Bit().constData(), paramsInAll.isEmpty() ? nullptr : paramsInAll.toLocal8Bit().constData(), QDir::toNativeSeparators(QFileInfo(path).canonicalPath()).toLocal8Bit().constData());
-    return win32Run(path, paramsInAll);
+#ifdef UNICODE
+    {
+        LPCWSTR pathW = toWide(QDir::toNativeSeparators(QDir::cleanPath(path)).toLocal8Bit().constData());
+        LPCWSTR paramsW = paramsInAll.isEmpty() ? nullptr : toWide(paramsInAll.toLocal8Bit().constData());
+        bool result = Win32Utils::launchSession1Process(pathW, paramsW);
+        delete [] pathW;
+        if (paramsW != nullptr)
+            delete [] paramsW;
+        return result;
+    }
+#else
+        return Win32Utils::launchSession1Process(QDir::toNativeSeparators(QDir::cleanPath(path)).toLocal8Bit().constData(), paramsInAll.isEmpty() ? nullptr : paramsInAll.toLocal8Bit().constData());
+#endif
+    return win32Run(path, paramsInAll, false, needHide);
 }
 
 bool isVideo(const QString &fileName)
