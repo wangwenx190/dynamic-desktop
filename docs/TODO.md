@@ -42,6 +42,6 @@
 - [ ] Support sequential playback/random playback/repeat playlist/repeat current file
 - [x] <del>Make the modules(controller, player, service and updater) become different exe</del>
 - [ ] <del>Optimize launcher code</del>
-- [x] Controller: wait until player online
+- [x] <del>Controller: wait until player online</del>
 - [x] <del>Make controller and tray icon different exe: Controller process and tray icon process</del>
 - [x] <del>How to get run-time and compile-time versions of QtAV and FFmpeg: use IPC, player send version message to controller</del>
