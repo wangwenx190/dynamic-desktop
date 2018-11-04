@@ -69,3 +69,6 @@ CONFIG(shared, static|shared) {
         $$[QT_INSTALL_BINS]/libGLESv2.dll
 }
 !isEmpty(libs.files): INSTALLS *= libs
+licenses.path = $${BIN_DIR}/licenses
+licenses.files *= $${ROOT}/docs/licenses/*
+!isEmpty(licenses.files): INSTALLS *= licenses
