@@ -13,7 +13,12 @@ only_commits:
 shallow_clone: true
 matrix:
   fast_finish: true
+  allow_failures:
+    - platform: x64
+      configuration: Release
 image: Visual Studio 2017
+platform: x64
+configuration: Release
 init:
   - set "QTVER=5.9"
   - set "QTDIR=C:\Qt\%QTVER%\msvc2017_64"
