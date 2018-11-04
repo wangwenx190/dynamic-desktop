@@ -13,7 +13,6 @@ DWORD WINAPI ServiceWorkerThread(LPVOID lpParam);
 
 VOID Install();
 VOID Uninstall();
-VOID Help();
 
 #define SERVICE_NAME_DD _T("ddassvc")
 #define SERVICE_DISPLAY_NAME_DD _T("Dynamic Desktop Auto Start Service")
@@ -37,7 +36,6 @@ int _tmain(int argc, TCHAR *argv[])
             Uninstall();
             break;
         }
-    Help();
     if (StartServiceCtrlDispatcher(ServiceTable) != TRUE)
         return GetLastError();
     return 0;
@@ -47,7 +45,7 @@ VOID Install()
 {
     if (Win32Utils::isAutoStartServiceInstalled(SERVICE_NAME_DD))
     {
-        std::wcout << _T("Service already installed. No need to install again.") << std::endl;
+        OutputDebugString(_T("Service already installed. No need to install again."));
         return;
     }
     TCHAR filePath[MAX_PATH + 1];
@@ -68,16 +66,16 @@ VOID Install()
         CloseServiceHandle(hSCM);
     }
     if (result)
-        std::wcout << _T("Installation succeeded.") << std::endl;
+        OutputDebugString(_T("Installation succeeded."));
     else
-        std::wcout << _T("Installation failed. Administrator privilege is needed.") << std::endl;
+        OutputDebugString(_T("Installation failed. Administrator privilege is needed."));
 }
 
 VOID Uninstall()
 {
     if (!Win32Utils::isAutoStartServiceInstalled(SERVICE_NAME_DD))
     {
-        std::wcout << _T("Service not installed. No need to uninstall.") << std::endl;
+        OutputDebugString(_T("Service not installed. No need to uninstall."));
         return;
     }
     bool result = false;
@@ -93,16 +91,9 @@ VOID Uninstall()
         CloseServiceHandle(hSCM);
     }
     if (result)
-        std::wcout << _T("Uninstallation succeeded.") << std::endl;
+        OutputDebugString(_T("Uninstallation succeeded."));
     else
-        std::wcout << _T("Uninstallation failed. Administrator privilege is needed.") << std::endl;
-}
-
-VOID Help()
-{
-    std::wcout << _T("Usage:") << std::endl;
-    std::wcout << _T("-i(nstall)\t: Install this service.") << std::endl;
-    std::wcout << _T("-u(ninstall)\t: Uninstall this service.") << std::endl;
+        OutputDebugString(_T("Uninstallation failed. Administrator privilege is needed."));
 }
 
 VOID WINAPI ServiceMain(DWORD argc, LPTSTR *argv)
@@ -114,17 +105,25 @@ VOID WINAPI ServiceMain(DWORD argc, LPTSTR *argv)
         return;
     ZeroMemory(&serviceStatus, sizeof(serviceStatus));
     serviceStatus.dwServiceType = SERVICE_WIN32_OWN_PROCESS | SERVICE_INTERACTIVE_PROCESS;
-    serviceStatus.dwControlsAccepted = SERVICE_ACCEPT_STOP | SERVICE_ACCEPT_SHUTDOWN | SERVICE_ACCEPT_PAUSE_CONTINUE;
-    serviceStatus.dwCurrentState = SERVICE_RUNNING;
+    serviceStatus.dwControlsAccepted = 0;
+    serviceStatus.dwCurrentState = SERVICE_START_PENDING;
     serviceStatus.dwWin32ExitCode = 0;
     serviceStatus.dwServiceSpecificExitCode = 0;
     serviceStatus.dwCheckPoint = 0;
-    serviceStatus.dwWaitHint = 0;
-    SetServiceStatus(serviceStatusHandle, &serviceStatus);
+    if (SetServiceStatus(serviceStatusHandle, &serviceStatus) != TRUE)
+        return;
+    serviceStatus.dwCurrentState = SERVICE_RUNNING;
+    serviceStatus.dwControlsAccepted = SERVICE_ACCEPT_STOP | SERVICE_ACCEPT_SHUTDOWN | SERVICE_ACCEPT_PAUSE_CONTINUE;
+    serviceStatus.dwWin32ExitCode = 0;
+    serviceStatus.dwCheckPoint = 0;
+    if (SetServiceStatus(serviceStatusHandle, &serviceStatus) != TRUE)
+        return;
     HANDLE hThread = CreateThread(nullptr, 0, ServiceWorkerThread, nullptr, 0, nullptr);
     WaitForSingleObject(hThread, INFINITE);
     serviceStatus.dwCurrentState = SERVICE_STOPPED;
     serviceStatus.dwControlsAccepted = 0;
+    serviceStatus.dwWin32ExitCode = 0;
+    serviceStatus.dwCheckPoint = 3;
     SetServiceStatus(serviceStatusHandle, &serviceStatus);
 }
 
@@ -136,6 +135,8 @@ VOID WINAPI ServiceCtrlHandler(DWORD code)
     case SERVICE_CONTROL_SHUTDOWN:
         serviceStatus.dwCurrentState = SERVICE_STOPPED;
         serviceStatus.dwControlsAccepted = 0;
+        serviceStatus.dwWin32ExitCode = 0;
+        serviceStatus.dwCheckPoint = 3;
         break;
     case SERVICE_CONTROL_PAUSE:
         serviceStatus.dwCurrentState = SERVICE_PAUSED;

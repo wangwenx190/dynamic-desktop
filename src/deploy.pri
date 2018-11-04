@@ -2,7 +2,7 @@ libs.path = $${BIN_DIR}
 !CONFIG(static_ffmpeg) {
     isEmpty(ffmpeg_dir): ffmpeg_dir = $$[QT_INSTALL_BINS]
     exists("$${ffmpeg_dir}/avcodec-*.dll") {
-        libs.files = \
+        libs.files *= \
             $${ffmpeg_dir}/avcodec-*.dll \
             $${ffmpeg_dir}/avdevice-*.dll \
             $${ffmpeg_dir}/avfilter-*.dll \
