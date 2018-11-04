@@ -31,7 +31,7 @@ int main(int argc, char *argv[])
     QtSingleApplication::setOrganizationDomain(QStringLiteral("wangwenx190.github.io"));
     if (app.sendMessage(QStringLiteral("Dynamic Desktop starting ...")))
         return 0;
-    QPixmap pixmap(QStringLiteral(":/images/colorful-triangles.png"));
+    QPixmap pixmap(QStringLiteral(":/images/colorful.png"));
     QSplashScreen splash(pixmap);
     splash.show();
     app.processEvents();
