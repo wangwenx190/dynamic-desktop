@@ -24,7 +24,7 @@
 #include <QLibraryInfo>
 #endif
 
-void PreferencesDialog::populateSkins(const QString &dirPath, bool add)
+void PreferencesDialog::populateSkins(const QString &dirPath, bool add, bool isExternal)
 {
     if (dirPath.isEmpty())
         return;
@@ -40,7 +40,7 @@ void PreferencesDialog::populateSkins(const QString &dirPath, bool add)
             ui->comboBox_skin->addItem(tr("<None>"), QStringLiteral("none"));
         }
         for (auto& skinFile : skinFileList)
-            ui->comboBox_skin->addItem(skinFile.completeBaseName(), skinFile.completeBaseName());
+            ui->comboBox_skin->addItem(skinFile.completeBaseName(), isExternal ? skinFile.absoluteFilePath() : skinFile.completeBaseName());
     }
     if (ui->comboBox_skin->count() > 1)
         ui->comboBox_skin->setEnabled(true);
@@ -48,7 +48,7 @@ void PreferencesDialog::populateSkins(const QString &dirPath, bool add)
         ui->comboBox_skin->setEnabled(false);
 }
 
-void PreferencesDialog::populateLanguages(const QString &dirPath, bool add)
+void PreferencesDialog::populateLanguages(const QString &dirPath, bool add, bool isExternal)
 {
     if (dirPath.isEmpty())
         return;
@@ -72,7 +72,7 @@ void PreferencesDialog::populateLanguages(const QString &dirPath, bool add)
             QString lang = fileName.mid(fileName.indexOf(QLatin1Char('_')) + 1);
             lang = lang.replace('-', '_');
             QLocale locale(lang);
-            ui->comboBox_language->addItem(locale.nativeLanguageName(), lang);
+            ui->comboBox_language->addItem(locale.nativeLanguageName(), isExternal ? languageFile.absoluteFilePath() : lang);
         }
     }
     if (ui->comboBox_language->count() > 2)
@@ -299,7 +299,7 @@ void PreferencesDialog::initUI()
     ui->comboBox_skin->addItem(tr("<None>"), QStringLiteral("none"));
     populateSkins(QStringLiteral(":/skins"));
     const QString skinDirPath = QApplication::applicationDirPath() + QStringLiteral("/skins");
-    populateSkins(skinDirPath);
+    populateSkins(skinDirPath, true, true);
     ui->comboBox_language->addItem(tr("Auto"), QStringLiteral("auto"));
     ui->comboBox_language->addItem(QStringLiteral("American English"), QStringLiteral("en"));
     populateLanguages(QStringLiteral(":/i18n"));
@@ -308,7 +308,7 @@ void PreferencesDialog::initUI()
 #else
     const QString i18nDirPath = QLibraryInfo::location(QLibraryInfo::TranslationsPath);
 #endif
-    populateLanguages(i18nDirPath);
+    populateLanguages(i18nDirPath, true, true);
     ui->comboBox_subtitle_charset->addItem(tr("Auto detect"), QStringLiteral("AutoDetect"));
     ui->comboBox_subtitle_charset->addItem(tr("System"), QStringLiteral("System"));
     for (auto& codec : QTextCodec::availableCodecs())

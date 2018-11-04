@@ -46,18 +46,18 @@ FORMS += \
     forms/traymenu.ui
 TRANSLATIONS += ../resources/translations/dd_zh_CN.ts
 RESOURCES += ddmain.qrc
-isEmpty(lupdate): lupdate = $$[QT_INSTALL_BINS]/lupdate.exe
-exists("$${lupdate}") {
-    system("$${lupdate} -no-obsolete -locations none -no-ui-lines $${_PRO_FILE_}")
-} else {
-    message("qmake can\'t find \"lupdate.exe\" in \"$$[QT_INSTALL_BINS]\".")
-    message("The translations may be out-dated.")
-}
-isEmpty(lrelease): lrelease = $$[QT_INSTALL_BINS]/lrelease.exe
-exists("$${lrelease}") {
-    system("$${lrelease} -nounfinished -removeidentical $${_PRO_FILE_}")
-} else {
-    message("qmake can\'t find \"lrelease.exe\" in \"$$[QT_INSTALL_BINS]\".")
-    message("The translations may be out-dated.")
+CONFIG(update_translations) {
+    isEmpty(lupdate): lupdate = $$[QT_INSTALL_BINS]/lupdate.exe
+    exists("$${lupdate}") {
+        system("$${lupdate} -no-obsolete -locations none -no-ui-lines $${_PRO_FILE_}")
+    } else {
+        message("qmake can\'t find \"lupdate.exe\" in \"$$[QT_INSTALL_BINS]\".")
+    }
+    isEmpty(lrelease): lrelease = $$[QT_INSTALL_BINS]/lrelease.exe
+    exists("$${lrelease}") {
+        system("$${lrelease} -nounfinished -removeidentical $${_PRO_FILE_}")
+    } else {
+        message("qmake can\'t find \"lrelease.exe\" in \"$$[QT_INSTALL_BINS]\".")
+    }
 }
 include(../deploy.pri)

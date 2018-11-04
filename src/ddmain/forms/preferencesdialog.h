@@ -68,8 +68,8 @@ private slots:
     void initConnections();
     void setDecoders();
     void setRatio();
-    void populateSkins(const QString &dirPath, bool add = true);
-    void populateLanguages(const QString &dirPath, bool add = true);
+    void populateSkins(const QString &dirPath, bool add = true, bool isExternal = false);
+    void populateLanguages(const QString &dirPath, bool add = true, bool isExternal = false);
 
 private:
     Ui::PreferencesDialog *ui = nullptr;

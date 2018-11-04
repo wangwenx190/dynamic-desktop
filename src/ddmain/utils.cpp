@@ -226,9 +226,17 @@ bool installTranslation(const QString &language, const QString &prefix)
     }
     else
     {
-        const QString fileName = QStringLiteral("%0_%1").arg(prefix).arg(language);
-        if (translator->load(fileName, qmDir))
-            return QCoreApplication::installTranslator(translator);
+        if (language.contains(QStringLiteral("/")) || language.contains(QStringLiteral("\\")))
+        {
+            if (translator->load(language))
+                return QCoreApplication::installTranslator(translator);
+        }
+        else
+        {
+            const QString fileName = QStringLiteral("%0_%1").arg(prefix).arg(language);
+            if (translator->load(fileName, qmDir))
+                return QCoreApplication::installTranslator(translator);
+        }
     }
     delete translator;
     translator = nullptr;
