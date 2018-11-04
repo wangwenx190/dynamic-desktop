@@ -61,7 +61,7 @@ For official builds and third-party packages please see https://sourceforge.net/
 ### IMPORTANT NOTES
 - You can also use Intel C++ Compiler(ICC), Clang or MinGW to compile it, just remember to set up environment variables. Cross compile on other platforms may also work, but it will never run on platforms other than MS Windows.
 - You will need to build the static version of Qt by yourself if you want to get rid of the Qt dlls. Currently, this project only needs 4 repositories: **`qtbase`**(Qt modules needed: core, gui, widgets and opengl), **`qtimageformats`**(can't work normally without this repository), **`qtsvg`**(SVG support) and **`qtwinextras`**(Taskbar Progress support). You can skip all other repositories to speed up the compiling process.
-- How to link to static FFmpeg: save the following content to **`.qmake.conf`**:
+- How to link to static FFmpeg - save or add the following content to **`.qmake.conf`**:
    ```text
    contains(QT_ARCH, x86_64) {
        LIBS *= -L$$PWD/ffmpeg-static/lib/x64
@@ -69,10 +69,13 @@ For official builds and third-party packages please see https://sourceforge.net/
        LIBS *= -L$$PWD/ffmpeg-static/lib/x86
    }
    INCLUDEPATH *= $$PWD/ffmpeg-static/include
-   LIBS *= -lVfw32 -lgdiplus -llibmfx -lSecur32 -lBcrypt -llegacy_stdio_definitions -lavcodec -lavdevice -lavfilter -lavformat -lavresample -lavutil -lswresample -lswscale
+   LIBS *= -lVfw32 -lgdiplus -llibass -llibmfx -lSecur32 -lBcrypt -llegacy_stdio_definitions -lavcodec -lavdevice -lavfilter -lavformat -lavresample -lavutil -lswresample -lswscale
    CONFIG *= static_ffmpeg
    ```
-   Be careful, you should change `$$PWD/ffmpeg-static` to your own static ffmpeg libraries' directory, `libmfx` to your mfx dispatch library file name. If you don't have *libavresample*, please remove `-lavresample`.
+   - You should change `$$PWD/ffmpeg-static` to your own static ffmpeg libraries' directory, `libmfx` to your mfx dispatch library file name. If you don't have *libavresample*, please remove `-lavresample`.
+   - Download static version of FFmpeg: https://sourceforge.net/projects/avbuild/files/windows-desktop/
+   - Download static version of libmfx: https://sourceforge.net/projects/avbuild/files/dep/
+   - Download static version of LibASS: https://github.com/ShiftMediaProject/libass/releases/latest
 
 ## Licenses
 - [Wallpaper](/src/wallpaper): some code is copied from https://github.com/ThomasHuai/Wallpaper , Apache License 2.0, thanks to [ThomasHuai](https://github.com/ThomasHuai)!
