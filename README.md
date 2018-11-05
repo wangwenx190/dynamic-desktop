@@ -60,7 +60,7 @@ For official builds and third-party packages please see https://sourceforge.net/
 
 ### IMPORTANT NOTES
 - You can also use Intel C++ Compiler(ICC), Clang or MinGW to compile it, just remember to set up environment variables. Cross compile on other platforms may also work, but it will never run on platforms other than MS Windows.
-- You will need to build the static version of Qt by yourself if you want to get rid of the Qt dlls. Currently, this project only needs 4 repositories: **`qtbase`**(Qt modules needed: core, gui, widgets and opengl), **`qtimageformats`**(can't work normally without this repository), **`qtsvg`**(SVG support) and **`qtwinextras`**(Taskbar Progress support). You can skip all other repositories to speed up the compiling process.
+- You will need to build the static version of Qt by yourself if you want to get rid of the Qt dlls. Currently, this project only needs 3 repositories: **`qtbase`**(Qt modules needed: core, gui, widgets, network and opengl), **`qtsvg`**(SVG support) and **`qtwinextras`**(Taskbar Progress support). You can skip all other repositories to speed up the compiling process.
 - How to link to static FFmpeg - save or add the following content to **`.qmake.conf`**:
    ```text
    contains(QT_ARCH, x86_64) {
