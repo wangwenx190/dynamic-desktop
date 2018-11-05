@@ -2,10 +2,8 @@
 
 #include <QtNiceFramelessWindow>
 
-QT_BEGIN_NAMESPACE
 QT_FORWARD_DECLARE_CLASS(QWinTaskbarButton)
 QT_FORWARD_DECLARE_CLASS(QWinTaskbarProgress)
-QT_END_NAMESPACE
 
 namespace Ui
 {

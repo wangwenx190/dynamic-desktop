@@ -4,9 +4,7 @@
 #include <QtAV>
 #include <QtAVWidgets>
 
-QT_BEGIN_NAMESPACE
 QT_FORWARD_DECLARE_CLASS(QVBoxLayout)
-QT_END_NAMESPACE
 
 namespace QtAV
 {

@@ -2,9 +2,7 @@
 
 #include <QtCore>
 
-QT_BEGIN_NAMESPACE
 QT_FORWARD_DECLARE_CLASS(QFileInfo)
-QT_END_NAMESPACE
 
 namespace Utils
 {
