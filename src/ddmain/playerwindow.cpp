@@ -6,6 +6,8 @@
 #include <QMessageBox>
 #include <QVBoxLayout>
 #include <QFileInfo>
+#include <QtAV>
+#include <QtAVWidgets>
 
 const qreal kVolumeInterval = 0.04;
 
@@ -169,13 +171,13 @@ void PlayerWindow::initAudio()
        emit this->audioAreaEnableChanged(false);
 }
 
-bool PlayerWindow::setRenderer(QtAV::VideoRendererId id)
+bool PlayerWindow::setRenderer(int id)
 {
     if (!player || !subtitle)
         return false;
-    if ((renderer != nullptr) && (id == renderer->id()))
+    if ((renderer != nullptr) && (static_cast<QtAV::VideoRendererId>(id) == renderer->id()))
         return false;
-    QtAV::VideoRenderer *videoRenderer = QtAV::VideoRenderer::create(id);
+    QtAV::VideoRenderer *videoRenderer = QtAV::VideoRenderer::create(static_cast<QtAV::VideoRendererId>(id));
     if (!videoRenderer || !videoRenderer->isAvailable() || !videoRenderer->widget())
     {
         QMessageBox::critical(nullptr, QStringLiteral("Dynamic Desktop"), tr("Current renderer is not available on your platform!"));

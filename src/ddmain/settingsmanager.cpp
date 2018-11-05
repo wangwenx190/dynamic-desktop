@@ -176,7 +176,7 @@ QString SettingsManager::getLanguage() const
 
 int SettingsManager::getRenderer() const
 {
-    return settings->value(QStringLiteral("renderer"), QtAV::VideoRendererId_GLWidget2).toInt();
+    return settings->value(QStringLiteral("renderer"), QtAV_VId_GLWidget2).toInt();
 }
 
 QString SettingsManager::getImageQuality() const

@@ -22,6 +22,7 @@ include(../qtniceframelesswindow/qtniceframelesswindow.pri)
 include(../wallpaper/wallpaper.pri)
 include(../qtsingleapplication/qtsingleapplication.pri)
 HEADERS += \
+    ../common.h \
     forms/preferencesdialog.h \
     forms/aboutdialog.h \
     forms/traymenu.h \
