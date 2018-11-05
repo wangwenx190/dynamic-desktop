@@ -45,30 +45,38 @@ CONFIG(shared, static|shared) {
         } else {
             target_file_name = $${target_file_name}.exe
         }
-        libs.commands *= $$quote(\"$${windeployqt}\" --plugindir \"$${BIN_DIR}\\plugins\" --no-translations --no-compiler-runtime --angle --no-opengl-sw -opengl --list source \"$${BIN_DIR}\\$${target_file_name}\")
+        CONFIG(enable_small) {
+            libs.commands *= $$quote(\"$${windeployqt}\" --plugindir \"$${BIN_DIR}\\plugins\" --no-translations --no-system-d3d-compiler --no-compiler-runtime --no-angle --no-opengl-sw -opengl --list source \"$${BIN_DIR}\\$${target_file_name}\")
+        } else {
+            libs.commands *= $$quote(\"$${windeployqt}\" --plugindir \"$${BIN_DIR}\\plugins\" --no-translations --no-compiler-runtime --no-opengl-sw -opengl --list source \"$${BIN_DIR}\\$${target_file_name}\")
+        }
     } else {
         message("It seems that there is no \"windeployqt.exe\" in \"$$[QT_INSTALL_BINS]\".")
         message("You may have to copy Qt run-time libraries manually and don\'t forget about the plugins.")
         message("Qt5Svg.dll, Qt5OpenGL.dll and plugins\\iconengines\\qsvgicon.dll are the necessary dlls you must copy.")
         message("d3dcompiler_XX.dll, libEGL.dll, libGLESv2.dll and opengl32sw.dll may be useful as well.")
     }
-    target_arch = x86
-    contains(QT_ARCH, x86_64): target_arch = x64
-    !isEmpty(VC_REDIST_DIR):exists("$${VC_REDIST_DIR}") {
-        isEmpty(VC_REDIST_VERSION): VC_REDIST_VERSION = 141
-        vc_redist_dll_dir = Microsoft.VC$${VC_REDIST_VERSION}.CRT
-        libs.commands *= $$quote(copy /y \"$${VC_REDIST_DIR}\\$${target_arch}\\$${vc_redist_dll_dir}\\msvcp*.dll\" \"$${BIN_DIR}\")
-        libs.commands *= $$quote(copy /y \"$${VC_REDIST_DIR}\\$${target_arch}\\$${vc_redist_dll_dir}\\vcruntime*.dll\" \"$${BIN_DIR}\")
+    CONFIG(copy_msvcrt_dlls) {
+        target_arch = x86
+        contains(QT_ARCH, x86_64): target_arch = x64
+        !isEmpty(VC_REDIST_DIR):exists("$${VC_REDIST_DIR}") {
+            isEmpty(VC_REDIST_VERSION): VC_REDIST_VERSION = 141
+            vc_redist_dll_dir = Microsoft.VC$${VC_REDIST_VERSION}.CRT
+            libs.commands *= $$quote(copy /y \"$${VC_REDIST_DIR}\\$${target_arch}\\$${vc_redist_dll_dir}\\msvcp*.dll\" \"$${BIN_DIR}\")
+            libs.commands *= $$quote(copy /y \"$${VC_REDIST_DIR}\\$${target_arch}\\$${vc_redist_dll_dir}\\vcruntime*.dll\" \"$${BIN_DIR}\")
+        }
+        !isEmpty(WIN_SDK_REDIST_DIR):exists("$${WIN_SDK_REDIST_DIR}"): libs.commands *= $$quote(copy /y \"$${WIN_SDK_REDIST_DIR}\\ucrt\\DLLs\\$${target_arch}\\*.dll\" \"$${BIN_DIR}\")
     }
-    !isEmpty(WIN_SDK_REDIST_DIR):exists("$${WIN_SDK_REDIST_DIR}"): libs.commands *= $$quote(copy /y \"$${WIN_SDK_REDIST_DIR}\\ucrt\\DLLs\\$${target_arch}\\*.dll\" \"$${BIN_DIR}\")
     !isEmpty(libs.commands): libs.commands = $$join(libs.commands, $$escape_expand(\\n\\t))
-} else:CONFIG(static, static|shared) {
+} else:CONFIG(static, static|shared):!CONFIG(enable_small) {
     libs.files *= \
         $$[QT_INSTALL_BINS]/d3dcompiler_??.dll \
         $$[QT_INSTALL_BINS]/libEGL.dll \
         $$[QT_INSTALL_BINS]/libGLESv2.dll
 }
 !isEmpty(libs.files): INSTALLS *= libs
-licenses.path = $${BIN_DIR}/licenses
-licenses.files *= $${ROOT}/docs/licenses/*
-!isEmpty(licenses.files): INSTALLS *= licenses
+!CONFIG(enable_small) {
+    licenses.path = $${BIN_DIR}/licenses
+    licenses.files *= $${ROOT}/docs/licenses/*
+    !isEmpty(licenses.files): INSTALLS *= licenses
+}
