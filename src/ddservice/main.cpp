@@ -1,6 +1,5 @@
 #include <Windows.h>
 #include <tchar.h>
-#include <iostream>
 
 #include <Win32Utils>
 
