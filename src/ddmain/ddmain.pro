@@ -18,9 +18,9 @@ LIBS *= \
     -lDwmapi
 TEMPLATE = app
 include(../ddutils/ddutils.pri)
-include(../qtniceframelesswindow/qtniceframelesswindow.pri)
-include(../wallpaper/wallpaper.pri)
-include(../qtsingleapplication/qtsingleapplication.pri)
+include(../3rdparty/qtniceframelesswindow/qtniceframelesswindow.pri)
+include(../3rdparty/wallpaper/wallpaper.pri)
+include(../3rdparty/qtsingleapplication/qtsingleapplication.pri)
 HEADERS += \
     forms/preferencesdialog.h \
     forms/aboutdialog.h \
