@@ -176,7 +176,7 @@ QString SettingsManager::getLanguage() const
 
 int SettingsManager::getRenderer() const
 {
-    return settings->value(QStringLiteral("renderer"), 1600016726).toInt();
+    return settings->value(QStringLiteral("renderer"), 0).toInt();
 }
 
 QString SettingsManager::getImageQuality() const

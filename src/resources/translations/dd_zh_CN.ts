@@ -291,10 +291,6 @@ Make sure this application runs in your GPU&apos;s Optimus mode.</source>
 <context>
     <name>QObject</name>
     <message>
-        <source>This application only supports Windows 7 and newer.</source>
-        <translation>此应用程序仅支持 Windows 7 及更新版本的操作系统。</translation>
-    </message>
-    <message>
         <source>A tool that make your desktop alive.</source>
         <translation>一个能让您的桌面更加丰富多彩的工具。</translation>
     </message>

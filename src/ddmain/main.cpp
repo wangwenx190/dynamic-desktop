@@ -32,14 +32,6 @@ int main(int argc, char *argv[])
     qInstallMessageHandler(Utils::fileLogger);
 #endif
     Utils::installTranslation(SettingsManager::getInstance()->getLanguage(), QStringLiteral("dd"));
-    int suffixIndex;
-    QVersionNumber currentVersion = QVersionNumber::fromString(QSysInfo::kernelVersion(), &suffixIndex);
-    QVersionNumber win7Version(6, 1, 7600);
-    if (currentVersion < win7Version)
-    {
-        QMessageBox::critical(nullptr, QStringLiteral("Dynamic Desktop"), QObject::tr("This application only supports Windows 7 and newer."));
-        return -1;
-    }
     QCommandLineParser parser;
     parser.setApplicationDescription(QObject::tr("A tool that make your desktop alive."));
     parser.addHelpOption();
@@ -216,6 +208,8 @@ int main(int argc, char *argv[])
         playerWindow.setWindowFlags(windowFlags);
         // Why is Direct2D image too large?
         playerWindow.setGeometry(screenGeometry);
+        int suffixIndex = 0;
+        QVersionNumber currentVersion = QVersionNumber::fromString(QSysInfo::kernelVersion(), &suffixIndex);
         QVersionNumber win10Version(10, 0, 10240); // Windows 10 Version 1507
         // How to place our window under desktop icons:
         // Use "Program Manager" as our parent window in Win7/8/8.1.

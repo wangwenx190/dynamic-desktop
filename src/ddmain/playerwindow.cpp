@@ -175,9 +175,10 @@ bool PlayerWindow::setRenderer(int id)
 {
     if (!player || !subtitle)
         return false;
-    if ((renderer != nullptr) && (static_cast<QtAV::VideoRendererId>(id) == renderer->id()))
+    const QtAV::VideoRendererId rendererId = id <= 0 ? QtAV::VideoRendererId_GLWidget2 : static_cast<QtAV::VideoRendererId>(id);
+    if ((renderer != nullptr) && (rendererId == renderer->id()))
         return false;
-    QtAV::VideoRenderer *videoRenderer = QtAV::VideoRenderer::create(static_cast<QtAV::VideoRendererId>(id));
+    QtAV::VideoRenderer *videoRenderer = QtAV::VideoRenderer::create(rendererId);
     if (!videoRenderer || !videoRenderer->isAvailable() || !videoRenderer->widget())
     {
         QMessageBox::critical(nullptr, QStringLiteral("Dynamic Desktop"), tr("Current renderer is not available on your platform!"));
@@ -202,7 +203,7 @@ bool PlayerWindow::setRenderer(int id)
     }
     renderer = videoRenderer;
     mainLayout->addWidget(renderer->widget());
-    const QtAV::VideoDecoderId vid = renderer->id();
+    const QtAV::VideoRendererId vid = renderer->id();
     if (vid == QtAV::VideoRendererId_GLWidget
             || vid == QtAV::VideoRendererId_GLWidget2
             || vid == QtAV::VideoRendererId_OpenGLWidget)

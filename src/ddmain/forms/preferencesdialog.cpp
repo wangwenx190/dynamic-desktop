@@ -347,7 +347,8 @@ void PreferencesDialog::initUI()
     ui->comboBox_skin->setCurrentIndex(i > -1 ? i : 0);
     i = ui->comboBox_language->findData(SettingsManager::getInstance()->getLanguage());
     ui->comboBox_language->setCurrentIndex(i > -1 ? i : 0);
-    i = ui->comboBox_video_renderer->findData(SettingsManager::getInstance()->getRenderer());
+    const int vid = SettingsManager::getInstance()->getRenderer();
+    i = ui->comboBox_video_renderer->findData(vid <= 0 ? Utils::getVideoRendererId(Utils::VideoRendererId::GLWidget2) : vid);
     ui->comboBox_video_renderer->setCurrentIndex(i > -1 ? i : 0);
     i = ui->comboBox_image_quality->findData(SettingsManager::getInstance()->getImageQuality());
     ui->comboBox_image_quality->setCurrentIndex(i > -1 ? i : 0);

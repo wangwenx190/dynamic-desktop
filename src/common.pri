@@ -25,5 +25,7 @@ CONFIG(debug, debug|release): TARGET = $$join(TARGET,,,d)
 CONFIG(enable_small) {
     CONFIG -= enable_optimize
     CONFIG *= enable_ltcg
+} else {
+    CONFIG *= enable_optimize
 }
 include($$PWD/optimize.pri)
