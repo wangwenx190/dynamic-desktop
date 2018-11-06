@@ -22,9 +22,6 @@
         <file alias="sound-light.svg">../resources/icons/sound-light.svg</file>
         <file alias="info.svg">../resources/icons/info.svg</file>
     </qresource>
-    <qresource prefix="/images">
-        <file alias="colorful.png">../resources/images/colorful.png</file>
-    </qresource>
     <qresource prefix="/skins">
         <file alias="Default.css">../resources/stylesheets/Default.css</file>
         <file alias="Greenery.css">../resources/stylesheets/Greenery.css</file>

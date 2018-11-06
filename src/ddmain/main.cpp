@@ -15,7 +15,6 @@
 #include <QCommandLineOption>
 #include <QSystemTrayIcon>
 #include <QDesktopWidget>
-#include <QSplashScreen>
 
 int main(int argc, char *argv[])
 {
@@ -27,12 +26,8 @@ int main(int argc, char *argv[])
     QtSingleApplication::setApplicationDisplayName(QStringLiteral("Dynamic Desktop"));
     QtSingleApplication::setOrganizationName(QStringLiteral("wangwenx190"));
     QtSingleApplication::setOrganizationDomain(QStringLiteral("wangwenx190.github.io"));
-    if (app.sendMessage(QStringLiteral("Dynamic Desktop starting ...")))
+    if (app.sendMessage(QStringLiteral("show")))
         return 0;
-    QPixmap pixmap(QStringLiteral(":/images/colorful.png"));
-    QSplashScreen splash(pixmap);
-    splash.show();
-    app.processEvents();
 #ifndef _DEBUG
     qInstallMessageHandler(Utils::fileLogger);
 #endif
@@ -247,7 +242,6 @@ int main(int argc, char *argv[])
         Utils::moveToCenter(&preferencesDialog);
         if (preferencesDialog.isHidden())
             preferencesDialog.show();
-        splash.finish(&preferencesDialog);
     }
     else
     {
@@ -256,7 +250,6 @@ int main(int argc, char *argv[])
         if (playerWindow.isHidden())
             playerWindow.show();
         playerWindow.setUrl(url);
-        splash.finish(&playerWindow);
     }
     return QtSingleApplication::exec();
 }

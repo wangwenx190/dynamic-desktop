@@ -55,7 +55,7 @@ CONFIG(update_translations) {
     }
     isEmpty(lrelease): lrelease = $$[QT_INSTALL_BINS]/lrelease.exe
     exists("$${lrelease}") {
-        system("$${lrelease} -nounfinished -removeidentical $${_PRO_FILE_}")
+        system("$${lrelease} -compress -nounfinished -removeidentical $${_PRO_FILE_}")
     } else {
         message("qmake can\'t find \"lrelease.exe\" in \"$$[QT_INSTALL_BINS]\".")
     }
