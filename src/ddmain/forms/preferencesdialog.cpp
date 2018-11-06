@@ -5,7 +5,6 @@
 #include "utils.h"
 #include <Win32Utils>
 #include <tchar.h>
-#include "../common.h"
 
 #include <QWinTaskbarButton>
 #include <QWinTaskbarProgress>
@@ -292,11 +291,11 @@ void PreferencesDialog::initUI()
     ui->comboBox_image_quality->addItem(tr("Best"), QStringLiteral("best"));
     ui->comboBox_image_quality->addItem(tr("Fastest"), QStringLiteral("fastest"));
     ui->comboBox_image_quality->addItem(tr("Default"), QStringLiteral("default"));
-    ui->comboBox_video_renderer->addItem(QStringLiteral("OpenGLWidget"), QtAV_VId_OpenGLWidget);
-    ui->comboBox_video_renderer->addItem(QStringLiteral("QGLWidget2"), QtAV_VId_GLWidget2);
-    ui->comboBox_video_renderer->addItem(QStringLiteral("Widget"), QtAV_VId_Widget);
-    ui->comboBox_video_renderer->addItem(QStringLiteral("GDI"), QtAV_VId_GDI);
-    ui->comboBox_video_renderer->addItem(QStringLiteral("Direct2D"), QtAV_VId_Direct2D);
+    ui->comboBox_video_renderer->addItem(QStringLiteral("OpenGLWidget"), Utils::getVideoRendererId(Utils::VideoRendererId::OpenGLWidget));
+    ui->comboBox_video_renderer->addItem(QStringLiteral("QGLWidget2"), Utils::getVideoRendererId(Utils::VideoRendererId::GLWidget2));
+    ui->comboBox_video_renderer->addItem(QStringLiteral("Widget"), Utils::getVideoRendererId(Utils::VideoRendererId::Widget));
+    ui->comboBox_video_renderer->addItem(QStringLiteral("GDI"), Utils::getVideoRendererId(Utils::VideoRendererId::GDI));
+    ui->comboBox_video_renderer->addItem(QStringLiteral("Direct2D"), Utils::getVideoRendererId(Utils::VideoRendererId::Direct2D));
     ui->comboBox_skin->addItem(tr("<None>"), QStringLiteral("none"));
     populateSkins(QStringLiteral(":/skins"));
     const QString skinDirPath = QApplication::applicationDirPath() + QStringLiteral("/skins");

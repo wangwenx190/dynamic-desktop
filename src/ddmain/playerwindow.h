@@ -4,8 +4,6 @@
 
 QT_FORWARD_DECLARE_CLASS(QVBoxLayout)
 
-#include "../common.h"
-
 namespace QtAV
 {
     QT_FORWARD_DECLARE_CLASS(AVPlayer)
@@ -52,7 +50,7 @@ public slots:
     void pause();
     void stop();
     void setUrl(const QString &url);
-    bool setRenderer(int id = QtAV_VId_GLWidget2);
+    bool setRenderer(int id);
     void setImageQuality(const QString &quality = QStringLiteral("best"));
     void setImageRatio(bool fit = true);
     void setWindowMode(bool enabled = true);

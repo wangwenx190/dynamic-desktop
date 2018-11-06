@@ -7,6 +7,15 @@ QT_FORWARD_DECLARE_CLASS(QFileInfo)
 namespace Utils
 {
 
+enum VideoRendererId
+{
+    OpenGLWidget,
+    GLWidget2,
+    Widget,
+    GDI,
+    Direct2D
+};
+
 void fileLogger(QtMsgType type, const QMessageLogContext &context, const QString &msg);
 QStringList externalFilesToLoad(const QFileInfo &originalMediaFile, const QString &fileType);
 void moveToCenter(QObject *window);
@@ -15,5 +24,6 @@ bool isVideo(const QString &fileName);
 bool isAudio(const QString &fileName);
 bool isPicture(const QString &fileName);
 bool installTranslation(const QString &language, const QString &prefix);
+int getVideoRendererId(const VideoRendererId vid);
 
 }

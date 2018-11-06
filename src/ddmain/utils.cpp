@@ -10,6 +10,7 @@
 #include <QWidget>
 #include <QTranslator>
 #include <QLocale>
+#include <QtAVWidgets>
 
 namespace Utils
 {
@@ -241,6 +242,30 @@ bool installTranslation(const QString &language, const QString &prefix)
     delete translator;
     translator = nullptr;
     return false;
+}
+
+int getVideoRendererId(const VideoRendererId vid)
+{
+    QtAV::VideoRendererId id;
+    switch (vid)
+    {
+    case VideoRendererId::OpenGLWidget:
+        id = QtAV::VideoRendererId_OpenGLWidget;
+        break;
+    case VideoRendererId::Widget:
+        id = QtAV::VideoRendererId_Widget;
+        break;
+    case VideoRendererId::GDI:
+        id = QtAV::VideoRendererId_GDI;
+        break;
+    case VideoRendererId::Direct2D:
+        id = QtAV::VideoRendererId_Direct2D;
+        break;
+    default:
+        id = QtAV::VideoRendererId_GLWidget2;
+        break;
+    }
+    return static_cast<int>(id);
 }
 
 }

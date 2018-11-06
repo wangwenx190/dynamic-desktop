@@ -2,8 +2,6 @@
 
 #include <QSettings>
 
-#include "../common.h"
-
 class SettingsManager
 {
 public:
@@ -45,7 +43,7 @@ public:
     void setAudioAutoLoad(bool autoload = true);
     void setSkin(const QString &skin = QStringLiteral("Default"));
     void setLanguage(const QString &lang = QStringLiteral("auto"));
-    void setRenderer(int vid = QtAV_VId_GLWidget2);
+    void setRenderer(int vid);
     void setImageQuality(const QString &quality = QStringLiteral("best"));
     void setHistory(const QStringList &history);
     void setHistoryEnabled(bool enabled = true);

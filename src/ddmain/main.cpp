@@ -7,7 +7,6 @@
 #include "forms/traymenu.h"
 #include "playerwindow.h"
 #include <QtSingleApplication>
-#include "../common.h"
 
 #include <QMessageBox>
 #include <QSysInfo>
@@ -93,20 +92,20 @@ int main(int argc, char *argv[])
     QString rendererOptionValue = parser.value(rendererOption).toLower();
     if (!rendererOptionValue.isEmpty())
         if ((rendererOptionValue == QStringLiteral("opengl")) &&
-                (SettingsManager::getInstance()->getRenderer() != QtAV_VId_OpenGLWidget))
-            SettingsManager::getInstance()->setRenderer(QtAV_VId_OpenGLWidget);
+                (SettingsManager::getInstance()->getRenderer() != Utils::getVideoRendererId(Utils::VideoRendererId::OpenGLWidget)))
+            SettingsManager::getInstance()->setRenderer(Utils::getVideoRendererId(Utils::VideoRendererId::OpenGLWidget));
         else if ((rendererOptionValue == QStringLiteral("gl")) &&
-                 (SettingsManager::getInstance()->getRenderer() != QtAV_VId_GLWidget2))
-            SettingsManager::getInstance()->setRenderer(QtAV_VId_GLWidget2);
+                 (SettingsManager::getInstance()->getRenderer() != Utils::getVideoRendererId(Utils::VideoRendererId::GLWidget2)))
+            SettingsManager::getInstance()->setRenderer(Utils::getVideoRendererId(Utils::VideoRendererId::GLWidget2));
         else if ((rendererOptionValue == QStringLiteral("qt")) &&
-                 (SettingsManager::getInstance()->getRenderer() != QtAV_VId_Widget))
-            SettingsManager::getInstance()->setRenderer(QtAV_VId_Widget);
+                 (SettingsManager::getInstance()->getRenderer() != Utils::getVideoRendererId(Utils::VideoRendererId::Widget)))
+            SettingsManager::getInstance()->setRenderer(Utils::getVideoRendererId(Utils::VideoRendererId::Widget));
         else if ((rendererOptionValue == QStringLiteral("gdi")) &&
-                 (SettingsManager::getInstance()->getRenderer() != QtAV_VId_GDI))
-            SettingsManager::getInstance()->setRenderer(QtAV_VId_GDI);
+                 (SettingsManager::getInstance()->getRenderer() != Utils::getVideoRendererId(Utils::VideoRendererId::GDI)))
+            SettingsManager::getInstance()->setRenderer(Utils::getVideoRendererId(Utils::VideoRendererId::GDI));
         else if ((rendererOptionValue == QStringLiteral("d2d")) &&
-                 (SettingsManager::getInstance()->getRenderer() != QtAV_VId_Direct2D))
-            SettingsManager::getInstance()->setRenderer(QtAV_VId_Direct2D);
+                 (SettingsManager::getInstance()->getRenderer() != Utils::getVideoRendererId(Utils::VideoRendererId::Direct2D)))
+            SettingsManager::getInstance()->setRenderer(Utils::getVideoRendererId(Utils::VideoRendererId::Direct2D));
     QString volumeOptionValue = parser.value(volumeOption);
     if (!volumeOptionValue.isEmpty())
     {
