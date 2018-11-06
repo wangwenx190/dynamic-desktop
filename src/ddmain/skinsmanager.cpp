@@ -34,7 +34,7 @@ bool SkinsManager::setSkin(const QString &skin)
         return true;
     }
     QString filePath;
-    if (skin.contains(QStringLiteral("/")) || skin.contains(QStringLiteral("\\")))
+    if (skin.contains(QLatin1Char('/')) || skin.contains(QLatin1Char('\\')))
         filePath = QDir::toNativeSeparators(QDir::cleanPath(skin));
     else
         filePath = QStringLiteral(":/skins/") + skin + QStringLiteral(".css");

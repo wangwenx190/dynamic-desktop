@@ -210,7 +210,7 @@ bool installTranslation(const QString &language, const QString &prefix)
     }
     else
     {
-        if (language.contains(QStringLiteral("/")) || language.contains(QStringLiteral("\\")))
+        if (language.contains(QLatin1Char('/')) || language.contains(QLatin1Char('\\')))
         {
             if (translator->load(language))
                 return QCoreApplication::installTranslator(translator);
