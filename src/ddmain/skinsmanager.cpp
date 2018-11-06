@@ -4,7 +4,6 @@
 #include <QFileInfo>
 #include <QTextStream>
 #include <QDir>
-#include <QCoreApplication>
 #include <QApplication>
 
 SkinsManager *SkinsManager::getInstance()
@@ -23,11 +22,6 @@ QString SkinsManager::currentSkinPath() const
     return curSkinPath;
 }
 
-QString SkinsManager::currentSkinContent() const
-{
-    return qApp->styleSheet();
-}
-
 bool SkinsManager::setSkin(const QString &skin)
 {
     if (skin.isEmpty())
@@ -41,7 +35,7 @@ bool SkinsManager::setSkin(const QString &skin)
     }
     QString filePath;
     if (skin.contains(QStringLiteral("/")) || skin.contains(QStringLiteral("\\")))
-        filePath = skin;
+        filePath = QDir::toNativeSeparators(QDir::cleanPath(skin));
     else
         filePath = QStringLiteral(":/skins/") + skin + QStringLiteral(".css");
     if (!QFileInfo::exists(filePath))

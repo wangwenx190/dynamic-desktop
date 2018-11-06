@@ -10,7 +10,6 @@ public:
 public:
     QString currentSkinName() const;
     QString currentSkinPath() const;
-    QString currentSkinContent() const;
     bool setSkin(const QString &skin = QStringLiteral("Default"));
 
 private:

@@ -105,15 +105,6 @@ void moveToCenter(QObject *window)
     win->move(newX, newY);
 }
 
-static LPCWSTR toWide(LPCSTR from)
-{
-    size_t newSizeW = strlen(from) + 1;
-    auto resultW = new wchar_t[newSizeW];
-    size_t convertedChars = 0;
-    mbstowcs_s(&convertedChars, resultW, newSizeW, from, _TRUNCATE);
-    return resultW;
-}
-
 bool win32Run(const QString &path, const QString &params = QString(), bool needAdmin = false, bool needHide = false)
 {
     if (path.isEmpty())
@@ -141,15 +132,7 @@ bool run(const QString &path, const QStringList &params, bool needAdmin, bool ne
         return win32Run(path, paramsInAll, true, needHide);
     if (!Win32Utils::isSession1Process())
 #ifdef UNICODE
-    {
-        LPCWSTR pathW = toWide(QDir::toNativeSeparators(QDir::cleanPath(path)).toLocal8Bit().constData());
-        LPCWSTR paramsW = paramsInAll.isEmpty() ? nullptr : toWide(paramsInAll.toLocal8Bit().constData());
-        bool result = Win32Utils::launchSession1Process(pathW, paramsW);
-        delete [] pathW;
-        if (paramsW != nullptr)
-            delete [] paramsW;
-        return result;
-    }
+        return Win32Utils::launchSession1Process(reinterpret_cast<LPCWSTR>(QDir::toNativeSeparators(QDir::cleanPath(path)).utf16()), paramsInAll.isEmpty() ? nullptr : reinterpret_cast<LPCWSTR>(paramsInAll.utf16()));
 #else
         return Win32Utils::launchSession1Process(QDir::toNativeSeparators(QDir::cleanPath(path)).toLocal8Bit().constData(), paramsInAll.isEmpty() ? nullptr : paramsInAll.toLocal8Bit().constData());
 #endif
