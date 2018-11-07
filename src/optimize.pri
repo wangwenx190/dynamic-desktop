@@ -20,7 +20,7 @@ CONFIG(enable_small) {
         QMAKE_CFLAGS_RELEASE_WITH_DEBUGINFO                            *= $$QMAKE_CFLAGS_OPTIMIZE_SIZE
         QMAKE_CXXFLAGS_RELEASE_WITH_DEBUGINFO                          *= $$QMAKE_CFLAGS_OPTIMIZE_SIZE
     }
-    # Intel C++ Compiler and/or GNU C Collection
+    # Intel C++ Compiler and/or GNU Compiler Collection
     win32-icc*|*g++* {
         isEmpty(QMAKE_CFLAGS_OPTIMIZE_SIZE): QMAKE_CFLAGS_OPTIMIZE_SIZE = -O1
         isEmpty(QMAKE_CFLAGS_OPTIMIZE): QMAKE_CFLAGS_OPTIMIZE           = -O2
@@ -55,7 +55,7 @@ CONFIG(enable_optimize) {
         QMAKE_CFLAGS_RELEASE_WITH_DEBUGINFO                            *= $$QMAKE_CFLAGS_OPTIMIZE
         QMAKE_CXXFLAGS_RELEASE_WITH_DEBUGINFO                          *= $$QMAKE_CFLAGS_OPTIMIZE
     }
-    # Intel C++ Compiler and/or GNU C Collection
+    # Intel C++ Compiler and/or GNU Compiler Collection
     win32-icc*|*g++* {
         isEmpty(QMAKE_CFLAGS_OPTIMIZE_SIZE): QMAKE_CFLAGS_OPTIMIZE_SIZE = -O1
         isEmpty(QMAKE_CFLAGS_OPTIMIZE): QMAKE_CFLAGS_OPTIMIZE           = -O2
@@ -110,7 +110,7 @@ CONFIG(enable_ltcg) {
         #QMAKE_CXXFLAGS_RELEASE_WITH_DEBUGINFO            *= $$QMAKE_CXXFLAGS_LTCG
         QMAKE_LFLAGS_RELEASE                              *= $$QMAKE_LFLAGS_LTCG
     }
-    # GNU C Collection
+    # GNU Compiler Collection
     *g++* {
         isEmpty(QMAKE_CFLAGS_LTCG): QMAKE_CFLAGS_LTCG     = -flto -fno-fat-lto-objects
         isEmpty(QMAKE_CXXFLAGS_LTCG): QMAKE_CXXFLAGS_LTCG = $$QMAKE_CFLAGS_LTCG
