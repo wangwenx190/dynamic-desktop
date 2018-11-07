@@ -90,7 +90,7 @@ QString SettingsManager::getUrl() const
         if (QFileInfo(path).isDir())
             return QString();
         else if (QFileInfo(path).isFile())
-            return QDir::toNativeSeparators(path);
+            return QDir::toNativeSeparators(QDir::cleanPath(path));
     QUrl url(path);
     if (!url.isValid())
         return QString();
@@ -110,7 +110,7 @@ QString SettingsManager::lastDir() const
     }
     for (auto& dirPath : QStandardPaths::standardLocations(QStandardPaths::MoviesLocation))
         if (QFileInfo::exists(dirPath) && QFileInfo(dirPath).isDir())
-            return QDir::toNativeSeparators(dirPath);
+            return QDir::toNativeSeparators(QDir::cleanPath(dirPath));
     return QStringLiteral(".");
 }
 
@@ -200,7 +200,7 @@ QStringList SettingsManager::getHistory() const
         const QString path = settings->value(QStringLiteral("path")).toString();
         if (QFileInfo::exists(path))
         {
-            history.append(QDir::toNativeSeparators(path));
+            history.append(QDir::toNativeSeparators(QDir::cleanPath(path)));
             if (!isHistoryEnabled())
                 break;
         }
@@ -231,8 +231,8 @@ void SettingsManager::setUrl(const QString &url)
 {
     QStringList history = getHistory();
     if (!history.isEmpty())
-        history.removeAll(QDir::toNativeSeparators(url));
-    history.append(QDir::toNativeSeparators(url));
+        history.removeAll(QDir::toNativeSeparators(QDir::cleanPath(url)));
+    history.append(QDir::toNativeSeparators(QDir::cleanPath(url)));
     setHistory(history);
 }
 
@@ -314,10 +314,10 @@ void SettingsManager::setHistory(const QStringList &history)
     {
         settings->setArrayIndex(j);
         if (isHistoryEnabled())
-            settings->setValue(QStringLiteral("path"), QDir::toNativeSeparators(history.at(i)));
+            settings->setValue(QStringLiteral("path"), QDir::toNativeSeparators(QDir::cleanPath(history.at(i))));
         else
         {
-            settings->setValue(QStringLiteral("path"), QDir::toNativeSeparators(history.constLast()));
+            settings->setValue(QStringLiteral("path"), QDir::toNativeSeparators(QDir::cleanPath(history.constLast())));
             break;
         }
     }

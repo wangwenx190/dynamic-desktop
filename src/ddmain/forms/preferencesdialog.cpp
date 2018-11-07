@@ -446,7 +446,7 @@ void PreferencesDialog::initConnections()
     connect(ui->pushButton_cancel, &QPushButton::clicked, this, &PreferencesDialog::close);
     connect(ui->pushButton_url_browse, &QPushButton::clicked, this, [=]
     {
-        QString path = QDir::toNativeSeparators(QFileDialog::getOpenFileName(nullptr, tr("Please select a media file"), SettingsManager::getInstance()->lastDir(), tr("Videos (*.avi *.mp4 *.mkv *.flv);;Audios (*.mp3 *.flac *.ape *.wav);;Pictures (*.bmp *.jpg *.jpeg *.png *.gif);;All files (*)")));
+        QString path = QDir::toNativeSeparators(QDir::cleanPath(QFileDialog::getOpenFileName(nullptr, tr("Please select a media file"), SettingsManager::getInstance()->lastDir(), tr("Videos (*.avi *.mp4 *.mkv *.flv);;Audios (*.mp3 *.flac *.ape *.wav);;Pictures (*.bmp *.jpg *.jpeg *.png *.gif);;All files (*)"))));
         if (!path.isEmpty())
         {
             if (ui->comboBox_url->findText(path) < 0)
@@ -559,7 +559,7 @@ void PreferencesDialog::initConnections()
         servicePath += QStringLiteral("d");
 #endif
         servicePath += QStringLiteral(".exe");
-        servicePath = QDir::toNativeSeparators(servicePath);
+        servicePath = QDir::toNativeSeparators(QDir::cleanPath(servicePath));
         if (!QFileInfo::exists(servicePath))
         {
             ui->checkBox_autoStart->setChecked(false);

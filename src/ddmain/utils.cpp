@@ -82,11 +82,11 @@ QStringList externalFilesToLoad(const QFileInfo &originalMediaFile, const QStrin
                         || fi.suffix().toLower() == QLatin1String("ssa")
                         || fi.suffix().toLower() == QLatin1String("srt")
                         || fi.suffix().toLower() == QLatin1String("sub"))
-                    newFileList.append(QDir::toNativeSeparators(fi.absoluteFilePath()));
+                    newFileList.append(QDir::toNativeSeparators(QDir::cleanPath(fi.absoluteFilePath())));
             }
             else if (fileType.toLower() == QLatin1String("audio"))
                 if (fi.suffix().toLower() == QLatin1String("mka"))
-                    newFileList.append(QDir::toNativeSeparators(fi.absoluteFilePath()));
+                    newFileList.append(QDir::toNativeSeparators(QDir::cleanPath(fi.absoluteFilePath())));
     }
     return newFileList;
 }
@@ -113,7 +113,7 @@ bool win32Run(const QString &path, const QString &params = QString(), bool needA
         return false;
     SHELLEXECUTEINFO execInfo{ sizeof(SHELLEXECUTEINFO) };
     execInfo.lpVerb = needAdmin ? TEXT("runas") : nullptr;
-    execInfo.lpFile = reinterpret_cast<LPCTSTR>(QDir::toNativeSeparators(path).utf16());
+    execInfo.lpFile = reinterpret_cast<LPCTSTR>(QDir::toNativeSeparators(QDir::cleanPath(path)).utf16());
     execInfo.nShow = needHide ? SW_HIDE : SW_SHOW;
     execInfo.lpParameters = params.isEmpty() ? nullptr : reinterpret_cast<LPCTSTR>(params.utf16());
     return ShellExecuteEx(&execInfo);
