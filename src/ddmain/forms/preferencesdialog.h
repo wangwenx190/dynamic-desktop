@@ -36,6 +36,7 @@ signals:
     void imageRatioChanged(bool);
 
 public slots:
+    void refreshTexts(const QString &language);
     void setMute(bool mute = true);
     void setPlaying(bool playing = true);
     void togglePlayPause();

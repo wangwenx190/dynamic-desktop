@@ -15,6 +15,8 @@
 #include <QCommandLineOption>
 #include <QSystemTrayIcon>
 #include <QDesktopWidget>
+#include <QTranslator>
+#include <QLocale>
 
 int main(int argc, char *argv[])
 {
@@ -28,10 +30,28 @@ int main(int argc, char *argv[])
     QtSingleApplication::setOrganizationDomain(QStringLiteral("wangwenx190.github.io"));
     if (app.sendMessage(QStringLiteral("show")))
         return 0;
-#ifndef _DEBUG
-    qInstallMessageHandler(Utils::fileLogger);
-#endif
-    Utils::installTranslation(SettingsManager::getInstance()->getLanguage(), QStringLiteral("dd"));
+    const QString qmDir = QStringLiteral(":/i18n");
+    QTranslator translator;
+    const QString qmLanguage = SettingsManager::getInstance()->getLanguage();
+    if (qmLanguage.toLower() == QStringLiteral("auto"))
+    {
+        if (translator.load(QLocale(), QStringLiteral("dd"), QStringLiteral("_"), qmDir))
+            QtSingleApplication::installTranslator(&translator);
+    }
+    else
+    {
+        if (qmLanguage.contains(QLatin1Char('/')) || qmLanguage.contains(QLatin1Char('\\')))
+        {
+            if (translator.load(qmLanguage))
+                QtSingleApplication::installTranslator(&translator);
+        }
+        else
+        {
+            const QString fileName = QStringLiteral("dd_%0").arg(qmLanguage);
+            if (translator.load(fileName, qmDir))
+                QtSingleApplication::installTranslator(&translator);
+        }
+    }
     QCommandLineParser parser;
     parser.setApplicationDescription(QObject::tr("A tool that make your desktop alive."));
     parser.addHelpOption();
@@ -117,8 +137,6 @@ int main(int argc, char *argv[])
     QObject::connect(&preferencesDialog, &PreferencesDialog::about, &trayMenu, &TrayMenu::onAboutClicked);
     QObject::connect(&preferencesDialog, &PreferencesDialog::play, &playerWindow, &PlayerWindow::play);
     QObject::connect(&preferencesDialog, &PreferencesDialog::pause, &playerWindow, &PlayerWindow::pause);
-    QObject::connect(&preferencesDialog, &PreferencesDialog::languageChanged, &aboutDialog, &AboutDialog::refreshTexts);
-    QObject::connect(&preferencesDialog, &PreferencesDialog::languageChanged, &trayMenu, &TrayMenu::refreshTexts);
     QObject::connect(&preferencesDialog, &PreferencesDialog::urlChanged, &playerWindow, &PlayerWindow::setUrl);
     QObject::connect(&preferencesDialog, &PreferencesDialog::urlChanged, &trayIcon, &QSystemTrayIcon::setToolTip);
     QObject::connect(&preferencesDialog, &PreferencesDialog::audioFileChanged, &playerWindow, &PlayerWindow::setAudio);
@@ -148,6 +166,13 @@ int main(int argc, char *argv[])
     QObject::connect(&playerWindow, &PlayerWindow::audioTracksChanged, &preferencesDialog, &PreferencesDialog::setAudioTracks);
     QObject::connect(&playerWindow, &PlayerWindow::subtitleTracksChanged, &preferencesDialog, &PreferencesDialog::setSubtitleTracks);
     QObject::connect(&playerWindow, &PlayerWindow::videoDurationTextChanged, &preferencesDialog, &PreferencesDialog::setVideoDurationText);
+    QObject::connect(&preferencesDialog, &PreferencesDialog::languageChanged, [=, &preferencesDialog, &aboutDialog, &trayMenu](const QString &lang)
+    {
+        preferencesDialog.refreshTexts(lang);
+        aboutDialog.refreshTexts(lang);
+        trayMenu.refreshTexts(lang);
+        QMessageBox::information(nullptr, QStringLiteral("Dynamic Desktop"), QObject::tr("Some texts will not refresh their translation until you restart this application."));
+    });
     QObject::connect(&trayMenu, &TrayMenu::onOptionsClicked, [=, &preferencesDialog]
     {
         if (preferencesDialog.isHidden())
@@ -190,15 +215,14 @@ int main(int argc, char *argv[])
         if (reason != QSystemTrayIcon::Context)
             emit trayMenu.onOptionsClicked();
     });
-    QObject::connect(qApp, &QtSingleApplication::aboutToQuit, [=]
-    {
-        Utils::installTranslation(QStringLiteral("en"), QStringLiteral("dd"));
-        Wallpaper::hideWallpaper();
-    });
     QObject::connect(&app, &QtSingleApplication::messageReceived, [=, &trayMenu](const QString &message)
     {
         Q_UNUSED(message)
         emit trayMenu.onOptionsClicked();
+    });
+    QObject::connect(qApp, &QtSingleApplication::aboutToQuit, [=]
+    {
+        Wallpaper::hideWallpaper();
     });
     trayIcon.show();
     const Qt::WindowFlags windowFlags = Qt::FramelessWindowHint;

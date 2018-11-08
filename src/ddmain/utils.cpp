@@ -1,64 +1,16 @@
 #include "utils.h"
 #include <Win32Utils>
 
-#include <QMutex>
+#include <tchar.h>
 #include <QApplication>
-#include <QTextStream>
 #include <QDir>
 #include <QDesktopWidget>
 #include <QFileInfo>
 #include <QWidget>
-#include <QTranslator>
-#include <QLocale>
 #include <QtAVWidgets>
 
 namespace Utils
 {
-
-QTranslator *translator = nullptr;
-
-void fileLogger(QtMsgType type, const QMessageLogContext &context, const QString &msg)
-{
-    static QMutex mutex;
-    mutex.lock();
-    QString msgType;
-    switch (type)
-    {
-    case QtDebugMsg:
-        msgType = QStringLiteral("DEBUG");
-        break;
-    case QtInfoMsg:
-        msgType = QStringLiteral("INFORMATION");
-        break;
-    case QtWarningMsg:
-        msgType = QStringLiteral("WARNING");
-        break;
-    case QtCriticalMsg:
-        msgType = QStringLiteral("CRITICAL");
-        break;
-    case QtFatalMsg:
-        msgType = QStringLiteral("FATAL");
-        break;
-        /*case QtSystemMsg:
-        msgType = QStringLiteral("SYSTEM");
-        break;*/
-    default:
-        msgType = QStringLiteral("DEBUG");
-        break;
-    }
-    QString messageStr = QStringLiteral("%0\t%1\t%2\t%3\t%4")
-            .arg(msgType).arg(msg).arg(context.file).arg(context.line).arg(context.function);
-    QString logPath = QCoreApplication::applicationDirPath();
-    logPath += QStringLiteral("/debug.log");
-    QFile file(logPath);
-    if (file.open(QFile::WriteOnly | QFile::Append | QFile::Text))
-    {
-        QTextStream ts(&file);
-        ts << messageStr << QLatin1Char('\n');
-        file.close();
-    }
-    mutex.unlock();
-}
 
 QStringList externalFilesToLoad(const QFileInfo &originalMediaFile, const QString &fileType)
 {
@@ -112,10 +64,15 @@ bool win32Run(const QString &path, const QString &params = QString(), bool needA
     if (!QFileInfo::exists(path))
         return false;
     SHELLEXECUTEINFO execInfo{ sizeof(SHELLEXECUTEINFO) };
-    execInfo.lpVerb = needAdmin ? TEXT("runas") : nullptr;
-    execInfo.lpFile = reinterpret_cast<LPCTSTR>(QDir::toNativeSeparators(QDir::cleanPath(path)).utf16());
+    execInfo.lpVerb = needAdmin ? _T("runas") : nullptr;
+#ifdef UNICODE
+    execInfo.lpFile = reinterpret_cast<LPCWSTR>(QDir::toNativeSeparators(QDir::cleanPath(path)).utf16());
+    execInfo.lpParameters = params.isEmpty() ? nullptr : reinterpret_cast<LPCWSTR>(params.utf16());
+#else
+    execInfo.lpFile = QDir::toNativeSeparators(QDir::cleanPath(path)).toLocal8Bit().constData();
+    execInfo.lpParameters = params.isEmpty() ? nullptr : params.toLocal8Bit().constData();
+#endif
     execInfo.nShow = needHide ? SW_HIDE : SW_SHOW;
-    execInfo.lpParameters = params.isEmpty() ? nullptr : reinterpret_cast<LPCTSTR>(params.utf16());
     return ShellExecuteEx(&execInfo);
 }
 
@@ -189,42 +146,6 @@ bool isPicture(const QString &fileName)
             || fileName.endsWith(QStringLiteral(".jpeg"), Qt::CaseInsensitive)
             || fileName.endsWith(QStringLiteral(".webp"), Qt::CaseInsensitive)
             || fileName.endsWith(QStringLiteral(".gif"), Qt::CaseInsensitive);
-}
-
-bool installTranslation(const QString &language, const QString &prefix)
-{
-    if (language.isEmpty() || prefix.isEmpty())
-        return false;
-    if (translator != nullptr)
-    {
-        QCoreApplication::removeTranslator(translator);
-        delete translator;
-        translator = nullptr;
-    }
-    const QString qmDir = QStringLiteral(":/i18n");
-    translator = new QTranslator();
-    if (language == QStringLiteral("auto"))
-    {
-        if (translator->load(QLocale(), prefix, QStringLiteral("_"), qmDir))
-            return QCoreApplication::installTranslator(translator);
-    }
-    else
-    {
-        if (language.contains(QLatin1Char('/')) || language.contains(QLatin1Char('\\')))
-        {
-            if (translator->load(language))
-                return QCoreApplication::installTranslator(translator);
-        }
-        else
-        {
-            const QString fileName = QStringLiteral("%0_%1").arg(prefix).arg(language);
-            if (translator->load(fileName, qmDir))
-                return QCoreApplication::installTranslator(translator);
-        }
-    }
-    delete translator;
-    translator = nullptr;
-    return false;
 }
 
 int getVideoRendererId(const VideoRendererId vid)

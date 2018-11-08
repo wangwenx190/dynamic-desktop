@@ -280,10 +280,6 @@ Make sure this application runs in your GPU&apos;s Optimus mode.</source>
         <translation>应用程序启动时自动检查更新</translation>
     </message>
     <message>
-        <source>Some texts will not refresh their translation until you restart this application.</source>
-        <translation>部分文本将不会刷新它们的翻译直到您重启此应用程序。</translation>
-    </message>
-    <message>
         <source>Auto</source>
         <translation>自动</translation>
     </message>
@@ -293,6 +289,10 @@ Make sure this application runs in your GPU&apos;s Optimus mode.</source>
     <message>
         <source>A tool that make your desktop alive.</source>
         <translation>一个能让您的桌面更加丰富多彩的工具。</translation>
+    </message>
+    <message>
+        <source>Some texts will not refresh their translation until you restart this application.</source>
+        <translation>部分文本将不会刷新它们的翻译直到您重启此应用程序。</translation>
     </message>
 </context>
 <context>

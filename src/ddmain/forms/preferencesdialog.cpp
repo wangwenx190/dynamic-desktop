@@ -505,10 +505,7 @@ void PreferencesDialog::initConnections()
         if (ui->comboBox_language->currentData().toString() != SettingsManager::getInstance()->getLanguage())
         {
             SettingsManager::getInstance()->setLanguage(ui->comboBox_language->currentData().toString());
-            Utils::installTranslation(SettingsManager::getInstance()->getLanguage(), QStringLiteral("dd"));
-            ui->retranslateUi(this);
             emit this->languageChanged(SettingsManager::getInstance()->getLanguage());
-            QMessageBox::information(nullptr, QStringLiteral("Dynamic Desktop"), tr("Some texts will not refresh their translation until you restart this application."));
         }
     });
     connect(ui->comboBox_video_track, qOverload<int>(&QComboBox::currentIndexChanged), this, [=](int index)
@@ -633,6 +630,12 @@ void PreferencesDialog::setRatio()
         SettingsManager::getInstance()->setFitDesktop(ui->radioButton_ratio_fitDesktop->isChecked());
         emit this->imageRatioChanged(SettingsManager::getInstance()->getFitDesktop());
     }
+}
+
+void PreferencesDialog::refreshTexts(const QString &language)
+{
+    Q_UNUSED(language)
+    ui->retranslateUi(this);
 }
 
 void PreferencesDialog::setMute(bool mute)

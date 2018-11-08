@@ -29,3 +29,4 @@ CONFIG(enable_small) {
     CONFIG *= enable_optimize
 }
 include($$PWD/optimize.pri)
+CONFIG -= app_bundle
