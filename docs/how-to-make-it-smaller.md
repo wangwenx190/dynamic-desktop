@@ -9,6 +9,11 @@
 3. Disable unneeded features: **`-no-feature-<qt feature name>`**
 
    The easiest way is to use [**Qt Configuration Tool**](https://doc.qt.io/QtForDeviceCreation/qt-configuration-tool.html), but it's a **COMMERCIAL ONLY** tool which means you will have to buy a commercial license from [the Qt Company](https://www.qt.io/) if you want to use it.
+
+   Qt 5.12 example:
+   ```bat
+   -no-feature-action -no-feature-animation -no-feature-buttongroup -no-feature-calendarwidget -no-feature-colordialog -no-feature-commandlinkbutton -no-feature-concurrent -no-feature-datetimeedit -no-feature-dial -no-feature-dockwidget -no-feature-fontcombobox -no-feature-fontdialog -no-feature-future -no-feature-gestures -no-feature-im -no-feature-keysequenceedit -no-feature-lcdnumber -no-feature-mdiarea -no-feature-pdf -no-feature-progressdialog -no-feature-sha3-fast -no-feature-splashscreen -no-feature-splitter -no-feature-stackedwidget -no-feature-statusbar -no-feature-statustip -no-feature-syntaxhighlighter -no-feature-textodfwriter -no-feature-tuiotouch -no-feature-undocommand -no-feature-undogroup -no-feature-undostack -no-feature-undoview -no-feature-whatsthis -no-feature-wizard -no-feature-contextmenu -no-feature-dialogbuttonbox -no-feature-effects -no-feature-errormessage -no-feature-mainwindow -no-feature-scrollarea -no-feature-toolbar -no-feature-toolbox -no-feature-tooltip -no-feature-printdialog -no-feature-printer -no-feature-printpreviewdialog -no-feature-printpreviewwidget -no-feature-imageformatplugin -no-feature-cups -no-feature-iconv
+   ```
 4. Disable Whole Program Optimization/Link Time Code Generation: Default. No actions needed.
 5. Link to MSVCRT dynamically: Default. No actions needed.
 ## When building FFmpeg
