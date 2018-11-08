@@ -18,6 +18,33 @@
 #include <QTranslator>
 #include <QLocale>
 
+void installTranslation(const QString &lang, QTranslator &translator)
+{
+    QtSingleApplication::removeTranslator(&translator);
+    if (lang.startsWith(QStringLiteral("en"), Qt::CaseInsensitive))
+        return;
+    const QString qmDir = QStringLiteral(":/i18n");
+    if (lang.toLower() == QStringLiteral("auto"))
+    {
+        if (translator.load(QLocale(), QStringLiteral("dd"), QStringLiteral("_"), qmDir))
+            QtSingleApplication::installTranslator(&translator);
+    }
+    else
+    {
+        if (lang.contains(QLatin1Char('/')) || lang.contains(QLatin1Char('\\')))
+        {
+            if (translator.load(lang))
+                QtSingleApplication::installTranslator(&translator);
+        }
+        else
+        {
+            const QString fileName = QStringLiteral("dd_%0").arg(lang);
+            if (translator.load(fileName, qmDir))
+                QtSingleApplication::installTranslator(&translator);
+        }
+    }
+}
+
 int main(int argc, char *argv[])
 {
     QtSingleApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
@@ -30,28 +57,8 @@ int main(int argc, char *argv[])
     QtSingleApplication::setOrganizationDomain(QStringLiteral("wangwenx190.github.io"));
     if (app.sendMessage(QStringLiteral("show")))
         return 0;
-    const QString qmDir = QStringLiteral(":/i18n");
-    QTranslator translator;
-    const QString qmLanguage = SettingsManager::getInstance()->getLanguage();
-    if (qmLanguage.toLower() == QStringLiteral("auto"))
-    {
-        if (translator.load(QLocale(), QStringLiteral("dd"), QStringLiteral("_"), qmDir))
-            QtSingleApplication::installTranslator(&translator);
-    }
-    else
-    {
-        if (qmLanguage.contains(QLatin1Char('/')) || qmLanguage.contains(QLatin1Char('\\')))
-        {
-            if (translator.load(qmLanguage))
-                QtSingleApplication::installTranslator(&translator);
-        }
-        else
-        {
-            const QString fileName = QStringLiteral("dd_%0").arg(qmLanguage);
-            if (translator.load(fileName, qmDir))
-                QtSingleApplication::installTranslator(&translator);
-        }
-    }
+    QTranslator ddTranslator;
+    installTranslation(SettingsManager::getInstance()->getLanguage(), ddTranslator);
     QCommandLineParser parser;
     parser.setApplicationDescription(QObject::tr("A tool that make your desktop alive."));
     parser.addHelpOption();
@@ -166,8 +173,9 @@ int main(int argc, char *argv[])
     QObject::connect(&playerWindow, &PlayerWindow::audioTracksChanged, &preferencesDialog, &PreferencesDialog::setAudioTracks);
     QObject::connect(&playerWindow, &PlayerWindow::subtitleTracksChanged, &preferencesDialog, &PreferencesDialog::setSubtitleTracks);
     QObject::connect(&playerWindow, &PlayerWindow::videoDurationTextChanged, &preferencesDialog, &PreferencesDialog::setVideoDurationText);
-    QObject::connect(&preferencesDialog, &PreferencesDialog::languageChanged, [=, &preferencesDialog, &aboutDialog, &trayMenu](const QString &lang)
+    QObject::connect(&preferencesDialog, &PreferencesDialog::languageChanged, [=, &preferencesDialog, &aboutDialog, &trayMenu, &ddTranslator](const QString &lang)
     {
+        installTranslation(lang, ddTranslator);
         preferencesDialog.refreshTexts(lang);
         aboutDialog.refreshTexts(lang);
         trayMenu.refreshTexts(lang);
