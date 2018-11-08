@@ -195,12 +195,6 @@ void PreferencesDialog::setSubtitleTracks(const QVariantList& subtitleTracks, bo
         ui->comboBox_subtitle_track->setEnabled(false);
 }
 
-void PreferencesDialog::setVolumeToolTip(const QString& text)
-{
-    ui->checkBox_volume->setToolTip(text);
-    ui->horizontalSlider_volume->setToolTip(text);
-}
-
 void PreferencesDialog::setVideoPositionText(const QString &text)
 {
     ui->label_video_position->setText(text);

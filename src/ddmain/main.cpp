@@ -145,7 +145,6 @@ int main(int argc, char *argv[])
     QObject::connect(&preferencesDialog, &PreferencesDialog::play, &playerWindow, &PlayerWindow::play);
     QObject::connect(&preferencesDialog, &PreferencesDialog::pause, &playerWindow, &PlayerWindow::pause);
     QObject::connect(&preferencesDialog, &PreferencesDialog::urlChanged, &playerWindow, &PlayerWindow::setUrl);
-    QObject::connect(&preferencesDialog, &PreferencesDialog::urlChanged, &trayIcon, &QSystemTrayIcon::setToolTip);
     QObject::connect(&preferencesDialog, &PreferencesDialog::audioFileChanged, &playerWindow, &PlayerWindow::setAudio);
     QObject::connect(&preferencesDialog, &PreferencesDialog::subtitleFileChanged, &playerWindow, &PlayerWindow::setSubtitle);
     QObject::connect(&preferencesDialog, &PreferencesDialog::volumeChanged, &playerWindow, &PlayerWindow::setVolume);
@@ -161,7 +160,6 @@ int main(int argc, char *argv[])
     QObject::connect(&preferencesDialog, &PreferencesDialog::imageRatioChanged, &playerWindow, &PlayerWindow::setImageRatio);
     QObject::connect(&playerWindow, &PlayerWindow::playStateChanged, &preferencesDialog, &PreferencesDialog::setPlaying);
     QObject::connect(&playerWindow, &PlayerWindow::playStateChanged, &trayMenu, &TrayMenu::setPlaying);
-    QObject::connect(&playerWindow, &PlayerWindow::volumeToolTipChanged, &preferencesDialog, &PreferencesDialog::setVolumeToolTip);
     QObject::connect(&playerWindow, &PlayerWindow::mediaPositionChanged, &preferencesDialog, &PreferencesDialog::setMediaSliderPosition);
     QObject::connect(&playerWindow, &PlayerWindow::videoPositionTextChanged, &preferencesDialog, &PreferencesDialog::setVideoPositionText);
     QObject::connect(&playerWindow, &PlayerWindow::audioAreaEnableChanged, &preferencesDialog, &PreferencesDialog::setAudioAreaEnabled);
@@ -264,7 +262,6 @@ int main(int argc, char *argv[])
     }
     if (SettingsManager::getInstance()->getUrl().isEmpty())
     {
-        trayIcon.setToolTip(QStringLiteral("Dynamic Desktop"));
         Utils::moveToCenter(&preferencesDialog);
         if (preferencesDialog.isHidden())
             preferencesDialog.show();
@@ -272,7 +269,6 @@ int main(int argc, char *argv[])
     else
     {
         const QString url = SettingsManager::getInstance()->getUrl();
-        trayIcon.setToolTip(url);
         if (playerWindow.isHidden())
             playerWindow.show();
         playerWindow.setUrl(url);

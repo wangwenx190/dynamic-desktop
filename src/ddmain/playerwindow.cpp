@@ -36,7 +36,6 @@ void PlayerWindow::setVolume(quint32 volume)
         if (ao->volume() != newVolume)
             if (qAbs(static_cast<int>(ao->volume() / kVolumeInterval) - static_cast<int>(volume)) >= static_cast<int>(0.1 / kVolumeInterval))
                 ao->setVolume(newVolume);
-        emit this->volumeToolTipChanged(tr("Volume: %0").arg(QString::number(newVolume)));
     }
 }
 

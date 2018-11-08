@@ -17,7 +17,6 @@ class PlayerWindow : public QWidget
 
 signals:
     void playStateChanged(bool);
-    void volumeToolTipChanged(const QString &);
     void mediaPositionChanged(qint64);
     void videoPositionTextChanged(const QString &);
     void audioAreaEnableChanged(bool);

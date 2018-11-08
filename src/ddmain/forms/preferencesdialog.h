@@ -49,7 +49,6 @@ public slots:
     void setVideoTracks(const QVariantList &videoTracks);
     void setAudioTracks(const QVariantList &audioTracks, bool add = false);
     void setSubtitleTracks(const QVariantList &subtitleTracks, bool add = false);
-    void setVolumeToolTip(const QString &text);
     void setVideoPositionText(const QString &text);
     void setVideoDurationText(const QString &text);
 
