@@ -6,8 +6,10 @@
 #include <Win32Utils>
 #include <tchar.h>
 
+#ifndef DD_NO_WIN_EXTRAS
 #include <QWinTaskbarButton>
 #include <QWinTaskbarProgress>
+#endif
 #include <QFileDialog>
 #include <QInputDialog>
 #include <QFileInfo>
@@ -15,8 +17,10 @@
 #include <QMessageBox>
 #include <QDragEnterEvent>
 #include <QUrl>
+#ifndef DD_NO_MIME_TYPE
 #include <QMimeDatabase>
 #include <QMimeData>
+#endif
 #include <QTextCodec>
 #include <QTimer>
 #include <QApplication>
@@ -228,9 +232,12 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) : CFramelessWindow(parent)
 PreferencesDialog::~PreferencesDialog()
 {
     delete ui;
+#ifndef DD_NO_WIN_EXTRAS
     delete taskbarButton;
+#endif
 }
 
+#if !defined(DD_NO_DRAG_DROP) && !defined(DD_NO_MIME_TYPE)
 static bool canHandleDrop(const QDragEnterEvent *event)
 {
     const QList<QUrl> urls = event->mimeData()->urls();
@@ -260,6 +267,7 @@ void PreferencesDialog::dropEvent(QDropEvent *event)
         ui->comboBox_url->addItem(path, path);
     ui->comboBox_url->setCurrentText(path);
 }
+#endif
 
 void PreferencesDialog::closeEvent(QCloseEvent *event)
 {
@@ -270,11 +278,13 @@ void PreferencesDialog::closeEvent(QCloseEvent *event)
 
 void PreferencesDialog::initUI()
 {
+#ifndef DD_NO_WIN_EXTRAS
     taskbarButton = new QWinTaskbarButton();
     taskbarButton->setWindow(windowHandle());
     taskbarProgress = taskbarButton->progress();
     taskbarProgress->setRange(0, 99);
     taskbarProgress->show();
+#endif
     ui->checkBox_auto_update->setChecked(SettingsManager::getInstance()->getAutoCheckUpdate());
     ui->checkBox_history->setChecked(SettingsManager::getInstance()->isHistoryEnabled());
     ui->spinBox_history->setValue(SettingsManager::getInstance()->getHistoryMax());
@@ -376,8 +386,10 @@ void PreferencesDialog::initConnections()
         else if (value != SettingsManager::getInstance()->getHistoryMax())
             SettingsManager::getInstance()->setHistoryMax(value);
     });
+#ifndef DD_NO_WIN_EXTRAS
     connect(ui->horizontalSlider_video_position, &QSlider::valueChanged, taskbarProgress, &QWinTaskbarProgress::setValue);
     connect(ui->horizontalSlider_video_position, &QSlider::rangeChanged, taskbarProgress, &QWinTaskbarProgress::setRange);
+#endif
     connect(ui->pushButton_audio_open, &QPushButton::clicked, this, [=]
     {
         QString audioPath = QFileDialog::getOpenFileName(nullptr, tr("Please select an audio file"), SettingsManager::getInstance()->lastDir(), tr("Audios (*.mka *.aac *.flac *.mp3 *.wav);;All files (*)"));
@@ -428,13 +440,17 @@ void PreferencesDialog::initConnections()
         }
         else
             emit this->play();
+#ifndef DD_NO_WIN_EXTRAS
         if (!taskbarProgress->isVisible())
             taskbarProgress->show();
         taskbarProgress->resume();
+#endif
     });
     connect(ui->pushButton_pause, &QPushButton::clicked, this, [=]
     {
+#ifndef DD_NO_WIN_EXTRAS
         taskbarProgress->pause();
+#endif
         emit this->pause();
     });
     connect(ui->pushButton_cancel, &QPushButton::clicked, this, &PreferencesDialog::close);

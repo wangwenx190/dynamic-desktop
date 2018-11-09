@@ -2,8 +2,10 @@
 
 #include <QtNiceFramelessWindow>
 
+#ifndef DD_NO_WIN_EXTRAS
 QT_FORWARD_DECLARE_CLASS(QWinTaskbarButton)
 QT_FORWARD_DECLARE_CLASS(QWinTaskbarProgress)
+#endif
 
 namespace Ui
 {
@@ -57,8 +59,10 @@ public:
     ~PreferencesDialog() override;
 
 protected:
+#if !defined(DD_NO_DRAG_DROP) && !defined(DD_NO_MIME_TYPE)
     void dragEnterEvent(QDragEnterEvent *event) override;
     void dropEvent(QDropEvent *event) override;
+#endif
     void closeEvent(QCloseEvent *event) override;
 
 private slots:
@@ -73,6 +77,8 @@ private:
     Ui::PreferencesDialog *ui = nullptr;
     bool audioAvailable = true, isPlaying = false;
     quint32 sliderUnit = 1000;
+#ifndef DD_NO_WIN_EXTRAS
     QWinTaskbarButton *taskbarButton = nullptr;
     QWinTaskbarProgress *taskbarProgress = nullptr;
+#endif
 };

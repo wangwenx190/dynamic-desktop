@@ -9,7 +9,9 @@ public:
 
 public:
     QStringList defaultDecoders() const;
+#ifndef DD_NO_MIME_TYPE
     QStringList supportedMimeTypes() const;
+#endif
     QString lastDir() const;
 
     QString getUrl() const;

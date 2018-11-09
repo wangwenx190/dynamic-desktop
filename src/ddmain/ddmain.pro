@@ -5,7 +5,6 @@ RC_ICONS = ../resources/icons/color_palette.ico
 QT *= \
     widgets \
     network \
-    winextras \
     avwidgets
 CONFIG(static, static|shared) {
     DEFINES *= BUILD_DD_STATIC
@@ -13,6 +12,13 @@ CONFIG(static, static|shared) {
         svg \
         opengl
 }
+CONFIG(no_win_extras) {
+    DEFINES *= DD_NO_WIN_EXTRAS
+} else {
+    QT *= winextras
+}
+CONFIG(no_drag_drop): DEFINES *= DD_NO_DRAG_DROP
+CONFIG(no_mime_type): DEFINES *= DD_NO_MIME_TYPE
 LIBS *= \
     -lUser32 \
     -lDwmapi

@@ -3,7 +3,9 @@
 #include <QDir>
 #include <QUrl>
 #include <QFileInfo>
+#ifndef DD_NO_MIME_TYPE
 #include <QMimeDatabase>
+#endif
 #include <QCoreApplication>
 #include <QStandardPaths>
 
@@ -22,6 +24,7 @@ QStringList SettingsManager::defaultDecoders() const
             << QStringLiteral("FFmpeg");
 }
 
+#ifndef DD_NO_MIME_TYPE
 QStringList SettingsManager::supportedMimeTypes() const
 {
     return QStringList()
@@ -77,6 +80,7 @@ QStringList SettingsManager::supportedMimeTypes() const
             << QStringLiteral("audio/x-mpegurl")
             << QStringLiteral("audio/x-scpls");
 }
+#endif
 
 QString SettingsManager::getUrl() const
 {
