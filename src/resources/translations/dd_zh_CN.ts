@@ -50,10 +50,6 @@
         <source>Current renderer is not available on your platform!</source>
         <translation>当前渲染引擎在您的平台不可用！</translation>
     </message>
-    <message>
-        <source>Volume: %0</source>
-        <translation>音量：%0</translation>
-    </message>
 </context>
 <context>
     <name>PreferencesDialog</name>
