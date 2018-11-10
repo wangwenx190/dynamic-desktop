@@ -1,49 +1,58 @@
 #include "settingsmanager.h"
+#ifndef DD_NO_CSS
 #include "skinsmanager.h"
+#endif
 #include "utils.h"
 #include <Wallpaper>
 #include "forms/preferencesdialog.h"
 #include "forms/aboutdialog.h"
+#ifndef DD_NO_MENU
 #include "forms/traymenu.h"
+#endif
 #include "playerwindow.h"
 #include <QtSingleApplication>
 
 #include <QMessageBox>
 #include <QSysInfo>
 #include <QVersionNumber>
+#ifndef DD_NO_COMMANDLINE_PARSER
 #include <QCommandLineParser>
 #include <QCommandLineOption>
+#endif
 #include <QSystemTrayIcon>
 #include <QDesktopWidget>
+#ifndef DD_NO_TRANSLATIONS
 #include <QTranslator>
 #include <QLocale>
 
-void installTranslation(const QString &lang, QTranslator &translator)
+void installTranslation(const QString &lang, const QTranslator &translator)
 {
-    QtSingleApplication::removeTranslator(&translator);
+    auto ts = const_cast<QTranslator *>(&translator);
+    QtSingleApplication::removeTranslator(ts);
     if (lang.startsWith(QStringLiteral("en"), Qt::CaseInsensitive))
         return;
     const QString qmDir = QStringLiteral(":/i18n");
     if (lang.toLower() == QStringLiteral("auto"))
     {
-        if (translator.load(QLocale(), QStringLiteral("dd"), QStringLiteral("_"), qmDir))
-            QtSingleApplication::installTranslator(&translator);
+        if (ts->load(QLocale(), QStringLiteral("dd"), QStringLiteral("_"), qmDir))
+            QtSingleApplication::installTranslator(ts);
     }
     else
     {
         if (lang.contains(QLatin1Char('/')) || lang.contains(QLatin1Char('\\')))
         {
-            if (translator.load(lang))
-                QtSingleApplication::installTranslator(&translator);
+            if (ts->load(lang))
+                QtSingleApplication::installTranslator(ts);
         }
         else
         {
             const QString fileName = QStringLiteral("dd_%0").arg(lang);
-            if (translator.load(fileName, qmDir))
-                QtSingleApplication::installTranslator(&translator);
+            if (ts->load(fileName, qmDir))
+                QtSingleApplication::installTranslator(ts);
         }
     }
 }
+#endif
 
 int main(int argc, char *argv[])
 {
@@ -57,19 +66,25 @@ int main(int argc, char *argv[])
     QtSingleApplication::setOrganizationDomain(QStringLiteral("wangwenx190.github.io"));
     if (app.sendMessage(QStringLiteral("show")))
         return 0;
+#ifndef DD_NO_TRANSLATIONS
     QTranslator ddTranslator;
     installTranslation(SettingsManager::getInstance()->getLanguage(), ddTranslator);
+#endif
+    bool windowMode = false;
+#ifndef DD_NO_COMMANDLINE_PARSER
     QCommandLineParser parser;
-    parser.setApplicationDescription(QObject::tr("A tool that make your desktop alive."));
+    parser.setApplicationDescription(DD_OBJ_TR("A tool that make your desktop alive."));
     parser.addHelpOption();
     parser.addVersionOption();
     QCommandLineOption windowModeOption(QStringLiteral("window"),
                                         QtSingleApplication::translate("main", "Show a normal window instead of placing it under the desktop icons."));
     parser.addOption(windowModeOption);
+#ifndef DD_NO_CSS
     QCommandLineOption skinOption(QStringLiteral("skin"),
                                   QtSingleApplication::translate("main", "Set skin. The value is the file name of the skin file, excluding the file extension. If it's not under the \"skins\" folder, please give the absolute path of the file."),
                                   QtSingleApplication::translate("main", "Skin file name"));
     parser.addOption(skinOption);
+#endif
     QCommandLineOption urlOption(QStringLiteral("url"),
                                  QtSingleApplication::translate("main", "Play the given url. It can be a local file or a valid web url. Default is empty."),
                                  QtSingleApplication::translate("main", "url"));
@@ -87,11 +102,13 @@ int main(int argc, char *argv[])
                                     QtSingleApplication::translate("main", "volume"));
     parser.addOption(volumeOption);
     parser.process(app);
-    const bool windowMode = parser.isSet(windowModeOption);
+    windowMode = parser.isSet(windowModeOption);
+#ifndef DD_NO_CSS
     QString skinOptionValue = parser.value(skinOption);
     if (!skinOptionValue.isEmpty())
         if (skinOptionValue != SettingsManager::getInstance()->getSkin())
             SettingsManager::getInstance()->setSkin(skinOptionValue);
+#endif
     QString urlOptionValue = parser.value(urlOption);
     if (!urlOptionValue.isEmpty())
         if (urlOptionValue != SettingsManager::getInstance()->getUrl())
@@ -131,54 +148,26 @@ int main(int argc, char *argv[])
         if (static_cast<quint32>(volumeOptionValueInt) != SettingsManager::getInstance()->getVolume())
             SettingsManager::getInstance()->setVolume(static_cast<quint32>(volumeOptionValueInt));
     }
+#endif
+#ifndef DD_NO_CSS
     SkinsManager::getInstance()->setSkin(SettingsManager::getInstance()->getSkin());
+#endif
     PlayerWindow playerWindow;
     PreferencesDialog preferencesDialog;
     AboutDialog aboutDialog;
-    TrayMenu trayMenu;
     QSystemTrayIcon trayIcon;
     playerWindow.setWindowMode(windowMode);
+#ifndef DD_NO_SVG
     trayIcon.setIcon(QIcon(QStringLiteral(":/icons/color_palette.svg")));
+#else
+    trayIcon.setIcon(QIcon(QStringLiteral(":/icons/color_palette.png")));
+#endif
+#ifndef DD_NO_MENU
+    TrayMenu trayMenu;
     trayIcon.setContextMenu(&trayMenu);
     QObject::connect(&preferencesDialog, &PreferencesDialog::muteChanged, &trayMenu, &TrayMenu::setMute);
     QObject::connect(&preferencesDialog, &PreferencesDialog::about, &trayMenu, &TrayMenu::onAboutClicked);
-    QObject::connect(&preferencesDialog, &PreferencesDialog::play, &playerWindow, &PlayerWindow::play);
-    QObject::connect(&preferencesDialog, &PreferencesDialog::pause, &playerWindow, &PlayerWindow::pause);
-    QObject::connect(&preferencesDialog, &PreferencesDialog::urlChanged, &playerWindow, &PlayerWindow::setUrl);
-    QObject::connect(&preferencesDialog, &PreferencesDialog::audioFileChanged, &playerWindow, &PlayerWindow::setAudio);
-    QObject::connect(&preferencesDialog, &PreferencesDialog::subtitleFileChanged, &playerWindow, &PlayerWindow::setSubtitle);
-    QObject::connect(&preferencesDialog, &PreferencesDialog::volumeChanged, &playerWindow, &PlayerWindow::setVolume);
-    QObject::connect(&preferencesDialog, &PreferencesDialog::seek, &playerWindow, &PlayerWindow::seek);
-    QObject::connect(&preferencesDialog, &PreferencesDialog::videoTrackChanged, &playerWindow, &PlayerWindow::setVideoTrack);
-    QObject::connect(&preferencesDialog, &PreferencesDialog::audioTrackChanged, &playerWindow, &PlayerWindow::setAudioTrack);
-    QObject::connect(&preferencesDialog, &PreferencesDialog::subtitleTrackChanged, &playerWindow, &PlayerWindow::setSubtitleTrack);
-    QObject::connect(&preferencesDialog, &PreferencesDialog::rendererChanged, &playerWindow, &PlayerWindow::setRenderer);
-    QObject::connect(&preferencesDialog, &PreferencesDialog::imageQualityChanged, &playerWindow, &PlayerWindow::setImageQuality);
-    QObject::connect(&preferencesDialog, &PreferencesDialog::charsetChanged, &playerWindow, &PlayerWindow::setCharset);
-    QObject::connect(&preferencesDialog, &PreferencesDialog::subtitleAutoLoadChanged, &playerWindow, &PlayerWindow::setSubtitleAutoLoad);
-    QObject::connect(&preferencesDialog, &PreferencesDialog::subtitleEnableChanged, &playerWindow, &PlayerWindow::setSubtitleEnabled);
-    QObject::connect(&preferencesDialog, &PreferencesDialog::imageRatioChanged, &playerWindow, &PlayerWindow::setImageRatio);
-    QObject::connect(&playerWindow, &PlayerWindow::playStateChanged, &preferencesDialog, &PreferencesDialog::setPlaying);
     QObject::connect(&playerWindow, &PlayerWindow::playStateChanged, &trayMenu, &TrayMenu::setPlaying);
-    QObject::connect(&playerWindow, &PlayerWindow::mediaPositionChanged, &preferencesDialog, &PreferencesDialog::setMediaSliderPosition);
-    QObject::connect(&playerWindow, &PlayerWindow::videoPositionTextChanged, &preferencesDialog, &PreferencesDialog::setVideoPositionText);
-    QObject::connect(&playerWindow, &PlayerWindow::audioAreaEnableChanged, &preferencesDialog, &PreferencesDialog::setAudioAreaEnabled);
-    QObject::connect(&playerWindow, &PlayerWindow::clearAllTracks, &preferencesDialog, &PreferencesDialog::clearAllTracks);
-    QObject::connect(&playerWindow, &PlayerWindow::mediaSliderUnitChanged, &preferencesDialog, &PreferencesDialog::setMediaSliderUnit);
-    QObject::connect(&playerWindow, &PlayerWindow::mediaSliderRangeChanged, &preferencesDialog, &PreferencesDialog::setMediaSliderRange);
-    QObject::connect(&playerWindow, &PlayerWindow::seekAreaEnableChanged, &preferencesDialog, &PreferencesDialog::setSeekAreaEnabled);
-    QObject::connect(&playerWindow, &PlayerWindow::videoTracksChanged, &preferencesDialog, &PreferencesDialog::setVideoTracks);
-    QObject::connect(&playerWindow, &PlayerWindow::audioTracksChanged, &preferencesDialog, &PreferencesDialog::setAudioTracks);
-    QObject::connect(&playerWindow, &PlayerWindow::subtitleTracksChanged, &preferencesDialog, &PreferencesDialog::setSubtitleTracks);
-    QObject::connect(&playerWindow, &PlayerWindow::videoDurationTextChanged, &preferencesDialog, &PreferencesDialog::setVideoDurationText);
-    QObject::connect(&preferencesDialog, &PreferencesDialog::languageChanged, [=, &preferencesDialog, &aboutDialog, &trayMenu, &ddTranslator](const QString &lang)
-    {
-        installTranslation(lang, ddTranslator);
-        preferencesDialog.refreshTexts(lang);
-        aboutDialog.refreshTexts(lang);
-        trayMenu.refreshTexts(lang);
-        QMessageBox::information(nullptr, QStringLiteral("Dynamic Desktop"), QObject::tr("Some texts will not refresh their translation until you restart this application."));
-    });
     QObject::connect(&trayMenu, &TrayMenu::onOptionsClicked, [=, &preferencesDialog]
     {
         if (preferencesDialog.isHidden())
@@ -216,16 +205,92 @@ int main(int argc, char *argv[])
         }
     });
     QObject::connect(&trayMenu, &TrayMenu::onExitClicked, &app, &QtSingleApplication::quit);
-    QObject::connect(&trayIcon, &QSystemTrayIcon::activated, [=, &trayMenu](QSystemTrayIcon::ActivationReason reason)
-    {
-        if (reason != QSystemTrayIcon::Context)
-            emit trayMenu.onOptionsClicked();
-    });
     QObject::connect(&app, &QtSingleApplication::messageReceived, [=, &trayMenu](const QString &message)
     {
         Q_UNUSED(message)
         emit trayMenu.onOptionsClicked();
     });
+    QObject::connect(&trayIcon, &QSystemTrayIcon::activated, [=, &trayMenu](QSystemTrayIcon::ActivationReason reason)
+    {
+        if (reason != QSystemTrayIcon::Context)
+            emit trayMenu.onOptionsClicked();
+    });
+#ifndef DD_NO_TRANSLATIONS
+    QObject::connect(&preferencesDialog, &PreferencesDialog::languageChanged, [=, &preferencesDialog, &aboutDialog, &trayMenu, &ddTranslator](const QString &lang)
+    {
+        installTranslation(lang, ddTranslator);
+        preferencesDialog.refreshTexts(lang);
+        aboutDialog.refreshTexts(lang);
+        trayMenu.refreshTexts(lang);
+        QMessageBox::information(nullptr, QStringLiteral("Dynamic Desktop"), DD_OBJ_TR("Some texts will not refresh their translation until you restart this application."));
+    });
+#endif
+#else
+    QObject::connect(&app, &QtSingleApplication::messageReceived, [=, &trayIcon, &preferencesDialog](const QString &message)
+    {
+        Q_UNUSED(message)
+        emit trayIcon.activated(QSystemTrayIcon::DoubleClick);
+    });
+    QObject::connect(&trayIcon, &QSystemTrayIcon::activated, [=, &preferencesDialog](QSystemTrayIcon::ActivationReason reason)
+    {
+        Q_UNUSED(reason)
+        if (preferencesDialog.isHidden())
+        {
+            Utils::moveToCenter(&preferencesDialog);
+            preferencesDialog.show();
+        }
+        if (!preferencesDialog.isActiveWindow())
+            preferencesDialog.setWindowState(preferencesDialog.windowState() & ~Qt::WindowMinimized);
+        if (!preferencesDialog.isActiveWindow())
+        {
+            preferencesDialog.raise();
+            preferencesDialog.activateWindow();
+        }
+    });
+#ifndef DD_NO_TRANSLATIONS
+    QObject::connect(&preferencesDialog, &PreferencesDialog::languageChanged, [=, &preferencesDialog, &aboutDialog, &ddTranslator](const QString &lang)
+    {
+        installTranslation(lang, ddTranslator);
+        preferencesDialog.refreshTexts(lang);
+        aboutDialog.refreshTexts(lang);
+        QMessageBox::information(nullptr, QStringLiteral("Dynamic Desktop"), DD_OBJ_TR("Some texts will not refresh their translation until you restart this application."));
+    });
+#endif
+#endif
+    QObject::connect(&preferencesDialog, &PreferencesDialog::play, &playerWindow, &PlayerWindow::play);
+    QObject::connect(&preferencesDialog, &PreferencesDialog::pause, &playerWindow, &PlayerWindow::pause);
+    QObject::connect(&preferencesDialog, &PreferencesDialog::urlChanged, &playerWindow, &PlayerWindow::setUrl);
+#ifndef DD_NO_TOOLTIP
+    QObject::connect(&preferencesDialog, &PreferencesDialog::urlChanged, [=, &trayIcon](const QString &text)
+    {
+        trayIcon.setTooltip(QStringLiteral("Dynamic Desktop: %0").arg(text));
+    });
+#endif
+    QObject::connect(&preferencesDialog, &PreferencesDialog::audioFileChanged, &playerWindow, &PlayerWindow::setAudio);
+    QObject::connect(&preferencesDialog, &PreferencesDialog::subtitleFileChanged, &playerWindow, &PlayerWindow::setSubtitle);
+    QObject::connect(&preferencesDialog, &PreferencesDialog::volumeChanged, &playerWindow, &PlayerWindow::setVolume);
+    QObject::connect(&preferencesDialog, &PreferencesDialog::seek, &playerWindow, &PlayerWindow::seek);
+    QObject::connect(&preferencesDialog, &PreferencesDialog::videoTrackChanged, &playerWindow, &PlayerWindow::setVideoTrack);
+    QObject::connect(&preferencesDialog, &PreferencesDialog::audioTrackChanged, &playerWindow, &PlayerWindow::setAudioTrack);
+    QObject::connect(&preferencesDialog, &PreferencesDialog::subtitleTrackChanged, &playerWindow, &PlayerWindow::setSubtitleTrack);
+    QObject::connect(&preferencesDialog, &PreferencesDialog::rendererChanged, &playerWindow, &PlayerWindow::setRenderer);
+    QObject::connect(&preferencesDialog, &PreferencesDialog::imageQualityChanged, &playerWindow, &PlayerWindow::setImageQuality);
+    QObject::connect(&preferencesDialog, &PreferencesDialog::charsetChanged, &playerWindow, &PlayerWindow::setCharset);
+    QObject::connect(&preferencesDialog, &PreferencesDialog::subtitleAutoLoadChanged, &playerWindow, &PlayerWindow::setSubtitleAutoLoad);
+    QObject::connect(&preferencesDialog, &PreferencesDialog::subtitleEnableChanged, &playerWindow, &PlayerWindow::setSubtitleEnabled);
+    QObject::connect(&preferencesDialog, &PreferencesDialog::imageRatioChanged, &playerWindow, &PlayerWindow::setImageRatio);
+    QObject::connect(&playerWindow, &PlayerWindow::playStateChanged, &preferencesDialog, &PreferencesDialog::setPlaying);
+    QObject::connect(&playerWindow, &PlayerWindow::mediaPositionChanged, &preferencesDialog, &PreferencesDialog::setMediaSliderPosition);
+    QObject::connect(&playerWindow, &PlayerWindow::videoPositionTextChanged, &preferencesDialog, &PreferencesDialog::setVideoPositionText);
+    QObject::connect(&playerWindow, &PlayerWindow::audioAreaEnableChanged, &preferencesDialog, &PreferencesDialog::setAudioAreaEnabled);
+    QObject::connect(&playerWindow, &PlayerWindow::clearAllTracks, &preferencesDialog, &PreferencesDialog::clearAllTracks);
+    QObject::connect(&playerWindow, &PlayerWindow::mediaSliderUnitChanged, &preferencesDialog, &PreferencesDialog::setMediaSliderUnit);
+    QObject::connect(&playerWindow, &PlayerWindow::mediaSliderRangeChanged, &preferencesDialog, &PreferencesDialog::setMediaSliderRange);
+    QObject::connect(&playerWindow, &PlayerWindow::seekAreaEnableChanged, &preferencesDialog, &PreferencesDialog::setSeekAreaEnabled);
+    QObject::connect(&playerWindow, &PlayerWindow::videoTracksChanged, &preferencesDialog, &PreferencesDialog::setVideoTracks);
+    QObject::connect(&playerWindow, &PlayerWindow::audioTracksChanged, &preferencesDialog, &PreferencesDialog::setAudioTracks);
+    QObject::connect(&playerWindow, &PlayerWindow::subtitleTracksChanged, &preferencesDialog, &PreferencesDialog::setSubtitleTracks);
+    QObject::connect(&playerWindow, &PlayerWindow::videoDurationTextChanged, &preferencesDialog, &PreferencesDialog::setVideoDurationText);
     QObject::connect(qApp, &QtSingleApplication::aboutToQuit, [=]
     {
         Wallpaper::hideWallpaper();

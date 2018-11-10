@@ -1,5 +1,7 @@
 #include "skinsmanager.h"
 
+#ifndef DD_NO_CSS
+
 #include <QFile>
 #include <QFileInfo>
 #include <QTextStream>
@@ -57,3 +59,5 @@ bool SkinsManager::setSkin(const QString &skin)
     }
     return false;
 }
+
+#endif

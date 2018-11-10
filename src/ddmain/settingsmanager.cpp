@@ -168,15 +168,19 @@ bool SettingsManager::getAudioAutoLoad() const
     return settings->value(QStringLiteral("audioautoload"), true).toBool();
 }
 
+#ifndef DD_NO_CSS
 QString SettingsManager::getSkin() const
 {
     return settings->value(QStringLiteral("skin"), QStringLiteral("Default")).toString();
 }
+#endif
 
+#ifndef DD_NO_TRANSLATIONS
 QString SettingsManager::getLanguage() const
 {
     return settings->value(QStringLiteral("language"), QStringLiteral("auto")).toString();
 }
+#endif
 
 int SettingsManager::getRenderer() const
 {
@@ -288,15 +292,19 @@ void SettingsManager::setAudioAutoLoad(bool autoload)
     settings->setValue(QStringLiteral("audioautoload"), autoload);
 }
 
+#ifndef DD_NO_CSS
 void SettingsManager::setSkin(const QString &skin)
 {
     settings->setValue(QStringLiteral("skin"), skin);
 }
+#endif
 
+#ifndef DD_NO_TRANSLATIONS
 void SettingsManager::setLanguage(const QString &lang)
 {
     settings->setValue(QStringLiteral("language"), lang);
 }
+#endif
 
 void SettingsManager::setRenderer(int vid)
 {

@@ -28,8 +28,8 @@ IF EXIST "%ProgramFiles(x86)%\Windows Kits\10\Redist\D3D\%TARGET_ARCH%\d3dcompil
     @ECHO cd /D %%~dp0..
     @ECHO echo Remember to call vcvarsall.bat to complete environment setup!
 )
-CD /D "%~dp0"
-RD /S /Q "%SRC_DIR%"
+CD /D "%SRC_DIR%"
+RD /S /Q build
 TITLE Compiling process finished
 CLS
 ECHO Compiling process have finished successfully

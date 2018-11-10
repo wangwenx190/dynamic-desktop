@@ -45,8 +45,10 @@ AboutDialog::~AboutDialog()
     delete ui;
 }
 
+#ifndef DD_NO_TRANSLATIONS
 void AboutDialog::refreshTexts(const QString &language)
 {
     Q_UNUSED(language)
     ui->retranslateUi(this);
 }
+#endif

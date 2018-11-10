@@ -1,7 +1,4 @@
 <RCC>
-    <qresource prefix="/i18n">
-        <file alias="dd_zh_CN.qm">../resources/translations/dd_zh_CN.qm</file>
-    </qresource>
     <qresource prefix="/icons">
         <file alias="color_palette.svg">../resources/icons/color_palette.svg</file>
         <file alias="close.svg">../resources/icons/close.svg</file>
@@ -21,12 +18,5 @@
         <file alias="mute-light.svg">../resources/icons/mute-light.svg</file>
         <file alias="sound-light.svg">../resources/icons/sound-light.svg</file>
         <file alias="info.svg">../resources/icons/info.svg</file>
-    </qresource>
-    <qresource prefix="/skins">
-        <file alias="Default.css">../resources/stylesheets/Default.css</file>
-        <file alias="Greenery.css">../resources/stylesheets/Greenery.css</file>
-        <file alias="Marsala.css">../resources/stylesheets/Marsala.css</file>
-        <file alias="Rose Quartz &amp; Serenity.css">../resources/stylesheets/Rose Quartz &amp; Serenity.css</file>
-        <file alias="Ultra Violet.css">../resources/stylesheets/Ultra Violet.css</file>
     </qresource>
 </RCC>

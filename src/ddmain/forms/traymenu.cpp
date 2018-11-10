@@ -1,4 +1,7 @@
 #include "traymenu.h"
+
+#ifndef DD_NO_MENU
+
 #include "ui_traymenu.h"
 
 TrayMenu::TrayMenu(QWidget *parent) : QMenu(parent)
@@ -19,15 +22,17 @@ TrayMenu::~TrayMenu()
     delete ui;
 }
 
+#ifndef DD_NO_TRANSLATIONS
 void TrayMenu::refreshTexts(const QString &language)
 {
     Q_UNUSED(language)
     ui->retranslateUi(this);
     if (muted)
-        ui->toolButton_mute->setText(tr("Unmute"));
+        ui->toolButton_mute->setText(DD_TR("Unmute"));
     else
-        ui->toolButton_mute->setText(tr("Mute"));
+        ui->toolButton_mute->setText(DD_TR("Mute"));
 }
+#endif
 
 void TrayMenu::setMute(bool mute)
 {
@@ -36,12 +41,12 @@ void TrayMenu::setMute(bool mute)
         muted = mute;
         if (muted)
         {
-            ui->toolButton_mute->setText(tr("Unmute"));
+            ui->toolButton_mute->setText(DD_TR("Unmute"));
             ui->toolButton_mute->setIcon(QIcon(QStringLiteral(":/icons/sound-light.svg")));
         }
         else
         {
-            ui->toolButton_mute->setText(tr("Mute"));
+            ui->toolButton_mute->setText(DD_TR("Mute"));
             ui->toolButton_mute->setIcon(QIcon(QStringLiteral(":/icons/mute-light.svg")));
         }
     }
@@ -60,3 +65,5 @@ void TrayMenu::showEvent(QShowEvent *event)
     move(geometry().left() + 30, geometry().top() - height() - 30);
     QMenu::showEvent(event);
 }
+
+#endif

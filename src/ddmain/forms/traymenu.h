@@ -1,5 +1,7 @@
 #pragma once
 
+#ifndef DD_NO_MENU
+
 #include <QMenu>
 
 namespace Ui
@@ -25,7 +27,9 @@ public:
     ~TrayMenu() override;
 
 public slots:
+#ifndef DD_NO_TRANSLATIONS
     void refreshTexts(const QString &language);
+#endif
     void setMute(bool mute = true);
     void setPlaying(bool playing = true);
 
@@ -36,3 +40,5 @@ private:
     Ui::TrayMenu *ui = nullptr;
     bool muted = false;
 };
+
+#endif

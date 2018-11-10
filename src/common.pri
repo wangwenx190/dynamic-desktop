@@ -30,3 +30,18 @@ CONFIG(enable_small) {
 }
 include($$PWD/optimize.pri)
 CONFIG -= app_bundle
+CONFIG(enable_lite_build) {
+    DEFINES *= BUILD_DD_LITE
+    CONFIG *= \
+        no_tooltip \
+        no_css \
+        no_mime_type \
+        no_win_extras \
+        no_svg \
+        no_drag_drop \
+        no_menu \
+        no_wheel_event \
+        no_translations \
+        no_commandline_parser
+}
+CONFIG(static, static|shared): DEFINES *= BUILD_DD_STATIC

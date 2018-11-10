@@ -14,8 +14,10 @@ void Slider::mousePressEvent(QMouseEvent *event)
     emit sliderMoved(value());
 }
 
+#ifndef DD_NO_WHEEL_EVENT
 void Slider::wheelEvent(QWheelEvent *event)
 {
     QSlider::wheelEvent(event);
     emit sliderMoved(value());
 }
+#endif

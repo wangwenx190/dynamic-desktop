@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/icons">
+        <file alias="color_palette.png">../resources/icons/color_palette.png</file>
+    </qresource>
+</RCC>

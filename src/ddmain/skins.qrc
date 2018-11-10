@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/skins">
+        <file alias="Default.css">../resources/stylesheets/Default.css</file>
+        <file alias="Greenery.css">../resources/stylesheets/Greenery.css</file>
+        <file alias="Marsala.css">../resources/stylesheets/Marsala.css</file>
+        <file alias="Rose Quartz &amp; Serenity.css">../resources/stylesheets/Rose Quartz &amp; Serenity.css</file>
+        <file alias="Ultra Violet.css">../resources/stylesheets/Ultra Violet.css</file>
+    </qresource>
+</RCC>

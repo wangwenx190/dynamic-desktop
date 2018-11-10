@@ -1,7 +1,9 @@
 #include "preferencesdialog.h"
 #include "ui_preferencesdialog.h"
 #include "settingsmanager.h"
+#ifndef DD_NO_CSS
 #include "skinsmanager.h"
+#endif
 #include "utils.h"
 #include <Win32Utils>
 #include <tchar.h>
@@ -15,7 +17,9 @@
 #include <QFileInfo>
 #include <QDir>
 #include <QMessageBox>
+#ifndef DD_NO_DRAG_DROP
 #include <QDragEnterEvent>
+#endif
 #include <QUrl>
 #ifndef DD_NO_MIME_TYPE
 #include <QMimeDatabase>
@@ -28,6 +32,7 @@
 #include <QLibraryInfo>
 #endif
 
+#ifndef DD_NO_CSS
 void PreferencesDialog::populateSkins(const QString &dirPath, bool add, bool isExternal)
 {
     if (dirPath.isEmpty())
@@ -41,7 +46,7 @@ void PreferencesDialog::populateSkins(const QString &dirPath, bool add, bool isE
         if (!add)
         {
             ui->comboBox_skin->clear();
-            ui->comboBox_skin->addItem(tr("<None>"), QStringLiteral("none"));
+            ui->comboBox_skin->addItem(DD_TR("<None>"), QStringLiteral("none"));
         }
         for (auto& skinFile : skinFileList)
             ui->comboBox_skin->addItem(skinFile.completeBaseName(), isExternal ? skinFile.absoluteFilePath() : skinFile.completeBaseName());
@@ -51,7 +56,9 @@ void PreferencesDialog::populateSkins(const QString &dirPath, bool add, bool isE
     else
         ui->comboBox_skin->setEnabled(false);
 }
+#endif
 
+#ifndef DD_NO_TRANSLATIONS
 void PreferencesDialog::populateLanguages(const QString &dirPath, bool add, bool isExternal)
 {
     if (dirPath.isEmpty())
@@ -65,7 +72,7 @@ void PreferencesDialog::populateLanguages(const QString &dirPath, bool add, bool
         if (!add)
         {
             ui->comboBox_language->clear();
-            ui->comboBox_language->addItem(tr("Auto"), QStringLiteral("auto"));
+            ui->comboBox_language->addItem(DD_TR("Auto"), QStringLiteral("auto"));
             ui->comboBox_language->addItem(QStringLiteral("American English"), QStringLiteral("en"));
         }
         for (auto& languageFile : languageFileList)
@@ -87,6 +94,7 @@ void PreferencesDialog::populateLanguages(const QString &dirPath, bool add, bool
         ui->comboBox_language->setEnabled(false);
     }
 }
+#endif
 
 void PreferencesDialog::setMediaSliderPosition(qint64 position)
 {
@@ -133,7 +141,7 @@ void PreferencesDialog::setVideoTracks(const QVariantList& videoTracks)
             quint32 id = trackData[QStringLiteral("id")].toUInt();
             QString lang = trackData[QStringLiteral("language")].toString();
             QString title = trackData[QStringLiteral("title")].toString();
-            QString txt = tr("ID: %0 | Title: %1 | Language: %2")
+            QString txt = DD_TR("ID: %0 | Title: %1 | Language: %2")
                     .arg(id).arg(title).arg(lang);
             ui->comboBox_video_track->addItem(txt, id);
         }
@@ -156,7 +164,7 @@ void PreferencesDialog::setAudioTracks(const QVariantList& audioTracks, bool add
             quint32 id = trackData[QStringLiteral("id")].toUInt();
             QString lang = trackData[QStringLiteral("language")].toString();
             QString title = trackData[QStringLiteral("title")].toString();
-            QString txt = tr("ID: %0 | Title: %1 | Language: %2")
+            QString txt = DD_TR("ID: %0 | Title: %1 | Language: %2")
                     .arg(id).arg(title).arg(lang);
             ui->comboBox_audio_track->addItem(txt, id);
         }
@@ -181,14 +189,14 @@ void PreferencesDialog::setSubtitleTracks(const QVariantList& subtitleTracks, bo
                 quint32 id = trackData[QStringLiteral("id")].toUInt();
                 QString lang = trackData[QStringLiteral("language")].toString();
                 QString title = trackData[QStringLiteral("title")].toString();
-                QString txt = tr("ID: %0 | Title: %1 | Language: %2")
+                QString txt = DD_TR("ID: %0 | Title: %1 | Language: %2")
                         .arg(id).arg(title).arg(lang);
                 ui->comboBox_subtitle_track->addItem(txt, id);
             }
             else
             {
                 QString file = trackData[QStringLiteral("file")].toString();
-                QString txt = tr("File: %0").arg(QFileInfo(file).fileName());
+                QString txt = DD_TR("File: %0").arg(QFileInfo(file).fileName());
                 ui->comboBox_subtitle_track->addItem(txt, file);
             }
         }
@@ -292,19 +300,24 @@ void PreferencesDialog::initUI()
     ui->comboBox_video_track->setEnabled(false);
     ui->comboBox_audio_track->setEnabled(false);
     ui->comboBox_subtitle_track->setEnabled(false);
-    ui->comboBox_image_quality->addItem(tr("Best"), QStringLiteral("best"));
-    ui->comboBox_image_quality->addItem(tr("Fastest"), QStringLiteral("fastest"));
-    ui->comboBox_image_quality->addItem(tr("Default"), QStringLiteral("default"));
+    ui->comboBox_image_quality->addItem(DD_TR("Best"), QStringLiteral("best"));
+    ui->comboBox_image_quality->addItem(DD_TR("Fastest"), QStringLiteral("fastest"));
+    ui->comboBox_image_quality->addItem(DD_TR("Default"), QStringLiteral("default"));
     ui->comboBox_video_renderer->addItem(QStringLiteral("OpenGLWidget"), Utils::getVideoRendererId(Utils::VideoRendererId::OpenGLWidget));
     ui->comboBox_video_renderer->addItem(QStringLiteral("QGLWidget2"), Utils::getVideoRendererId(Utils::VideoRendererId::GLWidget2));
     ui->comboBox_video_renderer->addItem(QStringLiteral("Widget"), Utils::getVideoRendererId(Utils::VideoRendererId::Widget));
     ui->comboBox_video_renderer->addItem(QStringLiteral("GDI"), Utils::getVideoRendererId(Utils::VideoRendererId::GDI));
     ui->comboBox_video_renderer->addItem(QStringLiteral("Direct2D"), Utils::getVideoRendererId(Utils::VideoRendererId::Direct2D));
-    ui->comboBox_skin->addItem(tr("<None>"), QStringLiteral("none"));
+#ifndef DD_NO_CSS
+    ui->comboBox_skin->addItem(DD_TR("<None>"), QStringLiteral("none"));
     populateSkins(QStringLiteral(":/skins"));
     const QString skinDirPath = QApplication::applicationDirPath() + QStringLiteral("/skins");
     populateSkins(skinDirPath, true, true);
-    ui->comboBox_language->addItem(tr("Auto"), QStringLiteral("auto"));
+#else
+    ui->comboBox_skin->setEnabled(false);
+#endif
+#ifndef DD_NO_TRANSLATIONS
+    ui->comboBox_language->addItem(DD_TR("Auto"), QStringLiteral("auto"));
     ui->comboBox_language->addItem(QStringLiteral("American English"), QStringLiteral("en"));
     populateLanguages(QStringLiteral(":/i18n"));
 #ifdef BUILD_DD_STATIC
@@ -313,8 +326,11 @@ void PreferencesDialog::initUI()
     const QString i18nDirPath = QLibraryInfo::location(QLibraryInfo::TranslationsPath);
 #endif
     populateLanguages(i18nDirPath, true, true);
-    ui->comboBox_subtitle_charset->addItem(tr("Auto detect"), QStringLiteral("AutoDetect"));
-    ui->comboBox_subtitle_charset->addItem(tr("System"), QStringLiteral("System"));
+#else
+    ui->comboBox_language->setEnabled(false);
+#endif
+    ui->comboBox_subtitle_charset->addItem(DD_TR("Auto detect"), QStringLiteral("AutoDetect"));
+    ui->comboBox_subtitle_charset->addItem(DD_TR("System"), QStringLiteral("System"));
     for (auto& codec : QTextCodec::availableCodecs())
         ui->comboBox_subtitle_charset->addItem(QString::fromLatin1(codec), QString::fromLatin1(codec));
     const QStringList history = SettingsManager::getInstance()->getHistory();
@@ -347,10 +363,14 @@ void PreferencesDialog::initUI()
     ui->checkBox_subtitle_autoLoadExternal->setChecked(SettingsManager::getInstance()->getSubtitleAutoLoad());
     ui->checkBox_displaySubtitle->setChecked(SettingsManager::getInstance()->getSubtitle());
     ui->checkBox_audio_autoLoadExternal->setChecked(SettingsManager::getInstance()->getAudioAutoLoad());
+#ifndef DD_NO_CSS
     i = ui->comboBox_skin->findData(SettingsManager::getInstance()->getSkin());
     ui->comboBox_skin->setCurrentIndex(i > -1 ? i : 0);
+#endif
+#ifndef DD_NO_TRANSLATIONS
     i = ui->comboBox_language->findData(SettingsManager::getInstance()->getLanguage());
     ui->comboBox_language->setCurrentIndex(i > -1 ? i : 0);
+#endif
     const int vid = SettingsManager::getInstance()->getRenderer();
     i = ui->comboBox_video_renderer->findData(vid <= 0 ? Utils::getVideoRendererId(Utils::VideoRendererId::GLWidget2) : vid);
     ui->comboBox_video_renderer->setCurrentIndex(i > -1 ? i : 0);
@@ -392,13 +412,13 @@ void PreferencesDialog::initConnections()
 #endif
     connect(ui->pushButton_audio_open, &QPushButton::clicked, this, [=]
     {
-        QString audioPath = QFileDialog::getOpenFileName(nullptr, tr("Please select an audio file"), SettingsManager::getInstance()->lastDir(), tr("Audios (*.mka *.aac *.flac *.mp3 *.wav);;All files (*)"));
+        QString audioPath = QFileDialog::getOpenFileName(nullptr, DD_TR("Please select an audio file"), SettingsManager::getInstance()->lastDir(), DD_TR("Audios (*.mka *.aac *.flac *.mp3 *.wav);;All files (*)"));
         if (!audioPath.isEmpty())
             emit this->audioFileChanged(audioPath);
     });
     connect(ui->pushButton_subtitle_open, &QPushButton::clicked, this, [=]
     {
-        QString subtitlePath = QFileDialog::getOpenFileName(nullptr, tr("Please select a subtitle file"), SettingsManager::getInstance()->lastDir(), tr("Subtitles (*.ass *.ssa *.srt *.sub);;All files (*)"));
+        QString subtitlePath = QFileDialog::getOpenFileName(nullptr, DD_TR("Please select a subtitle file"), SettingsManager::getInstance()->lastDir(), DD_TR("Subtitles (*.ass *.ssa *.srt *.sub);;All files (*)"));
         if (!subtitlePath.isEmpty())
             emit this->subtitleFileChanged(subtitlePath);
     });
@@ -456,7 +476,7 @@ void PreferencesDialog::initConnections()
     connect(ui->pushButton_cancel, &QPushButton::clicked, this, &PreferencesDialog::close);
     connect(ui->pushButton_url_browse, &QPushButton::clicked, this, [=]
     {
-        QString path = QDir::toNativeSeparators(QDir::cleanPath(QFileDialog::getOpenFileName(nullptr, tr("Please select a media file"), SettingsManager::getInstance()->lastDir(), tr("Videos (*.avi *.mp4 *.mkv *.flv);;Audios (*.mp3 *.flac *.ape *.wav);;Pictures (*.bmp *.jpg *.jpeg *.png *.gif);;All files (*)"))));
+        QString path = QDir::toNativeSeparators(QDir::cleanPath(QFileDialog::getOpenFileName(nullptr, DD_TR("Please select a media file"), SettingsManager::getInstance()->lastDir(), DD_TR("Videos (*.avi *.mp4 *.mkv *.flv);;Audios (*.mp3 *.flac *.ape *.wav);;Pictures (*.bmp *.jpg *.jpeg *.png *.gif);;All files (*)"))));
         if (!path.isEmpty())
         {
             if (ui->comboBox_url->findText(path) < 0)
@@ -467,7 +487,7 @@ void PreferencesDialog::initConnections()
     connect(ui->pushButton_url_input, &QPushButton::clicked, this, [=]
     {
         bool ok = false;
-        QString input = QInputDialog::getText(nullptr, tr("Please input a valid URL"), tr("URL"), QLineEdit::Normal, QStringLiteral("https://"), &ok);
+        QString input = QInputDialog::getText(nullptr, DD_TR("Please input a valid URL"), DD_TR("URL"), QLineEdit::Normal, QStringLiteral("https://"), &ok);
         if (ok && !input.isEmpty())
         {
             QUrl url(input);
@@ -486,7 +506,7 @@ void PreferencesDialog::initConnections()
                     ui->comboBox_url->setCurrentText(url.url());
                 }
             else
-                QMessageBox::warning(nullptr, QStringLiteral("Dynamic Desktop"), tr("\"%0\" is not a valid URL.").arg(input));
+                QMessageBox::warning(nullptr, QStringLiteral("Dynamic Desktop"), DD_TR("\"%0\" is not a valid URL.").arg(input));
         }
     });
     connect(ui->checkBox_hwdec, &QCheckBox::clicked, this, [=]
@@ -500,6 +520,7 @@ void PreferencesDialog::initConnections()
     connect(ui->checkBox_hwdec_cuda, &QCheckBox::clicked, this, &PreferencesDialog::setDecoders);
     connect(ui->checkBox_hwdec_d3d11, &QCheckBox::clicked, this, &PreferencesDialog::setDecoders);
     connect(ui->checkBox_hwdec_dxva, &QCheckBox::clicked, this, &PreferencesDialog::setDecoders);
+#ifndef DD_NO_CSS
     connect(ui->comboBox_skin, qOverload<int>(&QComboBox::currentIndexChanged), this, [=](int index)
     {
         Q_UNUSED(index)
@@ -509,6 +530,8 @@ void PreferencesDialog::initConnections()
             SkinsManager::getInstance()->setSkin(SettingsManager::getInstance()->getSkin());
         }
     });
+#endif
+#ifndef DD_NO_TRANSLATIONS
     connect(ui->comboBox_language, qOverload<int>(&QComboBox::currentIndexChanged), this, [=](int index)
     {
         Q_UNUSED(index)
@@ -518,6 +541,7 @@ void PreferencesDialog::initConnections()
             emit this->languageChanged(SettingsManager::getInstance()->getLanguage());
         }
     });
+#endif
     connect(ui->comboBox_video_track, qOverload<int>(&QComboBox::currentIndexChanged), this, [=](int index)
     {
         Q_UNUSED(index)
@@ -630,7 +654,7 @@ void PreferencesDialog::setDecoders()
     if (decoders != SettingsManager::getInstance()->getDecoders())
         SettingsManager::getInstance()->setDecoders(decoders);
     if (isVisible() && isActiveWindow())
-        QMessageBox::information(nullptr, QStringLiteral("Dynamic Desktop"), tr("Reopen this video or play another video to experience it.\nMake sure this application runs in your GPU's Optimus mode."));
+        QMessageBox::information(nullptr, QStringLiteral("Dynamic Desktop"), DD_TR("Reopen this video or play another video to experience it.\nMake sure this application runs in your GPU's Optimus mode."));
 }
 
 void PreferencesDialog::setRatio()
@@ -642,11 +666,13 @@ void PreferencesDialog::setRatio()
     }
 }
 
+#ifndef DD_NO_TRANSLATIONS
 void PreferencesDialog::refreshTexts(const QString &language)
 {
     Q_UNUSED(language)
     ui->retranslateUi(this);
 }
+#endif
 
 void PreferencesDialog::setMute(bool mute)
 {

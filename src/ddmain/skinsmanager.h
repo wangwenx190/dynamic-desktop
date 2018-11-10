@@ -1,5 +1,7 @@
 #pragma once
 
+#ifndef DD_NO_CSS
+
 #include <QtCore>
 
 class SkinsManager
@@ -16,3 +18,5 @@ private:
     QString curSkinName;
     QString curSkinPath;
 };
+
+#endif

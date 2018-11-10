@@ -21,7 +21,9 @@ signals:
     void about();
     void play();
     void pause();
+#ifndef DD_NO_TRANSLATIONS
     void languageChanged(const QString &);
+#endif
     void urlChanged(const QString &);
     void audioFileChanged(const QString &);
     void subtitleFileChanged(const QString &);
@@ -38,7 +40,9 @@ signals:
     void imageRatioChanged(bool);
 
 public slots:
+#ifndef DD_NO_TRANSLATIONS
     void refreshTexts(const QString &language);
+#endif
     void setMute(bool mute = true);
     void setPlaying(bool playing = true);
     void togglePlayPause();
@@ -70,8 +74,12 @@ private slots:
     void initConnections();
     void setDecoders();
     void setRatio();
+#ifndef DD_NO_CSS
     void populateSkins(const QString &dirPath, bool add = true, bool isExternal = false);
+#endif
+#ifndef DD_NO_TRANSLATIONS
     void populateLanguages(const QString &dirPath, bool add = true, bool isExternal = false);
+#endif
 
 private:
     Ui::PreferencesDialog *ui = nullptr;

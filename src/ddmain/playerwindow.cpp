@@ -180,7 +180,7 @@ bool PlayerWindow::setRenderer(int id)
     QtAV::VideoRenderer *videoRenderer = QtAV::VideoRenderer::create(rendererId);
     if (!videoRenderer || !videoRenderer->isAvailable() || !videoRenderer->widget())
     {
-        QMessageBox::critical(nullptr, QStringLiteral("Dynamic Desktop"), tr("Current renderer is not available on your platform!"));
+        QMessageBox::critical(nullptr, QStringLiteral("Dynamic Desktop"), DD_TR("Current renderer is not available on your platform!"));
         return false;
     }
     subtitle->uninstall();

@@ -24,8 +24,12 @@ public:
     QString getCharset() const;
     bool getSubtitleAutoLoad() const;
     bool getAudioAutoLoad() const;
+#ifndef DD_NO_CSS
     QString getSkin() const;
+#endif
+#ifndef DD_NO_TRANSLATIONS
     QString getLanguage() const;
+#endif
     int getRenderer() const;
     QString getImageQuality() const;
     QStringList getHistory() const;
@@ -43,8 +47,12 @@ public:
     void setCharset(const QString &charset = QStringLiteral("AutoDetect"));
     void setSubtitleAutoLoad(bool autoload = true);
     void setAudioAutoLoad(bool autoload = true);
+#ifndef DD_NO_CSS
     void setSkin(const QString &skin = QStringLiteral("Default"));
+#endif
+#ifndef DD_NO_TRANSLATIONS
     void setLanguage(const QString &lang = QStringLiteral("auto"));
+#endif
     void setRenderer(int vid);
     void setImageQuality(const QString &quality = QStringLiteral("best"));
     void setHistory(const QStringList &history);
