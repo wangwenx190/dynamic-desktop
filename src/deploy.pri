@@ -45,11 +45,10 @@ CONFIG(shared, static|shared) {
         } else {
             target_file_name = $${target_file_name}.exe
         }
-        CONFIG(enable_small) {
-            libs.commands *= $$quote(\"$${windeployqt}\" --plugindir \"$${BIN_DIR}\\plugins\" --no-translations --no-system-d3d-compiler --no-compiler-runtime --no-angle --no-opengl-sw -opengl --list source \"$${BIN_DIR}\\$${target_file_name}\")
-        } else {
-            libs.commands *= $$quote(\"$${windeployqt}\" --plugindir \"$${BIN_DIR}\\plugins\" --no-translations --no-compiler-runtime --no-opengl-sw -opengl --list source \"$${BIN_DIR}\\$${target_file_name}\")
-        }
+        windeployqt_command = --plugindir \"$${BIN_DIR}\\plugins\" --no-translations --no-compiler-runtime --no-opengl-sw -opengl --list source
+        CONFIG(enable_small): windeployqt_command = $${windeployqt_command} --no-system-d3d-compiler --no-angle
+        CONFIG(no_svg): windeployqt_command = $${windeployqt_command} --no-svg
+        libs.commands *= $$quote(\"$${windeployqt}\" $${windeployqt_command} \"$${BIN_DIR}\\$${target_file_name}\")
     } else {
         message("It seems that there is no \"windeployqt.exe\" in \"$$[QT_INSTALL_BINS]\".")
         message("You may have to copy Qt run-time libraries manually and don\'t forget about the plugins.")
