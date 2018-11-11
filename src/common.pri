@@ -27,6 +27,7 @@ CONFIG(enable_small) {
 include($$PWD/optimize.pri)
 CONFIG -= app_bundle
 CONFIG(enable_lite_build) {
+    message("Building lite version of Dynamic Desktop.")
     DEFINES *= BUILD_DD_LITE
     CONFIG *= \
         no_tooltip \
@@ -45,4 +46,7 @@ CONFIG(enable_lite_build) {
     QMAKE_TARGET_COPYRIGHT = "GNU General Public License version 3.0"
     QMAKE_TARGET_PRODUCT = "Dynamic Desktop"
 }
-CONFIG(static, static|shared): DEFINES *= BUILD_DD_STATIC
+CONFIG(static, static|shared) {
+    message("Building static version of Dynamic Desktop.")
+    DEFINES *= BUILD_DD_STATIC
+}
