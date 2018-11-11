@@ -1,7 +1,6 @@
 #include "utils.h"
 #include <Win32Utils>
 
-#include <tchar.h>
 #include <QApplication>
 #include <QDir>
 #include <QDesktopWidget>
@@ -64,7 +63,7 @@ bool win32Run(const QString &path, const QString &params = QString(), bool needA
     if (!QFileInfo::exists(path))
         return false;
     SHELLEXECUTEINFO execInfo{ sizeof(SHELLEXECUTEINFO) };
-    execInfo.lpVerb = needAdmin ? _T("runas") : nullptr;
+    execInfo.lpVerb = needAdmin ? TEXT("runas") : nullptr;
 #ifdef UNICODE
     execInfo.lpFile = reinterpret_cast<LPCWSTR>(QDir::toNativeSeparators(QDir::cleanPath(path)).utf16());
     execInfo.lpParameters = params.isEmpty() ? nullptr : reinterpret_cast<LPCWSTR>(params.utf16());

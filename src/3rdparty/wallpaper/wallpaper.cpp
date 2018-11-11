@@ -1,7 +1,5 @@
 #include "wallpaper.h"
 
-#include <tchar.h>
-
 namespace Wallpaper
 {
 
@@ -11,10 +9,10 @@ HWND HWORKERW = nullptr;
 BOOL CALLBACK EnumWindowsProc(_In_ HWND hwnd, _In_ LPARAM lParam)
 {
     (void)lParam;
-    HWND defview = FindWindowEx(hwnd, nullptr, _T("SHELLDLL_DefView"), nullptr);
+    HWND defview = FindWindowEx(hwnd, nullptr, TEXT("SHELLDLL_DefView"), nullptr);
     if (defview != nullptr)
     {
-        HWORKERW = FindWindowEx(nullptr, hwnd, _T("WorkerW"), nullptr);
+        HWORKERW = FindWindowEx(nullptr, hwnd, TEXT("WorkerW"), nullptr);
         if (HWORKERW != nullptr)
             return FALSE;
     }
@@ -23,7 +21,7 @@ BOOL CALLBACK EnumWindowsProc(_In_ HWND hwnd, _In_ LPARAM lParam)
 
 HWND getProgman()
 {
-    return FindWindow(_T("Progman"), _T("Program Manager"));
+    return FindWindow(TEXT("Progman"), TEXT("Program Manager"));
 }
 
 HWND getDesktop()

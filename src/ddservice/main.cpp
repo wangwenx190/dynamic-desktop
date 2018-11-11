@@ -13,9 +13,9 @@ DWORD WINAPI ServiceWorkerThread(LPVOID lpParam);
 VOID Install();
 VOID Uninstall();
 
-#define SERVICE_NAME_DD _T("ddassvc")
-#define SERVICE_DISPLAY_NAME_DD _T("Dynamic Desktop Auto Start Service")
-#define SERVICE_DESCRIPTION_DD _T("Make Dynamic Desktop automatically run when the system starts. Dynamic Desktop will not auto start if you disabled this service.")
+#define SERVICE_NAME_DD TEXT("ddassvc")
+#define SERVICE_DISPLAY_NAME_DD TEXT("Dynamic Desktop Auto Start Service")
+#define SERVICE_DESCRIPTION_DD TEXT("Make Dynamic Desktop automatically run when the system starts. Dynamic Desktop will not auto start if you disabled this service.")
 
 int _tmain(int argc, TCHAR *argv[])
 {
@@ -25,12 +25,12 @@ int _tmain(int argc, TCHAR *argv[])
         {nullptr, nullptr}
     };
     for (unsigned int i = 1; i != argc; ++i)
-        if ((_tcscmp(argv[i], _T("-i")) == 0) || (_tcscmp(argv[i], _T("-I")) == 0) || (_tcscmp(argv[i], _T("-install")) == 0) || (_tcscmp(argv[i], _T("-INSTALL")) == 0) || (_tcscmp(argv[i], _T("-Install")) == 0))
+        if ((_tcscmp(argv[i], TEXT("-i")) == 0) || (_tcscmp(argv[i], TEXT("-I")) == 0) || (_tcscmp(argv[i], TEXT("-install")) == 0) || (_tcscmp(argv[i], TEXT("-INSTALL")) == 0) || (_tcscmp(argv[i], TEXT("-Install")) == 0))
         {
             Install();
             break;
         }
-        else if ((_tcscmp(argv[i], _T("-u")) == 0) || (_tcscmp(argv[i], _T("-U")) == 0) || (_tcscmp(argv[i], _T("-uninstall")) == 0) || (_tcscmp(argv[i], _T("-UNINSTALL")) == 0) || (_tcscmp(argv[i], _T("-Uninstall")) == 0))
+        else if ((_tcscmp(argv[i], TEXT("-u")) == 0) || (_tcscmp(argv[i], TEXT("-U")) == 0) || (_tcscmp(argv[i], TEXT("-uninstall")) == 0) || (_tcscmp(argv[i], TEXT("-UNINSTALL")) == 0) || (_tcscmp(argv[i], TEXT("-Uninstall")) == 0))
         {
             Uninstall();
             break;
@@ -44,7 +44,7 @@ VOID Install()
 {
     if (Win32Utils::isAutoStartServiceInstalled(SERVICE_NAME_DD))
     {
-        OutputDebugString(_T("Service already installed. No need to install again."));
+        OutputDebugString(TEXT("Service already installed. No need to install again."));
         return;
     }
     TCHAR filePath[MAX_PATH + 1];
@@ -65,16 +65,16 @@ VOID Install()
         CloseServiceHandle(hSCM);
     }
     if (result)
-        OutputDebugString(_T("Installation succeeded."));
+        OutputDebugString(TEXT("Installation succeeded."));
     else
-        OutputDebugString(_T("Installation failed. Administrator privilege is needed."));
+        OutputDebugString(TEXT("Installation failed. Administrator privilege is needed."));
 }
 
 VOID Uninstall()
 {
     if (!Win32Utils::isAutoStartServiceInstalled(SERVICE_NAME_DD))
     {
-        OutputDebugString(_T("Service not installed. No need to uninstall."));
+        OutputDebugString(TEXT("Service not installed. No need to uninstall."));
         return;
     }
     bool result = false;
@@ -90,9 +90,9 @@ VOID Uninstall()
         CloseServiceHandle(hSCM);
     }
     if (result)
-        OutputDebugString(_T("Uninstallation succeeded."));
+        OutputDebugString(TEXT("Uninstallation succeeded."));
     else
-        OutputDebugString(_T("Uninstallation failed. Administrator privilege is needed."));
+        OutputDebugString(TEXT("Uninstallation failed. Administrator privilege is needed."));
 }
 
 VOID WINAPI ServiceMain(DWORD argc, LPTSTR *argv)
@@ -159,9 +159,9 @@ DWORD WINAPI ServiceWorkerThread(LPVOID lpParam)
     for (;(filePath[dwSize] != '\\') && (dwSize != 0); --dwSize)
         filePath[dwSize] = 0;
 #ifdef _DEBUG
-    _tcscat(filePath, _T("\\ddmaind.exe"));
+    _tcscat(filePath, TEXT("\\ddmaind.exe"));
 #else
-    _tcscat(filePath, _T("\\ddmain.exe"));
+    _tcscat(filePath, TEXT("\\ddmain.exe"));
 #endif
     Win32Utils::launchSession1Process(filePath, nullptr);
     return ERROR_SUCCESS;

@@ -6,7 +6,6 @@
 #endif
 #include "utils.h"
 #include <Win32Utils>
-#include <tchar.h>
 
 #ifndef DD_NO_WIN_EXTRAS
 #include <QWinTaskbarButton>
@@ -344,7 +343,7 @@ void PreferencesDialog::initUI()
         ui->horizontalSlider_volume->setEnabled(ui->checkBox_volume->isChecked());
         ui->horizontalSlider_volume->setValue(SettingsManager::getInstance()->getVolume());
     }
-    ui->checkBox_autoStart->setChecked(Win32Utils::isAutoStartServiceInstalled(_T("ddassvc")));
+    ui->checkBox_autoStart->setChecked(Win32Utils::isAutoStartServiceInstalled(TEXT("ddassvc")));
     QStringList decoders = SettingsManager::getInstance()->getDecoders();
     ui->checkBox_hwdec_cuda->setChecked(decoders.contains(QStringLiteral("CUDA")));
     ui->checkBox_hwdec_d3d11->setChecked(decoders.contains(QStringLiteral("D3D11")));
@@ -598,13 +597,13 @@ void PreferencesDialog::initConnections()
             ui->checkBox_autoStart->setEnabled(false);
             return;
         }
-        if (ui->checkBox_autoStart->isChecked() && !Win32Utils::isAutoStartServiceInstalled(_T("ddassvc")))
+        if (ui->checkBox_autoStart->isChecked() && !Win32Utils::isAutoStartServiceInstalled(TEXT("ddassvc")))
             Utils::run(servicePath, QStringList() << QStringLiteral("-i"), true, true);
-        else if (!ui->checkBox_autoStart->isChecked() && Win32Utils::isAutoStartServiceInstalled(_T("ddassvc")))
+        else if (!ui->checkBox_autoStart->isChecked() && Win32Utils::isAutoStartServiceInstalled(TEXT("ddassvc")))
             Utils::run(servicePath, QStringList() << QStringLiteral("-u"), true, true);
         QTimer::singleShot(2500, this, [=]
         {
-            bool isAutoStart = Win32Utils::isAutoStartServiceInstalled(_T("ddassvc"));
+            bool isAutoStart = Win32Utils::isAutoStartServiceInstalled(TEXT("ddassvc"));
             if (ui->checkBox_autoStart->isChecked() != isAutoStart)
                 ui->checkBox_autoStart->setChecked(isAutoStart);
         });
