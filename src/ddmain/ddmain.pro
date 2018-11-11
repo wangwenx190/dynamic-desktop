@@ -1,8 +1,11 @@
 TARGET = ddmain
 include(../common.pri)
-QMAKE_TARGET_DESCRIPTION = "Dynamic Desktop"
-CONFIG(enable_lite_build): RC_ICONS = ../resources/icons/color_palette_small.ico
-else: RC_ICONS = ../resources/icons/color_palette.ico
+CONFIG(enable_lite_build) {
+    RC_ICONS = ../resources/icons/color_palette_small.ico
+} else {
+    RC_ICONS = ../resources/icons/color_palette.ico
+    QMAKE_TARGET_DESCRIPTION = "Dynamic Desktop"
+}
 QT *= \
     widgets \
     network \

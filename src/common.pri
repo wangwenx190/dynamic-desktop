@@ -7,15 +7,11 @@ isEmpty(DD_MAJOR_VERSION): DD_MAJOR_VERSION = 1
 isEmpty(DD_MINOR_VERSION): DD_MINOR_VERSION = 0
 isEmpty(DD_PATCH_VERSION): DD_PATCH_VERSION = 0
 isEmpty(DD_BUILD_VERSION): DD_BUILD_VERSION = 0
-isEmpty(VERSION): VERSION = $${DD_MAJOR_VERSION}.$${DD_MINOR_VERSION}.$${DD_PATCH_VERSION}.$${DD_BUILD_VERSION}
 isEmpty(DD_COMMIT_ID): DD_COMMIT_ID = -
 isEmpty(DD_COMMIT_TIME): DD_COMMIT_TIME = -
 DEFINES *= \
     DD_COMMIT_ID=\\\"$${DD_COMMIT_ID}\\\" \
     DD_COMMIT_TIME=\\\"$${DD_COMMIT_TIME}\\\"
-QMAKE_TARGET_COMPANY = "wangwenx190"
-QMAKE_TARGET_COPYRIGHT = "GNU General Public License version 3.0"
-QMAKE_TARGET_PRODUCT = "Dynamic Desktop"
 DESTDIR = $${BIN_DIR}
 CONFIG *= c++1z
 DEFINES *= \
@@ -43,5 +39,10 @@ CONFIG(enable_lite_build) {
         no_wheel_event \
         no_translations \
         no_commandline_parser
+} else {
+    isEmpty(VERSION): VERSION = $${DD_MAJOR_VERSION}.$${DD_MINOR_VERSION}.$${DD_PATCH_VERSION}.$${DD_BUILD_VERSION}
+    QMAKE_TARGET_COMPANY = "wangwenx190"
+    QMAKE_TARGET_COPYRIGHT = "GNU General Public License version 3.0"
+    QMAKE_TARGET_PRODUCT = "Dynamic Desktop"
 }
 CONFIG(static, static|shared): DEFINES *= BUILD_DD_STATIC
