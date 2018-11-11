@@ -1,8 +1,6 @@
 TARGET = ddservice
 include(../common.pri)
-CONFIG(enable_lite_build) {
-    RC_ICONS = ../resources/icons/color_palette_small.ico
-} else {
+!CONFIG(enable_lite_build) {
     RC_ICONS = ../resources/icons/color_palette.ico
     QMAKE_TARGET_DESCRIPTION = "Dynamic Desktop Auto Start Service"
 }
