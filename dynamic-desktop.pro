@@ -12,8 +12,13 @@
     CONFIG *= no_win_extras
 }
 TEMPLATE = subdirs
-CONFIG *= ordered
+CONFIG -= ordered
+utils.file = src/ddutils/ddutils.pro
+service.file = src/ddservice/ddservice.pro
+service.depends *= utils
+main.file = src/ddmain/ddmain.pro
+main.depends *= utils
 SUBDIRS *= \
-    src/ddutils \
-    src/ddservice \
-    src/ddmain
+    utils \
+    service \
+    main
