@@ -230,7 +230,7 @@ int main(int argc, char *argv[])
 #ifndef DD_NO_TOOLTIP
     QObject::connect(&preferencesDialog, &PreferencesDialog::urlChanged, [=, &trayIcon](const QString &text)
     {
-        trayIcon.setTooltip(QStringLiteral("Dynamic Desktop: %0").arg(text));
+        trayIcon.setToolTip(QStringLiteral("Dynamic Desktop: %0").arg(text));
     });
 #endif
     QObject::connect(&preferencesDialog, &PreferencesDialog::audioFileChanged, &playerWindow, &PlayerWindow::setAudio);
