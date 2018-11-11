@@ -172,4 +172,22 @@ int getVideoRendererId(const VideoRendererId vid)
     return static_cast<int>(id);
 }
 
+void activateWindow(QObject *window, bool moveCenter)
+{
+    if (!window)
+        return;
+    if (moveCenter)
+        moveToCenter(window);
+    auto win = qobject_cast<QWidget *>(window);
+    if (win->isHidden())
+        win->show();
+    if (!win->isActiveWindow())
+        win->setWindowState(win->windowState() & ~Qt::WindowMinimized);
+    if (!win->isActiveWindow())
+    {
+        win->raise();
+        win->activateWindow();
+    }
+}
+
 }

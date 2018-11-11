@@ -52,6 +52,9 @@ bool SkinsManager::setSkin(const QString &skin)
         skinFile.close();
         if (str.isEmpty())
             return false;
+#ifdef DD_NO_SVG
+        str = str.replace(QStringLiteral(".svg"), QStringLiteral(".png"), Qt::CaseInsensitive);
+#endif
         qApp->setStyleSheet(str);
         curSkinPath = filePath;
         curSkinName = QFileInfo(curSkinPath).completeBaseName();

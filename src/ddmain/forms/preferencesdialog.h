@@ -80,6 +80,7 @@ private slots:
 #ifndef DD_NO_TRANSLATIONS
     void populateLanguages(const QString &dirPath, bool add = true, bool isExternal = false);
 #endif
+    void initIcons();
 
 private:
     Ui::PreferencesDialog *ui = nullptr;

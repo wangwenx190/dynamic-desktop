@@ -41,12 +41,14 @@ CONFIG(no_translations) {
     DEFINES *= \
         DD_NO_TRANSLATIONS \
         DD_TR=QStringLiteral \
-        DD_OBJ_TR=QStringLiteral
+        DD_OBJ_TR=QStringLiteral \
+        DD_APP_TR=QStringLiteral
 } else {
     RESOURCES *= translations.qrc
     DEFINES *= \
         DD_TR=tr \
-        DD_OBJ_TR=QObject::tr
+        DD_OBJ_TR=QObject::tr \
+        DD_APP_TR=QtSingleApplication::translate
 }
 CONFIG(no_commandline_parser): DEFINES *= DD_NO_COMMANDLINE_PARSER
 LIBS *= \

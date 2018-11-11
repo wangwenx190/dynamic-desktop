@@ -1,5 +1,7 @@
 <RCC>
     <qresource prefix="/icons">
         <file alias="color_palette.png">../resources/icons/color_palette.png</file>
+        <file alias="close.png">../resources/icons/close.png</file>
+        <file alias="minimize.png">../resources/icons/minimize.png</file>
     </qresource>
 </RCC>

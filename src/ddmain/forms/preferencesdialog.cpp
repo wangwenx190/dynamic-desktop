@@ -234,6 +234,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) : CFramelessWindow(parent)
     setTitleBar(ui->widget_windowTitleBar);
     addIgnoreWidget(ui->label_windowTitle);
     initUI();
+    initIcons();
     initConnections();
 }
 
@@ -692,4 +693,17 @@ void PreferencesDialog::togglePlayPause()
         emit ui->pushButton_pause->clicked();
     else
         emit ui->pushButton_play->clicked();
+}
+
+void PreferencesDialog::initIcons()
+{
+#ifndef DD_NO_SVG
+    ui->label_windowIcon->setPixmap(QPixmap(QStringLiteral(":/icons/color_palette.svg")));
+    ui->pushButton_minimize->setIcon(QIcon(QStringLiteral(":/icons/minimize.svg")));
+    ui->pushButton_close->setIcon(QIcon(QStringLiteral(":/icons/close.svg")));
+#else
+    ui->label_windowIcon->setPixmap(QPixmap(QStringLiteral(":/icons/color_palette.png")));
+    ui->pushButton_minimize->setIcon(QIcon(QStringLiteral(":/icons/minimize.png")));
+    ui->pushButton_close->setIcon(QIcon(QStringLiteral(":/icons/close.png")));
+#endif
 }

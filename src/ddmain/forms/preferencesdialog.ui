@@ -88,9 +88,6 @@
         <property name="text">
          <string/>
         </property>
-        <property name="pixmap">
-         <pixmap resource="../ddmain.qrc">:/icons/color_palette.svg</pixmap>
-        </property>
         <property name="scaledContents">
          <bool>true</bool>
         </property>
@@ -158,10 +155,6 @@
         <property name="text">
          <string/>
         </property>
-        <property name="icon">
-         <iconset resource="../ddmain.qrc">
-          <normaloff>:/icons/minimize.svg</normaloff>:/icons/minimize.svg</iconset>
-        </property>
         <property name="flat">
          <bool>true</bool>
         </property>
@@ -183,10 +176,6 @@
         </property>
         <property name="text">
          <string/>
-        </property>
-        <property name="icon">
-         <iconset resource="../ddmain.qrc">
-          <normaloff>:/icons/close.svg</normaloff>:/icons/close.svg</iconset>
         </property>
         <property name="flat">
          <bool>true</bool>
@@ -767,8 +756,6 @@
    <header>slider.h</header>
   </customwidget>
  </customwidgets>
- <resources>
-  <include location="../ddmain.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

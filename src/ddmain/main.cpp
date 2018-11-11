@@ -77,29 +77,29 @@ int main(int argc, char *argv[])
     parser.addHelpOption();
     parser.addVersionOption();
     QCommandLineOption windowModeOption(QStringLiteral("window"),
-                                        QtSingleApplication::translate("main", "Show a normal window instead of placing it under the desktop icons."));
+                                        DD_APP_TR("main", "Show a normal window instead of placing it under the desktop icons."));
     parser.addOption(windowModeOption);
 #ifndef DD_NO_CSS
     QCommandLineOption skinOption(QStringLiteral("skin"),
-                                  QtSingleApplication::translate("main", "Set skin. The value is the file name of the skin file, excluding the file extension. If it's not under the \"skins\" folder, please give the absolute path of the file."),
-                                  QtSingleApplication::translate("main", "Skin file name"));
+                                  DD_APP_TR("main", "Set skin. The value is the file name of the skin file, excluding the file extension. If it's not under the \"skins\" folder, please give the absolute path of the file."),
+                                  DD_APP_TR("main", "Skin file name"));
     parser.addOption(skinOption);
 #endif
     QCommandLineOption urlOption(QStringLiteral("url"),
-                                 QtSingleApplication::translate("main", "Play the given url. It can be a local file or a valid web url. Default is empty."),
-                                 QtSingleApplication::translate("main", "url"));
+                                 DD_APP_TR("main", "Play the given url. It can be a local file or a valid web url. Default is empty."),
+                                 DD_APP_TR("main", "url"));
     parser.addOption(urlOption);
     QCommandLineOption imageQualityOption(QStringLiteral("quality"),
-                                          QtSingleApplication::translate("main", "Set the quality of the output image. It can be default/best/fastest. Default is best. Case insensitive."),
-                                          QtSingleApplication::translate("main", "Image quality"));
+                                          DD_APP_TR("main", "Set the quality of the output image. It can be default/best/fastest. Default is best. Case insensitive."),
+                                          DD_APP_TR("main", "Image quality"));
     parser.addOption(imageQualityOption);
     QCommandLineOption rendererOption(QStringLiteral("renderer"),
-                                      QtSingleApplication::translate("main", "Set rendering engine. It can be opengl/gl/qt/gdi/d2d. Default is gl. Case insensitive."),
-                                      QtSingleApplication::translate("main", "renderer"));
+                                      DD_APP_TR("main", "Set rendering engine. It can be opengl/gl/qt/gdi/d2d. Default is gl. Case insensitive."),
+                                      DD_APP_TR("main", "renderer"));
     parser.addOption(rendererOption);
     QCommandLineOption volumeOption(QStringLiteral("volume"),
-                                    QtSingleApplication::translate("main", "Set volume. It must be a positive integer between 0 and 99. Default is 9."),
-                                    QtSingleApplication::translate("main", "volume"));
+                                    DD_APP_TR("main", "Set volume. It must be a positive integer between 0 and 99. Default is 9."),
+                                    DD_APP_TR("main", "volume"));
     parser.addOption(volumeOption);
     parser.process(app);
     windowMode = parser.isSet(windowModeOption);
@@ -170,18 +170,7 @@ int main(int argc, char *argv[])
     QObject::connect(&playerWindow, &PlayerWindow::playStateChanged, &trayMenu, &TrayMenu::setPlaying);
     QObject::connect(&trayMenu, &TrayMenu::onOptionsClicked, [=, &preferencesDialog]
     {
-        if (preferencesDialog.isHidden())
-        {
-            Utils::moveToCenter(&preferencesDialog);
-            preferencesDialog.show();
-        }
-        if (!preferencesDialog.isActiveWindow())
-            preferencesDialog.setWindowState(preferencesDialog.windowState() & ~Qt::WindowMinimized);
-        if (!preferencesDialog.isActiveWindow())
-        {
-            preferencesDialog.raise();
-            preferencesDialog.activateWindow();
-        }
+        Utils::activateWindow(&preferencesDialog);
     });
     QObject::connect(&trayMenu, &TrayMenu::onPlayClicked, &preferencesDialog, &PreferencesDialog::togglePlayPause);
     trayMenu.setMute(SettingsManager::getInstance()->getMute());
@@ -191,18 +180,7 @@ int main(int argc, char *argv[])
     });
     QObject::connect(&trayMenu, &TrayMenu::onAboutClicked, [=, &aboutDialog]
     {
-        if (aboutDialog.isHidden())
-        {
-            Utils::moveToCenter(&aboutDialog);
-            aboutDialog.show();
-        }
-        if (!aboutDialog.isActiveWindow())
-            aboutDialog.setWindowState(aboutDialog.windowState() & ~Qt::WindowMinimized);
-        if (!aboutDialog.isActiveWindow())
-        {
-            aboutDialog.raise();
-            aboutDialog.activateWindow();
-        }
+        Utils::activateWindow(&aboutDialog);
     });
     QObject::connect(&trayMenu, &TrayMenu::onExitClicked, &app, &QtSingleApplication::quit);
     QObject::connect(&app, &QtSingleApplication::messageReceived, [=, &trayMenu](const QString &message)
@@ -234,18 +212,7 @@ int main(int argc, char *argv[])
     QObject::connect(&trayIcon, &QSystemTrayIcon::activated, [=, &preferencesDialog](QSystemTrayIcon::ActivationReason reason)
     {
         Q_UNUSED(reason)
-        if (preferencesDialog.isHidden())
-        {
-            Utils::moveToCenter(&preferencesDialog);
-            preferencesDialog.show();
-        }
-        if (!preferencesDialog.isActiveWindow())
-            preferencesDialog.setWindowState(preferencesDialog.windowState() & ~Qt::WindowMinimized);
-        if (!preferencesDialog.isActiveWindow())
-        {
-            preferencesDialog.raise();
-            preferencesDialog.activateWindow();
-        }
+        Utils::activateWindow(&preferencesDialog);
     });
 #ifndef DD_NO_TRANSLATIONS
     QObject::connect(&preferencesDialog, &PreferencesDialog::languageChanged, [=, &preferencesDialog, &aboutDialog, &ddTranslator](const QString &lang)
