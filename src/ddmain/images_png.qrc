@@ -3,5 +3,9 @@
         <file alias="color_palette.png">../resources/icons/color_palette.png</file>
         <file alias="close.png">../resources/icons/close.png</file>
         <file alias="minimize.png">../resources/icons/minimize.png</file>
+        <file alias="checked.png">../resources/icons/checked.png</file>
+        <file alias="down-arrow.png">../resources/icons/down-arrow.png</file>
+        <file alias="up-arrow.png">../resources/icons/up-arrow.png</file>
+        <file alias="selected.png">../resources/icons/selected.png</file>
     </qresource>
 </RCC>
