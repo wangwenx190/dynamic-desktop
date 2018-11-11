@@ -1,10 +1,32 @@
 TARGET = ddmain
 include(../common.pri)
+isEmpty(DD_COMMIT_ID): DD_COMMIT_ID = -
+isEmpty(DD_COMMIT_TIME): DD_COMMIT_TIME = -
+DEFINES *= \
+    DD_COMMIT_ID=\\\"$${DD_COMMIT_ID}\\\" \
+    DD_COMMIT_TIME=\\\"$${DD_COMMIT_TIME}\\\"
 CONFIG(enable_lite_build) {
+    message("Building lite version of Dynamic Desktop.")
+    DEFINES *= BUILD_DD_LITE
+    CONFIG *= \
+        no_tooltip \
+        no_css \
+        no_mime_type \
+        no_win_extras \
+        no_svg \
+        no_drag_drop \
+        no_menu \
+        no_wheel_event \
+        no_translations \
+        no_commandline_parser
     RC_ICONS = ../resources/icons/color_palette_small.ico
 } else {
     RC_ICONS = ../resources/icons/color_palette.ico
     QMAKE_TARGET_DESCRIPTION = "Dynamic Desktop"
+}
+CONFIG(static, static|shared) {
+    message("Building static version of Dynamic Desktop.")
+    DEFINES *= BUILD_DD_STATIC
 }
 QT *= \
     widgets \

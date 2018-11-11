@@ -1,8 +1,8 @@
 TARGET = ddutils
+CONFIG -= qt
 include(../common.pri)
 !CONFIG(enable_lite_build): QMAKE_TARGET_DESCRIPTION = "Dynamic Desktop Win32 Utils Module"
 TEMPLATE = lib
-CONFIG -= qt
 DEFINES *= BUILD_SHARED_LIBRARY_DD
 CONFIG *= dll
 LIBS *= \
