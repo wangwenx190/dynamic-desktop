@@ -2,7 +2,6 @@
 !qtHaveModule(gui): error("qmake can\'t find \"gui\" module. Compilation aborted.")
 !qtHaveModule(widgets): error("qmake can\'t find \"widgets\" module. Compilation aborted.")
 !qtHaveModule(network): error("qmake can\'t find \"network\" module. Compilation aborted.")
-!qtHaveModule(opengl): error("qmake can\'t find \"opengl\" module. Compilation aborted.")
 TEMPLATE = subdirs
 CONFIG -= ordered
 utils.file = src/ddutils/ddutils.pro
