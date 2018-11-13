@@ -5,25 +5,8 @@ isEmpty(DD_COMMIT_TIME): DD_COMMIT_TIME = -
 DEFINES *= \
     DD_COMMIT_ID=\\\"$${DD_COMMIT_ID}\\\" \
     DD_COMMIT_TIME=\\\"$${DD_COMMIT_TIME}\\\"
-CONFIG(enable_lite_build) {
-    message("Building lite version of Dynamic Desktop.")
-    DEFINES *= BUILD_DD_LITE
-    CONFIG *= \
-        no_tooltip \
-        no_css \
-        no_mime_type \
-        no_win_extras \
-        no_svg \
-        no_drag_drop \
-        no_menu \
-        no_wheel_event \
-        no_translations \
-        no_commandline_parser
-    RC_ICONS = ../resources/icons/color_palette_small.ico
-} else {
-    RC_ICONS = ../resources/icons/color_palette.ico
-    QMAKE_TARGET_DESCRIPTION = "Dynamic Desktop"
-}
+RC_ICONS = ../resources/icons/color_palette.ico
+QMAKE_TARGET_DESCRIPTION = "Dynamic Desktop"
 CONFIG(static, static|shared) {
     message("Building static version of Dynamic Desktop.")
     DEFINES *= BUILD_DD_STATIC
@@ -31,8 +14,9 @@ CONFIG(static, static|shared) {
 QT *= \
     widgets \
     network \
+    opengl \
     avwidgets
-CONFIG(no_svg) {
+!qtHaveModule(svg) {
     DEFINES *= DD_NO_SVG
     QT -= svg
     RESOURCES *= images_png.qrc
@@ -40,43 +24,58 @@ CONFIG(no_svg) {
     QT *= svg
     RESOURCES *= images_svg.qrc
 }
-CONFIG(no_win_extras) {
+!qtHaveModule(winextras) {
     DEFINES *= DD_NO_WIN_EXTRAS
 } else {
     QT *= winextras
 }
-CONFIG(no_drag_drop): DEFINES *= DD_NO_DRAG_DROP
-CONFIG(no_mime_type): DEFINES *= DD_NO_MIME_TYPE
-CONFIG(no_tooltip): DEFINES *= DD_NO_TOOLTIP
-CONFIG(no_css) {
+!CONTAINS(QT_CONFIG, draganddrop): DEFINES *= DD_NO_DRAG_DROP
+!CONTAINS(QT_CONFIG, mimetype): DEFINES *= DD_NO_MIME_TYPE
+!CONTAINS(QT_CONFIG, tooltip): DEFINES *= DD_NO_TOOLTIP
+!CONTAINS(QT_CONFIG, cssparser) {
     DEFINES *= DD_NO_CSS
 } else {
     RESOURCES *= skins.qrc
     HEADERS *= skinsmanager.h
     SOURCES *= skinsmanager.cpp
 }
-CONFIG(no_menu) {
+!CONTAINS(QT_CONFIG, menu) {
     DEFINES *= DD_NO_MENU
 } else {
     FORMS *= forms/traymenu.ui
     HEADERS *= forms/traymenu.h
     SOURCES *= forms/traymenu.cpp
 }
-CONFIG(no_wheel_event): DEFINES *= DD_NO_WHEEL_EVENT
-CONFIG(no_translations) {
+!CONTAINS(QT_CONFIG, wheelevent): DEFINES *= DD_NO_WHEEL_EVENT
+!CONTAINS(QT_CONFIG, translation) {
     DEFINES *= \
         DD_NO_TRANSLATIONS \
         DD_TR=QStringLiteral \
         DD_OBJ_TR=QStringLiteral \
         DD_APP_TR=QStringLiteral
 } else {
-    RESOURCES *= translations.qrc
     DEFINES *= \
         DD_TR=tr \
         DD_OBJ_TR=QObject::tr \
         DD_APP_TR=QtSingleApplication::translate
+    TRANSLATIONS *= ../resources/translations/dd_zh_CN.ts
+    CONFIG(update_translations) {
+        isEmpty(lupdate): lupdate = $$[QT_INSTALL_BINS]/lupdate.exe
+        exists("$${lupdate}") {
+            system("$${lupdate} -no-obsolete -locations none -no-ui-lines $${_PRO_FILE_}")
+        } else {
+            message("qmake can\'t find \"lupdate.exe\" in \"$$[QT_INSTALL_BINS]\".")
+        }
+        isEmpty(lrelease): lrelease = $$[QT_INSTALL_BINS]/lrelease.exe
+        exists("$${lrelease}") {
+            system("$${lrelease} -compress -nounfinished -removeidentical $${_PRO_FILE_}")
+        } else {
+            message("qmake can\'t find \"lrelease.exe\" in \"$$[QT_INSTALL_BINS]\".")
+        }
+    }
+    RESOURCES *= translations.qrc
 }
-CONFIG(no_commandline_parser): DEFINES *= DD_NO_COMMANDLINE_PARSER
+!CONTAINS(QT_CONFIG, commandlineparser): DEFINES *= DD_NO_COMMANDLINE_PARSER
 LIBS *= \
     -lUser32 \
     -lDwmapi
@@ -103,19 +102,4 @@ SOURCES += \
 FORMS += \
     forms/preferencesdialog.ui \
     forms/aboutdialog.ui
-TRANSLATIONS += ../resources/translations/dd_zh_CN.ts
-CONFIG(update_translations):!CONFIG(no_translations) {
-    isEmpty(lupdate): lupdate = $$[QT_INSTALL_BINS]/lupdate.exe
-    exists("$${lupdate}") {
-        system("$${lupdate} -no-obsolete -locations none -no-ui-lines $${_PRO_FILE_}")
-    } else {
-        message("qmake can\'t find \"lupdate.exe\" in \"$$[QT_INSTALL_BINS]\".")
-    }
-    isEmpty(lrelease): lrelease = $$[QT_INSTALL_BINS]/lrelease.exe
-    exists("$${lrelease}") {
-        system("$${lrelease} -compress -nounfinished -removeidentical $${_PRO_FILE_}")
-    } else {
-        message("qmake can\'t find \"lrelease.exe\" in \"$$[QT_INSTALL_BINS]\".")
-    }
-}
 include(../deploy.pri)

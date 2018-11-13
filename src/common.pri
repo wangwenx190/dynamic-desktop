@@ -23,9 +23,7 @@ CONFIG(enable_small) {
 }
 include($$PWD/optimize.pri)
 CONFIG -= app_bundle
-!CONFIG(enable_lite_build) {
-    isEmpty(VERSION): VERSION = $${DD_MAJOR_VERSION}.$${DD_MINOR_VERSION}.$${DD_PATCH_VERSION}.$${DD_BUILD_VERSION}
-    QMAKE_TARGET_COMPANY = "wangwenx190"
-    QMAKE_TARGET_COPYRIGHT = "GNU General Public License version 3.0"
-    QMAKE_TARGET_PRODUCT = "Dynamic Desktop"
-}
+isEmpty(VERSION): VERSION = $${DD_MAJOR_VERSION}.$${DD_MINOR_VERSION}.$${DD_PATCH_VERSION}.$${DD_BUILD_VERSION}
+QMAKE_TARGET_COMPANY = "wangwenx190"
+QMAKE_TARGET_COPYRIGHT = "GNU General Public License version 3.0"
+QMAKE_TARGET_PRODUCT = "Dynamic Desktop"
