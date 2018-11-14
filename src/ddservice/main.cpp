@@ -47,7 +47,7 @@ VOID Install()
         OutputDebugString(TEXT("Service already installed. No need to install again."));
         return;
     }
-    TCHAR filePath[MAX_PATH + 1];
+    TCHAR filePath[MAX_PATH + 1] = { 0 };
     DWORD dwSize = GetModuleFileName(nullptr, filePath, MAX_PATH);
     filePath[dwSize] = 0;
     bool result = false;
@@ -154,7 +154,7 @@ VOID WINAPI ServiceCtrlHandler(DWORD code)
 DWORD WINAPI ServiceWorkerThread(LPVOID lpParam)
 {
     (void)lpParam;
-    TCHAR filePath[MAX_PATH + 1];
+    TCHAR filePath[MAX_PATH + 1] = { 0 };
     DWORD dwSize = GetModuleFileName(nullptr, filePath, MAX_PATH);
     for (;(filePath[dwSize] != '\\') && (dwSize != 0); --dwSize)
         filePath[dwSize] = 0;
