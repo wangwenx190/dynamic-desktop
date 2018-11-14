@@ -66,14 +66,19 @@ QT *= \
         } else {
             message("qmake can\'t find \"lupdate.exe\" in \"$$[QT_INSTALL_BINS]\".")
         }
-        isEmpty(lrelease): lrelease = $$[QT_INSTALL_BINS]/lrelease.exe
-        exists("$${lrelease}") {
-            system("$${lrelease} -compress -nounfinished -removeidentical $${_PRO_FILE_}")
+        versionAtLeast(QT_VERSION, 5.12.0) {
+            CONFIG *= lrelease
         } else {
-            message("qmake can\'t find \"lrelease.exe\" in \"$$[QT_INSTALL_BINS]\".")
+            isEmpty(lrelease): lrelease = $$[QT_INSTALL_BINS]/lrelease.exe
+            exists("$${lrelease}") {
+                system("$${lrelease} -compress -nounfinished -removeidentical $${_PRO_FILE_}")
+            } else {
+                message("qmake can\'t find \"lrelease.exe\" in \"$$[QT_INSTALL_BINS]\".")
+            }
         }
     }
-    RESOURCES *= translations.qrc
+    versionAtLeast(QT_VERSION, 5.12.0): CONFIG *= embed_translations
+    else: RESOURCES *= translations.qrc
 }
 !contains(QT_CONFIG, commandlineparser): DEFINES *= DD_NO_COMMANDLINE_PARSER
 LIBS *= \
