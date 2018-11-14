@@ -14,7 +14,7 @@ CONFIG(static, static|shared) {
 QT *= \
     widgets \
     network \
-    opengl \
+    #opengl \
     avwidgets
 !qtHaveModule(svg) {
     DEFINES *= DD_NO_SVG
@@ -29,25 +29,25 @@ QT *= \
 } else {
     QT *= winextras
 }
-!CONTAINS(QT_CONFIG, draganddrop): DEFINES *= DD_NO_DRAG_DROP
-!CONTAINS(QT_CONFIG, mimetype): DEFINES *= DD_NO_MIME_TYPE
-!CONTAINS(QT_CONFIG, tooltip): DEFINES *= DD_NO_TOOLTIP
-!CONTAINS(QT_CONFIG, cssparser) {
+!contains(QT_CONFIG, draganddrop): DEFINES *= DD_NO_DRAG_DROP
+!contains(QT_CONFIG, mimetype): DEFINES *= DD_NO_MIME_TYPE
+!contains(QT_CONFIG, tooltip): DEFINES *= DD_NO_TOOLTIP
+!contains(QT_CONFIG, cssparser) {
     DEFINES *= DD_NO_CSS
 } else {
     RESOURCES *= skins.qrc
     HEADERS *= skinsmanager.h
     SOURCES *= skinsmanager.cpp
 }
-!CONTAINS(QT_CONFIG, menu) {
+!contains(QT_CONFIG, menu) {
     DEFINES *= DD_NO_MENU
 } else {
     FORMS *= forms/traymenu.ui
     HEADERS *= forms/traymenu.h
     SOURCES *= forms/traymenu.cpp
 }
-!CONTAINS(QT_CONFIG, wheelevent): DEFINES *= DD_NO_WHEEL_EVENT
-!CONTAINS(QT_CONFIG, translation) {
+!contains(QT_CONFIG, wheelevent): DEFINES *= DD_NO_WHEEL_EVENT
+!contains(QT_CONFIG, translation) {
     DEFINES *= \
         DD_NO_TRANSLATIONS \
         DD_TR=QStringLiteral \
@@ -75,7 +75,7 @@ QT *= \
     }
     RESOURCES *= translations.qrc
 }
-!CONTAINS(QT_CONFIG, commandlineparser): DEFINES *= DD_NO_COMMANDLINE_PARSER
+!contains(QT_CONFIG, commandlineparser): DEFINES *= DD_NO_COMMANDLINE_PARSER
 LIBS *= \
     -lUser32 \
     -lDwmapi
