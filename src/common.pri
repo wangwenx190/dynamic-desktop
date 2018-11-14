@@ -15,13 +15,6 @@ CONFIG(qt) {
         QT_DISABLE_DEPRECATED_BEFORE=0x050603
 }
 CONFIG(debug, debug|release): TARGET = $$join(TARGET,,,d)
-CONFIG(enable_small) {
-    CONFIG -= enable_optimize
-    CONFIG *= enable_ltcg
-} else {
-    CONFIG *= enable_optimize
-}
-include($$PWD/optimize.pri)
 CONFIG -= app_bundle
 isEmpty(VERSION): VERSION = $${DD_MAJOR_VERSION}.$${DD_MINOR_VERSION}.$${DD_PATCH_VERSION}.$${DD_BUILD_VERSION}
 QMAKE_TARGET_COMPANY = "wangwenx190"
