@@ -1,7 +1,4 @@
 !win32: error("This project only supports Win32 platform!")
-!qtHaveModule(gui): error("qmake can\'t find \"gui\" module. Compilation aborted.")
-!qtHaveModule(widgets): error("qmake can\'t find \"widgets\" module. Compilation aborted.")
-!qtHaveModule(network): error("qmake can\'t find \"network\" module. Compilation aborted.")
 TEMPLATE = subdirs
 CONFIG -= ordered
 utils.file = src/ddutils/ddutils.pro
