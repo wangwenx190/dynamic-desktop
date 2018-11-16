@@ -14,7 +14,6 @@ CONFIG(static, static|shared) {
 QT *= \
     widgets \
     network \
-    #opengl \
     avwidgets
 !qtHaveModule(svg) {
     DEFINES *= DD_NO_SVG
