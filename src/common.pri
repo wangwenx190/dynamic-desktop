@@ -1,4 +1,4 @@
-isEmpty(ROOT): ROOT = $$PWD/..
+ROOT = $$PWD/..
 isEmpty(BUILD_DIR): BUILD_DIR = $${ROOT}/build
 isEmpty(BIN_DIR): BIN_DIR = $${BUILD_DIR}/bin
 contains(QT_ARCH, x86_64): BIN_DIR = $$join(BIN_DIR,,,64)

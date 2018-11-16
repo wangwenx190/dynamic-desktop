@@ -20,12 +20,8 @@ image: Visual Studio 2017
 platform: x64
 configuration: Release
 init:
-  - set "QTVER=5.9"
-  - set "QTDIR=C:\Qt\%QTVER%\msvc2017_64"
-  - set "QTAVID=f26fbf0"
-  - set "SMP_LIBASS_VERSION=0.14.0-11"
-  - call "%QTDIR%\bin\qtenv2.bat"
-  - call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat" x86_x64
+  - call "C:\Qt\5.11\msvc2017_64\bin\qtenv2.bat"
+  - call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat" x64
 install:
   - cd /d "%APPVEYOR_BUILD_FOLDER%"
   - cd ci
@@ -33,11 +29,13 @@ install:
   - md build
   - cd build
   - call ..\install_dep.bat
-  - powershell ..\patch_qtav.ps1
   - cd ..
   - rd /s /q build
   - call update_version.bat
   - cd ..
+  - echo BUILD_DIR = $$PWD/build > .qmake.conf
+  - echo ffmpeg_dir = $$PWD/ffmpeg >> .qmake.conf
+  - echo CONFIG *= enable_dx enable_swresample enable_avfilter enable_avdevice >> .qmake.conf
 build_script:
   - call build.bat
 #after_build:

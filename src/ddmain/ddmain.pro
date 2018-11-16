@@ -13,8 +13,7 @@ CONFIG(static, static|shared) {
 }
 QT *= \
     widgets \
-    network \
-    avwidgets
+    network
 !qtHaveModule(svg) {
     DEFINES *= DD_NO_SVG
     QT -= svg
@@ -88,6 +87,8 @@ include(../ddutils/ddutils.pri)
 include(../3rdparty/qtniceframelesswindow/qtniceframelesswindow.pri)
 include(../3rdparty/wallpaper/wallpaper.pri)
 include(../3rdparty/qtsingleapplication/qtsingleapplication.pri)
+include(../3rdparty/qtav/av.pri)
+include(../3rdparty/qtav/avwidgets.pri)
 HEADERS += \
     forms/preferencesdialog.h \
     forms/aboutdialog.h \
