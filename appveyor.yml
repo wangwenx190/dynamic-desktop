@@ -22,24 +22,18 @@ init:
   - call "C:\Qt\5.11\msvc2017_64\bin\qtenv2.bat"
   - call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat" x64
 install:
-  - cd /d "%APPVEYOR_BUILD_FOLDER%"
   - git submodule update --init --recursive
-  - cd ci
-  - if exist build rd /s /q build
   - md build
   - cd build
-  - call ..\install_dep.bat
-  - cd ..
-  - rd /s /q build
-  - call update_version.bat
-  - cd ..
-  - echo BUILD_DIR = $$PWD/build > .qmake.conf
-  - echo ffmpeg_dir = $$PWD/ffmpeg >> .qmake.conf
-  - echo CONFIG *= enable_dx enable_swresample enable_avfilter enable_avdevice >> .qmake.conf
+  - ..\ci\install_dep.bat
+  - ..\ci\update_version.bat
+  - echo BUILD_DIR = $$PWD/build > %APPVEYOR_BUILD_FOLDER%\.qmake.conf
+  - echo ffmpeg_dir = $$PWD/ffmpeg >> %APPVEYOR_BUILD_FOLDER%\.qmake.conf
+  - echo CONFIG *= enable_dx enable_swresample enable_avfilter enable_avdevice >> %APPVEYOR_BUILD_FOLDER%\.qmake.conf
 build_script:
-  - call build.bat
+  - ..\build.bat
 #after_build:
-  #- call ci\prepare_deploy.bat
+  #- call ..\ci\prepare_deploy.bat
 test: off
 #artifacts:
   #- path: dd-*.7z
