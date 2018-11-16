@@ -1,42 +1,30 @@
 libs.path = $${BIN_DIR}
 !CONFIG(static_ffmpeg) {
-    isEmpty(ffmpeg_dir): ffmpeg_dir = $$[QT_INSTALL_BINS]
-    exists("$${ffmpeg_dir}/avcodec-*.dll") {
+    isEmpty(ffmpeg_dir): ffmpeg_dir = $${ROOT}/ffmpeg
+    ffmpeg_bin_dir = $${ffmpeg_dir}/bin
+    contains(QT_ARCH, x86_64): ffmpeg_bin_dir = $${ffmpeg_bin_dir}/x64
+    else: ffmpeg_bin_dir = $${ffmpeg_bin_dir}/x86
+    exists("$${ffmpeg_bin_dir}/avcodec*.dll") {
         libs.files *= \
-            $${ffmpeg_dir}/avcodec-*.dll \
-            $${ffmpeg_dir}/avdevice-*.dll \
-            $${ffmpeg_dir}/avfilter-*.dll \
-            $${ffmpeg_dir}/avformat-*.dll \
-            $${ffmpeg_dir}/avresample-*.dll \
-            $${ffmpeg_dir}/avutil-*.dll \
-            $${ffmpeg_dir}/ass.dll \
-            $${ffmpeg_dir}/libass.dll \
-            $${ffmpeg_dir}/OpenAL32*.dll \
-            $${ffmpeg_dir}/postproc-*.dll \
-            $${ffmpeg_dir}/swresample-*.dll \
-            $${ffmpeg_dir}/swscale-*.dll
+            $${ffmpeg_bin_dir}/avcodec*.dll \
+            $${ffmpeg_bin_dir}/avdevice*.dll \
+            $${ffmpeg_bin_dir}/avfilter*.dll \
+            $${ffmpeg_bin_dir}/avformat*.dll \
+            $${ffmpeg_bin_dir}/avresample*.dll \
+            $${ffmpeg_bin_dir}/avutil*.dll \
+            $${ffmpeg_bin_dir}/ass.dll \
+            $${ffmpeg_bin_dir}/libass.dll \
+            $${ffmpeg_bin_dir}/OpenAL32*.dll \
+            $${ffmpeg_bin_dir}/postproc*.dll \
+            $${ffmpeg_bin_dir}/swresample*.dll \
+            $${ffmpeg_bin_dir}/swscale*.dll
     } else {
-        message("qmake can\'t find FFmpeg\'s run-time libraries in \"$${ffmpeg_dir}\".")
+        message("qmake can\'t find FFmpeg\'s run-time libraries in \"$${ffmpeg_bin_dir}\".")
         message("You may have to copy them manually.")
         message("You can set the \"ffmpeg_dir\" variable to let qmake copy them automatically.")
     }
 }
 CONFIG(shared, static|shared) {
-    exists("$$[QT_INSTALL_BINS]/QtAV*.dll") {
-        CONFIG(debug, debug|release) {
-            libs.files *= \
-                $$[QT_INSTALL_BINS]/QtAVd?.dll \
-                $$[QT_INSTALL_BINS]/QtAVWidgetsd?.dll
-        } else:CONFIG(release, debug|release) {
-            libs.files *= \
-                $$[QT_INSTALL_BINS]/QtAV?.dll \
-                $$[QT_INSTALL_BINS]/QtAVWidgets?.dll
-        }
-    } else {
-        message("qmake can\'t find QtAV\'s run-time libraries in \"$$[QT_INSTALL_BINS]\".")
-        message("You may have to copy them manually.")
-        message("Currently(QtAV 1.12.0) they are QtAV[d]1.dll and QtAVWidgets[d]1.dll.")
-    }
     isEmpty(windeployqt): windeployqt = $$[QT_INSTALL_BINS]/windeployqt.exe
     exists("$${windeployqt}") {
         target_file_name = $${TARGET}
