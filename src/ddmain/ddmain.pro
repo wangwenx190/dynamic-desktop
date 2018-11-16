@@ -7,13 +7,26 @@ DEFINES *= \
     DD_COMMIT_TIME=\\\"$${DD_COMMIT_TIME}\\\"
 RC_ICONS = ../resources/icons/color_palette.ico
 QMAKE_TARGET_DESCRIPTION = "Dynamic Desktop"
-CONFIG(static, static|shared) {
-    message("Building static version of Dynamic Desktop.")
-    DEFINES *= BUILD_DD_STATIC
+CONFIG(static, static|shared): DEFINES *= BUILD_DD_STATIC
+CONFIG(static_ffmpeg) {
+    DEFINES *= \
+        BUILD_QTAV_STATIC \
+        BUILD_QTAVWIDGETS_STATIC
+    isEmpty(ffmpeg_dir): ffmpeg_dir = $${ROOT}/ffmpeg
+    !exists($${ffmpeg_dir}): error("Can\'t find FFmpeg dir.")
+    contains(QT_ARCH, x86_64): LIBS *= -L$${ffmpeg_dir}/lib/x64
+    else: LIBS *= -L$${ffmpeg_dir}/lib/x86
+    LIBS *= \
+        -llibswresample \
+        -llibavfilter \
+        -llibavdevice -lgdi32 -loleaut32 -lshlwapi \
+        -llibavcodec -llibavformat -llibswscale -llibavutil -lws2_32 -lstrmiids -lVfw32 -luuid -lSecur32 -lBcrypt -llegacy_stdio_definitions \
+        -lgdiplus -lmfx
 }
 QT *= \
     widgets \
-    network
+    network \
+    opengl
 !qtHaveModule(svg) {
     DEFINES *= DD_NO_SVG
     QT -= svg
