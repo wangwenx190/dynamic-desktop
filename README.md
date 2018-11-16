@@ -56,7 +56,7 @@ For official builds and third-party packages please see https://sourceforge.net/
 - Clone or download this repository.
 - Download [Qt5](http://download.qt.io/archive/qt/) and install it.
 - Download [FFmpeg](http://ffmpeg.org/)'s prebuilt binaries or build yourself.
-- Write default configurations to **`.qmake.conf`**:
+- Write the default configurations to **`.qmake.conf`**:
    ```text
    BUILD_DIR = $$PWD/build
    ffmpeg_dir = $$PWD/ffmpeg
@@ -71,7 +71,7 @@ For official builds and third-party packages please see https://sourceforge.net/
 
 ## Licenses
 - [Wallpaper](/src/3rdparty/wallpaper): some code is copied from https://github.com/ThomasHuai/Wallpaper , Apache License 2.0, thanks to [ThomasHuai](https://github.com/ThomasHuai)!
-- [FFmpeg](http://ffmpeg.org/): LGPLv3/GPLv3, thanks to [FFmpeg project](http://ffmpeg.org/)!
+- [FFmpeg](http://ffmpeg.org/): LGPLv3/GPLv3, thanks to [the FFmpeg project](http://ffmpeg.org/)!
 - [QtAV](https://github.com/wang-bin/QtAV): LGPLv3/GPLv3, thanks to [wang bin](https://github.com/wang-bin)!
 - [Qt Nice Frameless Window](/src/3rdparty/qtniceframelesswindow): some code is copied from https://github.com/Bringer-of-Light/Qt-Nice-Frameless-Window , MIT, thanks to [Bringer of Light](https://github.com/Bringer-of-Light)!
 - [Qt](http://download.qt.io/archive/qt/) and [QtSingleApplication](/src/3rdparty/qtsingleapplication): some code is copied from https://github.com/qtproject/qt-solutions , LGPLv3/GPLv3, thanks to [the Qt Company](https://www.qt.io/)!
