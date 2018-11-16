@@ -10,7 +10,6 @@ only_commits:
     - '**/*.qrc'
     - '**/*.ui'
     - '**/*.yml'
-shallow_clone: true
 matrix:
   fast_finish: true
   allow_failures:
@@ -24,6 +23,7 @@ init:
   - call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat" x64
 install:
   - cd /d "%APPVEYOR_BUILD_FOLDER%"
+  - git submodule update --init --recursive
   - cd ci
   - if exist build rd /s /q build
   - md build
