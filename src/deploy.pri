@@ -29,13 +29,14 @@ CONFIG(shared, static|shared) {
     exists("$${windeployqt}") {
         target_file_name = $${TARGET}
         CONFIG(dll) {
-            target_file_name = $${target_file_name}$${DD_MAJOR_VERSION}.dll
+            exists($${BIN_DIR}/$${target_file_name}$${DD_MAJOR_VERSION}.dll): target_file_name = $${target_file_name}$${DD_MAJOR_VERSION}.dll
+            else: target_file_name = $${target_file_name}.dll
         } else {
             target_file_name = $${target_file_name}.exe
         }
         windeployqt_command = --plugindir \"$${BIN_DIR}\\plugins\" --no-translations --no-compiler-runtime --no-opengl-sw -opengl --list source
         CONFIG(enable_small): windeployqt_command = $${windeployqt_command} --no-system-d3d-compiler --no-angle
-        CONFIG(no_svg): windeployqt_command = $${windeployqt_command} --no-svg
+        !qtHaveModule(svg): windeployqt_command = $${windeployqt_command} --no-svg
         libs.commands *= $$quote(\"$${windeployqt}\" $${windeployqt_command} \"$${BIN_DIR}\\$${target_file_name}\")
     } else {
         message("It seems that there is no \"windeployqt.exe\" in \"$$[QT_INSTALL_BINS]\".")
