@@ -25,13 +25,12 @@ install:
   - git submodule update --init --recursive
   - md build
   - cd build
-  - ..\ci\install_dep.bat
-  - ..\ci\update_version.bat
-  - echo BUILD_DIR = $$PWD/build > %APPVEYOR_BUILD_FOLDER%\.qmake.conf
-  - echo ffmpeg_dir = $$PWD/ffmpeg >> %APPVEYOR_BUILD_FOLDER%\.qmake.conf
-  - echo CONFIG *= enable_dx enable_swresample enable_avfilter enable_avdevice >> %APPVEYOR_BUILD_FOLDER%\.qmake.conf
+  - md build
+  - cd build
+  - ..\..\ci\install_dep.bat
+  - ..\..\ci\update_version.bat
 build_script:
-  - ..\build.bat
+  - ..\..\build.bat
 #after_build:
   #- call ..\ci\prepare_deploy.bat
 test: off
