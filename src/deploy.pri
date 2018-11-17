@@ -35,7 +35,7 @@ CONFIG(shared, static|shared) {
             target_file_name = $${target_file_name}.exe
         }
         windeployqt_command = --plugindir \"$${BIN_DIR}\\plugins\" --no-translations --no-compiler-runtime --no-opengl-sw -opengl --list source
-        CONFIG(enable_small): windeployqt_command = $${windeployqt_command} --no-system-d3d-compiler --no-angle
+        #CONFIG(enable_small): windeployqt_command = $${windeployqt_command} --no-system-d3d-compiler --no-angle
         !qtHaveModule(svg): windeployqt_command = $${windeployqt_command} --no-svg
         $${TARGET}_libs.commands *= $$quote(\"$${windeployqt}\" $${windeployqt_command} \"$${BIN_DIR}\\$${target_file_name}\")
     } else {
@@ -56,14 +56,14 @@ CONFIG(shared, static|shared) {
         !isEmpty(WIN_SDK_REDIST_DIR):exists("$${WIN_SDK_REDIST_DIR}"): $${TARGET}_libs.commands *= $$quote(copy /y \"$${WIN_SDK_REDIST_DIR}\\ucrt\\DLLs\\$${target_arch}\\*.dll\" \"$${BIN_DIR}\")
     }
     !isEmpty($${TARGET}_libs.commands): $${TARGET}_libs.commands = $$join($${TARGET}_libs.commands, $$escape_expand(\\n\\t))
-} else:CONFIG(static, static|shared):!CONFIG(enable_small) {
+} else:CONFIG(static, static|shared) {
     $${TARGET}_libs.files *= \
         $$[QT_INSTALL_BINS]/d3dcompiler_??.dll \
         $$[QT_INSTALL_BINS]/libEGL.dll \
         $$[QT_INSTALL_BINS]/libGLESv2.dll
 }
 !isEmpty($${TARGET}_libs.files): INSTALLS *= $${TARGET}_libs
-!CONFIG(enable_small) {
+!CONFIG(no_licenses) {
     licenses.path = $${BIN_DIR}/licenses
     licenses.files *= $${ROOT}/docs/licenses/*
     !isEmpty(licenses.files): INSTALLS *= licenses
