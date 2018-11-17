@@ -1,0 +1,3 @@
+[submodule "src/3rdparty/qtav"]
+	path = src/3rdparty/qtav
+	url = https://github.com/wangwenx190/qtav-lite.git
