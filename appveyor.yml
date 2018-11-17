@@ -22,13 +22,13 @@ init:
   - call "C:\Qt\5.11\msvc2017_64\bin\qtenv2.bat"
   - call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat" x64
 install:
+  - git submodule update --init --recursive
   - md build
   - cd build
   - ..\ci\install_dep.bat
   - ..\ci\update_version.bat
   - cd..
 build_script:
-  - git submodule update --init --recursive
   - build.bat
 #after_build:
   #- ci\prepare_deploy.bat
