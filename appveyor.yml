@@ -22,16 +22,14 @@ init:
   - call "C:\Qt\5.11\msvc2017_64\bin\qtenv2.bat"
   - call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat" x64
 install:
-  - cd /d "%APPVEYOR_BUILD_FOLDER%"
-  - git submodule update --init --recursive
   - md build
   - cd build
-  - md tmp
-  - cd tmp
-  - ..\..\ci\install_dep.bat
-  - ..\..\ci\update_version.bat
+  - ..\ci\install_dep.bat
+  - ..\ci\update_version.bat
+  - cd..
 build_script:
-  - ..\..\build.bat
+  - git submodule update --init --recursive
+  - build.bat
 #after_build:
   #- ci\prepare_deploy.bat
 test: off
