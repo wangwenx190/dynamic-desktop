@@ -62,7 +62,7 @@ void TrayMenu::setPlaying(bool playing)
 
 void TrayMenu::showEvent(QShowEvent *event)
 {
-    move(geometry().left() + 30, geometry().top() - height() - 30);
+    move(geometry().left(), geometry().top() - height());
     QMenu::showEvent(event);
 }
 
