@@ -5,11 +5,11 @@
 :: to your environment variables!
 @echo off
 cd /d "%~dp0"
-if not exist build md build
-cd build
 if exist build rd /s /q build
 md build
 cd build
+md tmp
+cd tmp
 set _mkspec=
 set _config=
 if defined CI (
@@ -38,14 +38,4 @@ if %ERRORLEVEL% neq 0 set _buildtool=nmake
 %_buildtool% qmake_all
 %_buildtool% && %_buildtool% install
 cd "%~dp0"
-rd /s /q build\build
-if exist build\bin\ddmain.exe (
-    del /f /s /q build\bin\*.lib
-    del /f /s /q build\bin\*.exp
-    del /f /s /q build\bin\*.ilk
-)
-if exist build\bin64\ddmain.exe (
-    del /f /s /q build\bin64\*.lib
-    del /f /s /q build\bin64\*.exp
-    del /f /s /q build\bin64\*.ilk
-)
+rd /s /q build\tmp

@@ -25,14 +25,14 @@ install:
   - git submodule update --init --recursive
   - md build
   - cd build
-  - md build
-  - cd build
+  - md tmp
+  - cd tmp
   - ..\..\ci\install_dep.bat
   - ..\..\ci\update_version.bat
 build_script:
   - ..\..\build.bat
 #after_build:
-  #- call ..\ci\prepare_deploy.bat
+  #- ci\prepare_deploy.bat
 test: off
 #artifacts:
   #- path: dd-*.7z
