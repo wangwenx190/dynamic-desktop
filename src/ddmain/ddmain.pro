@@ -6,9 +6,9 @@ isEmpty(DD_COMMIT_TIME): DD_COMMIT_TIME = -
 DEFINES *= \
     DD_COMMIT_ID=\\\"$${DD_COMMIT_ID}\\\" \
     DD_COMMIT_TIME=\\\"$${DD_COMMIT_TIME}\\\"
+CONFIG(static, static|shared): DEFINES *= BUILD_DD_STATIC
 RC_ICONS = ../resources/icons/color_palette.ico
 QMAKE_TARGET_DESCRIPTION = "Dynamic Desktop"
-CONFIG(static, static|shared): DEFINES *= BUILD_DD_STATIC
 CONFIG(static_ffmpeg) {
     isEmpty(ffmpeg_dir): ffmpeg_dir = $${ROOT}/ffmpeg
     !exists($${ffmpeg_dir}): error("Can\'t find FFmpeg dir.")

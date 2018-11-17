@@ -3,7 +3,7 @@ CONFIG -= qt
 CONFIG *= dll
 TEMPLATE = lib
 include(../common.pri)
-QMAKE_TARGET_DESCRIPTION = "Dynamic Desktop Win32 Utils Module"
+!CONFIG(dd_no_ver_info): QMAKE_TARGET_DESCRIPTION = "Dynamic Desktop Win32 Utils Module"
 DEFINES *= BUILD_SHARED_LIBRARY_DD
 LIBS *= \
     -lWtsapi32 \
