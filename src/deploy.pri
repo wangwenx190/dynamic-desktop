@@ -1,11 +1,11 @@
-libs.path = $${BIN_DIR}
+$${TARGET}_libs.path = $${BIN_DIR}
 !CONFIG(static_ffmpeg) {
     isEmpty(ffmpeg_dir): ffmpeg_dir = $${ROOT}/ffmpeg
     ffmpeg_bin_dir = $${ffmpeg_dir}/bin
     contains(QT_ARCH, x86_64): ffmpeg_bin_dir = $${ffmpeg_bin_dir}/x64
     else: ffmpeg_bin_dir = $${ffmpeg_bin_dir}/x86
     exists("$${ffmpeg_bin_dir}/avcodec*.dll") {
-        libs.files *= \
+        $${TARGET}_libs.files *= \
             $${ffmpeg_bin_dir}/avcodec*.dll \
             $${ffmpeg_bin_dir}/avdevice*.dll \
             $${ffmpeg_bin_dir}/avfilter*.dll \
@@ -37,7 +37,7 @@ CONFIG(shared, static|shared) {
         windeployqt_command = --plugindir \"$${BIN_DIR}\\plugins\" --no-translations --no-compiler-runtime --no-opengl-sw -opengl --list source
         CONFIG(enable_small): windeployqt_command = $${windeployqt_command} --no-system-d3d-compiler --no-angle
         !qtHaveModule(svg): windeployqt_command = $${windeployqt_command} --no-svg
-        libs.commands *= $$quote(\"$${windeployqt}\" $${windeployqt_command} \"$${BIN_DIR}\\$${target_file_name}\")
+        $${TARGET}_libs.commands *= $$quote(\"$${windeployqt}\" $${windeployqt_command} \"$${BIN_DIR}\\$${target_file_name}\")
     } else {
         message("It seems that there is no \"windeployqt.exe\" in \"$$[QT_INSTALL_BINS]\".")
         message("You may have to copy Qt run-time libraries manually and don\'t forget about the plugins.")
@@ -50,19 +50,19 @@ CONFIG(shared, static|shared) {
         !isEmpty(VC_REDIST_DIR):exists("$${VC_REDIST_DIR}") {
             isEmpty(VC_REDIST_VERSION): VC_REDIST_VERSION = 141
             vc_redist_dll_dir = Microsoft.VC$${VC_REDIST_VERSION}.CRT
-            libs.commands *= $$quote(copy /y \"$${VC_REDIST_DIR}\\$${target_arch}\\$${vc_redist_dll_dir}\\msvcp*.dll\" \"$${BIN_DIR}\")
-            libs.commands *= $$quote(copy /y \"$${VC_REDIST_DIR}\\$${target_arch}\\$${vc_redist_dll_dir}\\vcruntime*.dll\" \"$${BIN_DIR}\")
+            $${TARGET}_libs.commands *= $$quote(copy /y \"$${VC_REDIST_DIR}\\$${target_arch}\\$${vc_redist_dll_dir}\\msvcp*.dll\" \"$${BIN_DIR}\")
+            $${TARGET}_libs.commands *= $$quote(copy /y \"$${VC_REDIST_DIR}\\$${target_arch}\\$${vc_redist_dll_dir}\\vcruntime*.dll\" \"$${BIN_DIR}\")
         }
-        !isEmpty(WIN_SDK_REDIST_DIR):exists("$${WIN_SDK_REDIST_DIR}"): libs.commands *= $$quote(copy /y \"$${WIN_SDK_REDIST_DIR}\\ucrt\\DLLs\\$${target_arch}\\*.dll\" \"$${BIN_DIR}\")
+        !isEmpty(WIN_SDK_REDIST_DIR):exists("$${WIN_SDK_REDIST_DIR}"): $${TARGET}_libs.commands *= $$quote(copy /y \"$${WIN_SDK_REDIST_DIR}\\ucrt\\DLLs\\$${target_arch}\\*.dll\" \"$${BIN_DIR}\")
     }
-    !isEmpty(libs.commands): libs.commands = $$join(libs.commands, $$escape_expand(\\n\\t))
+    !isEmpty($${TARGET}_libs.commands): $${TARGET}_libs.commands = $$join($${TARGET}_libs.commands, $$escape_expand(\\n\\t))
 } else:CONFIG(static, static|shared):!CONFIG(enable_small) {
-    libs.files *= \
+    $${TARGET}_libs.files *= \
         $$[QT_INSTALL_BINS]/d3dcompiler_??.dll \
         $$[QT_INSTALL_BINS]/libEGL.dll \
         $$[QT_INSTALL_BINS]/libGLESv2.dll
 }
-!isEmpty(libs.files): INSTALLS *= libs
+!isEmpty($${TARGET}_libs.files): INSTALLS *= $${TARGET}_libs
 !CONFIG(enable_small) {
     licenses.path = $${BIN_DIR}/licenses
     licenses.files *= $${ROOT}/docs/licenses/*

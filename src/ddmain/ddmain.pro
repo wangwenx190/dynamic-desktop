@@ -1,4 +1,5 @@
 TARGET = ddmain
+TEMPLATE = app
 include(../common.pri)
 isEmpty(DD_COMMIT_ID): DD_COMMIT_ID = -
 isEmpty(DD_COMMIT_TIME): DD_COMMIT_TIME = -
@@ -86,7 +87,6 @@ QT *= \
 LIBS *= \
     -lUser32 \
     -lDwmapi
-TEMPLATE = app
 include(../ddutils/ddutils.pri)
 include(../3rdparty/qtniceframelesswindow/qtniceframelesswindow.pri)
 include(../3rdparty/wallpaper/wallpaper.pri)

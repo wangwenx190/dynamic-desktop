@@ -1,10 +1,10 @@
 TARGET = ddutils
 CONFIG -= qt
+CONFIG *= dll
+TEMPLATE = lib
 include(../common.pri)
 QMAKE_TARGET_DESCRIPTION = "Dynamic Desktop Win32 Utils Module"
-TEMPLATE = lib
 DEFINES *= BUILD_SHARED_LIBRARY_DD
-CONFIG *= dll
 LIBS *= \
     -lWtsapi32 \
     -lUserenv \
