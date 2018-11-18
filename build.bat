@@ -1,5 +1,5 @@
 :: Usage: call build.bat "mkspec" "config"
-:: Eg: call build.bat "win32-icc" "release static_dd small ltcg"
+:: Eg: call build.bat "win32-icc" "release static_ffmpeg enable_libass"
 :: IMPORTANT: Double quotation marks are indispensable and
 :: remember to call "vcvarsall.bat" and add Qt's directories
 :: to your environment variables!
