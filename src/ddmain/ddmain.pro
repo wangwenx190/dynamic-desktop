@@ -77,7 +77,7 @@ QT *= \
     CONFIG(update_translations): CONFIG *= lupdate lrelease
     CONFIG(lupdate) {
         isEmpty(lupdate): lupdate = $$[QT_INSTALL_BINS]/lupdate
-        exists("$${lupdate}") {
+        exists("$${lupdate}.exe") {
             system("$${lupdate} $${QMAKE_LUPDATE_FLAGS} $${_PRO_FILE_}")
         } else {
             message("qmake can\'t find \"lupdate\" in \"$$[QT_INSTALL_BINS]\".")
@@ -90,7 +90,7 @@ QT *= \
                 embed_translations
         } else {
             isEmpty(lrelease): lrelease = $$[QT_INSTALL_BINS]/lrelease
-            exists("$${lrelease}") {
+            exists("$${lrelease}.exe") {
                 system("$${lrelease} -nounfinished -removeidentical $${_PRO_FILE_}")
             } else {
                 message("qmake can\'t find \"lrelease\" in \"$$[QT_INSTALL_BINS]\".")
