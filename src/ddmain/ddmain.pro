@@ -85,9 +85,7 @@ QT *= \
     }
     CONFIG(lrelease) {
         versionAtLeast(QT_VERSION, 5.12.0) {
-            CONFIG *= \
-                lrelease \
-                embed_translations
+            CONFIG *= embed_translations
         } else {
             isEmpty(lrelease): lrelease = $$[QT_INSTALL_BINS]/lrelease
             exists("$${lrelease}.exe") {
