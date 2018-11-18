@@ -71,8 +71,13 @@ QT *= \
         DD_OBJ_TR=QObject::tr \
         DD_APP_TR=QtSingleApplication::translate
     TRANSLATIONS *= ../resources/translations/dd_zh_CN.ts
-    QMAKE_LUPDATE_FLAGS *= -no-obsolete -locations none -no-ui-lines
-    QMAKE_LRELEASE_FLAGS *= -nounfinished -removeidentical
+    QMAKE_LUPDATE_FLAGS *= \
+        -no-obsolete \
+        -locations none \
+        -no-ui-lines
+    QMAKE_LRELEASE_FLAGS *= \
+        -nounfinished \
+        -removeidentical
     CONFIG *= lrelease
     CONFIG(update_translations): CONFIG *= lupdate
     CONFIG(lupdate) {
@@ -89,7 +94,7 @@ QT *= \
         } else {
             isEmpty(lrelease): lrelease = $$[QT_INSTALL_BINS]/lrelease
             exists("$${lrelease}.exe") {
-                system("$${lrelease} -nounfinished -removeidentical $${_PRO_FILE_}")
+                system("$${lrelease} $${QMAKE_LRELEASE_FLAGS} $${_PRO_FILE_}")
             } else {
                 message("qmake can\'t find \"lrelease\" in \"$$[QT_INSTALL_BINS]\".")
             }
