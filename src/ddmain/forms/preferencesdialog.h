@@ -38,6 +38,7 @@ signals:
     void subtitleAutoLoadChanged(bool);
     void subtitleEnableChanged(bool);
     void imageRatioChanged(bool);
+    void showPlaylistDialog();
 
 public slots:
 #ifndef DD_NO_TRANSLATIONS

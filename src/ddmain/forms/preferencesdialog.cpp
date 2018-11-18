@@ -380,6 +380,7 @@ void PreferencesDialog::initUI()
 
 void PreferencesDialog::initConnections()
 {
+    connect(ui->pushButton_edit_playlist, &QPushButton::clicked, this, &PreferencesDialog::showPlaylistDialog);
     connect(ui->checkBox_auto_update, &QCheckBox::clicked, this, [=]
     {
         bool autoUpdate = ui->checkBox_auto_update->isChecked();

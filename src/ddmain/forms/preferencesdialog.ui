@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>765</width>
-    <height>916</height>
+    <width>774</width>
+    <height>976</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -340,7 +340,73 @@
           </property>
          </widget>
         </item>
+        <item>
+         <widget class="QPushButton" name="pushButton_preferencesDialog_previous">
+          <property name="text">
+           <string>Previous</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pushButton_preferencesDialog_next">
+          <property name="text">
+           <string>Next</string>
+          </property>
+         </widget>
+        </item>
        </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_20">
+        <item>
+         <widget class="QLabel" name="label_loop_mode">
+          <property name="text">
+           <string>Loop mode</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QComboBox" name="comboBox_loop_mode">
+          <item>
+           <property name="text">
+            <string>Repeat current file</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Repeat current playlist</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Repeat all playlists</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Random file from current playlist</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Random file from all playlists</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Random playlist</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton_edit_playlist">
+        <property name="text">
+         <string>Edit playlist</string>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>

@@ -11,6 +11,7 @@
 #endif
 #include "playerwindow.h"
 #include <QtSingleApplication>
+#include "forms/playlistdialog.h"
 
 #include <QMessageBox>
 #include <QSysInfo>
@@ -155,6 +156,7 @@ int main(int argc, char *argv[])
     PlayerWindow playerWindow;
     PreferencesDialog preferencesDialog;
     AboutDialog aboutDialog;
+    PlaylistDialog playlistDialog;
     QSystemTrayIcon trayIcon;
     playerWindow.setWindowMode(windowMode);
 #ifndef DD_NO_SVG
@@ -224,6 +226,10 @@ int main(int argc, char *argv[])
     });
 #endif
 #endif
+    QObject::connect(&preferencesDialog, &PreferencesDialog::showPlaylistDialog, [=, &playlistDialog]
+    {
+        Utils::activateWindow(&playlistDialog);
+    });
     QObject::connect(&preferencesDialog, &PreferencesDialog::play, &playerWindow, &PlayerWindow::play);
     QObject::connect(&preferencesDialog, &PreferencesDialog::pause, &playerWindow, &PlayerWindow::pause);
     QObject::connect(&preferencesDialog, &PreferencesDialog::urlChanged, &playerWindow, &PlayerWindow::setUrl);
@@ -288,22 +294,23 @@ int main(int argc, char *argv[])
     else
     {
         playerWindow.resize(1280, 720);
-        Utils::moveToCenter(&playerWindow);
-        if (playerWindow.isHidden())
-            playerWindow.show();
+        Utils::activateWindow(&playerWindow);
     }
     if (SettingsManager::getInstance()->getUrl().isEmpty())
     {
-        Utils::moveToCenter(&preferencesDialog);
-        if (preferencesDialog.isHidden())
-            preferencesDialog.show();
+        Utils::activateWindow(&preferencesDialog);
+#ifndef DD_NO_TOOLTIP
+        trayIcon.setToolTip(QStringLiteral("Dynamic Desktop"));
+#endif
     }
     else
     {
         const QString url = SettingsManager::getInstance()->getUrl();
-        if (playerWindow.isHidden())
-            playerWindow.show();
+        Utils::activateWindow(&playerWindow);
         playerWindow.setUrl(url);
+#ifndef DD_NO_TOOLTIP
+        trayIcon.setToolTip(QStringLiteral("Dynamic Desktop: %0").arg(url));
+#endif
     }
     return QtSingleApplication::exec();
 }

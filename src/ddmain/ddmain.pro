@@ -118,7 +118,8 @@ HEADERS += \
     playerwindow.h \
     settingsmanager.h \
     slider.h \
-    utils.h
+    utils.h \
+    forms/playlistdialog.h
 SOURCES += \
     main.cpp \
     forms/preferencesdialog.cpp \
@@ -126,8 +127,10 @@ SOURCES += \
     playerwindow.cpp \
     settingsmanager.cpp \
     slider.cpp \
-    utils.cpp
+    utils.cpp \
+    forms/playlistdialog.cpp
 FORMS += \
     forms/preferencesdialog.ui \
-    forms/aboutdialog.ui
+    forms/aboutdialog.ui \
+    forms/playlistdialog.ui
 include(../deploy.pri)
