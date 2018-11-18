@@ -1,6 +1,5 @@
 TARGET = ddmain
 TEMPLATE = app
-CONFIG *= lrelease
 include(../common.pri)
 isEmpty(DD_COMMIT_ID): DD_COMMIT_ID = -
 isEmpty(DD_COMMIT_TIME): DD_COMMIT_TIME = -
@@ -74,7 +73,8 @@ QT *= \
     TRANSLATIONS *= ../resources/translations/dd_zh_CN.ts
     QMAKE_LUPDATE_FLAGS *= -no-obsolete -locations none -no-ui-lines
     QMAKE_LRELEASE_FLAGS *= -nounfinished -removeidentical
-    CONFIG(update_translations): CONFIG *= lupdate lrelease
+    CONFIG *= lrelease
+    CONFIG(update_translations): CONFIG *= lupdate
     CONFIG(lupdate) {
         isEmpty(lupdate): lupdate = $$[QT_INSTALL_BINS]/lupdate
         exists("$${lupdate}.exe") {
