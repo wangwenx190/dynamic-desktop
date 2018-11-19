@@ -41,25 +41,25 @@ QT *= \
 } else {
     QT *= winextras
 }
-!contains(QT_CONFIG, draganddrop): DEFINES *= DD_NO_DRAG_DROP
-!contains(QT_CONFIG, mimetype): DEFINES *= DD_NO_MIME_TYPE
-!contains(QT_CONFIG, tooltip): DEFINES *= DD_NO_TOOLTIP
-!contains(QT_CONFIG, cssparser) {
+!qtConfig(draganddrop): DEFINES *= DD_NO_DRAG_DROP
+!qtConfig(mimetype): DEFINES *= DD_NO_MIME_TYPE
+!qtConfig(tooltip): DEFINES *= DD_NO_TOOLTIP
+!qtConfig(cssparser) {
     DEFINES *= DD_NO_CSS
 } else {
     RESOURCES *= skins.qrc
     HEADERS *= skinsmanager.h
     SOURCES *= skinsmanager.cpp
 }
-!contains(QT_CONFIG, menu) {
+!qtConfig(menu) {
     DEFINES *= DD_NO_MENU
 } else {
     FORMS *= forms/traymenu.ui
     HEADERS *= forms/traymenu.h
     SOURCES *= forms/traymenu.cpp
 }
-!contains(QT_CONFIG, wheelevent): DEFINES *= DD_NO_WHEEL_EVENT
-!contains(QT_CONFIG, translation) {
+!qtConfig(wheelevent): DEFINES *= DD_NO_WHEEL_EVENT
+!qtConfig(translation) {
     DEFINES *= \
         DD_NO_TRANSLATIONS \
         DD_TR=QStringLiteral \
@@ -102,7 +102,7 @@ QT *= \
         }
     }
 }
-#!contains(QT_CONFIG, commandlineparser): DEFINES *= DD_NO_COMMANDLINE_PARSER
+versionAtLeast(QT_VERSION, 5.12.0):!qtConfig(commandlineparser): DEFINES *= DD_NO_COMMANDLINE_PARSER
 LIBS *= \
     -lUser32 \
     -lDwmapi
