@@ -77,13 +77,13 @@ For official builds and third-party packages please see https://sourceforge.net/
 - Download **FFmpeg** SDK and extract to **`ffmpeg`**. Of course, you can extract to anywhere you want, just add **`ffmpeg_dir = your own FFmpeg dir path`** to **`user.conf`**.
    - Zeranoe builds (recommended): https://ffmpeg.zeranoe.com/builds/
 
-      Git and stable versions, shared libs only (full builds only)
+      Git and stable versions, shared libs only, full builds only
    - QtAV builds: https://sourceforge.net/projects/avbuild/files/windows-desktop/
 
-      Git and stable versions, shared and static libs (full and lite builds)
+      Git and stable versions, shared and static libs, full and lite builds
    - Shift Media Project builds: https://github.com/ShiftMediaProject/FFmpeg/releases/latest
 
-      Git and stable versions, shared and static libs (full builds only)
+      Git and stable versions, shared and static libs, full builds only
 - Open "dynamic-desktop.pro" and start compiling or call "build.bat". But remember to call "vcvarsall.bat" and add Qt's directories to your path variables before calling "build.bat".
 
 ### IMPORTANT NOTES
@@ -91,9 +91,9 @@ For official builds and third-party packages please see https://sourceforge.net/
 - You will need to build the static version of Qt by yourself if you want to get rid of the Qt dlls. Currently, this project only needs 3 repositories: **`qtbase`**(Qt modules needed: core, gui, widgets, network and opengl), **`qtsvg`**(SVG support) and **`qtwinextras`**(Taskbar Progress support). You can skip all other repositories to speed up the compiling process.
 
 ## Licenses
-- [Wallpaper](/src/3rdparty/wallpaper): some code is copied from https://github.com/ThomasHuai/Wallpaper , Apache License 2.0, thanks to [ThomasHuai](https://github.com/ThomasHuai)!
+- [Wallpaper](/src/3rdparty/wallpaper): some code is copied from https://github.com/NoisyWinds/Wallpaper , Apache License 2.0, thanks to [NoisyWind](https://github.com/NoisyWinds)!
 - [FFmpeg](http://ffmpeg.org/): LGPLv3/GPLv3, thanks to [the FFmpeg project](http://ffmpeg.org/)!
-- [QtAV](https://github.com/wang-bin/QtAV): LGPLv3/GPLv3, thanks to [wang bin](https://github.com/wang-bin)!
+- [QtAV](https://github.com/wangwenx190/qtav-lite): LGPLv3/GPLv3, thanks to [wang bin](https://github.com/wang-bin)!
 - [Qt Nice Frameless Window](/src/3rdparty/qtniceframelesswindow): some code is copied from https://github.com/Bringer-of-Light/Qt-Nice-Frameless-Window , MIT, thanks to [Bringer of Light](https://github.com/Bringer-of-Light)!
 - [Qt](http://download.qt.io/archive/qt/) and [QtSingleApplication](/src/3rdparty/qtsingleapplication): some code is copied from https://github.com/qtproject/qt-solutions , LGPLv3/GPLv3, thanks to [the Qt Company](https://www.qt.io/)!
 - [src/resources/stylesheets/Default.css](/src/resources/stylesheets/Default.css): copied from https://github.com/u8sand/Baka-MPlayer , GPLv2, thanks to [Daniel Clarke](https://github.com/u8sand)!
