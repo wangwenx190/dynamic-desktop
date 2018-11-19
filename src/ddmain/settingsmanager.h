@@ -5,16 +5,25 @@
 class SettingsManager
 {
 public:
+    enum PlaybackMode
+    {
+        RepeatCurrentFile,
+        RepeatCurrentPlaylist,
+        RepeatAllPlaylists,
+        RandomFileFromCurrentPlaylist,
+        RandomFileFromAllPlaylists,
+        RandomPlaylist
+    };
     static SettingsManager *getInstance();
 
 public:
-    QStringList defaultDecoders() const;
+    QStringList getDefaultDecoders() const;
 #ifndef DD_NO_MIME_TYPE
-    QStringList supportedMimeTypes() const;
+    QStringList getSupportedMimeTypes() const;
 #endif
-    QString lastDir() const;
+    QString getLastDir() const;
 
-    QString getUrl() const;
+    QString getLastFile() const;
     bool getMute() const;
     quint32 getVolume() const;
     bool getHwdec() const;
@@ -32,12 +41,13 @@ public:
 #endif
     int getRenderer() const;
     QString getImageQuality() const;
-    QStringList getHistory() const;
-    bool isHistoryEnabled() const;
-    quint32 getHistoryMax() const;
     bool getAutoCheckUpdate() const;
+    PlaybackMode getPlaybackMode() const;
+    QString getCurrentPlaylistName() const;
+    QStringList getAllFilesFromPlaylist(const QString &name) const;
+    QStringList getAllPlaylistNames() const;
 
-    void setUrl(const QString &url);
+    void setLastFile(const QString &url);
     void setMute(bool mute = true);
     void setVolume(quint32 volume = 9);
     void setHwdec(bool enable = false);
@@ -55,15 +65,16 @@ public:
 #endif
     void setRenderer(int vid);
     void setImageQuality(const QString &quality = QStringLiteral("best"));
-    void setHistory(const QStringList &history);
-    void setHistoryEnabled(bool enabled = true);
-    void setHistoryMax(int max = 20);
     void setAutoCheckUpdate(bool enabled = true);
+    void setPlaybackMode(PlaybackMode playbackMode = PlaybackMode::RepeatCurrentFile);
+    void setCurrentPlaylistName(const QString &name);
+    void setPlaylistFiles(const QString &name, const QStringList &files);
+    void setAllPlaylistNames(const QStringList &names);
 
 private:
     SettingsManager();
     ~SettingsManager();
 
 private:
-    QSettings *settings;
+    QSettings *settings = nullptr;
 };

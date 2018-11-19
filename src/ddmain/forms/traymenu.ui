@@ -43,7 +43,7 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset resource="../ddmain.qrc">
+        <iconset resource="../images_svg.qrc">
          <normaloff>:/icons/previous-light.svg</normaloff>:/icons/previous-light.svg</iconset>
        </property>
        <property name="iconSize">
@@ -63,7 +63,7 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset resource="../ddmain.qrc">
+        <iconset resource="../images_svg.qrc">
          <normaloff>:/icons/play-light.svg</normaloff>:/icons/play-light.svg</iconset>
        </property>
        <property name="iconSize">
@@ -86,7 +86,7 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset resource="../ddmain.qrc">
+        <iconset resource="../images_svg.qrc">
          <normaloff>:/icons/next-light.svg</normaloff>:/icons/next-light.svg</iconset>
        </property>
        <property name="iconSize">
@@ -117,7 +117,7 @@
       <string>Playlist</string>
      </property>
      <property name="icon">
-      <iconset resource="../ddmain.qrc">
+      <iconset resource="../images_svg.qrc">
        <normaloff>:/icons/playlist-light.svg</normaloff>:/icons/playlist-light.svg</iconset>
      </property>
      <property name="iconSize">
@@ -135,7 +135,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QToolButton" name="toolButton_loop">
+    <widget class="QToolButton" name="toolButton_playback_mode">
      <property name="enabled">
       <bool>false</bool>
      </property>
@@ -146,10 +146,10 @@
       </sizepolicy>
      </property>
      <property name="text">
-      <string>Loop mode</string>
+      <string>Playback mode</string>
      </property>
      <property name="icon">
-      <iconset resource="../ddmain.qrc">
+      <iconset resource="../images_svg.qrc">
        <normaloff>:/icons/circle-light.svg</normaloff>:/icons/circle-light.svg</iconset>
      </property>
      <property name="iconSize">
@@ -178,7 +178,7 @@
       <string>Mute</string>
      </property>
      <property name="icon">
-      <iconset resource="../ddmain.qrc">
+      <iconset resource="../images_svg.qrc">
        <normaloff>:/icons/mute-light.svg</normaloff>:/icons/mute-light.svg</iconset>
      </property>
      <property name="iconSize">
@@ -207,7 +207,7 @@
       <string>Options</string>
      </property>
      <property name="icon">
-      <iconset resource="../ddmain.qrc">
+      <iconset resource="../images_svg.qrc">
        <normaloff>:/icons/options-light.svg</normaloff>:/icons/options-light.svg</iconset>
      </property>
      <property name="iconSize">
@@ -236,7 +236,7 @@
       <string>About</string>
      </property>
      <property name="icon">
-      <iconset resource="../ddmain.qrc">
+      <iconset resource="../images_svg.qrc">
        <normaloff>:/icons/info.svg</normaloff>:/icons/info.svg</iconset>
      </property>
      <property name="iconSize">
@@ -265,7 +265,7 @@
       <string>Exit</string>
      </property>
      <property name="icon">
-      <iconset resource="../ddmain.qrc">
+      <iconset resource="../images_svg.qrc">
        <normaloff>:/icons/exit-light.svg</normaloff>:/icons/exit-light.svg</iconset>
      </property>
      <property name="iconSize">
@@ -286,7 +286,7 @@
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources>
-  <include location="../ddmain.qrc"/>
+  <include location="../images_svg.qrc"/>
  </resources>
  <connections/>
 </ui>

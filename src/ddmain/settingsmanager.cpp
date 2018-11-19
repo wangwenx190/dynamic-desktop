@@ -15,7 +15,7 @@ SettingsManager *SettingsManager::getInstance()
     return &settingsManager;
 }
 
-QStringList SettingsManager::defaultDecoders() const
+QStringList SettingsManager::getDefaultDecoders() const
 {
     return QStringList()
             << QStringLiteral("CUDA")
@@ -25,7 +25,7 @@ QStringList SettingsManager::defaultDecoders() const
 }
 
 #ifndef DD_NO_MIME_TYPE
-QStringList SettingsManager::supportedMimeTypes() const
+QStringList SettingsManager::getSupportedMimeTypes() const
 {
     return QStringList()
             << QStringLiteral("audio/ac3")
@@ -82,12 +82,9 @@ QStringList SettingsManager::supportedMimeTypes() const
 }
 #endif
 
-QString SettingsManager::getUrl() const
+QString SettingsManager::getLastFile() const
 {
-    const QStringList history = getHistory();
-    if (history.isEmpty())
-        return QString();
-    const QString& path = history.constFirst();
+    const QString& path = settings->value(QStringLiteral("currentfile"), QString()).toString();
     if (path.isEmpty())
         return QString();
     if (QFileInfo::exists(path))
@@ -103,9 +100,9 @@ QString SettingsManager::getUrl() const
     return QUrl::fromPercentEncoding(url.toEncoded());
 }
 
-QString SettingsManager::lastDir() const
+QString SettingsManager::getLastDir() const
 {
-    const QString url = getUrl();
+    const QString url = getLastFile();
     if (!url.isEmpty())
     {
         const QString dir = QDir::cleanPath(QFileInfo(url).absolutePath());
@@ -140,7 +137,7 @@ bool SettingsManager::getHwdec() const
 
 QStringList SettingsManager::getDecoders() const
 {
-    return settings->value(QStringLiteral("decoders"), defaultDecoders()).toStringList();
+    return settings->value(QStringLiteral("decoders"), getDefaultDecoders()).toStringList();
 }
 
 bool SettingsManager::getFitDesktop() const
@@ -192,56 +189,45 @@ QString SettingsManager::getImageQuality() const
     return settings->value(QStringLiteral("quality"), QStringLiteral("best")).toString().toLower();
 }
 
-QStringList SettingsManager::getHistory() const
-{
-    QStringList history;
-    const int size = settings->beginReadArray(QStringLiteral("history"));
-    if (size < 1)
-    {
-        settings->endArray();
-        return history;
-    }
-    int first = size > static_cast<int>(getHistoryMax()) ? size - static_cast<int>(getHistoryMax()) : 0;
-    for (int i = (size - 1); i != (first - 1); --i)
-    {
-        settings->setArrayIndex(i);
-        const QString path = settings->value(QStringLiteral("path")).toString();
-        if (QFileInfo::exists(path))
-        {
-            history.append(QDir::toNativeSeparators(QDir::cleanPath(path)));
-            if (!isHistoryEnabled())
-                break;
-        }
-    }
-    settings->endArray();
-    return history;
-}
-
-bool SettingsManager::isHistoryEnabled() const
-{
-    return settings->value(QStringLiteral("savehistory"), true).toBool();
-}
-
-quint32 SettingsManager::getHistoryMax() const
-{
-    int max = settings->value(QStringLiteral("historymax"), 20).toInt();
-    max = max < 1 ? 20 : max;
-    return max;
-}
-
 bool SettingsManager::getAutoCheckUpdate() const
 {
-    return false;
     //return settings->value(QStringLiteral("autoupdate"), false).toBool();
+    return false;
 }
 
-void SettingsManager::setUrl(const QString &url)
+SettingsManager::PlaybackMode SettingsManager::getPlaybackMode() const
 {
-    QStringList history = getHistory();
-    if (!history.isEmpty())
-        history.removeAll(QDir::toNativeSeparators(QDir::cleanPath(url)));
-    history.append(QDir::toNativeSeparators(QDir::cleanPath(url)));
-    setHistory(history);
+    return static_cast<PlaybackMode>(settings->value(QStringLiteral("playbackmode"), PlaybackMode::RepeatCurrentFile).toInt());
+}
+
+QString SettingsManager::getCurrentPlaylistName() const
+{
+    return settings->value(QStringLiteral("currentplaylist"), QStringLiteral("Default")).toString();
+}
+
+QStringList SettingsManager::getAllFilesFromPlaylist(const QString &name) const
+{
+    settings->beginGroup(QStringLiteral("playlists"));
+    QStringList playlist;
+    quint32 size = settings->beginReadArray(name);
+    for (quint32 i = 0; i != size; ++i)
+    {
+        settings->setArrayIndex(i);
+        playlist.append(QDir::toNativeSeparators(QDir::cleanPath(settings->value(QStringLiteral("path"), QString()).toString())));
+    }
+    settings->endArray();
+    settings->endGroup();
+    return playlist;
+}
+
+QStringList SettingsManager::getAllPlaylistNames() const
+{
+    return settings->value(QStringLiteral("allplaylists"), QStringList() << QStringLiteral("Default")).toStringList();
+}
+
+void SettingsManager::setLastFile(const QString &url)
+{
+    settings->setValue(QStringLiteral("currentfile"), QDir::toNativeSeparators(QDir::cleanPath(url)));
 }
 
 void SettingsManager::setMute(bool mute)
@@ -316,47 +302,44 @@ void SettingsManager::setImageQuality(const QString &quality)
     settings->setValue(QStringLiteral("quality"), quality);
 }
 
-void SettingsManager::setHistory(const QStringList &history)
-{
-    if (history.isEmpty())
-        return;
-    quint32 first = history.count() > static_cast<int>(getHistoryMax()) ? history.count() - static_cast<int>(getHistoryMax()) : 0;
-    settings->beginWriteArray(QStringLiteral("history"));
-    for (quint32 i = first, j = 0; i != history.count(); ++i, ++j)
-    {
-        settings->setArrayIndex(j);
-        if (isHistoryEnabled())
-            settings->setValue(QStringLiteral("path"), QDir::toNativeSeparators(QDir::cleanPath(history.at(i))));
-        else
-        {
-            settings->setValue(QStringLiteral("path"), QDir::toNativeSeparators(QDir::cleanPath(history.constLast())));
-            break;
-        }
-    }
-    settings->endArray();
-}
-
-void SettingsManager::setHistoryEnabled(bool enabled)
-{
-    settings->setValue(QStringLiteral("savehistory"), enabled);
-}
-
-void SettingsManager::setHistoryMax(int max)
-{
-    quint32 newMax = max < 1 ? 20 : max;
-    settings->setValue(QStringLiteral("historymax"), newMax);
-}
-
 void SettingsManager::setAutoCheckUpdate(bool enabled)
 {
     settings->setValue(QStringLiteral("autoupdate"), enabled);
+}
+
+void SettingsManager::setPlaybackMode(SettingsManager::PlaybackMode playbackMode)
+{
+    settings->setValue(QStringLiteral("playbackmode"), playbackMode);
+}
+
+void SettingsManager::setCurrentPlaylistName(const QString &name)
+{
+    settings->setValue(QStringLiteral("currentplaylist"), name);
+}
+
+void SettingsManager::setPlaylistFiles(const QString &name, const QStringList &files)
+{
+    settings->beginGroup(QStringLiteral("playlists"));
+    settings->beginWriteArray(name);
+    for (quint32 i = 0; i != files.count(); ++i)
+    {
+        settings->setArrayIndex(i);
+        settings->setValue(QStringLiteral("path"), QDir::toNativeSeparators(QDir::cleanPath(files.at(i))));
+    }
+    settings->endArray();
+    settings->endGroup();
+}
+
+void SettingsManager::setAllPlaylistNames(const QStringList &names)
+{
+    settings->setValue(QStringLiteral("allplaylists"), names);
 }
 
 SettingsManager::SettingsManager()
 {
     QString iniPath = QCoreApplication::applicationDirPath();
     iniPath += QStringLiteral("/config.ini");
-    settings = new QSettings(iniPath, QSettings::IniFormat);
+    settings = new QSettings(QDir::toNativeSeparators(QDir::cleanPath(iniPath)), QSettings::IniFormat);
     settings->beginGroup(QStringLiteral("dd"));
 }
 

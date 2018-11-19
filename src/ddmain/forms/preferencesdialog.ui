@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>774</width>
-    <height>976</height>
+    <height>943</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -311,20 +311,6 @@
        </layout>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_19">
-        <item>
-         <widget class="QCheckBox" name="checkBox_history">
-          <property name="text">
-           <string>Save playback history</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QSpinBox" name="spinBox_history"/>
-        </item>
-       </layout>
-      </item>
-      <item>
        <layout class="QHBoxLayout" name="horizontalLayout_5">
         <item>
          <widget class="QPushButton" name="pushButton_play">
@@ -359,14 +345,14 @@
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_20">
         <item>
-         <widget class="QLabel" name="label_loop_mode">
+         <widget class="QLabel" name="label_playback_mode">
           <property name="text">
-           <string>Loop mode</string>
+           <string>Playback mode</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QComboBox" name="comboBox_loop_mode">
+         <widget class="QComboBox" name="comboBox_playback_mode">
           <item>
            <property name="text">
             <string>Repeat current file</string>
@@ -404,7 +390,7 @@
       <item>
        <widget class="QPushButton" name="pushButton_edit_playlist">
         <property name="text">
-         <string>Edit playlist</string>
+         <string>Edit playlists</string>
         </property>
        </widget>
       </item>
