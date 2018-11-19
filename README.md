@@ -53,7 +53,7 @@ For official builds and third-party packages please see https://sourceforge.net/
 - Currently, hardware decoding only supports traditional video formats such as AVC/H.264, so please do not attempt to play HEVC videos if you are using hardware decoding.
 
 ## Compilation
-- Clone or download(remember to download the submodules together!) this repository:
+- Clone or download(remember to download all the submodules together!) this repository:
    - First of all, download **Git** from https://git-for-windows.github.io/ and install it.
    - Run:
       ```bash
@@ -74,16 +74,16 @@ For official builds and third-party packages please see https://sourceforge.net/
       ```
       Note that you can add **`-b master`** to the **`git clone`** command if you want to get the latest stable version instead of the latest development version
 - Download **Qt** at least *5.6.3* from http://download.qt.io/archive/qt/ and install it. Using the latest version is highly recommended.
-- Download **FFmpeg** SDK and extract to **`ffmpeg`**. Of course, you can extract to anywhere you want, just add **`ffmpeg_dir = your own FFmpeg dir`** to **`.qmake.conf`**.
-   - Zeranoe builds: https://ffmpeg.zeranoe.com/builds/
+- Download **FFmpeg** SDK and extract to **`ffmpeg`**. Of course, you can extract to anywhere you want, just add **`ffmpeg_dir = your own FFmpeg dir path`** to **`user.conf`**.
+   - Zeranoe builds (recommended): https://ffmpeg.zeranoe.com/builds/
 
-      Git and stable versions, shared libs only
+      Git and stable versions, shared libs only (full builds only)
    - QtAV builds: https://sourceforge.net/projects/avbuild/files/windows-desktop/
 
-      Git and stable versions, shared and static libs
-   - ShiftMediaProject builds: https://github.com/ShiftMediaProject/FFmpeg/releases/latest
+      Git and stable versions, shared and static libs (full and lite builds)
+   - Shift Media Project builds: https://github.com/ShiftMediaProject/FFmpeg/releases/latest
 
-      Git and stable versions, shared and static libs
+      Git and stable versions, shared and static libs (full builds only)
 - Open "dynamic-desktop.pro" and start compiling or call "build.bat". But remember to call "vcvarsall.bat" and add Qt's directories to your path variables before calling "build.bat".
 
 ### IMPORTANT NOTES
