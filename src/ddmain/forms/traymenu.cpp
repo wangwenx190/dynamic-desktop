@@ -8,6 +8,7 @@ TrayMenu::TrayMenu(QWidget *parent) : QMenu(parent)
 {
     ui = new Ui::TrayMenu();
     ui->setupUi(this);
+    initIcons();
     connect(ui->toolButton_options, &QToolButton::clicked, this, &TrayMenu::onOptionsClicked);
     connect(ui->toolButton_about, &QToolButton::clicked, this, &TrayMenu::onAboutClicked);
     connect(ui->toolButton_mute, &QToolButton::clicked, this, &TrayMenu::onMuteClicked);
@@ -64,6 +65,31 @@ void TrayMenu::showEvent(QShowEvent *event)
 {
     move(geometry().left(), geometry().top() - height());
     QMenu::showEvent(event);
+}
+
+void TrayMenu::initIcons()
+{
+#ifndef DD_NO_SVG
+    ui->pushButton_previous->setIcon(QIcon(QStringLiteral(":/icons/previous-light.svg")));
+    ui->pushButton_play->setIcon(QIcon(QStringLiteral(":/icons/play-light.svg")));
+    ui->pushButton_next->setIcon(QIcon(QStringLiteral(":/icons/next-light.svg")));
+    ui->toolButton_playlist->setIcon(QIcon(QStringLiteral(":/icons/playlist-light.svg")));
+    ui->toolButton_playback_mode->setIcon(QIcon(QStringLiteral(":/icons/circle-light.svg")));
+    ui->toolButton_mute->setIcon(QIcon(QStringLiteral(":/icons/mute-light.svg")));
+    ui->toolButton_options->setIcon(QIcon(QStringLiteral(":/icons/options-light.svg")));
+    ui->toolButton_about->setIcon(QIcon(QStringLiteral(":/icons/info.svg")));
+    ui->toolButton_exit->setIcon(QIcon(QStringLiteral(":/icons/exit-light.svg")));
+#else
+    ui->pushButton_previous->setIcon(QIcon(QStringLiteral(":/icons/previous-light.png")));
+    ui->pushButton_play->setIcon(QIcon(QStringLiteral(":/icons/play-light.png")));
+    ui->pushButton_next->setIcon(QIcon(QStringLiteral(":/icons/next-light.png")));
+    ui->toolButton_playlist->setIcon(QIcon(QStringLiteral(":/icons/playlist-light.png")));
+    ui->toolButton_playback_mode->setIcon(QIcon(QStringLiteral(":/icons/circle-light.png")));
+    ui->toolButton_mute->setIcon(QIcon(QStringLiteral(":/icons/mute-light.png")));
+    ui->toolButton_options->setIcon(QIcon(QStringLiteral(":/icons/options-light.png")));
+    ui->toolButton_about->setIcon(QIcon(QStringLiteral(":/icons/info.png")));
+    ui->toolButton_exit->setIcon(QIcon(QStringLiteral(":/icons/exit-light.png")));
+#endif
 }
 
 #endif

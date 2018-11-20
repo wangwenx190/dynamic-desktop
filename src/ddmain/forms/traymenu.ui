@@ -42,10 +42,6 @@
        <property name="text">
         <string/>
        </property>
-       <property name="icon">
-        <iconset resource="../images_svg.qrc">
-         <normaloff>:/icons/previous-light.svg</normaloff>:/icons/previous-light.svg</iconset>
-       </property>
        <property name="iconSize">
         <size>
          <width>50</width>
@@ -61,10 +57,6 @@
       <widget class="QPushButton" name="pushButton_play">
        <property name="text">
         <string/>
-       </property>
-       <property name="icon">
-        <iconset resource="../images_svg.qrc">
-         <normaloff>:/icons/play-light.svg</normaloff>:/icons/play-light.svg</iconset>
        </property>
        <property name="iconSize">
         <size>
@@ -84,10 +76,6 @@
        </property>
        <property name="text">
         <string/>
-       </property>
-       <property name="icon">
-        <iconset resource="../images_svg.qrc">
-         <normaloff>:/icons/next-light.svg</normaloff>:/icons/next-light.svg</iconset>
        </property>
        <property name="iconSize">
         <size>
@@ -115,10 +103,6 @@
      </property>
      <property name="text">
       <string>Playlist</string>
-     </property>
-     <property name="icon">
-      <iconset resource="../images_svg.qrc">
-       <normaloff>:/icons/playlist-light.svg</normaloff>:/icons/playlist-light.svg</iconset>
      </property>
      <property name="iconSize">
       <size>
@@ -148,10 +132,6 @@
      <property name="text">
       <string>Playback mode</string>
      </property>
-     <property name="icon">
-      <iconset resource="../images_svg.qrc">
-       <normaloff>:/icons/circle-light.svg</normaloff>:/icons/circle-light.svg</iconset>
-     </property>
      <property name="iconSize">
       <size>
        <width>50</width>
@@ -176,10 +156,6 @@
      </property>
      <property name="text">
       <string>Mute</string>
-     </property>
-     <property name="icon">
-      <iconset resource="../images_svg.qrc">
-       <normaloff>:/icons/mute-light.svg</normaloff>:/icons/mute-light.svg</iconset>
      </property>
      <property name="iconSize">
       <size>
@@ -206,10 +182,6 @@
      <property name="text">
       <string>Options</string>
      </property>
-     <property name="icon">
-      <iconset resource="../images_svg.qrc">
-       <normaloff>:/icons/options-light.svg</normaloff>:/icons/options-light.svg</iconset>
-     </property>
      <property name="iconSize">
       <size>
        <width>50</width>
@@ -234,10 +206,6 @@
      </property>
      <property name="text">
       <string>About</string>
-     </property>
-     <property name="icon">
-      <iconset resource="../images_svg.qrc">
-       <normaloff>:/icons/info.svg</normaloff>:/icons/info.svg</iconset>
      </property>
      <property name="iconSize">
       <size>
@@ -264,10 +232,6 @@
      <property name="text">
       <string>Exit</string>
      </property>
-     <property name="icon">
-      <iconset resource="../images_svg.qrc">
-       <normaloff>:/icons/exit-light.svg</normaloff>:/icons/exit-light.svg</iconset>
-     </property>
      <property name="iconSize">
       <size>
        <width>50</width>
@@ -285,8 +249,6 @@
   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources>
-  <include location="../images_svg.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

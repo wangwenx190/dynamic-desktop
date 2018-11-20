@@ -36,6 +36,9 @@ public slots:
 protected:
     void showEvent(QShowEvent *event) override;
 
+private slots:
+    void initIcons();
+
 private:
     Ui::TrayMenu *ui = nullptr;
     bool muted = false;
