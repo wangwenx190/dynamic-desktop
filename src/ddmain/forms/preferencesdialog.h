@@ -21,6 +21,8 @@ signals:
     void about();
     void play();
     void pause();
+    void next();
+    void previous();
 #ifndef DD_NO_TRANSLATIONS
     void languageChanged(const QString &);
 #endif
@@ -39,6 +41,8 @@ signals:
     void subtitleEnableChanged(bool);
     void imageRatioChanged(bool);
     void showPlaylistDialog();
+    void playlistChanged(const QString &);
+    void playbackModeChanged(quint32);
 
 public slots:
 #ifndef DD_NO_TRANSLATIONS
@@ -82,6 +86,8 @@ private slots:
     void populateLanguages(const QString &dirPath, bool add = true, bool isExternal = false);
 #endif
     void initIcons();
+    void populateFiles();
+    void populatePlaylists();
 
 private:
     Ui::PreferencesDialog *ui = nullptr;

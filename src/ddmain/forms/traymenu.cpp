@@ -43,12 +43,20 @@ void TrayMenu::setMute(bool mute)
         if (muted)
         {
             ui->toolButton_mute->setText(DD_TR("Unmute"));
+#ifndef DD_NO_SVG
             ui->toolButton_mute->setIcon(QIcon(QStringLiteral(":/icons/sound-light.svg")));
+#else
+            ui->toolButton_mute->setIcon(QIcon(QStringLiteral(":/icons/sound-light.png")));
+#endif
         }
         else
         {
             ui->toolButton_mute->setText(DD_TR("Mute"));
+#ifndef DD_NO_SVG
             ui->toolButton_mute->setIcon(QIcon(QStringLiteral(":/icons/mute-light.svg")));
+#else
+            ui->toolButton_mute->setIcon(QIcon(QStringLiteral(":/icons/mute-light.png")));
+#endif
         }
     }
 }
@@ -56,9 +64,17 @@ void TrayMenu::setMute(bool mute)
 void TrayMenu::setPlaying(bool playing)
 {
     if (playing)
+#ifndef DD_NO_SVG
         ui->pushButton_play->setIcon(QIcon(QStringLiteral(":/icons/pause-light.svg")));
+#else
+        ui->pushButton_play->setIcon(QIcon(QStringLiteral(":/icons/pause-light.png")));
+#endif
     else
+#ifndef DD_NO_SVG
         ui->pushButton_play->setIcon(QIcon(QStringLiteral(":/icons/play-light.svg")));
+#else
+        ui->pushButton_play->setIcon(QIcon(QStringLiteral(":/icons/play-light.png")));
+#endif
 }
 
 void TrayMenu::showEvent(QShowEvent *event)

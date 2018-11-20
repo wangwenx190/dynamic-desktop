@@ -112,7 +112,7 @@ QString SettingsManager::getLastDir() const
     for (auto& dirPath : QStandardPaths::standardLocations(QStandardPaths::MoviesLocation))
         if (QFileInfo::exists(dirPath) && QFileInfo(dirPath).isDir())
             return QDir::toNativeSeparators(QDir::cleanPath(dirPath));
-    return QStringLiteral(".");
+    return QDir::toNativeSeparators(QDir::cleanPath(QCoreApplication::applicationDirPath()));
 }
 
 bool SettingsManager::getMute() const
@@ -197,7 +197,12 @@ bool SettingsManager::getAutoCheckUpdate() const
 
 SettingsManager::PlaybackMode SettingsManager::getPlaybackMode() const
 {
-    return static_cast<PlaybackMode>(settings->value(QStringLiteral("playbackmode"), PlaybackMode::RepeatCurrentFile).toInt());
+    int mode = settings->value(QStringLiteral("playbackmode"), PlaybackMode::RepeatCurrentFile).toInt();
+    if (mode < 0)
+        mode = 0;
+    if (mode > 5)
+        mode = 5;
+    return static_cast<PlaybackMode>(mode);
 }
 
 QString SettingsManager::getCurrentPlaylistName() const
@@ -209,8 +214,8 @@ QStringList SettingsManager::getAllFilesFromPlaylist(const QString &name) const
 {
     settings->beginGroup(QStringLiteral("playlists"));
     QStringList playlist;
-    quint32 size = settings->beginReadArray(name);
-    for (quint32 i = 0; i != size; ++i)
+    int size = settings->beginReadArray(name);
+    for (int i = 0; i != size; ++i)
     {
         settings->setArrayIndex(i);
         playlist.append(QDir::toNativeSeparators(QDir::cleanPath(settings->value(QStringLiteral("path"), QString()).toString())));
@@ -321,7 +326,7 @@ void SettingsManager::setPlaylistFiles(const QString &name, const QStringList &f
 {
     settings->beginGroup(QStringLiteral("playlists"));
     settings->beginWriteArray(name);
-    for (quint32 i = 0; i != files.count(); ++i)
+    for (int i = 0; i != files.count(); ++i)
     {
         settings->setArrayIndex(i);
         settings->setValue(QStringLiteral("path"), QDir::toNativeSeparators(QDir::cleanPath(files.at(i))));

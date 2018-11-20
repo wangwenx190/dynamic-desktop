@@ -251,7 +251,7 @@ static bool canHandleDrop(const QDragEnterEvent *event)
     const QList<QUrl> urls = event->mimeData()->urls();
     if (urls.empty()) return false;
     QMimeDatabase mimeDatabase;
-    return SettingsManager::getInstance()->supportedMimeTypes().
+    return SettingsManager::getInstance()->getSupportedMimeTypes().
             contains(mimeDatabase.mimeTypeForUrl(urls.constFirst()).name());
 }
 
@@ -268,12 +268,19 @@ void PreferencesDialog::dropEvent(QDropEvent *event)
     QUrl url = event->mimeData()->urls().constFirst();
     QString path;
     if (url.isLocalFile())
-        path = QDir::toNativeSeparators(url.toLocalFile());
+        path = QDir::toNativeSeparators(QDir::cleanPath(url.toLocalFile()));
     else
         path = url.url();
     if (ui->comboBox_url->findText(path) < 0)
-        ui->comboBox_url->addItem(path, path);
-    ui->comboBox_url->setCurrentText(path);
+        ui->comboBox_url->insertItem(ui->comboBox_url->currentIndex() + 1, path);
+    if (ui->comboBox_url->currentText() != path)
+    {
+        ui->comboBox_url->setCurrentText(path);
+        QStringList files;
+        for (int i = 0; i != ui->comboBox_url->count(); ++i)
+            files.append(ui->comboBox_url->itemText(i));
+        SettingsManager::getInstance()->setPlaylistFiles(SettingsManager::getInstance()->getCurrentPlaylistName(), files);
+    }
 }
 #endif
 
@@ -293,10 +300,10 @@ void PreferencesDialog::initUI()
     taskbarProgress->setRange(0, 99);
     taskbarProgress->show();
 #endif
+    populatePlaylists();
+    populateFiles();
+    ui->comboBox_playback_mode->setCurrentIndex(SettingsManager::getInstance()->getPlaybackMode());
     ui->checkBox_auto_update->setChecked(SettingsManager::getInstance()->getAutoCheckUpdate());
-    ui->checkBox_history->setChecked(SettingsManager::getInstance()->isHistoryEnabled());
-    ui->spinBox_history->setValue(SettingsManager::getInstance()->getHistoryMax());
-    ui->spinBox_history->setEnabled(ui->checkBox_history->isChecked());
     ui->comboBox_video_track->setEnabled(false);
     ui->comboBox_audio_track->setEnabled(false);
     ui->comboBox_subtitle_track->setEnabled(false);
@@ -333,10 +340,6 @@ void PreferencesDialog::initUI()
     ui->comboBox_subtitle_charset->addItem(DD_TR("System"), QStringLiteral("System"));
     for (auto& codec : QTextCodec::availableCodecs())
         ui->comboBox_subtitle_charset->addItem(QString::fromLatin1(codec), QString::fromLatin1(codec));
-    const QStringList history = SettingsManager::getInstance()->getHistory();
-    if (history.count() > 0)
-        for (auto& filePath : history)
-            ui->comboBox_url->addItem(filePath, filePath);
     if (audioAvailable)
     {
         ui->checkBox_volume->setChecked(!SettingsManager::getInstance()->getMute());
@@ -387,39 +390,19 @@ void PreferencesDialog::initConnections()
         if (autoUpdate != SettingsManager::getInstance()->getAutoCheckUpdate())
             SettingsManager::getInstance()->setAutoCheckUpdate(autoUpdate);
     });
-    connect(ui->checkBox_history, &QCheckBox::clicked, this, [=]
-    {
-        bool saveHistory = ui->checkBox_history->isChecked();
-        if (saveHistory != SettingsManager::getInstance()->isHistoryEnabled())
-            SettingsManager::getInstance()->setHistoryEnabled(saveHistory);
-        if (ui->spinBox_history->isEnabled() != saveHistory)
-            ui->spinBox_history->setEnabled(saveHistory);
-        if (saveHistory && ui->spinBox_history->value() < 1)
-            ui->spinBox_history->setValue(SettingsManager::getInstance()->getHistoryMax());
-    });
-    connect(ui->spinBox_history, qOverload<int>(&QSpinBox::valueChanged), this, [=](int value)
-    {
-        if (value < 1)
-        {
-            ui->checkBox_history->setChecked(false);
-            emit ui->checkBox_history->clicked(false);
-        }
-        else if (value != SettingsManager::getInstance()->getHistoryMax())
-            SettingsManager::getInstance()->setHistoryMax(value);
-    });
 #ifndef DD_NO_WIN_EXTRAS
     connect(ui->horizontalSlider_video_position, &QSlider::valueChanged, taskbarProgress, &QWinTaskbarProgress::setValue);
     connect(ui->horizontalSlider_video_position, &QSlider::rangeChanged, taskbarProgress, &QWinTaskbarProgress::setRange);
 #endif
     connect(ui->pushButton_audio_open, &QPushButton::clicked, this, [=]
     {
-        QString audioPath = QFileDialog::getOpenFileName(nullptr, DD_TR("Please select an audio file"), SettingsManager::getInstance()->lastDir(), DD_TR("Audios (*.mka *.aac *.flac *.mp3 *.wav);;All files (*)"));
+        QString audioPath = QFileDialog::getOpenFileName(nullptr, DD_TR("Please select an audio file"), SettingsManager::getInstance()->getLastDir(), DD_TR("Audios (*.mka *.aac *.flac *.mp3 *.wav);;All files (*)"));
         if (!audioPath.isEmpty())
             emit this->audioFileChanged(audioPath);
     });
     connect(ui->pushButton_subtitle_open, &QPushButton::clicked, this, [=]
     {
-        QString subtitlePath = QFileDialog::getOpenFileName(nullptr, DD_TR("Please select a subtitle file"), SettingsManager::getInstance()->lastDir(), DD_TR("Subtitles (*.ass *.ssa *.srt *.sub);;All files (*)"));
+        QString subtitlePath = QFileDialog::getOpenFileName(nullptr, DD_TR("Please select a subtitle file"), SettingsManager::getInstance()->getLastDir(), DD_TR("Subtitles (*.ass *.ssa *.srt *.sub);;All files (*)"));
         if (!subtitlePath.isEmpty())
             emit this->subtitleFileChanged(subtitlePath);
     });
@@ -454,10 +437,10 @@ void PreferencesDialog::initConnections()
     });
     connect(ui->pushButton_play, &QPushButton::clicked, this, [=]
     {
-        if (ui->comboBox_url->currentText() != SettingsManager::getInstance()->getUrl())
+        if (ui->comboBox_url->currentText() != SettingsManager::getInstance()->getLastFile())
         {
-            SettingsManager::getInstance()->setUrl(ui->comboBox_url->currentText());
-            emit this->urlChanged(SettingsManager::getInstance()->getUrl());
+            SettingsManager::getInstance()->setLastFile(ui->comboBox_url->currentText());
+            emit this->urlChanged(SettingsManager::getInstance()->getLastFile());
         }
         else
             emit this->play();
@@ -475,41 +458,6 @@ void PreferencesDialog::initConnections()
         emit this->pause();
     });
     connect(ui->pushButton_cancel, &QPushButton::clicked, this, &PreferencesDialog::close);
-    connect(ui->pushButton_url_browse, &QPushButton::clicked, this, [=]
-    {
-        QString path = QDir::toNativeSeparators(QDir::cleanPath(QFileDialog::getOpenFileName(nullptr, DD_TR("Please select a media file"), SettingsManager::getInstance()->lastDir(), DD_TR("Videos (*.avi *.mp4 *.mkv *.flv);;Audios (*.mp3 *.flac *.ape *.wav);;Pictures (*.bmp *.jpg *.jpeg *.png *.gif);;All files (*)"))));
-        if (!path.isEmpty())
-        {
-            if (ui->comboBox_url->findText(path) < 0)
-                ui->comboBox_url->addItem(path, path);
-            ui->comboBox_url->setCurrentText(path);
-        }
-    });
-    connect(ui->pushButton_url_input, &QPushButton::clicked, this, [=]
-    {
-        bool ok = false;
-        QString input = QInputDialog::getText(nullptr, DD_TR("Please input a valid URL"), DD_TR("URL"), QLineEdit::Normal, QStringLiteral("https://"), &ok);
-        if (ok && !input.isEmpty())
-        {
-            QUrl url(input);
-            if (url.isValid())
-                if (url.isLocalFile())
-                {
-                    const QString path = QDir::toNativeSeparators(url.toLocalFile());
-                    if (ui->comboBox_url->findText(path) < 0)
-                        ui->comboBox_url->addItem(path, path);
-                    ui->comboBox_url->setCurrentText(path);
-                }
-                else
-                {
-                    if (ui->comboBox_url->findText(url.url()) < 0)
-                        ui->comboBox_url->addItem(url.url(), url.url());
-                    ui->comboBox_url->setCurrentText(url.url());
-                }
-            else
-                QMessageBox::warning(nullptr, QStringLiteral("Dynamic Desktop"), DD_TR("\"%0\" is not a valid URL.").arg(input));
-        }
-    });
     connect(ui->checkBox_hwdec, &QCheckBox::clicked, this, [=]
     {
         bool hwdecEnabled = ui->checkBox_hwdec->isChecked();
@@ -543,6 +491,24 @@ void PreferencesDialog::initConnections()
         }
     });
 #endif
+    connect(ui->comboBox_playlists, &QComboBox::currentTextChanged, this, [=](const QString &text)
+    {
+        if (text != SettingsManager::getInstance()->getCurrentPlaylistName())
+        {
+            SettingsManager::getInstance()->setCurrentPlaylistName(text);
+            populateFiles();
+            emit this->playlistChanged(text);
+        }
+    });
+    connect(ui->comboBox_playback_mode, qOverload<int>(&QComboBox::currentIndexChanged), this, [=](int index)
+    {
+        auto mode = static_cast<SettingsManager::PlaybackMode>(index);
+        if (mode != SettingsManager::getInstance()->getPlaybackMode())
+        {
+            SettingsManager::getInstance()->setPlaybackMode(mode);
+            emit this->playbackModeChanged(static_cast<quint32>(index));
+        }
+    });
     connect(ui->comboBox_video_track, qOverload<int>(&QComboBox::currentIndexChanged), this, [=](int index)
     {
         Q_UNUSED(index)
@@ -578,10 +544,10 @@ void PreferencesDialog::initConnections()
     });
     connect(ui->comboBox_url, &QComboBox::currentTextChanged, this, [=](const QString &text)
     {
-        if (text != SettingsManager::getInstance()->getUrl())
+        if (text != SettingsManager::getInstance()->getLastFile())
         {
-            SettingsManager::getInstance()->setUrl(text);
-            emit this->urlChanged(SettingsManager::getInstance()->getUrl());
+            SettingsManager::getInstance()->setLastFile(text);
+            emit this->urlChanged(SettingsManager::getInstance()->getLastFile());
         }
     });
     connect(ui->checkBox_autoStart, &QCheckBox::clicked, this, [=]
@@ -706,4 +672,32 @@ void PreferencesDialog::initIcons()
     ui->pushButton_minimize->setIcon(QIcon(QStringLiteral(":/icons/minimize.png")));
     ui->pushButton_close->setIcon(QIcon(QStringLiteral(":/icons/close.png")));
 #endif
+}
+
+void PreferencesDialog::populateFiles()
+{
+    if (ui->comboBox_url->count() > 0)
+        ui->comboBox_url->clear();
+    ui->comboBox_url->addItems(SettingsManager::getInstance()->getAllFilesFromPlaylist(SettingsManager::getInstance()->getCurrentPlaylistName()));
+    int i = ui->comboBox_url->findText(SettingsManager::getInstance()->getLastFile());
+    ui->comboBox_url->setCurrentIndex(i >= 0 ? i : 0);
+    if (ui->comboBox_url->currentText() != SettingsManager::getInstance()->getLastFile())
+    {
+        SettingsManager::getInstance()->setLastFile(ui->comboBox_url->currentText());
+        //emit this->urlChanged(SettingsManager::getInstance()->getLastFile());
+    }
+}
+
+void PreferencesDialog::populatePlaylists()
+{
+    if (ui->comboBox_playlists->count() > 0)
+        ui->comboBox_playlists->clear();
+    ui->comboBox_playlists->addItems(SettingsManager::getInstance()->getAllPlaylistNames());
+    int i = ui->comboBox_playlists->findText(SettingsManager::getInstance()->getCurrentPlaylistName());
+    ui->comboBox_playlists->setCurrentIndex(i >= 0 ? i : 0);
+    if (ui->comboBox_playlists->currentText() != SettingsManager::getInstance()->getCurrentPlaylistName())
+    {
+        SettingsManager::getInstance()->setCurrentPlaylistName(ui->comboBox_playlists->currentText());
+        //emit this->playlistChanged(SettingsManager::getInstance()->getCurrentPlaylistName());
+    }
 }

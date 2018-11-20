@@ -35,6 +35,27 @@
          </property>
         </widget>
        </item>
+       <item>
+        <widget class="QPushButton" name="pushButton_playlist_rename">
+         <property name="text">
+          <string>Rename selected playlist</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pushButton_playlist_up">
+         <property name="text">
+          <string>Up</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pushButton_playlist_down">
+         <property name="text">
+          <string>Down</string>
+         </property>
+        </widget>
+       </item>
       </layout>
      </item>
     </layout>
@@ -50,6 +71,13 @@
         <widget class="QPushButton" name="pushButton_file_add">
          <property name="text">
           <string>Add file</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pushButton_file_input">
+         <property name="text">
+          <string>Input URL</string>
          </property>
         </widget>
        </item>

@@ -11,15 +11,15 @@ AboutDialog::AboutDialog(QWidget *parent) : QWidget(parent)
     ui->lineEdit_version->setText(QApplication::applicationVersion());
     ui->lineEdit_commit_id->setText(QStringLiteral(DD_COMMIT_ID));
     ui->lineEdit_commit_time->setText(QStringLiteral(DD_COMMIT_TIME));
-    QString compiler;
-#ifdef __clang__
-    compiler = QStringLiteral("Clang v%0.%1.%2").arg(__clang_major__).arg(__clang_minor__).arg(__clang_patchlevel__);
-#elif defined(_MSC_VER)
-    compiler = QStringLiteral("MSVC v%0").arg(_MSC_FULL_VER);
-#elif defined(__GNUC__)
-    compiler = QStringLiteral("GCC v%0.%1.%2").arg(__GNUC__).arg(__GNUC_MINOR__).arg(__GNUC_PATCHLEVEL__);
-#else
-    compiler = QStringLiteral("Unknown");
+    QString compiler = QStringLiteral("Unknown");
+#ifdef Q_CC_CLANG
+    compiler = QStringLiteral("Clang C++ Compiler v%0.%1.%2").arg(__clang_major__).arg(__clang_minor__).arg(__clang_patchlevel__);
+#elif defined(Q_CC_MSVC)
+    compiler = QStringLiteral("Microsoft Visual C++ Compiler v%0").arg(_MSC_FULL_VER);
+#elif defined(Q_CC_INTEL)
+    compiler = QStringLiteral("Intel C++ Compiler v%0").arg(_MSC_FULL_VER); // How to detect ICC version?
+#elif defined(Q_CC_GNU)
+    compiler = QStringLiteral("GNU C++ Compiler v%0.%1.%2").arg(__GNUC__).arg(__GNUC_MINOR__).arg(__GNUC_PATCHLEVEL__); // Are these macros correct?
 #endif
     ui->lineEdit_compiler->setText(compiler);
 #ifdef WIN64

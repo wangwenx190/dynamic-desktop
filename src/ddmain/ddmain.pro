@@ -78,8 +78,8 @@ QT *= \
     QMAKE_LRELEASE_FLAGS *= \
         -nounfinished \
         -removeidentical
-    CONFIG *= lrelease
     CONFIG(update_translations): CONFIG *= lupdate
+    CONFIG *= lrelease
     CONFIG(lupdate) {
         isEmpty(lupdate): lupdate = $$[QT_INSTALL_BINS]/lupdate
         exists("$${lupdate}.exe") {

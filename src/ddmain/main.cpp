@@ -112,8 +112,8 @@ int main(int argc, char *argv[])
 #endif
     QString urlOptionValue = parser.value(urlOption);
     if (!urlOptionValue.isEmpty())
-        if (urlOptionValue != SettingsManager::getInstance()->getUrl())
-            SettingsManager::getInstance()->setUrl(urlOptionValue);
+        if (urlOptionValue != SettingsManager::getInstance()->getLastFile())
+            SettingsManager::getInstance()->setLastFile(urlOptionValue);
     QString imageQualityOptionValue = parser.value(imageQualityOption).toLower();
     if (!imageQualityOptionValue.isEmpty())
         if (((imageQualityOptionValue == QStringLiteral("default")) ||
@@ -296,7 +296,7 @@ int main(int argc, char *argv[])
         playerWindow.resize(1280, 720);
         Utils::activateWindow(&playerWindow);
     }
-    if (SettingsManager::getInstance()->getUrl().isEmpty())
+    if (SettingsManager::getInstance()->getLastFile().isEmpty())
     {
         Utils::activateWindow(&preferencesDialog);
 #ifndef DD_NO_TOOLTIP
@@ -305,7 +305,7 @@ int main(int argc, char *argv[])
     }
     else
     {
-        const QString url = SettingsManager::getInstance()->getUrl();
+        const QString url = SettingsManager::getInstance()->getLastFile();
         Utils::activateWindow(&playerWindow);
         playerWindow.setUrl(url);
 #ifndef DD_NO_TOOLTIP
