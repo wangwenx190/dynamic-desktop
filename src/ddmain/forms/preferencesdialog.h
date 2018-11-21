@@ -21,8 +21,6 @@ signals:
     void about();
     void play();
     void pause();
-    void next();
-    void previous();
 #ifndef DD_NO_TRANSLATIONS
     void languageChanged(const QString &);
 #endif
@@ -62,6 +60,8 @@ public slots:
     void setSubtitleTracks(const QVariantList &subtitleTracks, bool add = false);
     void setVideoPositionText(const QString &text);
     void setVideoDurationText(const QString &text);
+    void playNextMedia();
+    void playPreviousMedia();
 
 public:
     explicit PreferencesDialog(QWidget *parent = nullptr);

@@ -130,7 +130,8 @@ void PlayerWindow::initUI()
 void PlayerWindow::initPlayer()
 {
     player = new QtAV::AVPlayer();
-    player->setRepeat(-1);
+    if (SettingsManager::getInstance()->getPlaybackMode() == SettingsManager::PlaybackMode::RepeatCurrentFile)
+        player->setRepeat(-1);
     subtitle = new QtAV::SubtitleFilter();
     subtitle->setPlayer(player);
     subtitle->setCodec(SettingsManager::getInstance()->getCharset().toLatin1());
@@ -156,6 +157,11 @@ void PlayerWindow::initConnections()
             emit this->playStateChanged(false);
         else if (state == QtAV::AVPlayer::PlayingState)
             emit this->playStateChanged(true);
+    });
+    connect(player, &QtAV::AVPlayer::mediaStatusChanged, this, [=](QtAV::MediaStatus status)
+    {
+        if ((status == QtAV::MediaStatus::EndOfMedia) && (SettingsManager::getInstance()->getPlaybackMode() != SettingsManager::PlaybackMode::RepeatCurrentFile))
+            emit this->mediaEndReached();
     });
 }
 

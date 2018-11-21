@@ -20,7 +20,9 @@ public:
 
 private slots:
     void populatePlaylists();
+    void populateFiles(const QString &name);
 
 private:
     Ui::PlaylistDialog *ui = nullptr;
+    QString currentPlaylist;
 };

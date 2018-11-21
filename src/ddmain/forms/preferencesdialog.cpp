@@ -12,7 +12,6 @@
 #include <QWinTaskbarProgress>
 #endif
 #include <QFileDialog>
-#include <QInputDialog>
 #include <QFileInfo>
 #include <QDir>
 #include <QMessageBox>
@@ -214,6 +213,22 @@ void PreferencesDialog::setVideoPositionText(const QString &text)
 void PreferencesDialog::setVideoDurationText(const QString &text)
 {
     ui->label_video_duration->setText(text);
+}
+
+void PreferencesDialog::playNextMedia()
+{
+    if (ui->comboBox_url->currentIndex() < (ui->comboBox_url->count() - 1))
+        ui->comboBox_url->setCurrentIndex(ui->comboBox_url->currentIndex() + 1);
+    else
+        ui->comboBox_url->setCurrentIndex(0);
+}
+
+void PreferencesDialog::playPreviousMedia()
+{
+    if (ui->comboBox_url->currentIndex() > 0)
+        ui->comboBox_url->setCurrentIndex(ui->comboBox_url->currentIndex() - 1);
+    else
+        ui->comboBox_url->setCurrentIndex(0);
 }
 
 void PreferencesDialog::clearAllTracks()

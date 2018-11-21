@@ -28,6 +28,7 @@ signals:
     void audioTracksChanged(const QVariantList &, bool);
     void videoDurationTextChanged(const QString &);
     void subtitleTracksChanged(const QVariantList &, bool);
+    void mediaEndReached();
 
 public:
     explicit PlayerWindow(QWidget *parent = nullptr);
