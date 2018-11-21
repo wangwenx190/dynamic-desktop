@@ -20,10 +20,6 @@ A clear and concise description of what you expected to happen.
 
 A clear and concise description of what actually happen.
 
-**Log file**
-
-See `debug.log` besides the executable file. If the content of the log file is too long, please upload the file itself instead of just paste it here.
-
 **Screenshots**
 
 If applicable, add screenshots to help explain your problem.
