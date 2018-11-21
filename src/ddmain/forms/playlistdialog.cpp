@@ -39,6 +39,7 @@ PlaylistDialog::PlaylistDialog(QWidget *parent) : QWidget(parent)
             QMessageBox::warning(nullptr, QStringLiteral("Dynamic Desktop"), DD_TR("There has to be at least one playlist."));
         else
         {
+            SettingsManager::getInstance()->clearPlaylist(SettingsManager::getInstance()->getCurrentPlaylistName());
             int index = ui->listWidget_playlist->currentRow();
             ui->listWidget_playlist->takeItem(index);
             /*if (index < ui->listWidget_playlist->count())

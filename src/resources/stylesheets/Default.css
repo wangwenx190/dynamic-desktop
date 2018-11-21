@@ -2,7 +2,7 @@
 Author: Daniel Clarke(https://github.com/u8sand)
 Notice: Originally copied from https://github.com/u8sand/Baka-MPlayer and wangwenx190 made some changes to it.
 Create date: 2018/10/09
-Update date: 2018/10/31
+Update date: 2018/11/21
 */
 
 QWidget {
@@ -182,4 +182,22 @@ QSpinBox::up-arrow {
 
 QSpinBox::down-arrow {
 	image: url(:/icons/down-arrow.svg);
+}
+
+QListWidget {
+	show-decoration-selected: 1;
+	border: 1px solid #212121;
+	background: black;
+}
+
+QListWidget::item:alternate {
+    background: #141414;
+}
+
+QListWidget::item:selected {
+	background: #008098;
+}
+
+QListWidget::item:hover {
+	background: #2acfec;
 }

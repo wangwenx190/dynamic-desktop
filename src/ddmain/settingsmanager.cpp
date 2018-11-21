@@ -15,6 +15,13 @@ SettingsManager *SettingsManager::getInstance()
     return &settingsManager;
 }
 
+void SettingsManager::clearPlaylist(const QString &name)
+{
+    if (name.isEmpty())
+        return;
+    settings->remove(QStringLiteral("playlists/%0").arg(name));
+}
+
 QStringList SettingsManager::getDefaultDecoders() const
 {
     return QStringList()

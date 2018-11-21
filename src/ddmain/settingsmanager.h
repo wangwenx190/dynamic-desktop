@@ -17,6 +17,8 @@ public:
     static SettingsManager *getInstance();
 
 public:
+    void clearPlaylist(const QString &name);
+
     QStringList getDefaultDecoders() const;
 #ifndef DD_NO_MIME_TYPE
     QStringList getSupportedMimeTypes() const;
