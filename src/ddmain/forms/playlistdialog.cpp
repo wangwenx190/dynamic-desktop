@@ -13,8 +13,9 @@ PlaylistDialog::PlaylistDialog(QWidget *parent) : QWidget(parent)
 {
     ui = new Ui::PlaylistDialog();
     ui->setupUi(this);
+    currentPlaylist = SettingsManager::getInstance()->getCurrentPlaylistName();
     populatePlaylists();
-    populateFiles(SettingsManager::getInstance()->getCurrentPlaylistName());
+    populateFiles(currentPlaylist);
     connect(ui->pushButton_playlist_add, &QPushButton::clicked, this, [=]
     {
         bool ok = false;
@@ -148,7 +149,7 @@ void PlaylistDialog::populatePlaylists()
     if (ui->listWidget_playlist->count() > 0)
         ui->listWidget_playlist->clear();
     ui->listWidget_playlist->addItems(SettingsManager::getInstance()->getAllPlaylistNames());
-    setCurrentItem(ui->listWidget_playlist, currentPlaylist.isEmpty() ? SettingsManager::getInstance()->getCurrentPlaylistName() : currentPlaylist);
+    setCurrentItem(ui->listWidget_playlist, currentPlaylist);
 }
 
 void PlaylistDialog::populateFiles(const QString &name)
