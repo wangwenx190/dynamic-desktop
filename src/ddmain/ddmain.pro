@@ -28,7 +28,7 @@ QT *= \
     widgets \
     network \
     opengl
-!qtHaveModule(svg) {
+!qtHaveModule(svg)|CONFIG(no_svg) {
     DEFINES *= DD_NO_SVG
     QT -= svg
     RESOURCES *= images_png.qrc
@@ -36,7 +36,7 @@ QT *= \
     QT *= svg
     RESOURCES *= images_svg.qrc
 }
-!qtHaveModule(winextras) {
+!qtHaveModule(winextras)|CONFIG(no_winextras) {
     DEFINES *= DD_NO_WIN_EXTRAS
 } else {
     QT *= winextras
