@@ -228,7 +228,7 @@ void PreferencesDialog::playPreviousMedia()
     if (ui->comboBox_url->currentIndex() > 0)
         ui->comboBox_url->setCurrentIndex(ui->comboBox_url->currentIndex() - 1);
     else
-        ui->comboBox_url->setCurrentIndex(0);
+        ui->comboBox_url->setCurrentIndex(ui->comboBox_url->count() - 1);
 }
 
 void PreferencesDialog::clearAllTracks()
