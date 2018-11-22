@@ -23,6 +23,7 @@ CONFIG(qt) {
 CONFIG(debug, debug|release): TARGET = $$join(TARGET,,,d)
 CONFIG -= app_bundle
 CONFIG(static, static|shared):contains(TEMPLATE, lib): CONFIG *= dd_no_ver_info
+else: CONFIG -= dd_no_ver_info
 !CONFIG(dd_no_ver_info) {
     isEmpty(VERSION): VERSION = $${DD_MAJOR_VERSION}.$${DD_MINOR_VERSION}.$${DD_PATCH_VERSION}.$${DD_BUILD_VERSION}
     QMAKE_TARGET_COMPANY = "wangwenx190"

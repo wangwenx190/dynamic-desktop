@@ -20,10 +20,6 @@ $${TARGET}_libs.path = $${BIN_DIR}
             $${ffmpeg_bin_dir}/postproc*.dll \
             $${ffmpeg_bin_dir}/swresample*.dll \
             $${ffmpeg_bin_dir}/swscale*.dll
-    } else {
-        message("qmake can\'t find FFmpeg\'s run-time libraries in \"$${ffmpeg_bin_dir}\".")
-        message("You may have to copy them manually.")
-        message("You can set the \"ffmpeg_dir\" variable to let qmake copy them automatically.")
     }
 }
 CONFIG(shared, static|shared) {
@@ -37,8 +33,8 @@ CONFIG(shared, static|shared) {
             target_file_name = $${target_file_name}.exe
         }
         windeployqt_command = --plugindir \"$${BIN_DIR}\\plugins\" --no-translations --no-compiler-runtime --no-opengl-sw -opengl --list source
-        #CONFIG(enable_small): windeployqt_command = $${windeployqt_command} --no-system-d3d-compiler --no-angle
-        !qtHaveModule(svg): windeployqt_command = $${windeployqt_command} --no-svg
+        CONFIG(no_angle): windeployqt_command = $${windeployqt_command} --no-system-d3d-compiler --no-angle
+        CONFIG(no_svg): windeployqt_command = $${windeployqt_command} --no-svg
         $${TARGET}_libs.commands *= $$quote(\"$${windeployqt}\" $${windeployqt_command} \"$${BIN_DIR}\\$${target_file_name}\")
     } else {
         message("It seems that there is no \"windeployqt\" in \"$$[QT_INSTALL_BINS]\".")
@@ -64,7 +60,14 @@ CONFIG(shared, static|shared) {
         $$[QT_INSTALL_BINS]/libEGL.dll \
         $$[QT_INSTALL_BINS]/libGLESv2.dll
 }
-!isEmpty($${TARGET}_libs.files): INSTALLS *= $${TARGET}_libs
+!isEmpty($${TARGET}_libs.commands) {
+    INSTALLS *= $${TARGET}_libs
+    isEmpty($${TARGET}_libs.files) {
+        message("qmake can\'t find FFmpeg\'s run-time libraries in \"$${ffmpeg_bin_dir}\".")
+        message("You may have to copy them manually.")
+        message("You can set the \"ffmpeg_dir\" variable to let qmake copy them automatically.")
+    }
+}
 !CONFIG(no_licenses) {
     licenses.path = $${BIN_DIR}/licenses
     licenses.files *= $${ROOT}/docs/licenses/*
