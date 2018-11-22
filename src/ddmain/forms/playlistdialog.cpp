@@ -20,46 +20,43 @@ PlaylistDialog::PlaylistDialog(QWidget *parent) : QWidget(parent)
         bool ok = false;
         QString input = QInputDialog::getText(nullptr, DD_TR("Please input a valid playlist name"), DD_TR("Playlist name"), QLineEdit::Normal, QStringLiteral("Default"), &ok);
         if (ok && !input.isEmpty())
-        {
-            bool changed = false;
-            if (findItem(ui->listWidget_playlist, input) < 0)
-            {
-                ui->listWidget_playlist->addItem(input);
-                if (!changed)
-                    changed = true;
-            }
-            setCurrentItem(ui->listWidget_playlist, input);
-            if (changed)
-                SettingsManager::getInstance()->setAllPlaylistNames(getAllItems(ui->listWidget_playlist));
-        }
+            addPlaylist(input);
     });
     connect(ui->pushButton_playlist_remove, &QPushButton::clicked, this, [=]
     {
         if (ui->listWidget_playlist->count() < 2)
             QMessageBox::warning(nullptr, QStringLiteral("Dynamic Desktop"), DD_TR("There has to be at least one playlist."));
         else
-        {
-            SettingsManager::getInstance()->clearPlaylist(SettingsManager::getInstance()->getCurrentPlaylistName());
-            int index = ui->listWidget_playlist->currentRow();
-            ui->listWidget_playlist->takeItem(index);
-            /*if (index < ui->listWidget_playlist->count())
-                ui->listWidget_playlist->setCurrentRow(index);
-            else
-                ui->listWidget_playlist->setCurrentRow(index - 1);
-            ui->listWidget_playlist->scrollToItem(ui->listWidget_playlist->currentItem());*/
-            SettingsManager::getInstance()->setAllPlaylistNames(getAllItems(ui->listWidget_playlist));
-        }
+            removePlaylist(currentPlaylist);
     });
-    connect(ui->pushButton_playlist_rename, &QPushButton::clicked, this, [=]{});
-    connect(ui->pushButton_playlist_up, &QPushButton::clicked, this, [=]{});
-    connect(ui->pushButton_playlist_down, &QPushButton::clicked, this, [=]{});
+    connect(ui->pushButton_playlist_rename, &QPushButton::clicked, this, [=]
+    {
+        bool ok = false;
+        QString input = QInputDialog::getText(nullptr, DD_TR("Please input a valid playlist name"), DD_TR("Playlist name"), QLineEdit::Normal, QStringLiteral("Default"), &ok);
+        if (ok && !input.isEmpty())
+            renamePlaylist(ui->listWidget_playlist->currentItem()->text(), input);
+    });
+    connect(ui->pushButton_playlist_up, &QPushButton::clicked, this, [=]
+    {
+        itemMoveUp(ui->listWidget_playlist);
+        SettingsManager::getInstance()->setAllPlaylistNames(getAllItems(ui->listWidget_playlist));
+    });
+    connect(ui->pushButton_playlist_down, &QPushButton::clicked, this, [=]
+    {
+        itemMoveDown(ui->listWidget_playlist);
+        SettingsManager::getInstance()->setAllPlaylistNames(getAllItems(ui->listWidget_playlist));
+    });
     connect(ui->listWidget_playlist, &QListWidget::currentTextChanged, this, [=](const QString &text)
     {
-        if (text != SettingsManager::getInstance()->getCurrentPlaylistName())
+        if (text != currentPlaylist)
         {
-            SettingsManager::getInstance()->setCurrentPlaylistName(text);
-            populateFiles(SettingsManager::getInstance()->getCurrentPlaylistName());
+            currentPlaylist = text;
+            populateFiles(currentPlaylist);
         }
+    });
+    connect(ui->listWidget_playlist, &QListWidget::itemDoubleClicked, this, [=](QListWidgetItem *item)
+    {
+        emit this->switchPlaylist(item->text());
     });
     connect(ui->pushButton_file_add, &QPushButton::clicked, this, [=]
     {
@@ -74,6 +71,7 @@ PlaylistDialog::PlaylistDialog(QWidget *parent) : QWidget(parent)
                 setCurrentItem(ui->listWidget_file, path2);
             }
             else
+            {
                 for (auto& path : paths)
                 {
                     const QString path2 = QDir::toNativeSeparators(QDir::cleanPath(path));
@@ -84,10 +82,22 @@ PlaylistDialog::PlaylistDialog(QWidget *parent) : QWidget(parent)
                             changed = true;
                     }
                 }
+                setCurrentItem(ui->listWidget_file, paths.constLast());
+            }
         if (changed)
-            SettingsManager::getInstance()->setPlaylistFiles(SettingsManager::getInstance()->getCurrentPlaylistName(), getAllItems(ui->listWidget_file));
+            SettingsManager::getInstance()->setPlaylistFiles(currentPlaylist, getAllItems(ui->listWidget_file));
     });
-    connect(ui->pushButton_file_input, &QPushButton::clicked, this, [=]{});
+    connect(ui->pushButton_file_input, &QPushButton::clicked, this, [=]
+    {
+        bool ok = false;
+        QString input = QInputDialog::getText(nullptr, DD_TR("Please input a valid URL"), DD_TR("URL"), QLineEdit::Normal, QStringLiteral("https://"), &ok);
+        if (ok && !input.isEmpty())
+        {
+            if (findItem(ui->listWidget_file, input) < 0)
+                ui->listWidget_file->addItem(input);
+            setCurrentItem(ui->listWidget_file, input);
+        }
+    });
     connect(ui->pushButton_file_remove, &QPushButton::clicked, this, [=]
     {
         if (ui->listWidget_file->count() < 2)
@@ -97,18 +107,22 @@ PlaylistDialog::PlaylistDialog(QWidget *parent) : QWidget(parent)
         }
         else
         {
-            int index = ui->listWidget_file->currentRow();
-            ui->listWidget_file->takeItem(index);
-            /*if (index < ui->listWidget_file->count())
-                ui->listWidget_file->setCurrentRow(index);
-            else
-                ui->listWidget_file->setCurrentRow(index - 1);
-            ui->listWidget_file->scrollToItem(ui->listWidget_file->currentItem());*/
-            SettingsManager::getInstance()->setPlaylistFiles(SettingsManager::getInstance()->getCurrentPlaylistName(), getAllItems(ui->listWidget_file));
+            ui->listWidget_file->takeItem(ui->listWidget_file->currentRow());
+            SettingsManager::getInstance()->setPlaylistFiles(currentPlaylist, getAllItems(ui->listWidget_file));
         }
     });
-    connect(ui->pushButton_file_up, &QPushButton::clicked, this, [=]{});
-    connect(ui->pushButton_file_down, &QPushButton::clicked, this, [=]{});
+    connect(ui->pushButton_file_up, &QPushButton::clicked, this, [=]
+    {
+        itemMoveUp(ui->listWidget_file);
+    });
+    connect(ui->pushButton_file_down, &QPushButton::clicked, this, [=]
+    {
+        itemMoveDown(ui->listWidget_file);
+    });
+    connect(ui->listWidget_file, &QListWidget::itemDoubleClicked, this, [=](QListWidgetItem *item)
+    {
+        emit this->playFile(item->text());
+    });
 }
 
 PlaylistDialog::~PlaylistDialog()
@@ -121,7 +135,7 @@ void PlaylistDialog::populatePlaylists()
     if (ui->listWidget_playlist->count() > 0)
         ui->listWidget_playlist->clear();
     ui->listWidget_playlist->addItems(SettingsManager::getInstance()->getAllPlaylistNames());
-    setCurrentItem(ui->listWidget_playlist, SettingsManager::getInstance()->getCurrentPlaylistName());
+    setCurrentItem(ui->listWidget_playlist, currentPlaylist.isEmpty() ? SettingsManager::getInstance()->getCurrentPlaylistName() : currentPlaylist);
 }
 
 void PlaylistDialog::populateFiles(const QString &name)
@@ -165,4 +179,69 @@ void PlaylistDialog::setCurrentItem(QListWidget *listWidget, const QString &text
     index = index < 0 ? 0 : index;
     listWidget->setCurrentRow(index);
     listWidget->scrollToItem(listWidget->item(index));
+}
+
+void PlaylistDialog::moveItem(QListWidget *listWidget, int from, int to)
+{
+    if (listWidget == nullptr)
+        return;
+    if ((from == to) || (from < 0) || (to < 0))
+        return;
+    QListWidgetItem *item = listWidget->takeItem(from);
+    listWidget->insertItem(to, item);
+    setCurrentItem(listWidget, item->text());
+}
+
+void PlaylistDialog::itemMoveUp(QListWidget *listWidget)
+{
+    int index = listWidget->currentRow() - 1;
+    index = index < 0 ? listWidget->count() - 1 : index;
+    moveItem(listWidget, listWidget->currentRow(), index);
+}
+
+void PlaylistDialog::itemMoveDown(QListWidget *listWidget)
+{
+    int index = listWidget->currentRow() + 1;
+    index = index >= listWidget->count() ? 0 : index;
+    moveItem(listWidget, listWidget->currentRow(), index);
+}
+
+void PlaylistDialog::addPlaylist(const QString &name)
+{
+    if (name.isEmpty())
+        return;
+    bool changed = false;
+    if (findItem(ui->listWidget_playlist, name) < 0)
+    {
+        ui->listWidget_playlist->addItem(name);
+        if (!changed)
+            changed = true;
+    }
+    setCurrentItem(ui->listWidget_playlist, name);
+    if (changed)
+        SettingsManager::getInstance()->setAllPlaylistNames(getAllItems(ui->listWidget_playlist));
+}
+
+void PlaylistDialog::removePlaylist(const QString &name)
+{
+    if (name.isEmpty())
+        return;
+    SettingsManager::getInstance()->clearPlaylist(name);
+    ui->listWidget_playlist->takeItem(ui->listWidget_playlist->currentRow());
+    SettingsManager::getInstance()->setAllPlaylistNames(getAllItems(ui->listWidget_playlist));
+}
+
+void PlaylistDialog::renamePlaylist(const QString &oldName, const QString &newName)
+{
+    if (oldName.isEmpty() || newName.isEmpty())
+        return;
+    if (newName == oldName)
+    {
+        setCurrentItem(ui->listWidget_playlist, newName);
+        return;
+    }
+    QStringList oldFiles = SettingsManager::getInstance()->getAllFilesFromPlaylist(oldName);
+    removePlaylist(oldName);
+    SettingsManager::getInstance()->setPlaylistFiles(newName, oldFiles);
+    addPlaylist(newName);
 }
