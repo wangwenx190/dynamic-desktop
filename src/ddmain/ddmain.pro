@@ -79,28 +79,11 @@ QT *= \
         -nounfinished \
         -removeidentical
     CONFIG(update_translations): CONFIG *= lupdate
-    CONFIG *= lrelease
-    CONFIG(lupdate) {
-        isEmpty(lupdate): lupdate = $$[QT_INSTALL_BINS]/lupdate
-        exists("$${lupdate}.exe") {
-            system("$${lupdate} $${QMAKE_LUPDATE_FLAGS} $${_PRO_FILE_}")
-        } else {
-            message("qmake can\'t find \"lupdate\" in \"$$[QT_INSTALL_BINS]\".")
-        }
-    }
-    CONFIG(lrelease) {
-        versionAtLeast(QT_VERSION, 5.12.0) {
-            CONFIG *= embed_translations
-        } else {
-            isEmpty(lrelease): lrelease = $$[QT_INSTALL_BINS]/lrelease
-            exists("$${lrelease}.exe") {
-                system("$${lrelease} $${QMAKE_LRELEASE_FLAGS} $${_PRO_FILE_}")
-            } else {
-                message("qmake can\'t find \"lrelease\" in \"$$[QT_INSTALL_BINS]\".")
-            }
-            RESOURCES *= translations.qrc
-        }
-    }
+    CONFIG *= \
+        lrelease \
+        embed_translations
+    CONFIG(lupdate): include(../lupdate.pri)
+    CONFIG(lrelease):!versionAtLeast(QT_VERSION, 5.12.0): include(../lrelease.pri)
 }
 versionAtLeast(QT_VERSION, 5.12.0):!qtConfig(commandlineparser): DEFINES *= DD_NO_COMMANDLINE_PARSER
 LIBS *= \
