@@ -67,7 +67,11 @@ PlaylistDialog::PlaylistDialog(QWidget *parent) : QWidget(parent)
             {
                 const QString path2 = QDir::toNativeSeparators(QDir::cleanPath(paths.constFirst()));
                 if (findItem(ui->listWidget_file, path2) < 0)
+                {
                     ui->listWidget_file->addItem(path2);
+                    if (!changed)
+                        changed = true;
+                }
                 setCurrentItem(ui->listWidget_file, path2);
             }
             else
@@ -93,9 +97,16 @@ PlaylistDialog::PlaylistDialog(QWidget *parent) : QWidget(parent)
         QString input = QInputDialog::getText(nullptr, DD_TR("Please input a valid URL"), DD_TR("URL"), QLineEdit::Normal, QStringLiteral("https://"), &ok);
         if (ok && !input.isEmpty())
         {
+            bool changed = false;
             if (findItem(ui->listWidget_file, input) < 0)
+            {
                 ui->listWidget_file->addItem(input);
+                if (!changed)
+                    changed = true;
+            }
             setCurrentItem(ui->listWidget_file, input);
+            if (changed)
+                SettingsManager::getInstance()->setPlaylistFiles(currentPlaylist, getAllItems(ui->listWidget_file));
         }
     });
     connect(ui->pushButton_file_remove, &QPushButton::clicked, this, [=]
@@ -114,10 +125,12 @@ PlaylistDialog::PlaylistDialog(QWidget *parent) : QWidget(parent)
     connect(ui->pushButton_file_up, &QPushButton::clicked, this, [=]
     {
         itemMoveUp(ui->listWidget_file);
+        SettingsManager::getInstance()->setPlaylistFiles(currentPlaylist, getAllItems(ui->listWidget_file));
     });
     connect(ui->pushButton_file_down, &QPushButton::clicked, this, [=]
     {
         itemMoveDown(ui->listWidget_file);
+        SettingsManager::getInstance()->setPlaylistFiles(currentPlaylist, getAllItems(ui->listWidget_file));
     });
     connect(ui->listWidget_file, &QListWidget::itemDoubleClicked, this, [=](QListWidgetItem *item)
     {
