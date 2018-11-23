@@ -265,6 +265,8 @@ void PlaylistDialog::renamePlaylist(const QString &oldName, const QString &newNa
     if (oldName.isEmpty() || newName.isEmpty())
         return;
     if (newName == oldName)
+        return;
+    if (findItem(ui->listWidget_playlist, newName) >= 0)
     {
         setCurrentItem(ui->listWidget_playlist, newName);
         return;
