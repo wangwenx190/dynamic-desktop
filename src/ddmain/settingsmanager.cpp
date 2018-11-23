@@ -91,9 +91,14 @@ QStringList SettingsManager::getSupportedMimeTypes() const
 
 QString SettingsManager::getLastFile() const
 {
-    const QString& path = settings->value(QStringLiteral("currentfile"), QString()).toString();
+    QString path = settings->value(QStringLiteral("currentfile"), QString()).toString();
     if (path.isEmpty())
-        return QString();
+    {
+        QStringList paths = getAllFilesFromPlaylist(getCurrentPlaylistName());
+        if (paths.isEmpty())
+            return QString();
+        path = paths.constFirst();
+    }
     if (QFileInfo::exists(path))
         if (QFileInfo(path).isDir())
             return QString();

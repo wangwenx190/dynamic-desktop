@@ -90,7 +90,10 @@ PlaylistDialog::PlaylistDialog(QWidget *parent) : QWidget(parent)
                 setCurrentItem(ui->listWidget_file, paths.constLast());
             }
         if (changed)
+        {
             SettingsManager::getInstance()->setPlaylistFiles(currentPlaylist, getAllItems(ui->listWidget_file));
+            emit this->dataRefreshed();
+        }
     });
     connect(ui->pushButton_file_input, &QPushButton::clicked, this, [=]
     {
@@ -107,7 +110,10 @@ PlaylistDialog::PlaylistDialog(QWidget *parent) : QWidget(parent)
             }
             setCurrentItem(ui->listWidget_file, input);
             if (changed)
+            {
                 SettingsManager::getInstance()->setPlaylistFiles(currentPlaylist, getAllItems(ui->listWidget_file));
+                emit this->dataRefreshed();
+            }
         }
     });
     connect(ui->pushButton_file_remove, &QPushButton::clicked, this, [=]
@@ -121,6 +127,7 @@ PlaylistDialog::PlaylistDialog(QWidget *parent) : QWidget(parent)
         {
             ui->listWidget_file->takeItem(ui->listWidget_file->currentRow());
             SettingsManager::getInstance()->setPlaylistFiles(currentPlaylist, getAllItems(ui->listWidget_file));
+            emit this->dataRefreshed();
         }
     });
     connect(ui->pushButton_file_up, &QPushButton::clicked, this, [=]
@@ -135,6 +142,8 @@ PlaylistDialog::PlaylistDialog(QWidget *parent) : QWidget(parent)
     });
     connect(ui->listWidget_file, &QListWidget::itemDoubleClicked, this, [=](QListWidgetItem *item)
     {
+        if (currentPlaylist != SettingsManager::getInstance()->getCurrentPlaylistName())
+            emit this->switchPlaylist(currentPlaylist);
         emit this->playFile(item->text());
     });
 }
@@ -211,6 +220,7 @@ void PlaylistDialog::itemMoveUp(QListWidget *listWidget)
     int index = listWidget->currentRow() - 1;
     index = index < 0 ? listWidget->count() - 1 : index;
     moveItem(listWidget, listWidget->currentRow(), index);
+    emit dataRefreshed();
 }
 
 void PlaylistDialog::itemMoveDown(QListWidget *listWidget)
@@ -218,6 +228,7 @@ void PlaylistDialog::itemMoveDown(QListWidget *listWidget)
     int index = listWidget->currentRow() + 1;
     index = index >= listWidget->count() ? 0 : index;
     moveItem(listWidget, listWidget->currentRow(), index);
+    emit dataRefreshed();
 }
 
 void PlaylistDialog::addPlaylist(const QString &name)
@@ -233,7 +244,10 @@ void PlaylistDialog::addPlaylist(const QString &name)
     }
     setCurrentItem(ui->listWidget_playlist, name);
     if (changed)
+    {
         SettingsManager::getInstance()->setAllPlaylistNames(getAllItems(ui->listWidget_playlist));
+        emit dataRefreshed();
+    }
 }
 
 void PlaylistDialog::removePlaylist(const QString &name)
@@ -243,6 +257,7 @@ void PlaylistDialog::removePlaylist(const QString &name)
     SettingsManager::getInstance()->clearPlaylist(name);
     ui->listWidget_playlist->takeItem(ui->listWidget_playlist->currentRow());
     SettingsManager::getInstance()->setAllPlaylistNames(getAllItems(ui->listWidget_playlist));
+    emit dataRefreshed();
 }
 
 void PlaylistDialog::renamePlaylist(const QString &oldName, const QString &newName)
@@ -258,4 +273,5 @@ void PlaylistDialog::renamePlaylist(const QString &oldName, const QString &newNa
     removePlaylist(oldName);
     SettingsManager::getInstance()->setPlaylistFiles(newName, oldFiles);
     addPlaylist(newName);
+    emit dataRefreshed();
 }

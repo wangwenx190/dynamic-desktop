@@ -174,7 +174,9 @@ int main(int argc, char *argv[])
     {
         Utils::activateWindow(&preferencesDialog);
     });
+    QObject::connect(&trayMenu, &TrayMenu::onPreviousClicked, &preferencesDialog, &PreferencesDialog::playPreviousMedia);
     QObject::connect(&trayMenu, &TrayMenu::onPlayClicked, &preferencesDialog, &PreferencesDialog::togglePlayPause);
+    QObject::connect(&trayMenu, &TrayMenu::onNextClicked, &preferencesDialog, &PreferencesDialog::playNextMedia);
     trayMenu.setMute(SettingsManager::getInstance()->getMute());
     QObject::connect(&trayMenu, &TrayMenu::onMuteClicked, [=, &preferencesDialog]
     {
@@ -252,7 +254,9 @@ int main(int argc, char *argv[])
     QObject::connect(&preferencesDialog, &PreferencesDialog::subtitleAutoLoadChanged, &playerWindow, &PlayerWindow::setSubtitleAutoLoad);
     QObject::connect(&preferencesDialog, &PreferencesDialog::subtitleEnableChanged, &playerWindow, &PlayerWindow::setSubtitleEnabled);
     QObject::connect(&preferencesDialog, &PreferencesDialog::imageRatioChanged, &playerWindow, &PlayerWindow::setImageRatio);
+    QObject::connect(&preferencesDialog, &PreferencesDialog::repeatCurrentFile, &playerWindow, &PlayerWindow::setRepeatCurrentFile);
     QObject::connect(&playerWindow, &PlayerWindow::playStateChanged, &preferencesDialog, &PreferencesDialog::setPlaying);
+    QObject::connect(&playerWindow, &PlayerWindow::mediaEndReached, &preferencesDialog, &PreferencesDialog::mediaEndReached);
     QObject::connect(&playerWindow, &PlayerWindow::mediaPositionChanged, &preferencesDialog, &PreferencesDialog::setMediaSliderPosition);
     QObject::connect(&playerWindow, &PlayerWindow::videoPositionTextChanged, &preferencesDialog, &PreferencesDialog::setVideoPositionText);
     QObject::connect(&playerWindow, &PlayerWindow::audioAreaEnableChanged, &preferencesDialog, &PreferencesDialog::setAudioAreaEnabled);
@@ -264,6 +268,9 @@ int main(int argc, char *argv[])
     QObject::connect(&playerWindow, &PlayerWindow::audioTracksChanged, &preferencesDialog, &PreferencesDialog::setAudioTracks);
     QObject::connect(&playerWindow, &PlayerWindow::subtitleTracksChanged, &preferencesDialog, &PreferencesDialog::setSubtitleTracks);
     QObject::connect(&playerWindow, &PlayerWindow::videoDurationTextChanged, &preferencesDialog, &PreferencesDialog::setVideoDurationText);
+    QObject::connect(&playlistDialog, &PlaylistDialog::dataRefreshed, &preferencesDialog, &PreferencesDialog::refreshPlaylistsAndFiles);
+    QObject::connect(&playlistDialog, &PlaylistDialog::switchPlaylist, &preferencesDialog, &PreferencesDialog::switchPlaylist);
+    QObject::connect(&playlistDialog, &PlaylistDialog::playFile, &preferencesDialog, &PreferencesDialog::switchFile);
     QObject::connect(qApp, &QtSingleApplication::aboutToQuit, [=]
     {
         Wallpaper::hideWallpaper();

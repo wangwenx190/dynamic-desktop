@@ -54,6 +54,7 @@ public slots:
     void setImageQuality(const QString &quality = QStringLiteral("best"));
     void setImageRatio(bool fit = true);
     void setWindowMode(bool enabled = true);
+    void setRepeatCurrentFile(bool enabled = true);
 
 private slots:
     void initUI();

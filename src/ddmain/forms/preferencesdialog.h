@@ -41,6 +41,7 @@ signals:
     void showPlaylistDialog();
     void playlistChanged(const QString &);
     void playbackModeChanged(quint32);
+    void repeatCurrentFile(bool);
 
 public slots:
 #ifndef DD_NO_TRANSLATIONS
@@ -61,7 +62,15 @@ public slots:
     void setVideoPositionText(const QString &text);
     void setVideoDurationText(const QString &text);
     void playNextMedia();
+    void playNextPlaylist();
     void playPreviousMedia();
+    void playPreviousPlaylist();
+    void refreshPlaylistsAndFiles();
+    void switchPlaylist(const QString &name);
+    void switchFile(const QString &url);
+    void mediaEndReached();
+    void switchToRandomFile();
+    void switchToRandomPlaylist();
 
 public:
     explicit PreferencesDialog(QWidget *parent = nullptr);

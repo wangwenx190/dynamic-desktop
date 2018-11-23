@@ -130,8 +130,6 @@ void PlayerWindow::initUI()
 void PlayerWindow::initPlayer()
 {
     player = new QtAV::AVPlayer();
-    if (SettingsManager::getInstance()->getPlaybackMode() == SettingsManager::PlaybackMode::RepeatCurrentFile)
-        player->setRepeat(-1);
     subtitle = new QtAV::SubtitleFilter();
     subtitle->setPlayer(player);
     subtitle->setCodec(SettingsManager::getInstance()->getCharset().toLatin1());
@@ -161,6 +159,11 @@ void PlayerWindow::initConnections()
     connect(player, &QtAV::AVPlayer::mediaStatusChanged, this, [=](QtAV::MediaStatus status)
     {
         if ((status == QtAV::MediaStatus::EndOfMedia) && (SettingsManager::getInstance()->getPlaybackMode() != SettingsManager::PlaybackMode::RepeatCurrentFile))
+            emit this->mediaEndReached();
+    });
+    connect(player, &QtAV::AVPlayer::mediaEndReached, this, [=]
+    {
+        if (SettingsManager::getInstance()->getPlaybackMode() != SettingsManager::PlaybackMode::RepeatCurrentFile)
             emit this->mediaEndReached();
     });
 }
@@ -248,6 +251,13 @@ void PlayerWindow::setWindowMode(bool enabled)
 {
     if (windowMode != enabled)
         windowMode = enabled;
+}
+
+void PlayerWindow::setRepeatCurrentFile(bool enabled)
+{
+    if (player == nullptr)
+        return;
+    player->setRepeat(enabled ? -1 : 0);
 }
 
 void PlayerWindow::onStartPlay()
@@ -421,4 +431,5 @@ void PlayerWindow::setUrl(const QString& url)
             if (Wallpaper::isWallpaperVisible())
                 Wallpaper::hideWallpaper();
     }
+    setRepeatCurrentFile(SettingsManager::getInstance()->getPlaybackMode() == SettingsManager::PlaybackMode::RepeatCurrentFile);
 }

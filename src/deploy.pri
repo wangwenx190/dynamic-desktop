@@ -12,14 +12,12 @@ $${TARGET}_libs.path = $${BIN_DIR}
             $${ffmpeg_bin_dir}/avdevice*.dll \
             $${ffmpeg_bin_dir}/avfilter*.dll \
             $${ffmpeg_bin_dir}/avformat*.dll \
-            $${ffmpeg_bin_dir}/avresample*.dll \
             $${ffmpeg_bin_dir}/avutil*.dll \
-            $${ffmpeg_bin_dir}/ass.dll \
-            $${ffmpeg_bin_dir}/libass.dll \
-            $${ffmpeg_bin_dir}/OpenAL32*.dll \
             $${ffmpeg_bin_dir}/postproc*.dll \
             $${ffmpeg_bin_dir}/swresample*.dll \
             $${ffmpeg_bin_dir}/swscale*.dll
+        CONFIG(enable_avresample): $${TARGET}_libs.files *= $${ffmpeg_bin_dir}/avresample*.dll
+        CONFIG(enable_libass):!CONFIG(static_libass): $${TARGET}_libs.files *= $${ffmpeg_bin_dir}/libass.dll
     }
 }
 CONFIG(shared, static|shared) {
