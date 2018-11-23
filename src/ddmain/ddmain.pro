@@ -74,7 +74,8 @@ QT *= \
     QMAKE_LUPDATE_FLAGS *= \
         -no-obsolete \
         -locations none \
-        -no-ui-lines
+        -no-ui-lines \
+        -tr-function-alias tr+=DD_TR
     QMAKE_LRELEASE_FLAGS *= \
         -nounfinished \
         -removeidentical
@@ -82,7 +83,10 @@ QT *= \
     CONFIG *= \
         lrelease \
         embed_translations
-    CONFIG(lupdate): include(../lupdate.pri)
+    CONFIG(lupdate) {
+        isEmpty(lupdate): lupdate = $$[QT_INSTALL_BINS]/lupdate
+        exists("$${lupdate}.exe"): system("$${lupdate} $${QMAKE_LUPDATE_FLAGS} $${_PRO_FILE_}")
+    }
     CONFIG(lrelease):!versionAtLeast(QT_VERSION, 5.12.0): include(../lrelease.pri)
 }
 versionAtLeast(QT_VERSION, 5.12.0):!qtConfig(commandlineparser): DEFINES *= DD_NO_COMMANDLINE_PARSER
