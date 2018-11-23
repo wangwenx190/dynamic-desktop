@@ -7,6 +7,7 @@ qtav.file = src/3rdparty/qtav/qtav-lite.pro
 utils.file = src/ddutils/ddutils.pro
 service.file = src/ddservice/ddservice.pro
 service.depends *= utils
+skineditor.file = src/ddskineditor/ddskineditor.pro
 main.file = src/ddmain/ddmain.pro
 main.depends *= \
     qtav \
@@ -15,4 +16,5 @@ SUBDIRS *= \
     qtav \
     utils \
     service \
+    skineditor \
     main

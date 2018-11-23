@@ -2,7 +2,7 @@
 Author: Daniel Clarke(https://github.com/u8sand)
 Notice: Originally copied from https://github.com/u8sand/Baka-MPlayer and wangwenx190 made some changes to it.
 Create date: 2018/10/09
-Update date: 2018/11/21
+Update date: 2018/11/23
 */
 
 QWidget {
@@ -54,9 +54,7 @@ QPushButton[flat="true"] {
 	min-height: 0px;
 }
 
-QPushButton#pushButton_previous,
-QPushButton#pushButton_playing,
-QPushButton#pushButton_next {
+QPushButton#pushButton_previous, QPushButton#pushButton_playing, QPushButton#pushButton_next {
 	min-width: 50px;
 	min-height: 50px;
 }
@@ -200,4 +198,52 @@ QListWidget::item:selected {
 
 QListWidget::item:hover {
 	background: #2acfec;
+}
+
+QScrollBar:vertical {
+	padding-left: 1px;
+	width: 6px;
+}
+
+QScrollBar::handle:vertical {
+	background: #008098;
+	border-radius: 2px;
+	min-height: 10px;
+}
+
+QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
+	border: none;
+}
+
+QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical  {
+	background: #383838;
+	margin: 0 2px;
+}
+
+QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical {
+	background: transparent;
+}
+
+QScrollBar:horizontal {
+	height: 6px;
+	padding-top: 1px;
+}
+
+QScrollBar::handle:horizontal {
+	background: #008098;
+	border-radius: 2px;
+	min-width: 10px;
+}
+
+QScrollBar::add-line:horizontal, QScrollBar::sub-line:horizontal {
+	border: none;
+}
+
+QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal {
+	background: #383838;
+	margin: 2px 0;
+}
+
+QScrollBar::left-arrow:horizontal, QScrollBar::right-arrow:horizontal {
+	background: transparent;
 }
