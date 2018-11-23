@@ -74,7 +74,7 @@ For official builds and third-party packages please see https://sourceforge.net/
       ```
       Note that you can add **`-b master`** to the **`git clone`** command if you want to get the latest stable version instead of the latest development version
 - Download **Qt** at least *5.6.3* from http://download.qt.io/archive/qt/ and install it. Using the latest version is highly recommended.
-- Download **FFmpeg** SDK and extract to **`ffmpeg`**. Of course, you can extract to anywhere you want, just add **`ffmpeg_dir = your own FFmpeg dir path`** to **`user.conf`**.
+- Download **FFmpeg** SDK and extract to **`ffmpeg`**. Of course, you can extract to anywhere you want, just add **`ffmpeg_dir = your own FFmpeg dir path`** to **`user.conf`**. Add **`CONFIG *= static_ffmpeg`** to it if you want to link against FFmpeg statically. Using the latest *Git build* is recommended.
    - Zeranoe builds (recommended): https://ffmpeg.zeranoe.com/builds/
 
       Git and stable versions, shared libs only, full builds only
@@ -89,6 +89,31 @@ For official builds and third-party packages please see https://sourceforge.net/
 ### IMPORTANT NOTES
 - You can also use Intel C++ Compiler(ICC), Clang or MinGW to compile it, just remember to set up environment variables. Cross compile on other platforms may also work, but it will never run on platforms other than MS Windows.
 - You will need to build the static version of Qt by yourself if you want to get rid of the Qt dlls. Currently, this project only needs 3 repositories: **`qtbase`**(Qt modules needed: core, gui, widgets, network and opengl), **`qtsvg`**(SVG support) and **`qtwinextras`**(Taskbar Progress support). You can skip all other repositories to speed up the compiling process.
+- How to link against **`LibASS`** and **`OpenAL`** libraries:
+   - You can download the latest **LibASS** SDK for Windows from **Shift Media Project**: https://github.com/ShiftMediaProject/libass/releases/latest . They have both shared and static libraries. They compiled it through MSVC compilers, so it's compatible with my source code. Add the following config to **`user.conf`** to enable LibASS (dynamically load):
+      ```text
+      CONFIG *= enable_libass
+      ```
+      If you want to link against LibASS statically, add the following config:
+      ```text
+      CONFIG *= static_libass
+      ```
+      If you want to link against *libass.dll* directly, add the following config (not compatible with static linking):
+      ```text
+      CONFIG *= enable_libass_link
+      ```
+   - You can download the latest **OpenAL** SDK for Windows from **OpenAL Soft**: http://openal-soft.org/#download . Official builds only contains shared libraries. If you want to link against it statically, you have to build static libraries yourself. You can access it's source code on GitHub: https://github.com/kcat/openal-soft . Add the following config to **`user.conf`** to enable OpenAL (dynamically load):
+      ```text
+      CONFIG *= enable_openal
+      ```
+      If you want to link against OpenAL statically, add the following config:
+      ```text
+      CONFIG *= static_openal
+      ```
+      If you want to link against *OpenAL32.dll* directly, add the following config (not compatible with static linking):
+      ```text
+      CONFIG *= enable_openal_link
+      ```
 
 ## Licenses
 - [Wallpaper](/src/3rdparty/wallpaper): some code is copied from https://github.com/NoisyWinds/Wallpaper , Apache License 2.0, thanks to [NoisyWind](https://github.com/NoisyWinds)!
