@@ -43,7 +43,7 @@ For official builds and third-party packages please see https://sourceforge.net/
 ## Important notes
 - Windows Vista and XP are not supported.
 - This tool won't run if Windows Aero is disabled.
-- Win7 users only: make sure you have installed XAudio2(Win 8/8.1/10 have installed it already by default).
+- Win7 users only: make sure you have installed XAudio2(Win 8/8.1/10 have installed it already by default). Download: https://sourceforge.net/projects/qtav/files/depends/DXSDK2010_XAudio2_redist.7z/download .
 - To experience *Hardware Accelerated Decoding* better, make sure this tool runs with your high performance GPU(on Optimus).
 - The CPU and memory usage will increase enormously if you are using software decoding and that's normal, all media players will, don't worry.
 - It would be very nice if you update your graphics card driver to the latest version.
