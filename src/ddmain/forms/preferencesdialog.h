@@ -6,6 +6,7 @@
 QT_FORWARD_DECLARE_CLASS(QWinTaskbarButton)
 QT_FORWARD_DECLARE_CLASS(QWinTaskbarProgress)
 #endif
+QT_FORWARD_DECLARE_CLASS(QComboBox)
 
 namespace Ui
 {
@@ -69,8 +70,6 @@ public slots:
     void switchPlaylist(const QString &name);
     void switchFile(const QString &url);
     void mediaEndReached();
-    void switchToRandomFile();
-    void switchToRandomPlaylist();
 
 public:
     explicit PreferencesDialog(QWidget *parent = nullptr);
@@ -97,6 +96,12 @@ private slots:
     void initIcons();
     void populateFiles();
     void populatePlaylists();
+    void moveNextItem(QComboBox *comboBox);
+    void movePreviousItem(QComboBox *comboBox);
+    void switchRandomItem(QComboBox *comboBox);
+    void switchToItem(QComboBox *comboBox, const QString &text);
+    void switchToRandomFile();
+    void switchToRandomPlaylist();
 
 private:
     Ui::PreferencesDialog *ui = nullptr;

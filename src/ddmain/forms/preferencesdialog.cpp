@@ -30,6 +30,7 @@
 #include <QLibraryInfo>
 #endif
 #include <QTime>
+#include <QComboBox>
 
 #ifndef DD_NO_CSS
 void PreferencesDialog::populateSkins(const QString &dirPath, bool add, bool isExternal)
@@ -218,42 +219,22 @@ void PreferencesDialog::setVideoDurationText(const QString &text)
 
 void PreferencesDialog::playNextMedia()
 {
-    if (ui->comboBox_url->count() <= 1)
-        return;
-    if (ui->comboBox_url->currentIndex() < (ui->comboBox_url->count() - 1))
-        ui->comboBox_url->setCurrentIndex(ui->comboBox_url->currentIndex() + 1);
-    else
-        ui->comboBox_url->setCurrentIndex(0);
+    moveNextItem(ui->comboBox_url);
 }
 
 void PreferencesDialog::playNextPlaylist()
 {
-    if (ui->comboBox_playlists->count() <= 1)
-        return;
-    if (ui->comboBox_playlists->currentIndex() < (ui->comboBox_playlists->count() - 1))
-        ui->comboBox_playlists->setCurrentIndex(ui->comboBox_playlists->currentIndex() + 1);
-    else
-        ui->comboBox_playlists->setCurrentIndex(0);
+    moveNextItem(ui->comboBox_playlists);
 }
 
 void PreferencesDialog::playPreviousMedia()
 {
-    if (ui->comboBox_url->count() <= 1)
-        return;
-    if (ui->comboBox_url->currentIndex() > 0)
-        ui->comboBox_url->setCurrentIndex(ui->comboBox_url->currentIndex() - 1);
-    else
-        ui->comboBox_url->setCurrentIndex(ui->comboBox_url->count() - 1);
+    movePreviousItem(ui->comboBox_url);
 }
 
 void PreferencesDialog::playPreviousPlaylist()
 {
-    if (ui->comboBox_playlists->count() <= 1)
-        return;
-    if (ui->comboBox_playlists->currentIndex() > 0)
-        ui->comboBox_playlists->setCurrentIndex(ui->comboBox_playlists->currentIndex() - 1);
-    else
-        ui->comboBox_playlists->setCurrentIndex(ui->comboBox_playlists->count() - 1);
+    movePreviousItem(ui->comboBox_playlists);
 }
 
 void PreferencesDialog::refreshPlaylistsAndFiles()
@@ -266,20 +247,14 @@ void PreferencesDialog::switchPlaylist(const QString &name)
 {
     if (name.isEmpty())
         return;
-    int index = ui->comboBox_playlists->findText(name);
-    if (index < 0)
-        return;
-    ui->comboBox_playlists->setCurrentIndex(index);
+    switchToItem(ui->comboBox_playlists, name);
 }
 
 void PreferencesDialog::switchFile(const QString &url)
 {
     if (url.isEmpty())
         return;
-    int index = ui->comboBox_url->findText(url);
-    if (index < 0)
-        return;
-    ui->comboBox_url->setCurrentIndex(index);
+    switchToItem(ui->comboBox_url, url);
 }
 
 void PreferencesDialog::mediaEndReached()
@@ -339,20 +314,12 @@ void PreferencesDialog::mediaEndReached()
 
 void PreferencesDialog::switchToRandomFile()
 {
-    if (ui->comboBox_url->count() < 2)
-        return;
-    qsrand(QTime(0,0,0).secsTo(QTime::currentTime()));
-    int index = qrand() % ui->comboBox_url->count();
-    ui->comboBox_url->setCurrentIndex(index);
+    switchRandomItem(ui->comboBox_url);
 }
 
 void PreferencesDialog::switchToRandomPlaylist()
 {
-    if (ui->comboBox_playlists->count() < 2)
-        return;
-    qsrand(QTime(0,0,0).secsTo(QTime::currentTime()));
-    int index = qrand() % ui->comboBox_playlists->count();
-    ui->comboBox_playlists->setCurrentIndex(index);
+    switchRandomItem(ui->comboBox_playlists);
 }
 
 void PreferencesDialog::clearAllTracks()
@@ -824,7 +791,7 @@ void PreferencesDialog::populateFiles()
     int i = ui->comboBox_url->findText(SettingsManager::getInstance()->getLastFile());
     ui->comboBox_url->setCurrentIndex(i >= 0 ? i : 0);
     //if (ui->comboBox_url->currentText() != SettingsManager::getInstance()->getLastFile())
-        //SettingsManager::getInstance()->setLastFile(ui->comboBox_url->currentText());
+    //    SettingsManager::getInstance()->setLastFile(ui->comboBox_url->currentText());
 }
 
 void PreferencesDialog::populatePlaylists()
@@ -835,5 +802,52 @@ void PreferencesDialog::populatePlaylists()
     int i = ui->comboBox_playlists->findText(SettingsManager::getInstance()->getCurrentPlaylistName());
     ui->comboBox_playlists->setCurrentIndex(i >= 0 ? i : 0);
     //if (ui->comboBox_playlists->currentText() != SettingsManager::getInstance()->getCurrentPlaylistName())
-        //SettingsManager::getInstance()->setCurrentPlaylistName(ui->comboBox_playlists->currentText());
+    //    SettingsManager::getInstance()->setCurrentPlaylistName(ui->comboBox_playlists->currentText());
+}
+
+void PreferencesDialog::moveNextItem(QComboBox *comboBox)
+{
+    if (comboBox == nullptr)
+        return;
+    if (comboBox->count() <= 1)
+        return;
+    if (comboBox->currentIndex() < (comboBox->count() - 1))
+        comboBox->setCurrentIndex(comboBox->currentIndex() + 1);
+    else
+        comboBox->setCurrentIndex(0);
+}
+
+void PreferencesDialog::movePreviousItem(QComboBox *comboBox)
+{
+    if (comboBox == nullptr)
+        return;
+    if (comboBox->count() <= 1)
+        return;
+    if (comboBox->currentIndex() > 0)
+        comboBox->setCurrentIndex(comboBox->currentIndex() - 1);
+    else
+        comboBox->setCurrentIndex(comboBox->count() - 1);
+}
+
+void PreferencesDialog::switchRandomItem(QComboBox *comboBox)
+{
+    if (comboBox == nullptr)
+        return;
+    if (comboBox->count() < 2)
+        return;
+    qsrand(QTime(0,0,0).secsTo(QTime::currentTime()));
+    int index = qrand() % comboBox->count();
+    comboBox->setCurrentIndex(index);
+}
+
+void PreferencesDialog::switchToItem(QComboBox *comboBox, const QString &text)
+{
+    if (comboBox == nullptr)
+        return;
+    if (text.isEmpty())
+        return;
+    int index = comboBox->findText(text);
+    if (index < 0)
+        return;
+    comboBox->setCurrentIndex(index);
 }
