@@ -282,26 +282,9 @@ void PreferencesDialog::mediaEndReached()
         ui->pushButton_play->click();
         break;
     case SettingsManager::PlaybackMode::RandomFileFromAllPlaylists:
-    {
-        int totalFileCount = 0;
-        QStringList playlists = SettingsManager::getInstance()->getAllPlaylistNames();
-        if (!playlists.isEmpty())
-        {
-            for (int i = 0; i != playlists.count(); ++i)
-            {
-                QStringList paths = SettingsManager::getInstance()->getAllFilesFromPlaylist(playlists.at(i));
-                if (!paths.isEmpty())
-                    totalFileCount += paths.count();
-            }
-            if (totalFileCount > 1)
-            {
-                switchToRandomPlaylist();
-                switchToRandomFile();
-            }
-        }
+        playRandomFileFromAllPlaylistsFiles();
         ui->pushButton_play->click();
         break;
-    }
     case SettingsManager::PlaybackMode::RandomPlaylist:
         switchToRandomPlaylist();
         ui->pushButton_play->click();
@@ -309,6 +292,50 @@ void PreferencesDialog::mediaEndReached()
     default:
         ui->pushButton_play->click();
         break;
+    }
+}
+
+void PreferencesDialog::playRandomFileFromAllPlaylistsFiles()
+{
+    int totalFileCount = 0;
+    int playlistFileCount[100] = { 0 };
+    QStringList playlists = SettingsManager::getInstance()->getAllPlaylistNames();
+    if (!playlists.isEmpty())
+    {
+        for (int i = 0; i != playlists.count(); ++i)
+        {
+            QStringList paths = SettingsManager::getInstance()->getAllFilesFromPlaylist(playlists.at(i));
+            if (!paths.isEmpty())
+            {
+                playlistFileCount[i] = paths.count();
+                totalFileCount += playlistFileCount[i];
+            }
+        }
+        if (totalFileCount > 1)
+        {
+            int index = getRandomNumber(totalFileCount - 1);
+            index = index < 0 ? 0 : index;
+            if (index < playlistFileCount[0])
+            {
+                if (ui->comboBox_playlists->currentIndex() != 0)
+                    ui->comboBox_playlists->setCurrentIndex(0);
+                if (ui->comboBox_url->currentIndex() != index)
+                    ui->comboBox_url->setCurrentIndex(index);
+            }
+            else
+                for (int i = 1; i != playlists.count(); ++i)
+                {
+                    index -= playlistFileCount[i - 1];
+                    if (index < playlistFileCount[i])
+                    {
+                        if (ui->comboBox_playlists->currentIndex() != i)
+                            ui->comboBox_playlists->setCurrentIndex(i);
+                        if (ui->comboBox_url->currentIndex() != index)
+                            ui->comboBox_url->setCurrentIndex(index);
+                        break;
+                    }
+                }
+        }
     }
 }
 
@@ -320,6 +347,16 @@ void PreferencesDialog::switchToRandomFile()
 void PreferencesDialog::switchToRandomPlaylist()
 {
     switchRandomItem(ui->comboBox_playlists);
+}
+
+int PreferencesDialog::getRandomNumber(int max)
+{
+    int Max = max + 1;
+    if (Max < 1)
+        return -1;
+    qsrand(QTime(0,0,0).secsTo(QTime::currentTime()));
+    int num = qrand() % Max;
+    return num;
 }
 
 void PreferencesDialog::clearAllTracks()
@@ -835,8 +872,8 @@ void PreferencesDialog::switchRandomItem(QComboBox *comboBox)
         return;
     if (comboBox->count() < 2)
         return;
-    qsrand(QTime(0,0,0).secsTo(QTime::currentTime()));
-    int index = qrand() % comboBox->count();
+    int index = getRandomNumber(comboBox->count() - 1);
+    index = index < 0 ? 0 : index;
     comboBox->setCurrentIndex(index);
 }
 

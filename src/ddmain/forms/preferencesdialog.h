@@ -70,6 +70,7 @@ public slots:
     void switchPlaylist(const QString &name);
     void switchFile(const QString &url);
     void mediaEndReached();
+    void playRandomFileFromAllPlaylistsFiles();
 
 public:
     explicit PreferencesDialog(QWidget *parent = nullptr);
@@ -102,6 +103,7 @@ private slots:
     void switchToItem(QComboBox *comboBox, const QString &text);
     void switchToRandomFile();
     void switchToRandomPlaylist();
+    int getRandomNumber(int max);
 
 private:
     Ui::PreferencesDialog *ui = nullptr;
