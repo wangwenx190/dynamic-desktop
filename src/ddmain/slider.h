@@ -12,4 +12,6 @@ protected:
 #ifndef DD_NO_WHEEL_EVENT
     void wheelEvent(QWheelEvent *event) override;
 #endif
+private:
+    Q_DISABLE_COPY(Slider)
 };

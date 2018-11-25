@@ -42,6 +42,9 @@ private slots:
 private:
     Ui::TrayMenu *ui = nullptr;
     bool muted = false;
+
+private:
+    Q_DISABLE_COPY(TrayMenu)
 };
 
 #endif

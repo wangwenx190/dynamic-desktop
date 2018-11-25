@@ -113,4 +113,7 @@ private:
     QWinTaskbarButton *taskbarButton = nullptr;
     QWinTaskbarProgress *taskbarProgress = nullptr;
 #endif
+
+private:
+    Q_DISABLE_COPY(PreferencesDialog)
 };

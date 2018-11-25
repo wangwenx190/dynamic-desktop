@@ -79,4 +79,7 @@ private:
 
 private:
     QSettings *settings = nullptr;
+
+private:
+    Q_DISABLE_COPY(SettingsManager)
 };

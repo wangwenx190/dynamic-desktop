@@ -63,4 +63,8 @@ bool SkinsManager::setSkin(const QString &skin)
     return false;
 }
 
+SkinsManager::SkinsManager()
+{
+}
+
 #endif

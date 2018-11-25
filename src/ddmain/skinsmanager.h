@@ -15,8 +15,14 @@ public:
     bool setSkin(const QString &skin = QStringLiteral("Default"));
 
 private:
+    explicit SkinsManager();
+
+private:
     QString curSkinName;
     QString curSkinPath;
+
+private:
+    Q_DISABLE_COPY(SkinsManager)
 };
 
 #endif

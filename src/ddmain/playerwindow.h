@@ -69,4 +69,7 @@ private:
     QtAV::SubtitleFilter *subtitle = nullptr;
     QVBoxLayout *mainLayout = nullptr;
     bool windowMode = false;
+
+private:
+    Q_DISABLE_COPY(PlayerWindow)
 };

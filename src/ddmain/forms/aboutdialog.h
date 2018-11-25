@@ -22,4 +22,7 @@ public slots:
 
 private:
     Ui::AboutDialog *ui = nullptr;
+
+private:
+    Q_DISABLE_COPY(AboutDialog)
 };

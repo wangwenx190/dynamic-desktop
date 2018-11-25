@@ -38,4 +38,7 @@ private slots:
 private:
     Ui::PlaylistDialog *ui = nullptr;
     QString currentPlaylist;
+
+private:
+    Q_DISABLE_COPY(PlaylistDialog)
 };
