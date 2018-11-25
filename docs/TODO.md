@@ -6,14 +6,14 @@
 - [ ] More translations (**translators needed**)
 - [ ] Support showing web pages on desktop? (**useless, probably not**)
 - [ ] Support showing executables on desktop? (**useless, probably not**)
-- [ ] Play audios as background music without showing any pictures
-- [ ] Show pictures on desktop
+- [x] Play audios as background music without showing any pictures
+- [x] Show pictures on desktop
 - [ ] Auto update? (**maybe useless**)
 - [x] Support selecting video/audio/subtitle tracks
 - [x] Support auto load external audio/subtitle files
-- [ ] Play videos seamlessly
+- [x] Play videos seamlessly
 - [ ] Support Windows Vista and XP? (**insignificant, mostly not**)
-- [ ] Support playlist
+- [x] Support playlist
 - [x] Support changing video position
 - [ ] Trim Qt libraries to make them much smaller, but don't affect their performances
 - [ ] Keep the libraries, compilers and even the standards always up-to-date
@@ -32,14 +32,14 @@
 - [x] Support changing language during running
 - [ ] Bug reporter? (**maybe useless, we have github**)
 - [x] Output detailed log to local file
-- [ ] Support favorite playlists
+- [ ] <del>Support favorite playlists</del>
 - [ ] <del>Support UWP</del>
 - [x] Show progress and status on taskbar
 - [x] Add more official skins
 - [x] Save and preview settings right after any change happens
 - [x] Save and load history
 - [x] TrayMenu: use custom QWidget instead of QMenu
-- [ ] Support sequential playback/random playback/repeat playlist/repeat current file
+- [x] Support sequential playback/random playback/repeat playlist/repeat current file
 - [x] <del>Make the modules(controller, player, service and updater) become different exe</del>
 - [ ] <del>Optimize launcher code</del>
 - [x] <del>Controller: wait until player online</del>
