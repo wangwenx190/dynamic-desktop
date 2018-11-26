@@ -17,8 +17,8 @@ $${TARGET}_libs.path = $${BIN_DIR}
             $${ffmpeg_bin_dir}/swresample*.dll \
             $${ffmpeg_bin_dir}/swscale*.dll
         CONFIG(enable_avresample): $${TARGET}_libs.files *= $${ffmpeg_bin_dir}/avresample*.dll
-        CONFIG(enable_libass):!CONFIG(static_libass): $${TARGET}_libs.files *= $${ffmpeg_bin_dir}/libass.dll
-        CONFIG(enable_openal):!CONFIG(static_openal): $${TARGET}_libs.files *= $${ffmpeg_bin_dir}/OpenAL32.dll
+        CONFIG(enable_libass):!CONFIG(static_libass): $${TARGET}_libs.files *= $${ffmpeg_bin_dir}/ass.dll $${ffmpeg_bin_dir}/libass.dll
+        CONFIG(enable_openal):!CONFIG(static_openal): $${TARGET}_libs.files *= $${ffmpeg_bin_dir}/OpenAL32.dll $${ffmpeg_bin_dir}/soft_oal.dll
     }
 }
 CONFIG(shared, static|shared) {
