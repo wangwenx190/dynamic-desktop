@@ -203,8 +203,7 @@ QString SettingsManager::getImageQuality() const
 
 bool SettingsManager::getAutoCheckUpdate() const
 {
-    //return settings->value(QStringLiteral("autoupdate"), false).toBool();
-    return false;
+    return settings->value(QStringLiteral("autoupdate"), false).toBool();
 }
 
 SettingsManager::PlaybackMode SettingsManager::getPlaybackMode() const
