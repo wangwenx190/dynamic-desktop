@@ -74,7 +74,7 @@ public:
     void setAllPlaylistNames(const QStringList &names);
 
 private:
-    SettingsManager();
+    explicit SettingsManager();
     ~SettingsManager();
 
 private:
