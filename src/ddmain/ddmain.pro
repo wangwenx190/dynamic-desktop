@@ -90,6 +90,7 @@ QT *= \
     CONFIG(lrelease):!versionAtLeast(QT_VERSION, 5.12.0): load(../lrelease.prf)
 }
 versionAtLeast(QT_VERSION, 5.12.0):!qtConfig(commandlineparser): DEFINES *= DD_NO_COMMANDLINE_PARSER
+CONFIG(enable_libass): DEFINES *= DD_USE_LIBASS
 LIBS *= \
     -lUser32 \
     -lDwmapi

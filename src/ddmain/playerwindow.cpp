@@ -133,7 +133,11 @@ void PlayerWindow::initPlayer()
     subtitle = new QtAV::SubtitleFilter();
     subtitle->setPlayer(player);
     subtitle->setCodec(SettingsManager::getInstance()->getCharset().toLatin1());
+#ifndef DD_USE_LIBASS
+    subtitle->setEngines(QStringList() << QStringLiteral("FFmpeg"));
+#else
     subtitle->setEngines(QStringList() << QStringLiteral("LibASS") << QStringLiteral("FFmpeg"));
+#endif
     subtitle->setAutoLoad(SettingsManager::getInstance()->getSubtitleAutoLoad());
     subtitle->setEnabled(SettingsManager::getInstance()->getSubtitle());
     setRenderer(SettingsManager::getInstance()->getRenderer());
