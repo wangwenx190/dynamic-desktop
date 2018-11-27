@@ -31,7 +31,8 @@ CONFIG(shared, static|shared) {
         } else {
             target_file_name = $${target_file_name}.exe
         }
-        windeployqt_command = --plugindir \"$${BIN_DIR}\\plugins\" --no-translations --no-compiler-runtime --no-opengl-sw -opengl --list source
+        windeployqt_command = --plugindir \"$${BIN_DIR}\\plugins\" --no-translations --no-compiler-runtime -opengl --list source
+        CONFIG(no_llvmpipe)|CONFIG(no_mesa): windeployqt_command = $${windeployqt_command} --no-opengl-sw
         CONFIG(no_angle): windeployqt_command = $${windeployqt_command} --no-system-d3d-compiler --no-angle
         CONFIG(no_svg): windeployqt_command = $${windeployqt_command} --no-svg
         $${TARGET}_libs.commands *= $$quote(\"$${windeployqt}\" $${windeployqt_command} \"$${BIN_DIR}\\$${target_file_name}\")
