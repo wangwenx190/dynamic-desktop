@@ -74,14 +74,14 @@ For official builds and third-party packages please see https://sourceforge.net/
       ```
       Note that you can add **`-b master`** to the **`git clone`** command if you want to get the latest stable version instead of the latest development version
 - Download **Qt** at least *5.6.3* from http://download.qt.io/archive/qt/ and install it. Using the latest version is highly recommended.
-- Download **FFmpeg** SDK and extract to **`ffmpeg`**. Of course, you can extract to anywhere you want, just add **`ffmpeg_dir = your own FFmpeg dir path`** to **`user.conf`**. Add **`CONFIG *= static_ffmpeg`** to it if you want to link against FFmpeg statically. Using the latest *Git build* is recommended.
-   - Zeranoe builds (recommended): https://ffmpeg.zeranoe.com/builds/
+- Download **FFmpeg** SDK and extract to **`ffmpeg`**. Of course, you can extract to anywhere you want, just add **`ffmpeg_dir = your own FFmpeg dir path`** to **`user.conf`**. Add **`CONFIG *= static_ffmpeg`** to it if you want to link against FFmpeg statically. Using the latest *Git build* is highly recommended.
+   - Zeranoe builds (recommended for shared builds): https://ffmpeg.zeranoe.com/builds/
 
       Git and stable versions, shared libs only, full builds only
    - QtAV builds: https://sourceforge.net/projects/avbuild/files/windows-desktop/
 
       Git and stable versions, shared and static libs, full and lite builds
-   - Shift Media Project builds: https://github.com/ShiftMediaProject/FFmpeg/releases/latest
+   - Shift Media Project builds (recommended for static builds): https://github.com/ShiftMediaProject/FFmpeg/releases/latest
 
       Git and stable versions, shared and static libs, full builds only
 - Open "dynamic-desktop.pro" and start compiling or call "build.bat". But remember to call "vcvarsall.bat" and add Qt's directories to your path variables before calling "build.bat".
@@ -98,7 +98,7 @@ For official builds and third-party packages please see https://sourceforge.net/
       ```text
       CONFIG *= static_libass
       ```
-      If you want to link against *libass.dll* directly, add the following config (not compatible with static linking):
+      If you want to link against *libass.dll* directly, add the following config (compatible with static linking):
       ```text
       CONFIG *= enable_libass_link
       ```
@@ -110,7 +110,7 @@ For official builds and third-party packages please see https://sourceforge.net/
       ```text
       CONFIG *= static_openal
       ```
-      If you want to link against *OpenAL32.dll* directly, add the following config (not compatible with static linking):
+      If you want to link against *OpenAL32.dll* directly, add the following config (compatible with static linking):
       ```text
       CONFIG *= enable_openal_link
       ```
