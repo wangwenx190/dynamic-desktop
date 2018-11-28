@@ -6,23 +6,25 @@ isEmpty(DD_COMMIT_TIME): DD_COMMIT_TIME = -
 DEFINES *= \
     DD_COMMIT_ID=\\\"$${DD_COMMIT_ID}\\\" \
     DD_COMMIT_TIME=\\\"$${DD_COMMIT_TIME}\\\"
-CONFIG(static, static|shared): DEFINES *= BUILD_DD_STATIC
 RC_ICONS = ../resources/icons/color_palette.ico
 QMAKE_TARGET_DESCRIPTION = "Dynamic Desktop"
-CONFIG(static_ffmpeg) {
-    isEmpty(ffmpeg_dir): ffmpeg_dir = $${ROOT}/ffmpeg
-    !exists($${ffmpeg_dir}): error("Can\'t find FFmpeg dir.")
-    isEmpty(ffmpeg_lib_dir): ffmpeg_lib_dir = $${ffmpeg_dir}/lib
-    !exists($${ffmpeg_lib_dir}/*avcodec.lib) {
-        contains(QT_ARCH, x86_64): ffmpeg_lib_dir = $${ffmpeg_lib_dir}/x64
-        else: ffmpeg_lib_dir = $${ffmpeg_lib_dir}/x86
+CONFIG(static, static|shared) {
+    DEFINES *= BUILD_DD_STATIC
+    CONFIG(static_ffmpeg) {
+        isEmpty(ffmpeg_dir): ffmpeg_dir = $${ROOT}/ffmpeg
+        !exists($${ffmpeg_dir}): error("Can\'t find FFmpeg dir.")
+        isEmpty(ffmpeg_lib_dir): ffmpeg_lib_dir = $${ffmpeg_dir}/lib
+        !exists($${ffmpeg_lib_dir}/*avcodec.lib) {
+            contains(QT_ARCH, x86_64): ffmpeg_lib_dir = $${ffmpeg_lib_dir}/x64
+            else: ffmpeg_lib_dir = $${ffmpeg_lib_dir}/x86
+        }
+        LIBS *= \
+            -L$${ffmpeg_lib_dir} \
+            -lVfw32 -lgdiplus -llibmfx -lSecur32 \
+            -lBcrypt -llegacy_stdio_definitions -llibavcodec \
+            -llibavdevice -llibavfilter -llibavformat \
+            -llibavutil -llibswresample -llibswscale
     }
-    LIBS *= -L$${ffmpeg_lib_dir}
-    LIBS *= \
-        -lVfw32 -lgdiplus -llibmfx -lSecur32 \
-        -lBcrypt -llegacy_stdio_definitions -llibavcodec \
-        -llibavdevice -llibavfilter -llibavformat \
-        -llibavutil -llibswresample -llibswscale
 }
 QT *= \
     widgets \
