@@ -22,10 +22,10 @@ CONFIG(static, static|shared) {
         # Eg: LIBS *= -llibmfx
         LIBS *= \
             -L$${ffmpeg_lib_dir} \
-            -lVfw32 -lgdiplus -lSecur32 -lBcrypt \
-            -llegacy_stdio_definitions -llibavcodec \
-            -llibavdevice -llibavfilter -llibavformat \
-            -llibavutil -llibswresample -llibswscale
+            -lAdvapi32 -lVfw32 -lgdiplus -lSecur32 -lBcrypt \
+            -lShell32 -llegacy_stdio_definitions -llibavcodec \
+            -llibavdevice -llibavfilter -llibavformat -llibavutil \
+            -llibswresample -llibswscale -llibpostproc
     }
 }
 QT *= \
