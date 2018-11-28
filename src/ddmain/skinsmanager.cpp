@@ -28,7 +28,7 @@ bool SkinsManager::setSkin(const QString &skin)
 {
     if (skin.isEmpty())
         return false;
-    if (skin.toLower() == QStringLiteral("none"))
+    if (skin.toLower() == QLatin1String("none"))
     {
         qApp->setStyleSheet(QString());
         curSkinPath = QString();

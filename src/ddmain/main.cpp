@@ -33,7 +33,7 @@ void installTranslation(const QString &lang, const QTranslator &translator)
     if (lang.startsWith(QStringLiteral("en"), Qt::CaseInsensitive))
         return;
     const QString qmDir = QStringLiteral(":/i18n");
-    if (lang.toLower() == QStringLiteral("auto"))
+    if (lang.toLower() == QLatin1String("auto"))
     {
         if (ts->load(QLocale(), QStringLiteral("dd"), QStringLiteral("_"), qmDir))
             QtSingleApplication::installTranslator(ts);
@@ -122,26 +122,26 @@ int main(int argc, char *argv[])
             SettingsManager::getInstance()->setLastFile(urlOptionValue);
     QString imageQualityOptionValue = parser.value(imageQualityOption).toLower();
     if (!imageQualityOptionValue.isEmpty())
-        if (((imageQualityOptionValue == QStringLiteral("default")) ||
-             (imageQualityOptionValue == QStringLiteral("best")) ||
-             (imageQualityOptionValue == QStringLiteral("fastest"))) &&
+        if (((imageQualityOptionValue == QLatin1String("default")) ||
+             (imageQualityOptionValue == QLatin1String("best")) ||
+             (imageQualityOptionValue == QLatin1String("fastest"))) &&
                 (imageQualityOptionValue != SettingsManager::getInstance()->getImageQuality()))
             SettingsManager::getInstance()->setImageQuality(imageQualityOptionValue);
     QString rendererOptionValue = parser.value(rendererOption).toLower();
     if (!rendererOptionValue.isEmpty())
-        if ((rendererOptionValue == QStringLiteral("opengl")) &&
+        if ((rendererOptionValue == QLatin1String("opengl")) &&
                 (SettingsManager::getInstance()->getRenderer() != Utils::getVideoRendererId(Utils::VideoRendererId::OpenGLWidget)))
             SettingsManager::getInstance()->setRenderer(Utils::getVideoRendererId(Utils::VideoRendererId::OpenGLWidget));
-        else if ((rendererOptionValue == QStringLiteral("gl")) &&
+        else if ((rendererOptionValue == QLatin1String("gl")) &&
                  (SettingsManager::getInstance()->getRenderer() != Utils::getVideoRendererId(Utils::VideoRendererId::GLWidget2)))
             SettingsManager::getInstance()->setRenderer(Utils::getVideoRendererId(Utils::VideoRendererId::GLWidget2));
-        else if ((rendererOptionValue == QStringLiteral("qt")) &&
+        else if ((rendererOptionValue == QLatin1String("qt")) &&
                  (SettingsManager::getInstance()->getRenderer() != Utils::getVideoRendererId(Utils::VideoRendererId::Widget)))
             SettingsManager::getInstance()->setRenderer(Utils::getVideoRendererId(Utils::VideoRendererId::Widget));
-        else if ((rendererOptionValue == QStringLiteral("gdi")) &&
+        else if ((rendererOptionValue == QLatin1String("gdi")) &&
                  (SettingsManager::getInstance()->getRenderer() != Utils::getVideoRendererId(Utils::VideoRendererId::GDI)))
             SettingsManager::getInstance()->setRenderer(Utils::getVideoRendererId(Utils::VideoRendererId::GDI));
-        else if ((rendererOptionValue == QStringLiteral("d2d")) &&
+        else if ((rendererOptionValue == QLatin1String("d2d")) &&
                  (SettingsManager::getInstance()->getRenderer() != Utils::getVideoRendererId(Utils::VideoRendererId::Direct2D)))
             SettingsManager::getInstance()->setRenderer(Utils::getVideoRendererId(Utils::VideoRendererId::Direct2D));
     QString volumeOptionValue = parser.value(volumeOption);

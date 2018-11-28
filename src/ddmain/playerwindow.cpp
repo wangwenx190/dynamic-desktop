@@ -230,13 +230,13 @@ void PlayerWindow::setImageQuality(const QString& quality)
 {
     if (!renderer)
         return;
-    if ((quality == QStringLiteral("default")) &&
+    if ((quality == QLatin1String("default")) &&
             (renderer->quality() != QtAV::VideoRenderer::QualityDefault))
         renderer->setQuality(QtAV::VideoRenderer::QualityDefault);
-    else if ((quality == QStringLiteral("best")) &&
+    else if ((quality == QLatin1String("best")) &&
              (renderer->quality() != QtAV::VideoRenderer::QualityBest))
         renderer->setQuality(QtAV::VideoRenderer::QualityBest);
-    else if ((quality == QStringLiteral("fastest")) &&
+    else if ((quality == QLatin1String("fastest")) &&
              (renderer->quality() != QtAV::VideoRenderer::QualityFastest))
         renderer->setQuality(QtAV::VideoRenderer::QualityFastest);
 }
