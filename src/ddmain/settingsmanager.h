@@ -48,6 +48,7 @@ public:
     QString getCurrentPlaylistName() const;
     QStringList getAllFilesFromPlaylist(const QString &name) const;
     QStringList getAllPlaylistNames() const;
+    QString getQtRenderer() const;
 
     void setLastFile(const QString &url);
     void setMute(bool mute = true);
@@ -72,6 +73,7 @@ public:
     void setCurrentPlaylistName(const QString &name);
     void setPlaylistFiles(const QString &name, const QStringList &files);
     void setAllPlaylistNames(const QStringList &names);
+    void setQtRenderer(const QString &qtRenderer = QStringLiteral("angle"));
 
 private:
     explicit SettingsManager();

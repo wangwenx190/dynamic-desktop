@@ -1,4 +1,5 @@
 #include "settingsmanager.h"
+#include <Win32Utils>
 
 #include <QDir>
 #include <QUrl>
@@ -241,6 +242,11 @@ QStringList SettingsManager::getAllPlaylistNames() const
     return settings->value(QStringLiteral("allplaylists"), QStringList() << QStringLiteral("Default")).toStringList();
 }
 
+QString SettingsManager::getQtRenderer() const
+{
+    return settings->value(QStringLiteral("qtrenderer"), QStringLiteral("angle")).toString();
+}
+
 void SettingsManager::setLastFile(const QString &url)
 {
     settings->setValue(QStringLiteral("currentfile"), QDir::toNativeSeparators(QDir::cleanPath(url)));
@@ -351,11 +357,26 @@ void SettingsManager::setAllPlaylistNames(const QStringList &names)
     settings->setValue(QStringLiteral("allplaylists"), names);
 }
 
+void SettingsManager::setQtRenderer(const QString &qtRenderer)
+{
+    settings->setValue(QStringLiteral("qtrenderer"), qtRenderer);
+}
+
 SettingsManager::SettingsManager()
 {
-    QString iniPath = QCoreApplication::applicationDirPath();
+    /*QString iniPath = QCoreApplication::applicationDirPath();
     iniPath += QStringLiteral("/config.ini");
-    settings = new QSettings(QDir::toNativeSeparators(QDir::cleanPath(iniPath)), QSettings::IniFormat);
+    settings = new QSettings(QDir::toNativeSeparators(QDir::cleanPath(iniPath)), QSettings::IniFormat);*/
+    auto dir = new TCHAR[MAX_PATH + 1];
+    Win32Utils::getCurrentDir(dir);
+#ifdef UNICODE
+    QString iniPath = QString::fromWCharArray(dir);
+#else
+    QString iniPath(dir);
+#endif
+    delete [] dir;
+    iniPath += QStringLiteral("\\config.ini");
+    settings = new QSettings(iniPath, QSettings::IniFormat);
     settings->beginGroup(QStringLiteral("dd"));
 }
 
@@ -363,4 +384,5 @@ SettingsManager::~SettingsManager()
 {
     settings->endGroup();
     delete settings;
+    settings = nullptr;
 }

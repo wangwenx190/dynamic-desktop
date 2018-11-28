@@ -154,15 +154,14 @@ VOID WINAPI ServiceCtrlHandler(DWORD code)
 DWORD WINAPI ServiceWorkerThread(LPVOID lpParam)
 {
     (void)lpParam;
-    TCHAR filePath[MAX_PATH + 1] = { 0 };
-    DWORD dwSize = GetModuleFileName(nullptr, filePath, MAX_PATH);
-    for (;(filePath[dwSize] != '\\') && (dwSize != 0); --dwSize)
-        filePath[dwSize] = 0;
+    auto filePath = new TCHAR[MAX_PATH + 1];
+    Win32Utils::getCurrentDir(filePath);
 #ifdef _DEBUG
     _tcscat(filePath, TEXT("\\ddmaind.exe"));
 #else
     _tcscat(filePath, TEXT("\\ddmain.exe"));
 #endif
     Win32Utils::launchSession1Process(filePath, nullptr);
+    delete [] filePath;
     return ERROR_SUCCESS;
 }

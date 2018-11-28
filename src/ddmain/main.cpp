@@ -59,7 +59,13 @@ int main(int argc, char *argv[])
 {
     QtSingleApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QtSingleApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
-    QtSingleApplication::setAttribute(Qt::AA_UseOpenGLES);
+    const QString qtRenderer = SettingsManager::getInstance()->getQtRenderer().toLower();
+    if (qtRenderer == QLatin1String("desktop"))
+        QtSingleApplication::setAttribute(Qt::AA_UseDesktopOpenGL);
+    else if (qtRenderer == QLatin1String("angle"))
+        QtSingleApplication::setAttribute(Qt::AA_UseOpenGLES);
+    else if (qtRenderer == QLatin1String("software"))
+        QtSingleApplication::setAttribute(Qt::AA_UseSoftwareOpenGL);
     QtSingleApplication app(QStringLiteral("wangwenx190.DynamicDesktop.Main.1000.AppMutex"), argc, argv);
     QtSingleApplication::setApplicationName(QStringLiteral("Dynamic Desktop"));
     QtSingleApplication::setApplicationDisplayName(QStringLiteral("Dynamic Desktop"));

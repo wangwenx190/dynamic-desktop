@@ -58,4 +58,15 @@ bool isAutoStartServiceInstalled(LPCTSTR name)
     return result;
 }
 
+void getCurrentDir(LPTSTR path)
+{
+    if (path == nullptr)
+        return;
+    TCHAR filePath[MAX_PATH + 1] = { 0 };
+    DWORD dwSize = GetModuleFileName(nullptr, filePath, MAX_PATH);
+    for (;(filePath[dwSize] != '\\') && (dwSize != 0); --dwSize)
+        filePath[dwSize] = 0;
+    _tcscpy(path, filePath);
+}
+
 }
