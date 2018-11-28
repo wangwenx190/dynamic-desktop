@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>384</width>
-    <height>240</height>
+    <width>561</width>
+    <height>401</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -52,7 +52,7 @@
        </property>
        <property name="minimumSize">
         <size>
-         <width>250</width>
+         <width>350</width>
          <height>0</height>
         </size>
        </property>
@@ -101,7 +101,7 @@
        </property>
        <property name="minimumSize">
         <size>
-         <width>250</width>
+         <width>350</width>
          <height>0</height>
         </size>
        </property>
@@ -150,7 +150,7 @@
        </property>
        <property name="minimumSize">
         <size>
-         <width>250</width>
+         <width>350</width>
          <height>0</height>
         </size>
        </property>
@@ -199,7 +199,7 @@
        </property>
        <property name="minimumSize">
         <size>
-         <width>250</width>
+         <width>350</width>
          <height>0</height>
         </size>
        </property>
@@ -248,7 +248,7 @@
        </property>
        <property name="minimumSize">
         <size>
-         <width>250</width>
+         <width>350</width>
          <height>0</height>
         </size>
        </property>
@@ -297,7 +297,7 @@
        </property>
        <property name="minimumSize">
         <size>
-         <width>250</width>
+         <width>350</width>
          <height>0</height>
         </size>
        </property>
@@ -307,6 +307,35 @@
       </widget>
      </item>
     </layout>
+   </item>
+   <item>
+    <widget class="QPlainTextEdit" name="plainTextEdit_important_notes">
+     <property name="undoRedoEnabled">
+      <bool>false</bool>
+     </property>
+     <property name="readOnly">
+      <bool>true</bool>
+     </property>
+     <property name="plainText">
+      <string>This application uses the following third party components:
+Qt, QtAV, FFmpeg, LibASS, OpenAL Soft, XAudio2, DirectSound, Qt Nice Frameless Window, Qt Single Application, ANGLE, Mesa 3D Library, 7-Zip, Inno Setup, Wallpaper, Baka MPlayer, UPX, Windows Service, Intel Media SDK, CUDA and many third party components used by themselves.
+
+Some may not listed here due to limited space. You can find the full list from the website below.
+
+Some of them are modified to match my own needs. Their source code are available as my GitHub repositories. You can find all my modifications there. Some are not modified and only their binary files are deployed.
+
+For their licenses, please refer to:
+https://github.com/wangwenx190/dynamic-desktop/blob/develop/LICENSE.md
+and:
+https://github.com/wangwenx190/dynamic-desktop/tree/develop/docs/licenses
+
+My GitHub repositories:
+https://github.com/wangwenx190?tab=repositories</string>
+     </property>
+     <property name="textInteractionFlags">
+      <set>Qt::NoTextInteraction</set>
+     </property>
+    </widget>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
