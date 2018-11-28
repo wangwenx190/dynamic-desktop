@@ -18,10 +18,12 @@ CONFIG(static, static|shared) {
             contains(QT_ARCH, x86_64): ffmpeg_lib_dir = $${ffmpeg_lib_dir}/x64
             else: ffmpeg_lib_dir = $${ffmpeg_lib_dir}/x86
         }
+        # If you need libmfx, add it's lib file in "user.conf"
+        # Eg: LIBS *= -llibmfx
         LIBS *= \
             -L$${ffmpeg_lib_dir} \
-            -lVfw32 -lgdiplus -llibmfx -lSecur32 \
-            -lBcrypt -llegacy_stdio_definitions -llibavcodec \
+            -lVfw32 -lgdiplus -lSecur32 -lBcrypt \
+            -llegacy_stdio_definitions -llibavcodec \
             -llibavdevice -llibavfilter -llibavformat \
             -llibavutil -llibswresample -llibswscale
     }
