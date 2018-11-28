@@ -62,7 +62,7 @@ CONFIG(shared, static|shared) {
 }
 !isEmpty($${TARGET}_libs.commands) {
     INSTALLS *= $${TARGET}_libs
-    isEmpty($${TARGET}_libs.files) {
+    !CONFIG(static_ffmpeg):isEmpty($${TARGET}_libs.files) {
         message("qmake can\'t find FFmpeg\'s run-time libraries in \"$${ffmpeg_bin_dir}\".")
         message("You may have to copy them manually.")
         message("You can set the \"ffmpeg_dir\" variable to let qmake copy them automatically.")
