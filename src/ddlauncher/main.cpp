@@ -6,12 +6,11 @@
 
 #include <windows.h>
 #include <tchar.h>
-#include <shellapi.h>
-#include <shellscalingapi.h>
 
 using MainEntryFunc = int (*)(int, char **);
 
 #ifdef UNICODE
+// Copied from: http://code.qt.io/cgit/qt/qtbase.git/tree/src/winmain/qtmain_win.cpp?h=dev
 // Convert a wchar_t to char string, equivalent to QString::toLocal8Bit()
 // when passed CP_ACP.
 static inline char *wideToMulti(int codePage, const wchar_t *aw)
