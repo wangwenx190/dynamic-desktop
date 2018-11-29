@@ -35,13 +35,13 @@ I created this tool only to play my favorite animation clips on my desktop, so I
 - No ads, free of charge, open source, etc...
 
 ## Supported platforms
-Microsoft Windows 7 ~ 10, desktop edition(can't run without GUI desktop, for example, some editions of Windows Server), both 32 bit and 64 bit systems. Linux and macOS will never be supported due to the limitation of the technique I used. Mobile systems are not supported as well for the same reason.
+Microsoft Windows 7 ~ 10, desktop editions, both 32 bit and 64 bit systems. Can't run on systems without GUI desktop, for example, some editions of Windows Server. Linux and macOS will never be supported due to the limitation of the technique I used. Mobile systems are not supported as well for the same reason.
 
 ## Downloads
 For official builds and third-party packages please see https://sourceforge.net/p/dynamic-desktop/ .
 
 ## Bug reports and suggestions
-If you find any issues or have any feature requests, please inform me through [**GitHub Issues**](https://github.com/wangwenx190/dynamic-desktop/issues). It would be much better if you follow the template provided by GitHub.
+If you find any issues or have any feature requests, please inform me through [**GitHub Issues**](https://github.com/wangwenx190/dynamic-desktop/issues). It would be much better if you are willing to follow the template provided by GitHub.
 
 ## Important notes
 - Windows XP and Vista are not supported currently. Windows 2000 and even older systems will never be supported.
