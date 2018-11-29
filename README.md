@@ -14,7 +14,7 @@ I created this tool only to play my favorite animation clips on my desktop, so I
 
 **Suggestions and pull requests are both welcome.**
 
-**My native language is Chinese and I'm not good at English. I use Google Translate to translate Chinese into English. I'm not sure about the accuracy of the translated texts. So if there is anything wrong in English translation, please inform me using [GitHub Issues](https://github.com/wangwenx190/dynamic-desktop/issues). Thanks a lot.**
+**My native language is Chinese and I'm not good at English. I use Google Translate to translate Chinese into English. I'm not sure about the accuracy of the translated texts. So if there is anything wrong in English translation, please inform me through [GitHub Issues](https://github.com/wangwenx190/dynamic-desktop/issues). Thanks a lot.**
 
 ## Features
 - Relatively small
@@ -40,10 +40,13 @@ Microsoft Windows 7 ~ 10(with GUI desktop), both 32 bit and 64 bit systems.
 ## Downloads
 For official builds and third-party packages please see https://sourceforge.net/p/dynamic-desktop/ .
 
+## Bug reports and suggestions
+If you find any issues or have any feature requests, please inform me through [GitHub Issues](https://github.com/wangwenx190/dynamic-desktop/issues). It would be much better if you follow the template provided by GitHub.
+
 ## Important notes
-- Windows Vista and XP are not supported.
-- This tool won't run if Windows Aero is disabled.
-- Win7 users only: make sure you have installed XAudio2(Win 8/8.1/10 have installed it already by default). Download: https://sourceforge.net/projects/qtav/files/depends/DXSDK2010_XAudio2_redist.7z/download .
+- Windows XP and Vista are not supported currently. Windows 2000 and even older systems will never be supported.
+- You have to enable **Windows Aero** first if you want to run this tool.
+- Make sure you have installed the latest DirectX.
 - To experience *Hardware Accelerated Decoding* better, make sure this tool runs with your high performance GPU(on Optimus).
 - The CPU and memory usage will increase enormously if you are using software decoding and that's normal, all media players will, don't worry.
 - It would be very nice if you update your graphics card driver to the latest version.
