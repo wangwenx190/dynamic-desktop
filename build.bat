@@ -4,6 +4,9 @@
 :: remember to call "vcvarsall.bat" and add Qt's directories
 :: to your environment variables!
 @echo off
+color
+setlocal
+cls
 cd /d "%~dp0"
 if exist build rd /s /q build
 md build
@@ -27,7 +30,7 @@ set _config=%2
 if defined _config (
     set _config=%_config:~1,-1%
 ) else (
-    set _config=release
+    set _config=release silent
 )
 goto start_build
 :start_build
@@ -41,3 +44,4 @@ cd "%~dp0"
 rd /s /q build\tmp
 if exist build\lib rd /s /q build\lib
 if exist build\lib64 rd /s /q build\lib64
+endlocal

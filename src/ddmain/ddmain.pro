@@ -1,13 +1,13 @@
-TARGET = ddmain
-TEMPLATE = app
+TARGET = DDMain
+TEMPLATE = lib
+CONFIG(shared, static|shared): CONFIG *= dll
 include(../common.pri)
 isEmpty(DD_COMMIT_ID): DD_COMMIT_ID = -
 isEmpty(DD_COMMIT_TIME): DD_COMMIT_TIME = -
 DEFINES *= \
+    BUILD_SHARED_LIBRARY_DD_MAIN \
     DD_COMMIT_ID=\\\"$${DD_COMMIT_ID}\\\" \
     DD_COMMIT_TIME=\\\"$${DD_COMMIT_TIME}\\\"
-RC_ICONS = ../resources/icons/color_palette.ico
-QMAKE_TARGET_DESCRIPTION = "Dynamic Desktop"
 CONFIG(static, static|shared) {
     DEFINES *= BUILD_DD_STATIC
     CONFIG(static_ffmpeg) {
@@ -97,7 +97,8 @@ versionAtLeast(QT_VERSION, 5.12.0):!qtConfig(commandlineparser): DEFINES *= DD_N
 CONFIG(enable_libass): DEFINES *= DD_USE_LIBASS
 LIBS *= \
     -lUser32 \
-    -lDwmapi
+    -lDwmapi \
+    -lShell32
 include(../ddutils/ddutils.pri)
 include(../3rdparty/qtniceframelesswindow/qtniceframelesswindow.pri)
 include(../3rdparty/wallpaper/wallpaper.pri)
@@ -105,6 +106,8 @@ include(../3rdparty/qtsingleapplication/qtsingleapplication.pri)
 include(../3rdparty/qtav/av.pri)
 include(../3rdparty/qtav/avwidgets.pri)
 HEADERS += \
+    ddmain_global.h \
+    ddmain.h \
     forms/preferencesdialog.h \
     forms/aboutdialog.h \
     playerwindow.h \
@@ -113,7 +116,7 @@ HEADERS += \
     utils.h \
     forms/playlistdialog.h
 SOURCES += \
-    main.cpp \
+    ddmain.cpp \
     forms/preferencesdialog.cpp \
     forms/aboutdialog.cpp \
     playerwindow.cpp \

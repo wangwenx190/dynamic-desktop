@@ -157,9 +157,9 @@ DWORD WINAPI ServiceWorkerThread(LPVOID lpParam)
     auto filePath = new TCHAR[MAX_PATH + 1];
     Win32Utils::getCurrentDir(filePath);
 #ifdef _DEBUG
-    _tcscat(filePath, TEXT("\\ddmaind.exe"));
+    _tcscat(filePath, TEXT("\\DDLauncherd.exe"));
 #else
-    _tcscat(filePath, TEXT("\\ddmain.exe"));
+    _tcscat(filePath, TEXT("\\DDLauncher.exe"));
 #endif
     Win32Utils::launchSession1Process(filePath, nullptr);
     delete [] filePath;

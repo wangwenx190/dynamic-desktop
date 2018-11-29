@@ -21,7 +21,7 @@ $${TARGET}_libs.path = $${BIN_DIR}
         CONFIG(enable_openal):!CONFIG(static_openal): $${TARGET}_libs.files *= $${ffmpeg_bin_dir}/OpenAL32.dll $${ffmpeg_bin_dir}/soft_oal.dll
     }
 }
-CONFIG(shared, static|shared) {
+CONFIG(shared, static|shared):CONFIG(qt) {
     isEmpty(windeployqt): windeployqt = $$[QT_INSTALL_BINS]/windeployqt
     exists("$${windeployqt}.exe") {
         target_file_name = $${TARGET}
@@ -42,25 +42,25 @@ CONFIG(shared, static|shared) {
         message("Qt5Svg.dll, Qt5OpenGL.dll and plugins\\iconengines\\qsvgicon.dll are the necessary dlls you must copy.")
         message("d3dcompiler_XX.dll, libEGL.dll, libGLESv2.dll and opengl32sw.dll may be useful as well.")
     }
-    CONFIG(copy_msvcrt_dlls) {
-        target_arch = x86
-        contains(QT_ARCH, x86_64): target_arch = x64
-        !isEmpty(VC_REDIST_DIR):exists("$${VC_REDIST_DIR}") {
-            isEmpty(VC_REDIST_VERSION): VC_REDIST_VERSION = 141
-            vc_redist_dll_dir = Microsoft.VC$${VC_REDIST_VERSION}.CRT
-            $${TARGET}_libs.commands *= $$quote(copy /y \"$${VC_REDIST_DIR}\\$${target_arch}\\$${vc_redist_dll_dir}\\msvcp*.dll\" \"$${BIN_DIR}\")
-            $${TARGET}_libs.commands *= $$quote(copy /y \"$${VC_REDIST_DIR}\\$${target_arch}\\$${vc_redist_dll_dir}\\vcruntime*.dll\" \"$${BIN_DIR}\")
-        }
-        !isEmpty(WIN_SDK_REDIST_DIR):exists("$${WIN_SDK_REDIST_DIR}"): $${TARGET}_libs.commands *= $$quote(copy /y \"$${WIN_SDK_REDIST_DIR}\\ucrt\\DLLs\\$${target_arch}\\*.dll\" \"$${BIN_DIR}\")
-    }
-    !isEmpty($${TARGET}_libs.commands): $${TARGET}_libs.commands = $$join($${TARGET}_libs.commands, $$escape_expand(\\n\\t))
 } else:CONFIG(static, static|shared) {
     $${TARGET}_libs.files *= \
         $$[QT_INSTALL_BINS]/d3dcompiler_??.dll \
         $$[QT_INSTALL_BINS]/libEGL.dll \
         $$[QT_INSTALL_BINS]/libGLESv2.dll
 }
-!isEmpty($${TARGET}_libs.commands) {
+CONFIG(copy_msvcrt_dlls) {
+    target_arch = x86
+    contains(QT_ARCH, x86_64): target_arch = x64
+    !isEmpty(VC_REDIST_DIR):exists("$${VC_REDIST_DIR}") {
+        isEmpty(VC_REDIST_VERSION): VC_REDIST_VERSION = 141
+        vc_redist_dll_dir = Microsoft.VC$${VC_REDIST_VERSION}.CRT
+        $${TARGET}_libs.commands *= $$quote(copy /y \"$${VC_REDIST_DIR}\\$${target_arch}\\$${vc_redist_dll_dir}\\msvcp*.dll\" \"$${BIN_DIR}\")
+        $${TARGET}_libs.commands *= $$quote(copy /y \"$${VC_REDIST_DIR}\\$${target_arch}\\$${vc_redist_dll_dir}\\vcruntime*.dll\" \"$${BIN_DIR}\")
+    }
+    !isEmpty(WIN_SDK_REDIST_DIR):exists("$${WIN_SDK_REDIST_DIR}"): $${TARGET}_libs.commands *= $$quote(copy /y \"$${WIN_SDK_REDIST_DIR}\\ucrt\\DLLs\\$${target_arch}\\*.dll\" \"$${BIN_DIR}\")
+}
+!isEmpty($${TARGET}_libs.commands)|!isEmpty($${TARGET}_libs.files) {
+    !isEmpty($${TARGET}_libs.commands): $${TARGET}_libs.commands = $$join($${TARGET}_libs.commands, $$escape_expand(\\n\\t))
     INSTALLS *= $${TARGET}_libs
     !CONFIG(static_ffmpeg):isEmpty($${TARGET}_libs.files) {
         message("qmake can\'t find FFmpeg\'s run-time libraries in \"$${ffmpeg_bin_dir}\".")

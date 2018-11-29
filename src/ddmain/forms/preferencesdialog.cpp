@@ -698,7 +698,7 @@ void PreferencesDialog::initConnections()
     });
     connect(ui->checkBox_autoStart, &QCheckBox::clicked, this, [=]
     {
-        QString servicePath = QApplication::applicationDirPath() + QStringLiteral("/ddservice");
+        QString servicePath = QApplication::applicationDirPath() + QStringLiteral("/DDService");
 #ifdef _DEBUG
         servicePath += QStringLiteral("d");
 #endif

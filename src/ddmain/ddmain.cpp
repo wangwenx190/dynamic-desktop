@@ -1,3 +1,4 @@
+#include "ddmain.h"
 #include "settingsmanager.h"
 #ifndef DD_NO_CSS
 #include "skinsmanager.h"
@@ -55,7 +56,7 @@ void installTranslation(const QString &lang, const QTranslator &translator)
 }
 #endif
 
-int main(int argc, char *argv[])
+int ddmain(int argc, char *argv[])
 {
     QtSingleApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QtSingleApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);

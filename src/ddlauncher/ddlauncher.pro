@@ -1,8 +1,10 @@
-TARGET = DDService
+TARGET = DDLauncher
 CONFIG -= qt
 CONFIG *= console
 TEMPLATE = app
 include(../common.pri)
-LIBS *= -lAdvapi32
-include(../ddutils/ddutils.pri)
+LIBS *= \
+    -lKernel32 \
+    -lUser32 \
+    -lShell32
 SOURCES *= main.cpp
