@@ -6,5 +6,6 @@ include(../common.pri)
 LIBS *= \
     -lKernel32 \
     -lUser32 \
-    -lShell32
+    -lShell32 \
+    -lShcore
 SOURCES *= main.cpp

@@ -7,6 +7,7 @@
 #include <windows.h>
 #include <tchar.h>
 #include <shellapi.h>
+#include <shellscalingapi.h>
 
 using MainEntryFunc = int (*)(int, char **);
 
@@ -66,6 +67,9 @@ int _tmain(int argc, TCHAR *argv[])
     delete [] argvA;
 #endif
     if (initSucceeded != TRUE)
+    {
+        SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2);
         MessageBox(nullptr, TEXT("Failed to load main module or resolve entry function. Application will not start.\nReinstalling this application may fix this problem.\nContact the developers for more information.\nSorry for the inconvenience."), TEXT("ERROR"), MB_ICONERROR | MB_OK);
+    }
     return exec;
 }
