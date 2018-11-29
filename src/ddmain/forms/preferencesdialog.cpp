@@ -443,6 +443,12 @@ void PreferencesDialog::initUI()
     taskbarProgress->setRange(0, 99);
     taskbarProgress->show();
 #endif
+    ui->comboBox_opengl_type->addItem(QStringLiteral("ANGLE (recommended)"), QStringLiteral("egl"));
+    ui->comboBox_opengl_type->addItem(QStringLiteral("Desktop"), QStringLiteral("gl"));
+    ui->comboBox_opengl_type->addItem(QStringLiteral("Software (very slow!)"), QStringLiteral("sw"));
+    ui->comboBox_opengl_type->addItem(QStringLiteral("Auto"), QStringLiteral("auto"));
+    int i = ui->comboBox_opengl_type->findData(SettingsManager::getInstance()->getOpenGLType());
+    ui->comboBox_opengl_type->setCurrentIndex(i > -1 ? i : 0);
     populatePlaylists();
     populateFiles();
     ui->comboBox_playback_mode->setCurrentIndex(SettingsManager::getInstance()->getPlaybackMode());
@@ -454,7 +460,7 @@ void PreferencesDialog::initUI()
     ui->comboBox_image_quality->addItem(DD_TR("Fastest"), QStringLiteral("fastest"));
     ui->comboBox_image_quality->addItem(DD_TR("Default"), QStringLiteral("default"));
     ui->comboBox_video_renderer->addItem(QStringLiteral("OpenGLWidget"), Utils::getVideoRendererId(Utils::VideoRendererId::OpenGLWidget));
-    ui->comboBox_video_renderer->addItem(QStringLiteral("QGLWidget2"), Utils::getVideoRendererId(Utils::VideoRendererId::GLWidget2));
+    ui->comboBox_video_renderer->addItem(QStringLiteral("QGLWidget2 (recommended)"), Utils::getVideoRendererId(Utils::VideoRendererId::GLWidget2));
     ui->comboBox_video_renderer->addItem(QStringLiteral("Widget"), Utils::getVideoRendererId(Utils::VideoRendererId::Widget));
     ui->comboBox_video_renderer->addItem(QStringLiteral("GDI"), Utils::getVideoRendererId(Utils::VideoRendererId::GDI));
     ui->comboBox_video_renderer->addItem(QStringLiteral("Direct2D"), Utils::getVideoRendererId(Utils::VideoRendererId::Direct2D));
@@ -504,7 +510,7 @@ void PreferencesDialog::initUI()
     ui->checkBox_hwdec_dxva->setEnabled(hwdecEnabled);
     ui->radioButton_ratio_fitDesktop->setChecked(SettingsManager::getInstance()->getFitDesktop());
     ui->radioButton_ratio_videoAspectRatio->setChecked(!ui->radioButton_ratio_fitDesktop->isChecked());
-    int i = ui->comboBox_subtitle_charset->findData(SettingsManager::getInstance()->getCharset());
+    i = ui->comboBox_subtitle_charset->findData(SettingsManager::getInstance()->getCharset());
     ui->comboBox_subtitle_charset->setCurrentIndex(i > -1 ? i : 0);
     ui->checkBox_subtitle_autoLoadExternal->setChecked(SettingsManager::getInstance()->getSubtitleAutoLoad());
     ui->checkBox_displaySubtitle->setChecked(SettingsManager::getInstance()->getSubtitle());
@@ -603,6 +609,15 @@ void PreferencesDialog::initConnections()
         emit this->pause();
     });
     connect(ui->pushButton_cancel, &QPushButton::clicked, this, &PreferencesDialog::close);
+    connect(ui->comboBox_opengl_type, qOverload<int>(&QComboBox::currentIndexChanged), this, [=](int index)
+    {
+        Q_UNUSED(index)
+        if (ui->comboBox_opengl_type->currentData().toString() != SettingsManager::getInstance()->getOpenGLType())
+        {
+            SettingsManager::getInstance()->setOpenGLType(ui->comboBox_opengl_type->currentData().toString());
+            QMessageBox::information(nullptr, DD_TR("Information"), DD_TR("Due to some limitions of Qt, this option will not take effect until you restart this application."));
+        }
+    });
     connect(ui->checkBox_hwdec, &QCheckBox::clicked, this, [=]
     {
         bool hwdecEnabled = ui->checkBox_hwdec->isChecked();

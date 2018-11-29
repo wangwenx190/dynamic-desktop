@@ -242,9 +242,9 @@ QStringList SettingsManager::getAllPlaylistNames() const
     return settings->value(QStringLiteral("allplaylists"), QStringList() << QStringLiteral("Default")).toStringList();
 }
 
-QString SettingsManager::getQtRenderer() const
+QString SettingsManager::getOpenGLType() const
 {
-    return settings->value(QStringLiteral("qtrenderer"), QStringLiteral("angle")).toString();
+    return settings->value(QStringLiteral("opengl"), QStringLiteral("egl")).toString().toLower();
 }
 
 void SettingsManager::setLastFile(const QString &url)
@@ -357,9 +357,9 @@ void SettingsManager::setAllPlaylistNames(const QStringList &names)
     settings->setValue(QStringLiteral("allplaylists"), names);
 }
 
-void SettingsManager::setQtRenderer(const QString &qtRenderer)
+void SettingsManager::setOpenGLType(const QString &type)
 {
-    settings->setValue(QStringLiteral("qtrenderer"), qtRenderer);
+    settings->setValue(QStringLiteral("opengl"), type.toLower());
 }
 
 SettingsManager::SettingsManager()

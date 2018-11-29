@@ -48,7 +48,7 @@ public:
     QString getCurrentPlaylistName() const;
     QStringList getAllFilesFromPlaylist(const QString &name) const;
     QStringList getAllPlaylistNames() const;
-    QString getQtRenderer() const;
+    QString getOpenGLType() const;
 
     void setLastFile(const QString &url);
     void setMute(bool mute = true);
@@ -73,7 +73,7 @@ public:
     void setCurrentPlaylistName(const QString &name);
     void setPlaylistFiles(const QString &name, const QStringList &files);
     void setAllPlaylistNames(const QStringList &names);
-    void setQtRenderer(const QString &qtRenderer = QStringLiteral("angle"));
+    void setOpenGLType(const QString &type = QStringLiteral("egl"));
 
 private:
     explicit SettingsManager();
