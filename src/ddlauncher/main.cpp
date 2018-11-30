@@ -24,6 +24,7 @@ static inline char *wideToMulti(int codePage, const wchar_t *aw)
 
 int _tmain(int argc, TCHAR *argv[])
 {
+    SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2);
     HINSTANCE mainModuleLib = nullptr;
     MainEntryFunc mainEntryFunc = nullptr;
     BOOL initSucceeded = FALSE;
@@ -66,9 +67,6 @@ int _tmain(int argc, TCHAR *argv[])
     delete [] argvA;
 #endif
     if (initSucceeded != TRUE)
-    {
-        SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2);
         MessageBox(nullptr, TEXT("Failed to load main module or resolve entry function. Application will not start.\nReinstalling this application may fix this problem.\nContact the developers for more information.\nSorry for the inconvenience."), TEXT("ERROR"), MB_ICONERROR | MB_OK);
-    }
     return exec;
 }

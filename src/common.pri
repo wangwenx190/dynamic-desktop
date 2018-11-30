@@ -24,4 +24,7 @@ CONFIG(debug, debug|release): TARGET = $$join(TARGET,,,d)
 CONFIG -= app_bundle
 CONFIG(static, static|shared):contains(TEMPLATE, lib): CONFIG *= dd_no_ver_info
 else: CONFIG -= dd_no_ver_info
-!CONFIG(dd_no_ver_info): RC_FILE = $$PWD/dd.rc
+!CONFIG(dd_no_ver_info) {
+    contains(TEMPLATE, app): DEFINES *= DD_EMBED_ICON
+    RC_FILE *= $$PWD/dd_version.rc
+}
