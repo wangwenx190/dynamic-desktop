@@ -105,12 +105,13 @@ QString SettingsManager::getLastFile() const
             return QString();
         else if (QFileInfo(path).isFile())
             return QDir::toNativeSeparators(QDir::cleanPath(path));
-    QUrl url(path);
+    return QString();
+    /*QUrl url(path);
     if (!url.isValid())
         return QString();
     if (url.isLocalFile())
         return url.toLocalFile();
-    return QUrl::fromPercentEncoding(url.toEncoded());
+    return QUrl::fromPercentEncoding(url.toEncoded());*/
 }
 
 QString SettingsManager::getLastDir() const
