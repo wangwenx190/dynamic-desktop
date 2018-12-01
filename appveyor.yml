@@ -19,8 +19,7 @@ image: Visual Studio 2017
 platform: x64
 configuration: Release
 init:
-  - call "C:\Qt\5.11\msvc2017_64\bin\qtenv2.bat"
-  - call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat" x64
+  - git config --global core.autocrlf input
 install:
   - git submodule update --init --recursive
   - md build
@@ -29,6 +28,8 @@ install:
   - ..\ci\update_version.bat
   - cd..
 build_script:
+  - call "C:\Qt\5.11\msvc2017_64\bin\qtenv2.bat"
+  - call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat" x64
   - build.bat
 #after_build:
   #- ci\prepare_deploy.bat
