@@ -22,6 +22,11 @@ public:
     explicit PlaylistDialog(QWidget *parent = nullptr);
     ~PlaylistDialog() override;
 
+public slots:
+#ifndef DD_NO_TRANSLATIONS
+    void refreshTexts(const QString &language);
+#endif
+
 private slots:
     void populatePlaylists();
     void populateFiles(const QString &name);

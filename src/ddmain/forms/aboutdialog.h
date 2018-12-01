@@ -15,8 +15,8 @@ public:
     explicit AboutDialog(QWidget *parent = nullptr);
     ~AboutDialog() override;
 
-#ifndef DD_NO_TRANSLATIONS
 public slots:
+#ifndef DD_NO_TRANSLATIONS
     void refreshTexts(const QString &language);
 #endif
 

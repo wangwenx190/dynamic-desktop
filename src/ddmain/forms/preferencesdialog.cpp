@@ -239,8 +239,12 @@ void PreferencesDialog::playPreviousPlaylist()
 
 void PreferencesDialog::refreshPlaylistsAndFiles()
 {
+    if (!refreshingData)
+        refreshingData = true;
     populatePlaylists();
     populateFiles();
+    if (refreshingData)
+        refreshingData = false;
 }
 
 void PreferencesDialog::switchPlaylist(const QString &name)
@@ -370,6 +374,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) : CFramelessWindow(parent)
 {
     ui = new Ui::PreferencesDialog();
     ui->setupUi(this);
+    Win32Utils::enableBlurOnWin10(reinterpret_cast<HWND>(winId()));
     setContentsMargins(0, 0, 0, 0);
     setResizeable(true);
     setResizeableAreaWidth(5);
@@ -443,7 +448,7 @@ void PreferencesDialog::initUI()
     taskbarProgress->setRange(0, 99);
     taskbarProgress->show();
 #endif
-    ui->comboBox_opengl_type->addItem(QStringLiteral("ANGLE (recommended)"), QStringLiteral("egl"));
+    ui->comboBox_opengl_type->addItem(QStringLiteral("OpenGLES (recommended)"), QStringLiteral("egl"));
     ui->comboBox_opengl_type->addItem(QStringLiteral("Desktop"), QStringLiteral("gl"));
     ui->comboBox_opengl_type->addItem(QStringLiteral("Software (very slow!)"), QStringLiteral("sw"));
     ui->comboBox_opengl_type->addItem(QStringLiteral("Auto"), QStringLiteral("auto"));
@@ -588,7 +593,7 @@ void PreferencesDialog::initConnections()
     });
     connect(ui->pushButton_play, &QPushButton::clicked, this, [=]
     {
-        if (ui->comboBox_url->currentText() != SettingsManager::getInstance()->getLastFile())
+        if (!ui->comboBox_url->currentText().isEmpty() && (ui->comboBox_url->currentText() != SettingsManager::getInstance()->getLastFile()))
         {
             SettingsManager::getInstance()->setLastFile(ui->comboBox_url->currentText());
             emit this->urlChanged(SettingsManager::getInstance()->getLastFile());
@@ -653,7 +658,7 @@ void PreferencesDialog::initConnections()
 #endif
     connect(ui->comboBox_playlists, &QComboBox::currentTextChanged, this, [=](const QString &text)
     {
-        if (text != SettingsManager::getInstance()->getCurrentPlaylistName())
+        if (!refreshingData && !text.isEmpty() && (text != SettingsManager::getInstance()->getCurrentPlaylistName()))
         {
             SettingsManager::getInstance()->setCurrentPlaylistName(text);
             populateFiles();
@@ -705,7 +710,7 @@ void PreferencesDialog::initConnections()
     });
     connect(ui->comboBox_url, &QComboBox::currentTextChanged, this, [=](const QString &text)
     {
-        if (text != SettingsManager::getInstance()->getLastFile())
+        if ((!refreshingData || (ui->comboBox_url->count() < 1)) && (text != SettingsManager::getInstance()->getLastFile()))
         {
             SettingsManager::getInstance()->setLastFile(text);
             emit this->urlChanged(SettingsManager::getInstance()->getLastFile());
@@ -842,8 +847,6 @@ void PreferencesDialog::populateFiles()
     ui->comboBox_url->addItems(SettingsManager::getInstance()->getAllFilesFromPlaylist(SettingsManager::getInstance()->getCurrentPlaylistName()));
     int i = ui->comboBox_url->findText(SettingsManager::getInstance()->getLastFile());
     ui->comboBox_url->setCurrentIndex(i >= 0 ? i : 0);
-    //if (ui->comboBox_url->currentText() != SettingsManager::getInstance()->getLastFile())
-    //    SettingsManager::getInstance()->setLastFile(ui->comboBox_url->currentText());
 }
 
 void PreferencesDialog::populatePlaylists()
@@ -853,8 +856,6 @@ void PreferencesDialog::populatePlaylists()
     ui->comboBox_playlists->addItems(SettingsManager::getInstance()->getAllPlaylistNames());
     int i = ui->comboBox_playlists->findText(SettingsManager::getInstance()->getCurrentPlaylistName());
     ui->comboBox_playlists->setCurrentIndex(i >= 0 ? i : 0);
-    //if (ui->comboBox_playlists->currentText() != SettingsManager::getInstance()->getCurrentPlaylistName())
-    //    SettingsManager::getInstance()->setCurrentPlaylistName(ui->comboBox_playlists->currentText());
 }
 
 void PreferencesDialog::moveNextItem(QComboBox *comboBox)

@@ -1,6 +1,6 @@
 #pragma once
 
-#ifdef DD_HAVE_VERSION_H
+#ifdef DD_HAVE_CI_VERSION_H
 #include "../version_ci.h"
 #endif
 

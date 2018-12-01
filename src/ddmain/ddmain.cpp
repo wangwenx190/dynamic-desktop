@@ -205,10 +205,11 @@ int ddmain(int argc, char *argv[])
             emit trayMenu.onOptionsClicked();
     });
 #ifndef DD_NO_TRANSLATIONS
-    QObject::connect(&preferencesDialog, &PreferencesDialog::languageChanged, [=, &preferencesDialog, &aboutDialog, &trayMenu, &ddTranslator](const QString &lang)
+    QObject::connect(&preferencesDialog, &PreferencesDialog::languageChanged, [=, &preferencesDialog, &playlistDialog, &aboutDialog, &trayMenu, &ddTranslator](const QString &lang)
     {
         installTranslation(lang, ddTranslator);
         preferencesDialog.refreshTexts(lang);
+        playlistDialog.refreshTexts(lang);
         aboutDialog.refreshTexts(lang);
         trayMenu.refreshTexts(lang);
         QMessageBox::information(nullptr, QStringLiteral("Dynamic Desktop"), DD_OBJ_TR("Some texts will not refresh their translation until you restart this application."));
@@ -308,7 +309,7 @@ int ddmain(int argc, char *argv[])
     else
     {
         playerWindow.resize(1280, 720);
-        Utils::activateWindow(&playerWindow);
+        Utils::activateWindow(&playerWindow, false, false);
     }
     if (SettingsManager::getInstance()->getLastFile().isEmpty())
     {
@@ -320,7 +321,7 @@ int ddmain(int argc, char *argv[])
     else
     {
         const QString url = SettingsManager::getInstance()->getLastFile();
-        Utils::activateWindow(&playerWindow);
+        Utils::activateWindow(&playerWindow, false, false);
         playerWindow.setUrl(url);
 #ifndef DD_NO_TOOLTIP
         trayIcon.setToolTip(QStringLiteral("Dynamic Desktop: %0").arg(url));

@@ -107,7 +107,7 @@ private slots:
 
 private:
     Ui::PreferencesDialog *ui = nullptr;
-    bool audioAvailable = true, isPlaying = false;
+    bool audioAvailable = true, isPlaying = false, refreshingData = false;
     quint32 sliderUnit = 1000;
 #ifndef DD_NO_WIN_EXTRAS
     QWinTaskbarButton *taskbarButton = nullptr;

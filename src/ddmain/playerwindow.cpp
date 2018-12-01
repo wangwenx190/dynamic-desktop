@@ -420,6 +420,8 @@ void PlayerWindow::setUrl(const QString& url)
     }
     else if (!player->file().isEmpty() && !Utils::isPicture(player->file()))
         play();
+    if (!Utils::isPicture(player->file()))
+        setRepeatCurrentFile(SettingsManager::getInstance()->getPlaybackMode() == SettingsManager::PlaybackMode::RepeatCurrentFile);
     if (!player->file().isEmpty() && (Utils::isVideo(player->file()) || Utils::isPicture(player->file())))
     {
         if (!windowMode)
@@ -435,5 +437,4 @@ void PlayerWindow::setUrl(const QString& url)
             if (Wallpaper::isWallpaperVisible())
                 Wallpaper::hideWallpaper();
     }
-    setRepeatCurrentFile(SettingsManager::getInstance()->getPlaybackMode() == SettingsManager::PlaybackMode::RepeatCurrentFile);
 }

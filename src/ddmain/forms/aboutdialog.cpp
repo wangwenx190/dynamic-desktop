@@ -1,5 +1,6 @@
 #include "aboutdialog.h"
 #include "ui_aboutdialog.h"
+#include <Win32Utils>
 
 #include <QApplication>
 #include <QtAVWidgets>
@@ -8,6 +9,7 @@ AboutDialog::AboutDialog(QWidget *parent) : QWidget(parent)
 {
     ui = new Ui::AboutDialog();
     ui->setupUi(this);
+    Win32Utils::enableBlurOnWin10(reinterpret_cast<HWND>(winId()));
     ui->lineEdit_version->setText(QApplication::applicationVersion());
     ui->lineEdit_commit_id->setText(QStringLiteral(DD_COMMIT_ID));
     ui->lineEdit_commit_time->setText(QStringLiteral(DD_COMMIT_TIME));

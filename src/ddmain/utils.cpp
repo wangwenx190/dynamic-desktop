@@ -171,13 +171,15 @@ int getVideoRendererId(const VideoRendererId vid)
     return static_cast<int>(id);
 }
 
-void activateWindow(QObject *window, bool moveCenter)
+void activateWindow(QObject *window, bool moveCenter, bool blur)
 {
     if (!window)
         return;
     if (moveCenter)
         moveToCenter(window);
     auto win = qobject_cast<QWidget *>(window);
+    if (blur)
+        Win32Utils::enableBlurOnWin10(reinterpret_cast<HWND>(win->winId()));
     if (win->isHidden())
         win->show();
     if (!win->isActiveWindow())

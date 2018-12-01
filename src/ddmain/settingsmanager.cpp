@@ -106,6 +106,7 @@ QString SettingsManager::getLastFile() const
         else if (QFileInfo(path).isFile())
             return QDir::toNativeSeparators(QDir::cleanPath(path));
     return QString();
+    // FIXME: isValid() always returns true, find out why and fix it.
     /*QUrl url(path);
     if (!url.isValid())
         return QString();
@@ -250,6 +251,8 @@ QString SettingsManager::getOpenGLType() const
 
 void SettingsManager::setLastFile(const QString &url)
 {
+    if (url.isEmpty())
+        return;
     settings->setValue(QStringLiteral("currentfile"), QDir::toNativeSeparators(QDir::cleanPath(url)));
 }
 
@@ -273,6 +276,8 @@ void SettingsManager::setHwdec(bool enable)
 
 void SettingsManager::setDecoders(const QStringList &decoders)
 {
+    if (decoders.isEmpty())
+        return;
     settings->setValue(QStringLiteral("decoders"), decoders);
 }
 
@@ -288,6 +293,8 @@ void SettingsManager::setSubtitle(bool show)
 
 void SettingsManager::setCharset(const QString &charset)
 {
+    if (charset.isEmpty())
+        return;
     settings->setValue(QStringLiteral("charset"), charset);
 }
 
@@ -304,6 +311,8 @@ void SettingsManager::setAudioAutoLoad(bool autoload)
 #ifndef DD_NO_CSS
 void SettingsManager::setSkin(const QString &skin)
 {
+    if (skin.isEmpty())
+        return;
     settings->setValue(QStringLiteral("skin"), skin);
 }
 #endif
@@ -311,6 +320,8 @@ void SettingsManager::setSkin(const QString &skin)
 #ifndef DD_NO_TRANSLATIONS
 void SettingsManager::setLanguage(const QString &lang)
 {
+    if (lang.isEmpty())
+        return;
     settings->setValue(QStringLiteral("language"), lang);
 }
 #endif
@@ -322,6 +333,8 @@ void SettingsManager::setRenderer(int vid)
 
 void SettingsManager::setImageQuality(const QString &quality)
 {
+    if (quality.isEmpty())
+        return;
     settings->setValue(QStringLiteral("quality"), quality);
 }
 
@@ -337,11 +350,15 @@ void SettingsManager::setPlaybackMode(SettingsManager::PlaybackMode playbackMode
 
 void SettingsManager::setCurrentPlaylistName(const QString &name)
 {
+    if (name.isEmpty())
+        return;
     settings->setValue(QStringLiteral("currentplaylist"), name);
 }
 
 void SettingsManager::setPlaylistFiles(const QString &name, const QStringList &files)
 {
+    if (name.isEmpty() || files.isEmpty())
+        return;
     settings->beginGroup(QStringLiteral("playlists"));
     settings->beginWriteArray(name);
     for (int i = 0; i != files.count(); ++i)
@@ -355,11 +372,15 @@ void SettingsManager::setPlaylistFiles(const QString &name, const QStringList &f
 
 void SettingsManager::setAllPlaylistNames(const QStringList &names)
 {
+    if (names.isEmpty())
+        return;
     settings->setValue(QStringLiteral("allplaylists"), names);
 }
 
 void SettingsManager::setOpenGLType(const QString &type)
 {
+    if (type.isEmpty())
+        return;
     settings->setValue(QStringLiteral("opengl"), type.toLower());
 }
 

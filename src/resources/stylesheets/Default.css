@@ -2,18 +2,19 @@
 Author: Daniel Clarke(https://github.com/u8sand)
 Notice: Originally copied from https://github.com/u8sand/Baka-MPlayer and wangwenx190 made some changes to it.
 Create date: 2018/10/09
-Update date: 2018/11/23
+Update date: 2018/12/01
 */
 
 QWidget {
 	font-weight: bold;
 	font-size: 16px;
-	background: #1A1A1A;
+	/*background: #1A1A1A;*/
+	background: transparent;
 	color: whitesmoke;
 }
 
 QWidget:disabled {
-	background: transparent;
+	/*background: transparent;*/
 	color: #6F6F6F;
 }
 
@@ -27,7 +28,7 @@ QToolButton:hover {
 }
 
 QPushButton {
-	background: #454A4D;
+	/*background: #454A4D;*/
 	border: 1px solid #000;
 	border-radius: 2px;
 	color: whitesmoke;
@@ -41,12 +42,12 @@ QPushButton:focus {
 	outline: none;
 }
 
-QPushButton:pressed {
+/*QPushButton:pressed {
 	background: #2E3133;
-}
+}*/
 
 QPushButton[flat="true"] {
-	background: none;
+	/*background: none;*/
 	border: 0px;
 	border-radius: 0px;
 	color: none;
@@ -85,18 +86,18 @@ QCheckBox::indicator {
 
 QCheckBox::indicator:unchecked {
 	border: 1px solid whitesmoke;
-	background: #1A1A1A;
+	/*background: #1A1A1A;*/
 	image: none;
 }
 
 QCheckBox::indicator:checked {
 	border: 1px solid #008098;
-	background: #008098;
+	/*background: #008098;*/
 	image: url(:/icons/checked.svg);
 }
 
 QLineEdit {
-	background: #000;
+	/*background: #000;*/
 	border: 1px solid #454A4D;
 	padding: 2px;
 }
@@ -106,7 +107,7 @@ QLineEdit:focus {
 }
 
 QComboBox {
-	background: #454A4D;
+	/*background: #454A4D;*/
 	border: 1px solid #000;
 	border-radius: 2px;
 	padding: 2px;
@@ -117,7 +118,7 @@ QComboBox:focus {
 }
 
 QComboBox::drop-down {
-	background: #008098;
+	/*background: #008098;*/
 	border-top-right-radius: 2px;
 	border-bottom-right-radius: 2px;
 }
@@ -135,7 +136,7 @@ QGroupBox {
 QGroupBox::title {
 	subcontrol-origin: margin;
 	subcontrol-position: top center;
-	background: #454A4D;
+	/*background: #454A4D;*/
 	border: 1px solid #454A4D;
 	border-radius: 2px;
 	padding: 0 2px;
@@ -159,7 +160,7 @@ QRadioButton::indicator:checked {
 }
 
 QSpinBox {
-	background: #454A4D;
+	/*background: #454A4D;*/
 	border: 1px solid #000;
 	border-radius: 2px;
 	padding: 2px;
@@ -185,11 +186,11 @@ QSpinBox::down-arrow {
 QListWidget {
 	show-decoration-selected: 1;
 	border: 1px solid #212121;
-	background: black;
+	/*background: black;*/
 }
 
 QListWidget::item:alternate {
-    background: #141414;
+    /*background: #141414;*/
 }
 
 QListWidget::item:selected {

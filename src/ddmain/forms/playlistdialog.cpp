@@ -1,7 +1,7 @@
 #include "playlistdialog.h"
 #include "ui_playlistdialog.h"
-
 #include "settingsmanager.h"
+#include <Win32Utils>
 
 #include <QInputDialog>
 #include <QFileDialog>
@@ -13,6 +13,7 @@ PlaylistDialog::PlaylistDialog(QWidget *parent) : QWidget(parent)
 {
     ui = new Ui::PlaylistDialog();
     ui->setupUi(this);
+    Win32Utils::enableBlurOnWin10(reinterpret_cast<HWND>(winId()));
     currentPlaylist = SettingsManager::getInstance()->getCurrentPlaylistName();
     populatePlaylists();
     populateFiles(currentPlaylist);
@@ -153,6 +154,14 @@ PlaylistDialog::~PlaylistDialog()
 {
     delete ui;
 }
+
+#ifndef DD_NO_TRANSLATIONS
+void PlaylistDialog::refreshTexts(const QString &language)
+{
+    Q_UNUSED(language)
+    ui->retranslateUi(this);
+}
+#endif
 
 void PlaylistDialog::populatePlaylists()
 {
