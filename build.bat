@@ -1,8 +1,6 @@
-:: Usage: call build.bat "mkspec" "config"
-:: Eg: call build.bat "win32-icc" "release static_ffmpeg enable_libass"
-:: IMPORTANT: Double quotation marks are indispensable and
-:: remember to call "vcvarsall.bat" and add Qt's directories
-:: to your environment variables!
+:: Usage: call build.bat [mkspec] [CONFIG] [Target architecture] [Qt version] [Qt directory]
+:: Eg: call build.bat "win32-icc" "release static_ffmpeg enable_libass" x64 5.13.1
+:: IMPORTANT: Double quotation marks are indispensable for the first two parameters.
 @echo off
 color
 setlocal
@@ -27,7 +25,11 @@ if /i "%_target_arch%" == "x64" set "_qt_bin_dir=%_qt_bin_dir%_64"
 set "_qt_ver=%4"
 if not defined _qt_ver set "_qt_ver=5.12.0"
 set "_qt_dir=%5"
-if not defined _qt_dir set "_qt_dir=C:\Qt\Qt%_qt_ver%\%_qt_ver%\%_qt_bin_dir%"
+if defined _qt_dir (
+    set "_qt_dir=%_qt_dir:~1,-1%"
+) else (
+    set "_qt_dir=C:\Qt\Qt%_qt_ver%\%_qt_ver%\%_qt_bin_dir%"
+)
 set "_qt_bin_dir=%_qt_dir%\bin"
 if not exist "%_qt_bin_dir%" echo Cannot find Qt's bin directory, if you didn't install Qt in it's default location, please pass a parameter && goto build_finish
 set "PATH=%_qt_dir%;%_qt_bin_dir%;%PATH%"

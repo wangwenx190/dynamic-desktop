@@ -89,7 +89,14 @@ If you find any issues or have any feature requests, please inform me through [*
    - Shift Media Project builds (recommended for static builds): https://github.com/ShiftMediaProject/FFmpeg/releases/latest
 
       Git and stable versions, shared and static libs, full builds only
-- Open "dynamic-desktop.pro" and start compiling or call "build.bat". But remember to call "vcvarsall.bat" and add Qt's directories to your path variables before calling "build.bat".
+- Use [Qt Creator](http://download.qt.io/official_releases/qtcreator/) to open [dynamic-desktop.pro](/dynamic-desktop.pro) and start compiling or call [build.bat](/build.bat) that will do everything for you. But there are some rules to use it:
+   - parameters: "build.bat" [mkspec] [CONFIG] [Target architecture] [Qt version] [Qt directory]
+   - The position of each parameter can't be changed and they can't be skipped, for example, if you want to set Qt version, you will have to give "mkspec", "CONFIG" and "Target architecture" all together. You can run this batch script without any parameters, it means default parameters are used.
+   - mkspec: can be "win32-msvc", "win32-icc", "win32-g++", "win32-clang-msvc" or "win32-clang-g++". Default is "win32-msvc". Double quotation marks are indispensable for this parameter.
+   - CONFIG: Qt CONFIG and project specific CONFIG, can be any valid CONFIG variables. Default is "release silent". Double quotation marks are indispensable for this parameter.
+   - Target architecture: can be x86 or x64. Default is x64. Double quotation marks are not needed.
+   - Qt version: can be any valid Qt version, but no older than 5.9 series. Currently default is 5.12.0. Double quotation marks are not needed.
+   - Qt directory: if you didn't install Qt in it's default location (C:\Qt), you should pass your own Qt path to the batch script, for example, "D:\Program Files(x86)\Qt\Qt5.12.0\5.12.0\msvc2017_64". Double quotation marks are indispensable for this parameter.
 
 ### IMPORTANT NOTES
 - You can also use Intel C++ Compiler(ICC), Clang or MinGW to compile it, just remember to set up environment variables. Cross compile on other platforms may also work, but it will never run on platforms other than MS Windows.
