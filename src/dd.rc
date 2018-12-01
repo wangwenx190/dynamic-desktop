@@ -6,8 +6,8 @@ IDI_ICON1 ICON DISCARDABLE "resources\\icons\\color_palette.ico"
 #endif
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION DD_MAJOR,DD_MINOR,DD_PATCH,0
- PRODUCTVERSION DD_MAJOR,DD_MINOR,DD_PATCH,0
+ FILEVERSION DD_MAJOR_VERSION,DD_MINOR_VERSION,DD_PATCH_VERSION,DD_BUILD_VERSION
+ PRODUCTVERSION DD_MAJOR_VERSION,DD_MINOR_VERSION,DD_PATCH_VERSION,DD_BUILD_VERSION
 #ifdef _DEBUG
  FILEFLAGS VS_FF_DEBUG
 #else
@@ -24,12 +24,11 @@ BEGIN
         BEGIN
             VALUE "CompanyName", "wangwenx190"
             VALUE "FileDescription", "Dynamic Desktop"
-            VALUE "FileVersion", DD_VERSION_STR ".0"
+            VALUE "FileVersion", DD_VERSION_STR
             VALUE "LegalCopyright", "GNU General Public License version 3.0"
             VALUE "InternalName", "Dynamic Desktop"
-            VALUE "OriginalFilename", "dynamic-desktop"
             VALUE "ProductName", "Dynamic Desktop"
-            VALUE "ProductVersion", DD_VERSION_STR ".0"
+            VALUE "ProductVersion", DD_VERSION_STR
         END
     END
     BLOCK "VarFileInfo"

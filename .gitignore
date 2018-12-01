@@ -63,3 +63,4 @@ rep_*_source.h
 *.rar
 ffmpeg/
 *.qm
+version_ci.h

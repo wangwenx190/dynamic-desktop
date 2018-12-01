@@ -27,5 +27,6 @@ CONFIG(static, static|shared):contains(TEMPLATE, lib): CONFIG *= dd_no_ver_info
 else: CONFIG -= dd_no_ver_info
 !CONFIG(dd_no_ver_info) {
     contains(TEMPLATE, app): DEFINES *= DD_EMBED_ICON
-    RC_FILE *= $$PWD/dd_version.rc
+    exists("$${ROOT}/version_ci.h"): DEFINES *= DD_HAVE_VERSION_H
+    RC_FILE *= $$PWD/dd.rc
 }

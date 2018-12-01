@@ -46,4 +46,5 @@ test: off
   #active_mode: false
 artifacts:
   - path: version_ci.pri
+  - path: version_ci.h
 deploy: off
