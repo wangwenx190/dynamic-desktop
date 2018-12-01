@@ -77,7 +77,7 @@ If you find any issues or have any feature requests, please inform me through [*
       ```bash
       git submodule update --init --recursive
       ```
-      Note that you can add **`-b master`** to the **`git clone`** command if you want to get the latest stable version instead of the latest development version
+      Note that you can add **`-b master`** to the **`git clone`** command if you want to get the latest stable version instead of the latest development version.
 - Download **Qt** at least *5.6.3* from http://download.qt.io/archive/qt/ and install it. Using the latest version is highly recommended.
 - Download **FFmpeg** SDK and extract to **`ffmpeg`**. Of course, you can extract to anywhere you want, just add **`ffmpeg_dir = your own FFmpeg dir path`** to **`user.conf`**. Add **`CONFIG *= static_ffmpeg`** to it if you want to link against FFmpeg statically. Using the latest *Git build* is highly recommended.
    - Zeranoe builds (recommended for shared builds): https://ffmpeg.zeranoe.com/builds/
@@ -127,7 +127,7 @@ If you find any issues or have any feature requests, please inform me through [*
       ```text
       CONFIG *= enable_openal_link
       ```
-   - Use `qmake -tp vc dynamic-desktop.pro` to generate Visual Studio project files if you want to use VS instead of Qt Creator.
+- Use **`qmake -r -tp vc dynamic-desktop.pro`** to generate Visual Studio project files if you want to use VS instead of Qt Creator.
 
 ## Licenses
 - [Wallpaper](/src/3rdparty/wallpaper): some code is copied from https://github.com/NoisyWinds/Wallpaper , Apache License 2.0, thanks to [NoisyWind](https://github.com/NoisyWinds)!
