@@ -90,6 +90,7 @@ If you find any issues or have any feature requests, please inform me through [*
 
       Git and stable versions, shared and static libs, full builds only
 - Use [Qt Creator](http://download.qt.io/official_releases/qtcreator/) to open [dynamic-desktop.pro](/dynamic-desktop.pro) and start compiling or call [build.bat](/build.bat) that will do everything for you. But there are some rules to use it:
+   - It requires your Visual Studio version no older than 15(VS2017), Qt version no older than 5.9, because their paths are hard coded in it and some test functions used in .pro files are not introduced until Qt 5.9. Actually, the source code is compatible with all MSVC compilers that support C++11 standard(for lambda function support) and all Qt versions newer than 5.5.
    - parameters: "build.bat" [mkspec] [CONFIG] [Target architecture] [Qt version] [Qt directory]
    - The position of each parameter can't be changed and they can't be skipped, for example, if you want to set Qt version, you will have to give "mkspec", "CONFIG" and "Target architecture" all together. You can run this batch script without any parameters, it means default parameters are used.
    - mkspec: can be "win32-msvc", "win32-icc", "win32-g++", "win32-clang-msvc" or "win32-clang-g++". Default is "win32-msvc". Double quotation marks are indispensable for this parameter.
@@ -126,6 +127,7 @@ If you find any issues or have any feature requests, please inform me through [*
       ```text
       CONFIG *= enable_openal_link
       ```
+   - Use `qmake -tp vc dynamic-desktop.pro` to generate Visual Studio project files if you want to use VS instead of Qt Creator.
 
 ## Licenses
 - [Wallpaper](/src/3rdparty/wallpaper): some code is copied from https://github.com/NoisyWinds/Wallpaper , Apache License 2.0, thanks to [NoisyWind](https://github.com/NoisyWinds)!

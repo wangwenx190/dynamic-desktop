@@ -14,8 +14,9 @@ isEmpty(DD_BUILD_VERSION): DD_BUILD_VERSION = 0
 contains(TEMPLATE, app): DESTDIR = $${BIN_DIR}
 else:contains(TEMPLATE, lib): DESTDIR = $${LIB_DIR}
 CONFIG(dll): DLLDESTDIR = $${BIN_DIR}
-CONFIG *= c++1z
+CONFIG *= c++11 c++1z
 CONFIG(qt) {
+    #CONFIG(shared, static|shared):CONFIG(dll)|contains(TEMPLATE, app): CONFIG *= windeployqt
     DEFINES *= \
         QT_DEPRECATED_WARNINGS \
         QT_DISABLE_DEPRECATED_BEFORE=0x050603

@@ -615,7 +615,7 @@ void PreferencesDialog::initConnections()
         if (ui->comboBox_opengl_type->currentData().toString() != SettingsManager::getInstance()->getOpenGLType())
         {
             SettingsManager::getInstance()->setOpenGLType(ui->comboBox_opengl_type->currentData().toString());
-            QMessageBox::information(nullptr, DD_TR("Information"), DD_TR("Due to some limitions of Qt, this option will not take effect until you restart this application."));
+            QMessageBox::information(nullptr, DD_TR("Information"), DD_TR("Due to some limitations of Qt, this option will not take effect until you restart this application."));
         }
     });
     connect(ui->checkBox_hwdec, &QCheckBox::clicked, this, [=]

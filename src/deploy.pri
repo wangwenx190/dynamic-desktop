@@ -42,11 +42,12 @@ CONFIG(shared, static|shared):CONFIG(qt) {
         message("Qt5Svg.dll, Qt5OpenGL.dll and plugins\\iconengines\\qsvgicon.dll are the necessary dlls you must copy.")
         message("d3dcompiler_XX.dll, libEGL.dll, libGLESv2.dll and opengl32sw.dll may be useful as well.")
     }
-} else:CONFIG(static, static|shared) {
-    $${TARGET}_libs.files *= \
+} else:CONFIG(static, static|shared):CONFIG(qt) {
+    !CONFIG(no_angle): $${TARGET}_libs.files *= \
         $$[QT_INSTALL_BINS]/d3dcompiler_??.dll \
         $$[QT_INSTALL_BINS]/libEGL.dll \
         $$[QT_INSTALL_BINS]/libGLESv2.dll
+    !CONFIG(no_llvmpipe):!CONFIG(no_mesa): $${TARGET}_libs.files *= $$[QT_INSTALL_BINS]/opengl32sw.dll
 }
 CONFIG(copy_msvcrt_dlls) {
     target_arch = x86

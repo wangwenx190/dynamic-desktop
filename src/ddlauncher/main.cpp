@@ -1,3 +1,4 @@
+// Hide the console window although it's a console program
 #ifdef UNICODE
 #pragma comment(linker, "/SUBSYSTEM:WINDOWS /ENTRY:\"wmainCRTStartup\"")
 #else
@@ -24,6 +25,9 @@ static inline char *wideToMulti(int codePage, const wchar_t *aw)
 
 int _tmain(int argc, TCHAR *argv[])
 {
+    // "Per Monitor v2 was made available in the Creators Update of Windows 10
+    // and is not available on earlier versions of the operating system."
+    // https://docs.microsoft.com/en-us/windows/desktop/hidpi/dpi-awareness-context
     SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2);
     HINSTANCE mainModuleLib = nullptr;
     MainEntryFunc mainEntryFunc = nullptr;
@@ -67,6 +71,6 @@ int _tmain(int argc, TCHAR *argv[])
     delete [] argvA;
 #endif
     if (initSucceeded != TRUE)
-        MessageBox(nullptr, TEXT("Failed to load main module or resolve entry function. Application will not start.\nReinstalling this application may fix this problem.\nContact the developers for more information.\nSorry for the inconvenience."), TEXT("ERROR"), MB_ICONERROR | MB_OK);
+        MessageBox(nullptr, TEXT("Failed to load main module or resolve entry function. Application will not start.\nReinstalling the application may fix this problem.\nContact the developers for more information.\nSorry for the inconvenience."), TEXT("ERROR"), MB_ICONERROR | MB_OK);
     return exec;
 }

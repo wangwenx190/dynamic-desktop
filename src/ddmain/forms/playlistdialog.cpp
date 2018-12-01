@@ -100,21 +100,22 @@ PlaylistDialog::PlaylistDialog(QWidget *parent) : QWidget(parent)
         bool ok = false;
         QString input = QInputDialog::getText(nullptr, DD_TR("Please input a valid URL"), DD_TR("URL"), QLineEdit::Normal, QStringLiteral("https://"), &ok);
         if (ok && !input.isEmpty())
-        {
-            bool changed = false;
-            if (findItem(ui->listWidget_file, input) < 0)
+            if (QFileInfo::exists(QDir::toNativeSeparators(QDir::cleanPath(input))) && QFileInfo(input).isFile())
             {
-                ui->listWidget_file->addItem(input);
-                if (!changed)
-                    changed = true;
+                bool changed = false;
+                if (findItem(ui->listWidget_file, input) < 0)
+                {
+                    ui->listWidget_file->addItem(input);
+                    if (!changed)
+                        changed = true;
+                }
+                setCurrentItem(ui->listWidget_file, input);
+                if (changed)
+                {
+                    SettingsManager::getInstance()->setPlaylistFiles(currentPlaylist, getAllItems(ui->listWidget_file));
+                    emit this->dataRefreshed();
+                }
             }
-            setCurrentItem(ui->listWidget_file, input);
-            if (changed)
-            {
-                SettingsManager::getInstance()->setPlaylistFiles(currentPlaylist, getAllItems(ui->listWidget_file));
-                emit this->dataRefreshed();
-            }
-        }
     });
     connect(ui->pushButton_file_remove, &QPushButton::clicked, this, [=]
     {
