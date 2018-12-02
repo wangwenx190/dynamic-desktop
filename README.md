@@ -39,6 +39,9 @@ Microsoft Windows 7 ~ 10, desktop editions, both 32 bit and 64 bit systems.
 
 Can't run on systems without GUI desktop, for example, some editions of Windows Server. Linux and macOS will never be supported due to the limitation of the technique I used. Mobile systems are not supported as well for the same reason.
 
+## Screenshots
+![Preferences Dialog](/docs/images/preferencesdialog.jpg)
+
 ## Downloads
 For official builds and third-party packages please see https://sourceforge.net/p/dynamic-desktop/ .
 

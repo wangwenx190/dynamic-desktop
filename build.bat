@@ -10,8 +10,8 @@ cd /d "%~dp0"
 if exist build rd /s /q build
 md build
 cd build
-md tmp
-cd tmp
+md qmake_build
+cd qmake_build
 set _mkspec=
 set _config=
 if defined CI (
@@ -62,12 +62,8 @@ where %_buildtool%
 if %ERRORLEVEL% neq 0 set _buildtool=nmake
 %_buildtool% qmake_all && %_buildtool% && %_buildtool% install
 cd "%~dp0"
-rd /s /q build\tmp
-if exist build\lib rd /s /q build\lib
-if exist build\lib64 rd /s /q build\lib64
 goto build_finish
 :build_finish
-endlocal
 if %ERRORLEVEL% neq 0 (
     echo =========================================
     echo =          Compilation failed!          =
@@ -78,4 +74,13 @@ if %ERRORLEVEL% neq 0 (
     echo =========================================
 )
 if not defined CI pause
+rd /s /q build\qmake_build
+if /i "%_target_arch%" == "x64" (
+    if exist build\lib64 rd /s /q build\lib64
+    if exist build\lib64_static rd /s /q build\lib64_static
+) else (
+    if exist build\lib rd /s /q build\lib
+    if exist build\lib_static rd /s /q build\lib_static
+)
+endlocal
 exit /b

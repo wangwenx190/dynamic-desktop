@@ -55,7 +55,7 @@ CONFIG(copy_msvcrt_dlls) {
     !isEmpty(VC_REDIST_DIR):exists("$${VC_REDIST_DIR}") {
         isEmpty(VC_REDIST_VERSION): VC_REDIST_VERSION = 141
         vc_redist_dll_dir = Microsoft.VC$${VC_REDIST_VERSION}.CRT
-        $${TARGET}_libs.commands *= $$quote(copy /y \"$${VC_REDIST_DIR}\\$${target_arch}\\$${vc_redist_dll_dir}\\*vc*.dll\" \"$${BIN_DIR}\")
+        $${TARGET}_libs.commands *= $$quote(copy /y \"$${VC_REDIST_DIR}\\$${target_arch}\\$${vc_redist_dll_dir}\\*.dll\" \"$${BIN_DIR}\")
     }
     !isEmpty(WIN_SDK_REDIST_DIR):exists("$${WIN_SDK_REDIST_DIR}"): $${TARGET}_libs.commands *= $$quote(copy /y \"$${WIN_SDK_REDIST_DIR}\\ucrt\\DLLs\\$${target_arch}\\*.dll\" \"$${BIN_DIR}\")
 }
