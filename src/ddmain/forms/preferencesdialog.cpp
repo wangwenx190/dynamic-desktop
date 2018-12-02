@@ -374,7 +374,6 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) : CFramelessWindow(parent)
 {
     ui = new Ui::PreferencesDialog();
     ui->setupUi(this);
-    Win32Utils::enableBlurOnWin10(reinterpret_cast<HWND>(winId()));
     setContentsMargins(0, 0, 0, 0);
     setResizeable(true);
     setResizeableAreaWidth(5);

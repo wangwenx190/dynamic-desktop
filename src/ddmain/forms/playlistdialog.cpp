@@ -1,7 +1,6 @@
 #include "playlistdialog.h"
 #include "ui_playlistdialog.h"
 #include "settingsmanager.h"
-#include <Win32Utils>
 
 #include <QInputDialog>
 #include <QFileDialog>
@@ -13,7 +12,6 @@ PlaylistDialog::PlaylistDialog(QWidget *parent) : QWidget(parent)
 {
     ui = new Ui::PlaylistDialog();
     ui->setupUi(this);
-    Win32Utils::enableBlurOnWin10(reinterpret_cast<HWND>(winId()));
     currentPlaylist = SettingsManager::getInstance()->getCurrentPlaylistName();
     populatePlaylists();
     populateFiles(currentPlaylist);

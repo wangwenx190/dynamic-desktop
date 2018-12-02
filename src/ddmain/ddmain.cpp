@@ -15,8 +15,7 @@
 #include "forms/playlistdialog.h"
 
 #include <QMessageBox>
-#include <QSysInfo>
-#include <QVersionNumber>
+#include <QOperatingSystemVersion>
 #ifndef DD_NO_COMMANDLINE_PARSER
 #include <QCommandLineParser>
 #include <QCommandLineOption>
@@ -291,9 +290,6 @@ int ddmain(int argc, char *argv[])
         playerWindow.setWindowFlags(windowFlags);
         // Why is Direct2D image too large?
         playerWindow.setGeometry(screenGeometry);
-        int suffixIndex = 0;
-        QVersionNumber currentVersion = QVersionNumber::fromString(QSysInfo::kernelVersion(), &suffixIndex);
-        QVersionNumber win10Version(10, 0, 10240); // Windows 10 Version 1507
         // How to place our window under desktop icons:
         // Use "Program Manager" as our parent window in Win7/8/8.1.
         // Use "WorkerW" as our parent window in Win10.
@@ -303,7 +299,7 @@ int ddmain(int argc, char *argv[])
         // also block our desktop icons, however using
         // "WorkerW" as our parent window will not result
         // in this problem, I don't know why. It's strange.
-        Wallpaper::setLegacyMode(currentVersion < win10Version);
+        Wallpaper::setLegacyMode(QOperatingSystemVersion::current() < QOperatingSystemVersion::Windows10);
         Wallpaper::setWallpaper(reinterpret_cast<HWND>(playerWindow.winId()));
     }
     else

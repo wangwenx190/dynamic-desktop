@@ -2,20 +2,30 @@
 Author: Daniel Clarke(https://github.com/u8sand)
 Notice: Originally copied from https://github.com/u8sand/Baka-MPlayer and wangwenx190 made some changes to it.
 Create date: 2018/10/09
-Update date: 2018/12/01
+Update date: 2018/12/02
 */
 
 QWidget {
 	font-weight: bold;
 	font-size: 16px;
-	/*background: #1A1A1A;*/
-	background: transparent;
+	background: rgba(26, 26, 26, 0.6);
 	color: whitesmoke;
 }
 
 QWidget:disabled {
-	/*background: transparent;*/
 	color: #6F6F6F;
+}
+
+QWidget#widget_windowTitleBar {
+	background: none;
+}
+
+PreferencesDialog, AboutDialog, PlaylistDialog {
+	background: rgba(26, 26, 26, 0.6);
+}
+
+QLabel {
+	background: none;
 }
 
 QToolButton {
@@ -28,7 +38,7 @@ QToolButton:hover {
 }
 
 QPushButton {
-	/*background: #454A4D;*/
+	background: rgba(69, 74, 77, 0.6);
 	border: 1px solid #000;
 	border-radius: 2px;
 	color: whitesmoke;
@@ -42,12 +52,12 @@ QPushButton:focus {
 	outline: none;
 }
 
-/*QPushButton:pressed {
-	background: #2E3133;
-}*/
+QPushButton:pressed {
+	background: rgba(46, 49, 51, 0.6);
+}
 
 QPushButton[flat="true"] {
-	/*background: none;*/
+	background: none;
 	border: 0px;
 	border-radius: 0px;
 	color: none;
@@ -60,13 +70,17 @@ QPushButton#pushButton_previous, QPushButton#pushButton_playing, QPushButton#pus
 	min-height: 50px;
 }
 
+QSlider {
+	background: none;
+}
+
 QSlider::groove:horizontal {
-	background: #5A5A5A;
+	background: rgba(90, 90, 90, 0.6);
 	height: 1px;
 }
 
 QSlider::sub-page:horizontal {
-	background: #008098;
+	background: rgba(7, 152, 172, 0.6);
 }
 
 QSlider::handle:horizontal {
@@ -75,6 +89,10 @@ QSlider::handle:horizontal {
 	border-radius: 7px;
 	margin: -7px 0;
 	width: 12px;
+}
+
+QCheckBox {
+	background: none;
 }
 
 QCheckBox::indicator {
@@ -86,13 +104,13 @@ QCheckBox::indicator {
 
 QCheckBox::indicator:unchecked {
 	border: 1px solid whitesmoke;
-	/*background: #1A1A1A;*/
+	background: none;
 	image: none;
 }
 
 QCheckBox::indicator:checked {
-	border: 1px solid #008098;
-	/*background: #008098;*/
+	border: 1px solid whitesmoke;
+	background: none;
 	image: url(:/icons/checked.svg);
 }
 
@@ -136,7 +154,7 @@ QGroupBox {
 QGroupBox::title {
 	subcontrol-origin: margin;
 	subcontrol-position: top center;
-	/*background: #454A4D;*/
+	background: rgba(69, 74, 77, 0.6);
 	border: 1px solid #454A4D;
 	border-radius: 2px;
 	padding: 0 2px;
@@ -160,7 +178,7 @@ QRadioButton::indicator:checked {
 }
 
 QSpinBox {
-	/*background: #454A4D;*/
+	background: rgba(69, 74, 77, 0.6);
 	border: 1px solid #000;
 	border-radius: 2px;
 	padding: 2px;
@@ -186,19 +204,19 @@ QSpinBox::down-arrow {
 QListWidget {
 	show-decoration-selected: 1;
 	border: 1px solid #212121;
-	/*background: black;*/
+	background: rgba(0, 0, 0, 0.6);
 }
 
 QListWidget::item:alternate {
-    /*background: #141414;*/
+    background: rgba(27, 27, 27, 0.6);
 }
 
 QListWidget::item:selected {
-	background: #008098;
+	background: rgba(2, 171, 177, 0.6);
 }
 
 QListWidget::item:hover {
-	background: #2acfec;
+	background: rgba(58, 230, 236, 0.6);
 }
 
 QScrollBar:vertical {
@@ -207,7 +225,7 @@ QScrollBar:vertical {
 }
 
 QScrollBar::handle:vertical {
-	background: #008098;
+	background: rgba(2, 171, 177, 0.6);
 	border-radius: 2px;
 	min-height: 10px;
 }
@@ -222,7 +240,7 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical  {
 }
 
 QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical {
-	background: transparent;
+	background: none;
 }
 
 QScrollBar:horizontal {
@@ -246,5 +264,5 @@ QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal {
 }
 
 QScrollBar::left-arrow:horizontal, QScrollBar::right-arrow:horizontal {
-	background: transparent;
+	background: none;
 }
