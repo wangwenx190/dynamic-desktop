@@ -8,10 +8,18 @@
 #include <QListWidgetItem>
 #include <QMessageBox>
 
-PlaylistDialog::PlaylistDialog(QWidget *parent) : QWidget(parent)
+PlaylistDialog::PlaylistDialog(QWidget *parent) : CFramelessWindow(parent)
 {
     ui = new Ui::PlaylistDialog();
     ui->setupUi(this);
+    setContentsMargins(0, 0, 0, 0);
+    setResizeable(true);
+    setResizeableAreaWidth(5);
+    setTitleBar(ui->widget_windowTitleBar);
+    addIgnoreWidget(ui->label_windowTitle);
+    initIcons();
+    connect(ui->pushButton_minimize, &QPushButton::clicked, this, &PlaylistDialog::showMinimized);
+    connect(ui->pushButton_close, &QPushButton::clicked, this, &PlaylistDialog::close);
     currentPlaylist = SettingsManager::getInstance()->getCurrentPlaylistName();
     populatePlaylists();
     populateFiles(currentPlaylist);
@@ -284,4 +292,17 @@ void PlaylistDialog::renamePlaylist(const QString &oldName, const QString &newNa
     SettingsManager::getInstance()->setPlaylistFiles(newName, oldFiles);
     addPlaylist(newName);
     emit dataRefreshed();
+}
+
+void PlaylistDialog::initIcons()
+{
+#ifndef DD_NO_SVG
+    ui->label_windowIcon->setPixmap(QPixmap(QStringLiteral(":/icons/color_palette.svg")));
+    ui->pushButton_minimize->setIcon(QIcon(QStringLiteral(":/icons/minimize.svg")));
+    ui->pushButton_close->setIcon(QIcon(QStringLiteral(":/icons/close.svg")));
+#else
+    ui->label_windowIcon->setPixmap(QPixmap(QStringLiteral(":/icons/color_palette.png")));
+    ui->pushButton_minimize->setIcon(QIcon(QStringLiteral(":/icons/minimize.png")));
+    ui->pushButton_close->setIcon(QIcon(QStringLiteral(":/icons/close.png")));
+#endif
 }

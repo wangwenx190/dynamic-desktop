@@ -28,7 +28,7 @@ int _tmain(int argc, TCHAR *argv[])
     // "Per Monitor v2 was made available in the Creators Update of Windows 10
     // and is not available on earlier versions of the operating system."
     // https://docs.microsoft.com/en-us/windows/desktop/hidpi/dpi-awareness-context
-    SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2);
+    //SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2);
     HINSTANCE mainModuleLib = nullptr;
     MainEntryFunc mainEntryFunc = nullptr;
     BOOL initSucceeded = FALSE;

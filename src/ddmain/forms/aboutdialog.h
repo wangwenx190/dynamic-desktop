@@ -1,13 +1,13 @@
 #pragma once
 
-#include <QWidget>
+#include <QtNiceFramelessWindow>
 
 namespace Ui
 {
     class AboutDialog;
 }
 
-class AboutDialog : public QWidget
+class AboutDialog : public CFramelessWindow
 {
     Q_OBJECT
 
@@ -19,6 +19,9 @@ public slots:
 #ifndef DD_NO_TRANSLATIONS
     void refreshTexts(const QString &language);
 #endif
+
+private slots:
+    void initIcons();
 
 private:
     Ui::AboutDialog *ui = nullptr;

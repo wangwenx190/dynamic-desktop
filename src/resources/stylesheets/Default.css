@@ -84,7 +84,7 @@ QSlider::sub-page:horizontal {
 }
 
 QSlider::handle:horizontal {
-	background: whitesmoke;
+	background: rgba(255, 255, 255, 0.6);
 	border: 2px solid #1A1A1A;
 	border-radius: 7px;
 	margin: -7px 0;
@@ -115,7 +115,7 @@ QCheckBox::indicator:checked {
 }
 
 QLineEdit {
-	/*background: #000;*/
+	background: rgba(0, 0, 0, 0.6);
 	border: 1px solid #454A4D;
 	padding: 2px;
 }
@@ -125,7 +125,7 @@ QLineEdit:focus {
 }
 
 QComboBox {
-	/*background: #454A4D;*/
+	background: rgba(69, 74, 77, 0.6);
 	border: 1px solid #000;
 	border-radius: 2px;
 	padding: 2px;
@@ -136,7 +136,7 @@ QComboBox:focus {
 }
 
 QComboBox::drop-down {
-	/*background: #008098;*/
+	background: rgba(2, 157, 168, 0.6);
 	border-top-right-radius: 2px;
 	border-bottom-right-radius: 2px;
 }
@@ -235,7 +235,7 @@ QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
 }
 
 QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical  {
-	background: #383838;
+	background: rgba(58, 58, 58, 0.6);
 	margin: 0 2px;
 }
 
@@ -249,7 +249,7 @@ QScrollBar:horizontal {
 }
 
 QScrollBar::handle:horizontal {
-	background: #008098;
+	background: rgba(0, 164, 175, 0.6);
 	border-radius: 2px;
 	min-width: 10px;
 }
@@ -259,7 +259,7 @@ QScrollBar::add-line:horizontal, QScrollBar::sub-line:horizontal {
 }
 
 QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal {
-	background: #383838;
+	background: rgba(59, 59, 59, 0.6);
 	margin: 2px 0;
 }
 

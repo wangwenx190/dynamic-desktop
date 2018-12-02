@@ -7,6 +7,7 @@
 #include <QFileInfo>
 #include <QWidget>
 #include <QtAVWidgets>
+#include <QOperatingSystemVersion>
 
 namespace Utils
 {
@@ -178,7 +179,9 @@ void activateWindow(QObject *window, bool moveCenter, bool blur)
     if (moveCenter)
         moveToCenter(window);
     auto win = qobject_cast<QWidget *>(window);
-    if (blur)
+    // All standard windows in Win 7 will blur if Windows Aero is enabled.
+    // We only need to force blur on Win 8.1 and newer.
+    if (blur && (QOperatingSystemVersion::current() >= QOperatingSystemVersion::Windows8_1))
         Win32Utils::enableBlurOnWin10(reinterpret_cast<HWND>(win->winId()));
     if (win->isHidden())
         win->show();

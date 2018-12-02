@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QWidget>
+#include <QtNiceFramelessWindow>
 
 QT_FORWARD_DECLARE_CLASS(QListWidget)
 
@@ -9,7 +9,7 @@ namespace Ui
     class PlaylistDialog;
 }
 
-class PlaylistDialog : public QWidget
+class PlaylistDialog : public CFramelessWindow
 {
     Q_OBJECT
 
@@ -39,6 +39,7 @@ private slots:
     void addPlaylist(const QString &name);
     void removePlaylist(const QString &name);
     void renamePlaylist(const QString &oldName, const QString &newName);
+    void initIcons();
 
 private:
     Ui::PlaylistDialog *ui = nullptr;

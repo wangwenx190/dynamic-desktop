@@ -3,6 +3,7 @@
 :: IMPORTANT: Double quotation marks are indispensable for the first two parameters.
 @echo off
 color
+title Building Dynamic Desktop
 setlocal
 cls
 cd /d "%~dp0"
@@ -67,5 +68,14 @@ if exist build\lib64 rd /s /q build\lib64
 goto build_finish
 :build_finish
 endlocal
+if %ERRORLEVEL% neq 0 (
+    echo =========================================
+    echo =          Compilation failed!          =
+    echo =========================================
+) else (
+    echo =========================================
+    echo =        Compilation succeeded          =
+    echo =========================================
+)
 if not defined CI pause
 exit /b

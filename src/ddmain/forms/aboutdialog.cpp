@@ -4,10 +4,16 @@
 #include <QApplication>
 #include <QtAVWidgets>
 
-AboutDialog::AboutDialog(QWidget *parent) : QWidget(parent)
+AboutDialog::AboutDialog(QWidget *parent) : CFramelessWindow(parent)
 {
     ui = new Ui::AboutDialog();
     ui->setupUi(this);
+    setContentsMargins(0, 0, 0, 0);
+    setResizeable(true);
+    setResizeableAreaWidth(5);
+    setTitleBar(ui->widget_windowTitleBar);
+    addIgnoreWidget(ui->label_windowTitle);
+    initIcons();
     ui->lineEdit_version->setText(QApplication::applicationVersion());
     ui->lineEdit_commit_id->setText(QStringLiteral(DD_COMMIT_ID));
     ui->lineEdit_commit_time->setText(QStringLiteral(DD_COMMIT_TIME));
@@ -47,6 +53,8 @@ AboutDialog::AboutDialog(QWidget *parent) : QWidget(parent)
     {
         QtAV::aboutFFmpeg();
     });
+    connect(ui->pushButton_minimize, &QPushButton::clicked, this, &AboutDialog::showMinimized);
+    connect(ui->pushButton_close, &QPushButton::clicked, this, &AboutDialog::close);
 }
 
 AboutDialog::~AboutDialog()
@@ -61,3 +69,16 @@ void AboutDialog::refreshTexts(const QString &language)
     ui->retranslateUi(this);
 }
 #endif
+
+void AboutDialog::initIcons()
+{
+#ifndef DD_NO_SVG
+    ui->label_windowIcon->setPixmap(QPixmap(QStringLiteral(":/icons/color_palette.svg")));
+    ui->pushButton_minimize->setIcon(QIcon(QStringLiteral(":/icons/minimize.svg")));
+    ui->pushButton_close->setIcon(QIcon(QStringLiteral(":/icons/close.svg")));
+#else
+    ui->label_windowIcon->setPixmap(QPixmap(QStringLiteral(":/icons/color_palette.png")));
+    ui->pushButton_minimize->setIcon(QIcon(QStringLiteral(":/icons/minimize.png")));
+    ui->pushButton_close->setIcon(QIcon(QStringLiteral(":/icons/close.png")));
+#endif
+}
