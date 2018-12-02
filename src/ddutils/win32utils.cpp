@@ -69,7 +69,7 @@ void getCurrentDir(LPTSTR path)
     _tcscpy(path, filePath);
 }
 
-void enableBlurOnWin10(HWND window)
+void enableBlurBehindWindow(HWND window)
 {
     if (window == nullptr)
         return;

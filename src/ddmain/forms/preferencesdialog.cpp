@@ -709,7 +709,7 @@ void PreferencesDialog::initConnections()
     });
     connect(ui->comboBox_url, &QComboBox::currentTextChanged, this, [=](const QString &text)
     {
-        if ((!refreshingData || (ui->comboBox_url->count() < 1)) && (text != SettingsManager::getInstance()->getLastFile()))
+        if (!refreshingData && !text.isEmpty() && (text != SettingsManager::getInstance()->getLastFile()))
         {
             SettingsManager::getInstance()->setLastFile(text);
             emit this->urlChanged(SettingsManager::getInstance()->getLastFile());

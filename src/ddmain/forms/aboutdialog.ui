@@ -15,19 +15,19 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <property name="spacing">
-    <number>5</number>
+    <number>6</number>
    </property>
    <property name="leftMargin">
-    <number>13</number>
+    <number>11</number>
    </property>
    <property name="topMargin">
-    <number>6</number>
+    <number>11</number>
    </property>
    <property name="rightMargin">
-    <number>13</number>
+    <number>11</number>
    </property>
    <property name="bottomMargin">
-    <number>6</number>
+    <number>11</number>
    </property>
    <item>
     <widget class="QWidget" name="widget_windowTitleBar" native="true">
