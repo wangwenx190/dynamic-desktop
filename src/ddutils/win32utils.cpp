@@ -76,7 +76,7 @@ void enableBlurBehindWindow(HWND window)
 
     // http://undoc.airesoft.co.uk/user32.dll/SetWindowCompositionAttribute.php
 
-    typedef enum _WINDOWCOMPOSITIONATTRIB
+    using DD_WINDOWCOMPOSITIONATTRIB = enum _DD_WINDOWCOMPOSITIONATTRIB
     {
         WCA_UNDEFINED = 0,
         WCA_NCRENDERING_ENABLED = 1,
@@ -102,33 +102,33 @@ void enableBlurBehindWindow(HWND window)
         WCA_EVER_UNCLOAKED = 21,
         WCA_VISUAL_OWNER = 22,
         WCA_LAST = 23
-    } WINDOWCOMPOSITIONATTRIB;
+    };
 
-    typedef struct _WINDOWCOMPOSITIONATTRIBDATA
+    using DD_WINDOWCOMPOSITIONATTRIBDATA = struct _DD_WINDOWCOMPOSITIONATTRIBDATA
     {
-        WINDOWCOMPOSITIONATTRIB dwAttrib;
+        DD_WINDOWCOMPOSITIONATTRIB dwAttrib;
         PVOID pvData;
         SIZE_T cbData;
-    } WINDOWCOMPOSITIONATTRIBDATA;
+    };
 
-    typedef enum _ACCENT_STATE
+    using DD_ACCENT_STATE = enum _DD_ACCENT_STATE
     {
         ACCENT_DISABLED = 0,
         ACCENT_ENABLE_GRADIENT = 1,
         ACCENT_ENABLE_TRANSPARENTGRADIENT = 2,
         ACCENT_ENABLE_BLURBEHIND = 3,
         ACCENT_INVALID_STATE = 4
-    } ACCENT_STATE;
+    };
 
-    typedef struct _ACCENT_POLICY
+    using DD_ACCENT_POLICY = struct _DD_ACCENT_POLICY
     {
-        ACCENT_STATE AccentState;
+        DD_ACCENT_STATE AccentState;
         DWORD AccentFlags;
         DWORD GradientColor;
         DWORD AnimationId;
-    } ACCENT_POLICY;
+    };
 
-    typedef BOOL(WINAPI*pfnSetWindowCompositionAttribute)(HWND, WINDOWCOMPOSITIONATTRIBDATA*);
+    using pfnSetWindowCompositionAttribute = BOOL (*)(HWND, DD_WINDOWCOMPOSITIONATTRIBDATA *);
 
     HMODULE user32Lib = GetModuleHandle(TEXT("User32"));
 
@@ -137,8 +137,8 @@ void enableBlurBehindWindow(HWND window)
         auto setWindowCompositionAttribute = reinterpret_cast<pfnSetWindowCompositionAttribute>(GetProcAddress(user32Lib, "SetWindowCompositionAttribute"));
         if (setWindowCompositionAttribute != nullptr)
         {
-            ACCENT_POLICY accent = { ACCENT_ENABLE_BLURBEHIND, 0, 0, 0 };
-            WINDOWCOMPOSITIONATTRIBDATA data;
+            DD_ACCENT_POLICY accent = { ACCENT_ENABLE_BLURBEHIND, 0, 0, 0 };
+            DD_WINDOWCOMPOSITIONATTRIBDATA data;
             data.dwAttrib = WCA_ACCENT_POLICY;
             data.pvData = &accent;
             data.cbData = sizeof(accent);

@@ -8,8 +8,6 @@
 #include <windows.h>
 #include <tchar.h>
 
-using MainEntryFunc = int (*)(int, char **);
-
 #ifdef UNICODE
 // Copied from: http://code.qt.io/cgit/qt/qtbase.git/tree/src/winmain/qtmain_win.cpp?h=dev
 // Convert a wchar_t to char string, equivalent to QString::toLocal8Bit()
@@ -23,15 +21,58 @@ static inline char *wideToMulti(int codePage, const wchar_t *aw)
 }
 #endif
 
+bool enableHiDPISupport()
+{
+    // SetProcessDpiAwarenessContext: https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-setprocessdpiawarenesscontext
+    struct DD_DPI_AWARENESS_CONTEXT__ {
+        int unused;
+    };
+    using DD_DPI_AWARENESS_CONTEXT = struct DD_DPI_AWARENESS_CONTEXT__ *;
+    using pfnSetProcessDpiAwarenessContext = BOOL (*)(DD_DPI_AWARENESS_CONTEXT);
+    HMODULE user32Lib = GetModuleHandle(TEXT("User32"));
+    if (user32Lib != nullptr)
+    {
+        auto setProcessDpiAwarenessContext = reinterpret_cast<pfnSetProcessDpiAwarenessContext>(GetProcAddress(user32Lib, "SetProcessDpiAwarenessContext"));
+        if (setProcessDpiAwarenessContext != nullptr)
+        {
+            // #define DPI_AWARENESS_CONTEXT_SYSTEM_AWARE         ((DPI_AWARENESS_CONTEXT)-2)
+            // #define DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE    ((DPI_AWARENESS_CONTEXT)-3)
+            // #define DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2 ((DPI_AWARENESS_CONTEXT)-4)
+            BOOL result = setProcessDpiAwarenessContext((DD_DPI_AWARENESS_CONTEXT)-4);
+            if (result != TRUE)
+                result = setProcessDpiAwarenessContext((DD_DPI_AWARENESS_CONTEXT)-3);
+            if (result != TRUE)
+                result = setProcessDpiAwarenessContext((DD_DPI_AWARENESS_CONTEXT)-2);
+            return (result == TRUE);
+        }
+    }
+    // SetProcessDpiAwareness: https://docs.microsoft.com/en-us/windows/desktop/api/shellscalingapi/nf-shellscalingapi-setprocessdpiawareness
+    using DD_PROCESS_DPI_AWARENESS = enum _DD_PROCESS_DPI_AWARENESS {
+        PROCESS_DPI_UNAWARE = 0,
+        PROCESS_SYSTEM_DPI_AWARE = 1,
+        PROCESS_PER_MONITOR_DPI_AWARE = 2
+    };
+    using pfnSetProcessDpiAwareness = HRESULT (*)(DD_PROCESS_DPI_AWARENESS);
+    HMODULE shcoreLib = GetModuleHandle(TEXT("Shcore"));
+    if (shcoreLib != nullptr)
+    {
+        auto setProcessDpiAwareness = reinterpret_cast<pfnSetProcessDpiAwareness>(GetProcAddress(shcoreLib, "SetProcessDpiAwareness"));
+        if (setProcessDpiAwareness != nullptr)
+            return SUCCEEDED(setProcessDpiAwareness(DD_PROCESS_DPI_AWARENESS::PROCESS_PER_MONITOR_DPI_AWARE));
+    }
+    // SetProcessDPIAware: https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-setprocessdpiaware
+    using pfnSetProcessDPIAware = BOOL (*)();
+    if (user32Lib != nullptr)
+    {
+        auto setProcessDPIAware = reinterpret_cast<pfnSetProcessDPIAware>(GetProcAddress(user32Lib, "SetProcessDPIAware"));
+        if (setProcessDPIAware != nullptr)
+            return (setProcessDPIAware() == TRUE);
+    }
+    return false;
+}
+
 int _tmain(int argc, TCHAR *argv[])
 {
-    // "Per Monitor v2 was made available in the Creators Update of Windows 10
-    // and is not available on earlier versions of the operating system."
-    // https://docs.microsoft.com/en-us/windows/desktop/hidpi/dpi-awareness-context
-    //SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2);
-    HINSTANCE mainModuleLib = nullptr;
-    MainEntryFunc mainEntryFunc = nullptr;
-    BOOL initSucceeded = FALSE;
     int exec = -1;
 #ifdef UNICODE
     (void)argc;
@@ -46,31 +87,34 @@ int _tmain(int argc, TCHAR *argv[])
     argvA[argcW] = nullptr;
     LocalFree(argvW);
 #endif
+    bool initSucceeded = false;
+    enableHiDPISupport();
 #ifdef _DEBUG
-    mainModuleLib = LoadLibrary(TEXT("DDMaind"));
+    HINSTANCE ddmainLib = LoadLibrary(TEXT("DDMaind"));
 #else
-    mainModuleLib = LoadLibrary(TEXT("DDMain"));
+    HINSTANCE ddmainLib = LoadLibrary(TEXT("DDMain"));
 #endif
-    if (mainModuleLib != nullptr)
+    if (ddmainLib != nullptr)
     {
-        mainEntryFunc = reinterpret_cast<MainEntryFunc>(GetProcAddress(mainModuleLib, "ddmain"));
-        if (mainEntryFunc != nullptr)
+        using pfnddmain = int (*)(int, char **);
+        auto ddmain = reinterpret_cast<pfnddmain>(GetProcAddress(ddmainLib, "ddmain"));
+        if (ddmain != nullptr)
         {
-            initSucceeded = TRUE;
+            initSucceeded = true;
 #ifdef UNICODE
-            exec = mainEntryFunc(argcW, argvA);
+            exec = ddmain(argcW, argvA);
 #else
-            exec = mainEntryFunc(argc, argv);
+            exec = ddmain(argc, argv);
 #endif
         }
-        FreeLibrary(mainModuleLib);
+        FreeLibrary(ddmainLib);
     }
 #ifdef UNICODE
     for (int i = 0; ((i != argcW) && (argvA[i] != nullptr)); ++i)
         delete [] argvA[i];
     delete [] argvA;
 #endif
-    if (initSucceeded != TRUE)
+    if (!initSucceeded)
         MessageBox(nullptr, TEXT("Failed to load main module or resolve entry function. Application will not start.\nReinstalling the application may fix this problem.\nContact the developers for more information.\nSorry for the inconvenience."), TEXT("ERROR"), MB_ICONERROR | MB_OK);
     return exec;
 }

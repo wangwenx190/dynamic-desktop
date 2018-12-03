@@ -208,19 +208,19 @@ bool enableBlurBehindWindow(QObject *window)
             QtWin::extendFrameIntoClientArea(win, -1, -1, -1, -1);
             win->setAttribute(Qt::WA_TranslucentBackground, true);
             win->setAttribute(Qt::WA_NoSystemBackground, false);
-            //win->setStyleSheet(QStringLiteral("MusicPlayer { background: transparent; }"));
             QtWin::enableBlurBehindWindow(win);
-            //QString css("QMenu { border: 1px solid %1; border-radius: 2px; background: transparent; }");
-            //win->setStyleSheet(css.arg(QtWin::realColorizationColor().name()));
         }
         else
         {
             QtWin::resetExtendedFrame(win);
             win->setAttribute(Qt::WA_TranslucentBackground, false);
-            //win->setStyleSheet(QStringLiteral("MusicPlayer { background: %1; }").arg(QtWin::realColorizationColor().name()));
+            QString css = qApp->styleSheet();
+            if (!css.isEmpty())
+            {
+                css = css.replace(QStringLiteral("0.6"), QStringLiteral("1"));
+                qApp->setStyleSheet(css);
+            }
             QtWin::disableBlurBehindWindow(win);
-            //QString css("QMenu { border: 1px solid black; background: %1; }");
-            //win->setStyleSheet(css.arg(QtWin::realColorizationColor().name()));
         }
 #endif
         return true;

@@ -1,8 +1,8 @@
 /*
-Author: Daniel Clarke(https://github.com/u8sand)
-Notice: Originally copied from https://github.com/u8sand/Baka-MPlayer and wangwenx190 made some changes to it.
+Original author: Daniel Clarke (https://github.com/u8sand)
+Notice: The original file was copied from https://github.com/u8sand/Baka-MPlayer and wangwenx190 made a lot of changes to it, it's a whole new file now.
 Create date: 2018/10/09
-Update date: 2018/12/02
+Update date: 2018/12/03
 */
 
 QWidget {
@@ -158,6 +158,10 @@ QGroupBox::title {
 	border: 1px solid rgba(58, 61, 63, 0.6);
 	border-radius: 2px;
 	padding: 0 2px;
+}
+
+QRadioButton {
+	background: none;
 }
 
 QRadioButton::indicator {
