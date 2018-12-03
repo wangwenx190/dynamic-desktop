@@ -305,7 +305,7 @@ int ddmain(int argc, char *argv[])
     else
     {
         playerWindow.resize(1280, 720);
-        Utils::activateWindow(&playerWindow, false, false);
+        Utils::activateWindow(&playerWindow, false);
     }
     if (SettingsManager::getInstance()->getLastFile().isEmpty())
     {
@@ -317,7 +317,7 @@ int ddmain(int argc, char *argv[])
     else
     {
         const QString url = SettingsManager::getInstance()->getLastFile();
-        Utils::activateWindow(&playerWindow, false, false);
+        Utils::activateWindow(&playerWindow, false);
         playerWindow.setUrl(url);
 #ifndef DD_NO_TOOLTIP
         trayIcon.setToolTip(QStringLiteral("Dynamic Desktop: %0").arg(url));

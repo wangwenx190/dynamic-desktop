@@ -8,6 +8,9 @@
 #include <QWidget>
 #include <QtAVWidgets>
 #include <QOperatingSystemVersion>
+#ifndef DD_NO_WIN_EXTRAS
+#include <QtWin>
+#endif
 
 namespace Utils
 {
@@ -172,17 +175,13 @@ int getVideoRendererId(const VideoRendererId vid)
     return static_cast<int>(id);
 }
 
-void activateWindow(QObject *window, bool moveCenter, bool blur)
+void activateWindow(QObject *window, bool moveCenter)
 {
     if (!window)
         return;
     if (moveCenter)
         moveToCenter(window);
     auto win = qobject_cast<QWidget *>(window);
-    // All standard windows in Win 7 and Win 8 will blur if Windows Aero is enabled.
-    // We only need to force blur on Win 8.1 and newer.
-    if (blur && (QOperatingSystemVersion::current() >= QOperatingSystemVersion::Windows8_1))
-        Win32Utils::enableBlurBehindWindow(reinterpret_cast<HWND>(win->winId()));
     if (win->isHidden())
         win->show();
     if (!win->isActiveWindow())
@@ -192,6 +191,42 @@ void activateWindow(QObject *window, bool moveCenter, bool blur)
         win->raise();
         win->activateWindow();
     }
+}
+
+bool enableBlurBehindWindow(QObject *window)
+{
+    if (window == nullptr)
+        return false;
+    if (QOperatingSystemVersion::current() < QOperatingSystemVersion::Windows7)
+        return false;
+    auto win = qobject_cast<QWidget *>(window);
+    if (QOperatingSystemVersion::current() < QOperatingSystemVersion::Windows8_1)
+    {
+#ifndef DD_NO_WIN_EXTRAS
+        if (QtWin::isCompositionEnabled())
+        {
+            QtWin::extendFrameIntoClientArea(win, -1, -1, -1, -1);
+            win->setAttribute(Qt::WA_TranslucentBackground, true);
+            win->setAttribute(Qt::WA_NoSystemBackground, false);
+            //win->setStyleSheet(QStringLiteral("MusicPlayer { background: transparent; }"));
+            QtWin::enableBlurBehindWindow(win);
+            //QString css("QMenu { border: 1px solid %1; border-radius: 2px; background: transparent; }");
+            //win->setStyleSheet(css.arg(QtWin::realColorizationColor().name()));
+        }
+        else
+        {
+            QtWin::resetExtendedFrame(win);
+            win->setAttribute(Qt::WA_TranslucentBackground, false);
+            //win->setStyleSheet(QStringLiteral("MusicPlayer { background: %1; }").arg(QtWin::realColorizationColor().name()));
+            QtWin::disableBlurBehindWindow(win);
+            //QString css("QMenu { border: 1px solid black; background: %1; }");
+            //win->setStyleSheet(css.arg(QtWin::realColorizationColor().name()));
+        }
+#endif
+        return true;
+    }
+    Win32Utils::enableBlurBehindWindow(reinterpret_cast<HWND>(win->winId()));
+    return true;
 }
 
 }

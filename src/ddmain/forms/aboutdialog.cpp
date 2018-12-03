@@ -1,5 +1,6 @@
 #include "aboutdialog.h"
 #include "ui_aboutdialog.h"
+#include "utils.h"
 
 #include <QApplication>
 #include <QtAVWidgets>
@@ -14,6 +15,7 @@ AboutDialog::AboutDialog(QWidget *parent) : CFramelessWindow(parent)
     setTitleBar(ui->widget_windowTitleBar);
     addIgnoreWidget(ui->label_windowTitle);
     initIcons();
+    Utils::enableBlurBehindWindow(this);
     ui->lineEdit_version->setText(QApplication::applicationVersion());
     ui->lineEdit_commit_id->setText(QStringLiteral(DD_COMMIT_ID));
     ui->lineEdit_commit_time->setText(QStringLiteral(DD_COMMIT_TIME));

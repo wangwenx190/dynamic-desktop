@@ -9,11 +9,11 @@ QWidget {
 	font-weight: bold;
 	font-size: 16px;
 	background: rgba(26, 26, 26, 0.6);
-	color: whitesmoke;
+	color: rgba(245, 245, 245, 0.6);
 }
 
 QWidget:disabled {
-	color: #6F6F6F;
+	color: rgba(111, 111, 111, 0.6);
 }
 
 QWidget#widget_windowTitleBar {
@@ -30,25 +30,25 @@ QLabel {
 
 QToolButton {
 	font-size: 20px;
-	color: whitesmoke;
+	color: rgba(245, 245, 245, 1);
 }
 
 QToolButton:hover {
-	background: #6F6F6F;
+	background: rgba(111, 111, 111, 1);
 }
 
 QPushButton {
 	background: rgba(69, 74, 77, 0.6);
-	border: 1px solid #000;
+	border: 1px solid rgba(0, 0, 0, 0.6);
 	border-radius: 2px;
-	color: whitesmoke;
+	color: rgba(245, 245, 245, 0.6);
 	min-width: 76px;
 	min-height: 17px;
 	padding: 4px 6px;
 }
 
 QPushButton:focus {
-	border: 1px solid #008098;
+	border: 1px solid rgba(3, 126, 163, 0.6);
 	outline: none;
 }
 
@@ -84,8 +84,8 @@ QSlider::sub-page:horizontal {
 }
 
 QSlider::handle:horizontal {
-	background: rgba(255, 255, 255, 0.6);
-	border: 2px solid #1A1A1A;
+	background: rgba(245, 245, 245, 1);
+	border: 2px solid rgba(26, 26, 26, 0.6);
 	border-radius: 7px;
 	margin: -7px 0;
 	width: 12px;
@@ -98,41 +98,41 @@ QCheckBox {
 QCheckBox::indicator {
 	width: 11px;
 	height: 11px;
-	border: 1px solid #008098;
+	border: 1px solid rgba(4, 142, 167, 0.6);
 	border-radius: 2px;
 }
 
 QCheckBox::indicator:unchecked {
-	border: 1px solid whitesmoke;
+	border: 1px solid rgba(245, 245, 245, 0.6);
 	background: none;
 	image: none;
 }
 
 QCheckBox::indicator:checked {
-	border: 1px solid whitesmoke;
+	border: 1px solid rgba(245, 245, 245, 0.6);
 	background: none;
 	image: url(:/icons/checked.svg);
 }
 
 QLineEdit {
 	background: rgba(0, 0, 0, 0.6);
-	border: 1px solid #454A4D;
+	border: 1px solid rgba(69, 74, 77, 0.6);
 	padding: 2px;
 }
 
 QLineEdit:focus {
-	border: 1px solid #008098;
+	border: 1px solid rgba(1, 140, 165, 0.6);
 }
 
 QComboBox {
 	background: rgba(69, 74, 77, 0.6);
-	border: 1px solid #000;
+	border: 1px solid rgba(0, 0, 0, 0.6);
 	border-radius: 2px;
 	padding: 2px;
 }
 
 QComboBox:focus {
-	border: 1px solid #008098;
+	border: 1px solid rgba(2, 130, 153, 0.6);
 }
 
 QComboBox::drop-down {
@@ -146,7 +146,7 @@ QComboBox::down-arrow {
 }
 
 QGroupBox {
-	border: 1px solid #454A4D;
+	border: 1px solid rgba(69, 74, 77, 0.6);
 	border-radius: 2px;
 	margin-top: 0.5em;
 }
@@ -155,7 +155,7 @@ QGroupBox::title {
 	subcontrol-origin: margin;
 	subcontrol-position: top center;
 	background: rgba(69, 74, 77, 0.6);
-	border: 1px solid #454A4D;
+	border: 1px solid rgba(58, 61, 63, 0.6);
 	border-radius: 2px;
 	padding: 0 2px;
 }
@@ -168,24 +168,24 @@ QRadioButton::indicator {
 }
 
 QRadioButton::indicator:unchecked {
-	border: 1px solid whitesmoke;
+	border: 1px solid rgba(245, 245, 245, 0.6);
 	image: none;
 }
 
 QRadioButton::indicator:checked {
-	border: 1px solid #008098;
+	border: 1px solid rgba(0, 132, 150, 0.6);
 	image: url(:/icons/selected.svg);
 }
 
 QSpinBox {
 	background: rgba(69, 74, 77, 0.6);
-	border: 1px solid #000;
+	border: 1px solid rgba(0, 0, 0, 0.6);
 	border-radius: 2px;
 	padding: 2px;
 }
 
 QSpinBox:focus {
-	border: 1px solid #008098;
+	border: 1px solid rgba(1, 133, 143, 0.6);
 }
 
 QSpinBox::up-button, QSpinBox::down-button {
@@ -203,7 +203,7 @@ QSpinBox::down-arrow {
 
 QListWidget {
 	show-decoration-selected: 1;
-	border: 1px solid #212121;
+	border: 1px solid rgba(51, 51, 51, 0.6);
 	background: rgba(0, 0, 0, 0.6);
 }
 

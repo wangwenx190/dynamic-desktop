@@ -381,6 +381,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) : CFramelessWindow(parent)
     addIgnoreWidget(ui->label_windowTitle);
     initUI();
     initIcons();
+    Utils::enableBlurBehindWindow(this);
     initConnections();
 }
 

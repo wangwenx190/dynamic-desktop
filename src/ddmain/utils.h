@@ -23,6 +23,7 @@ bool isVideo(const QString &fileName);
 bool isAudio(const QString &fileName);
 bool isPicture(const QString &fileName);
 int getVideoRendererId(const VideoRendererId vid);
-void activateWindow(QObject *window, bool moveCenter = true, bool blur = true);
+void activateWindow(QObject *window, bool moveCenter = true);
+bool enableBlurBehindWindow(QObject *window);
 
 }

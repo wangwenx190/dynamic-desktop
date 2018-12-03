@@ -1,6 +1,7 @@
 #include "playlistdialog.h"
 #include "ui_playlistdialog.h"
 #include "settingsmanager.h"
+#include "utils.h"
 
 #include <QInputDialog>
 #include <QFileDialog>
@@ -18,6 +19,7 @@ PlaylistDialog::PlaylistDialog(QWidget *parent) : CFramelessWindow(parent)
     setTitleBar(ui->widget_windowTitleBar);
     addIgnoreWidget(ui->label_windowTitle);
     initIcons();
+    Utils::enableBlurBehindWindow(this);
     connect(ui->pushButton_minimize, &QPushButton::clicked, this, &PlaylistDialog::showMinimized);
     connect(ui->pushButton_close, &QPushButton::clicked, this, &PlaylistDialog::close);
     currentPlaylist = SettingsManager::getInstance()->getCurrentPlaylistName();
