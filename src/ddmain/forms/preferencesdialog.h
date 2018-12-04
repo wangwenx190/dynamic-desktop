@@ -43,6 +43,9 @@ signals:
     void playlistChanged(const QString &);
     void playbackModeChanged(quint32);
     void repeatCurrentFile(bool);
+#ifndef DD_NO_CSS
+    void skinChanged(const QString &);
+#endif
 
 public slots:
 #ifndef DD_NO_TRANSLATIONS

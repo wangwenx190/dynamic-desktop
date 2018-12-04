@@ -1,13 +1,12 @@
 TARGET = DDMain
-TEMPLATE = lib
-CONFIG(shared, static|shared): CONFIG *= dll
+CONFIG(enable_launcher) {
+    TEMPLATE = lib
+    CONFIG(shared, static|shared): CONFIG *= dll
+    DEFINES *= BUILD_SHARED_LIBRARY_DD_MAIN
+} else {
+    TEMPLATE = app
+}
 include(../common.pri)
-isEmpty(DD_COMMIT_ID): DD_COMMIT_ID = -
-isEmpty(DD_COMMIT_TIME): DD_COMMIT_TIME = -
-DEFINES *= \
-    BUILD_SHARED_LIBRARY_DD_MAIN \
-    DD_COMMIT_ID=\\\"$${DD_COMMIT_ID}\\\" \
-    DD_COMMIT_TIME=\\\"$${DD_COMMIT_TIME}\\\"
 CONFIG(static, static|shared) {
     DEFINES *= BUILD_DD_STATIC
     CONFIG(static_ffmpeg) {
@@ -109,9 +108,13 @@ include(../3rdparty/wallpaper/wallpaper.pri)
 include(../3rdparty/qtsingleapplication/qtsingleapplication.pri)
 include(../3rdparty/qtav/av.pri)
 include(../3rdparty/qtav/avwidgets.pri)
+CONFIG(enable_launcher) {
+    HEADERS *= \
+        ddmain_global.h \
+        ddmain.h
+}
 HEADERS += \
-    ddmain_global.h \
-    ddmain.h \
+    ../dd_version.h \
     forms/preferencesdialog.h \
     forms/aboutdialog.h \
     playerwindow.h \

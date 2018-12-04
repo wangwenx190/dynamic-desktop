@@ -47,6 +47,5 @@ test: off
   #folder: /home/frs/project/d/dy/dynamic-desktop/beta
   #active_mode: false
 artifacts:
-  - path: version_ci.pri
   - path: version_ci.h
 deploy: off

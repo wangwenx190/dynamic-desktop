@@ -13,6 +13,6 @@ launcher.file = src/ddlauncher/ddlauncher.pro
 SUBDIRS *= \
     qtavlib \
     utilslib \
-    service \
     mainlib \
-    launcher
+    service
+CONFIG(enable_launcher): SUBDIRS *= launcher

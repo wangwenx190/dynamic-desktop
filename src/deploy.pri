@@ -26,8 +26,7 @@ CONFIG(shared, static|shared):CONFIG(qt) {
     exists("$${windeployqt}.exe") {
         target_file_name = $${TARGET}
         CONFIG(dll) {
-            exists($${BIN_DIR}/$${target_file_name}$${DD_MAJOR_VERSION}.dll): target_file_name = $${target_file_name}$${DD_MAJOR_VERSION}.dll
-            else: target_file_name = $${target_file_name}.dll
+            target_file_name = $${target_file_name}.dll
         } else {
             target_file_name = $${target_file_name}.exe
         }

@@ -10,11 +10,6 @@ CONFIG(static, static|shared) {
     contains(TEMPLATE, lib): CONFIG -= ltcg
     LIB_DIR = $$join(LIB_DIR,,,_static)
 }
-exists("$${ROOT}/version_ci.pri"): include($${ROOT}/version_ci.pri)
-isEmpty(DD_MAJOR_VERSION): DD_MAJOR_VERSION = 1
-isEmpty(DD_MINOR_VERSION): DD_MINOR_VERSION = 0
-isEmpty(DD_PATCH_VERSION): DD_PATCH_VERSION = 0
-isEmpty(DD_BUILD_VERSION): DD_BUILD_VERSION = 0
 contains(TEMPLATE, app): DESTDIR = $${BIN_DIR}
 else:contains(TEMPLATE, lib): DESTDIR = $${LIB_DIR}
 CONFIG(dll): DLLDESTDIR = $${BIN_DIR}
@@ -33,3 +28,4 @@ else: CONFIG -= dd_no_ver_info
     exists("$${ROOT}/version_ci.h"): DEFINES *= DD_HAVE_CI_VERSION_H
     RC_FILE *= $$PWD/dd.rc
 }
+CONFIG(enable_launcher): DEFINES *= DD_HAVE_LAUNCHER

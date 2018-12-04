@@ -642,6 +642,7 @@ void PreferencesDialog::initConnections()
         {
             SettingsManager::getInstance()->setSkin(ui->comboBox_skin->currentData().toString());
             SkinsManager::getInstance()->setSkin(SettingsManager::getInstance()->getSkin());
+            emit this->skinChanged(SettingsManager::getInstance()->getSkin());
         }
     });
 #endif

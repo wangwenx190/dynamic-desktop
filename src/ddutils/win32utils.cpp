@@ -69,13 +69,11 @@ void getCurrentDir(LPTSTR path)
     _tcscpy(path, filePath);
 }
 
+// http://undoc.airesoft.co.uk/user32.dll/SetWindowCompositionAttribute.php
 void enableBlurBehindWindow(HWND window)
 {
     if (window == nullptr)
         return;
-
-    // http://undoc.airesoft.co.uk/user32.dll/SetWindowCompositionAttribute.php
-
     using DD_WINDOWCOMPOSITIONATTRIB = enum _DD_WINDOWCOMPOSITIONATTRIB
     {
         WCA_UNDEFINED = 0,
@@ -103,14 +101,12 @@ void enableBlurBehindWindow(HWND window)
         WCA_VISUAL_OWNER = 22,
         WCA_LAST = 23
     };
-
     using DD_WINDOWCOMPOSITIONATTRIBDATA = struct _DD_WINDOWCOMPOSITIONATTRIBDATA
     {
         DD_WINDOWCOMPOSITIONATTRIB dwAttrib;
         PVOID pvData;
         SIZE_T cbData;
     };
-
     using DD_ACCENT_STATE = enum _DD_ACCENT_STATE
     {
         ACCENT_DISABLED = 0,
@@ -119,7 +115,6 @@ void enableBlurBehindWindow(HWND window)
         ACCENT_ENABLE_BLURBEHIND = 3,
         ACCENT_INVALID_STATE = 4
     };
-
     using DD_ACCENT_POLICY = struct _DD_ACCENT_POLICY
     {
         DD_ACCENT_STATE AccentState;
@@ -127,13 +122,10 @@ void enableBlurBehindWindow(HWND window)
         DWORD GradientColor;
         DWORD AnimationId;
     };
-
-    using pfnSetWindowCompositionAttribute = BOOL (*)(HWND, DD_WINDOWCOMPOSITIONATTRIBDATA *);
-
     HMODULE user32Lib = GetModuleHandle(TEXT("User32"));
-
     if (user32Lib != nullptr)
     {
+        using pfnSetWindowCompositionAttribute = BOOL (*)(HWND, DD_WINDOWCOMPOSITIONATTRIBDATA *);
         auto setWindowCompositionAttribute = reinterpret_cast<pfnSetWindowCompositionAttribute>(GetProcAddress(user32Lib, "SetWindowCompositionAttribute"));
         if (setWindowCompositionAttribute != nullptr)
         {

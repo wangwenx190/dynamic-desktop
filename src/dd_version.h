@@ -4,6 +4,14 @@
 #include "../version_ci.h"
 #endif
 
+#ifndef DD_COMMIT_ID
+#define DD_COMMIT_ID "Unknown"
+#endif
+
+#ifndef DD_COMMIT_TIME
+#define DD_COMMIT_TIME "Unknown"
+#endif
+
 #ifndef DD_MAJOR_VERSION
 #define DD_MAJOR_VERSION 1     //((DD_VERSION&0xff0000)>>16)
 #endif

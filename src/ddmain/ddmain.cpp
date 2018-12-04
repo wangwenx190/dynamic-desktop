@@ -1,4 +1,6 @@
+#ifdef BUILD_SHARED_LIBRARY_DD_MAIN
 #include "ddmain.h"
+#endif
 #include "settingsmanager.h"
 #ifndef DD_NO_CSS
 #include "skinsmanager.h"
@@ -55,7 +57,11 @@ void installTranslation(const QString &lang, const QTranslator &translator)
 }
 #endif
 
+#ifdef BUILD_SHARED_LIBRARY_DD_MAIN
 int ddmain(int argc, char *argv[])
+#else
+int main(int argc, char *argv[])
+#endif
 {
     QtSingleApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QtSingleApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
@@ -156,13 +162,14 @@ int ddmain(int argc, char *argv[])
             SettingsManager::getInstance()->setVolume(static_cast<quint32>(volumeOptionValueInt));
     }
 #endif
-#ifndef DD_NO_CSS
-    SkinsManager::getInstance()->setSkin(SettingsManager::getInstance()->getSkin());
-#endif
     PlayerWindow playerWindow;
     PreferencesDialog preferencesDialog;
     AboutDialog aboutDialog;
     PlaylistDialog playlistDialog;
+#ifndef DD_NO_CSS
+    SkinsManager::getInstance()->setSkin(SettingsManager::getInstance()->getSkin());
+    playerWindow.setStyleSheet(QLatin1String(""));
+#endif
     QSystemTrayIcon trayIcon;
     playerWindow.setWindowMode(windowMode);
 #ifndef DD_NO_SVG
@@ -173,6 +180,13 @@ int ddmain(int argc, char *argv[])
 #ifndef DD_NO_MENU
     TrayMenu trayMenu;
     trayIcon.setContextMenu(&trayMenu);
+#ifndef DD_NO_CSS
+    QObject::connect(&preferencesDialog, &PreferencesDialog::skinChanged, [=, &playerWindow](const QString &skinName)
+    {
+        Q_UNUSED(skinName)
+        playerWindow.setStyleSheet(QLatin1String(""));
+    });
+#endif
     QObject::connect(&preferencesDialog, &PreferencesDialog::muteChanged, &trayMenu, &TrayMenu::setMute);
     QObject::connect(&preferencesDialog, &PreferencesDialog::about, &trayMenu, &TrayMenu::onAboutClicked);
     QObject::connect(&playerWindow, &PlayerWindow::playStateChanged, &trayMenu, &TrayMenu::setPlaying);

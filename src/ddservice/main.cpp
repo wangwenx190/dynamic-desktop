@@ -156,11 +156,16 @@ DWORD WINAPI ServiceWorkerThread(LPVOID lpParam)
     (void)lpParam;
     auto filePath = new TCHAR[MAX_PATH + 1];
     Win32Utils::getCurrentDir(filePath);
-#ifdef _DEBUG
-    _tcscat(filePath, TEXT("\\DDLauncherd.exe"));
+    _tcscat(filePath, TEXT("\\DD"));
+#ifdef DD_HAVE_LAUNCHER
+    _tcscat(filePath, TEXT("Launcher"));
 #else
-    _tcscat(filePath, TEXT("\\DDLauncher.exe"));
+    _tcscat(filePath, TEXT("Main"));
 #endif
+#ifdef _DEBUG
+    _tcscat(filePath, TEXT("d"));
+#endif
+    _tcscat(filePath, TEXT(".exe"));
     Win32Utils::launchSession1Process(filePath, nullptr);
     delete [] filePath;
     return ERROR_SUCCESS;
