@@ -8,6 +8,8 @@
 #include <windows.h>
 #include <tchar.h>
 
+#include <Win32Utils>
+
 #ifdef UNICODE
 // Copied from: http://code.qt.io/cgit/qt/qtbase.git/tree/src/winmain/qtmain_win.cpp?h=dev
 // Convert a wchar_t to char string, equivalent to QString::toLocal8Bit()
@@ -20,56 +22,6 @@ static inline char *wideToMulti(int codePage, const wchar_t *aw)
     return result;
 }
 #endif
-
-bool enableHiDPISupport()
-{
-    // SetProcessDpiAwarenessContext: https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-setprocessdpiawarenesscontext
-    struct DD_DPI_AWARENESS_CONTEXT__ {
-        int unused;
-    };
-    using DD_DPI_AWARENESS_CONTEXT = struct DD_DPI_AWARENESS_CONTEXT__ *;
-    using pfnSetProcessDpiAwarenessContext = BOOL (*)(DD_DPI_AWARENESS_CONTEXT);
-    HMODULE user32Lib = GetModuleHandle(TEXT("User32"));
-    if (user32Lib != nullptr)
-    {
-        auto setProcessDpiAwarenessContext = reinterpret_cast<pfnSetProcessDpiAwarenessContext>(GetProcAddress(user32Lib, "SetProcessDpiAwarenessContext"));
-        if (setProcessDpiAwarenessContext != nullptr)
-        {
-            // #define DPI_AWARENESS_CONTEXT_SYSTEM_AWARE         ((DPI_AWARENESS_CONTEXT)-2)
-            // #define DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE    ((DPI_AWARENESS_CONTEXT)-3)
-            // #define DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2 ((DPI_AWARENESS_CONTEXT)-4)
-            BOOL result = setProcessDpiAwarenessContext((DD_DPI_AWARENESS_CONTEXT)-4);
-            if (result != TRUE)
-                result = setProcessDpiAwarenessContext((DD_DPI_AWARENESS_CONTEXT)-3);
-            if (result != TRUE)
-                result = setProcessDpiAwarenessContext((DD_DPI_AWARENESS_CONTEXT)-2);
-            return (result == TRUE);
-        }
-    }
-    // SetProcessDpiAwareness: https://docs.microsoft.com/en-us/windows/desktop/api/shellscalingapi/nf-shellscalingapi-setprocessdpiawareness
-    using DD_PROCESS_DPI_AWARENESS = enum _DD_PROCESS_DPI_AWARENESS {
-        PROCESS_DPI_UNAWARE = 0,
-        PROCESS_SYSTEM_DPI_AWARE = 1,
-        PROCESS_PER_MONITOR_DPI_AWARE = 2
-    };
-    using pfnSetProcessDpiAwareness = HRESULT (*)(DD_PROCESS_DPI_AWARENESS);
-    HMODULE shcoreLib = GetModuleHandle(TEXT("Shcore"));
-    if (shcoreLib != nullptr)
-    {
-        auto setProcessDpiAwareness = reinterpret_cast<pfnSetProcessDpiAwareness>(GetProcAddress(shcoreLib, "SetProcessDpiAwareness"));
-        if (setProcessDpiAwareness != nullptr)
-            return SUCCEEDED(setProcessDpiAwareness(DD_PROCESS_DPI_AWARENESS::PROCESS_PER_MONITOR_DPI_AWARE));
-    }
-    // SetProcessDPIAware: https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-setprocessdpiaware
-    using pfnSetProcessDPIAware = BOOL (*)();
-    if (user32Lib != nullptr)
-    {
-        auto setProcessDPIAware = reinterpret_cast<pfnSetProcessDPIAware>(GetProcAddress(user32Lib, "SetProcessDPIAware"));
-        if (setProcessDPIAware != nullptr)
-            return (setProcessDPIAware() == TRUE);
-    }
-    return false;
-}
 
 int _tmain(int argc, TCHAR *argv[])
 {
@@ -88,7 +40,9 @@ int _tmain(int argc, TCHAR *argv[])
     LocalFree(argvW);
 #endif
     bool initSucceeded = false;
-    enableHiDPISupport();
+    if (!Win32Utils::setProcessDpiAwarenessContext())
+        if (!Win32Utils::setProcessDpiAwareness())
+            Win32Utils::setProcessDPIAware();
 #ifdef _DEBUG
     HINSTANCE ddmainLib = LoadLibrary(TEXT("DDMaind"));
 #else

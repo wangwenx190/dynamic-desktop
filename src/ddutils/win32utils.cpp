@@ -58,22 +58,23 @@ bool isAutoStartServiceInstalled(LPCTSTR name)
     return result;
 }
 
-void getCurrentDir(LPTSTR path)
+bool getCurrentDir(LPTSTR path)
 {
     if (path == nullptr)
-        return;
+        return false;
     TCHAR filePath[MAX_PATH + 1] = { 0 };
     DWORD dwSize = GetModuleFileName(nullptr, filePath, MAX_PATH);
     for (;(filePath[dwSize] != '\\') && (dwSize != 0); --dwSize)
         filePath[dwSize] = 0;
     _tcscpy(path, filePath);
+    return true;
 }
 
 // http://undoc.airesoft.co.uk/user32.dll/SetWindowCompositionAttribute.php
-void enableBlurBehindWindow(HWND window)
+bool enableBlurBehindWindow(HWND window)
 {
     if (window == nullptr)
-        return;
+        return false;
     using DD_WINDOWCOMPOSITIONATTRIB = enum _DD_WINDOWCOMPOSITIONATTRIB
     {
         WCA_UNDEFINED = 0,
@@ -126,17 +127,85 @@ void enableBlurBehindWindow(HWND window)
     if (user32Lib != nullptr)
     {
         using pfnSetWindowCompositionAttribute = BOOL (*)(HWND, DD_WINDOWCOMPOSITIONATTRIBDATA *);
-        auto setWindowCompositionAttribute = reinterpret_cast<pfnSetWindowCompositionAttribute>(GetProcAddress(user32Lib, "SetWindowCompositionAttribute"));
-        if (setWindowCompositionAttribute != nullptr)
+        auto ddSetWindowCompositionAttribute = reinterpret_cast<pfnSetWindowCompositionAttribute>(GetProcAddress(user32Lib, "SetWindowCompositionAttribute"));
+        if (ddSetWindowCompositionAttribute != nullptr)
         {
             DD_ACCENT_POLICY accent = { ACCENT_ENABLE_BLURBEHIND, 0, 0, 0 };
             DD_WINDOWCOMPOSITIONATTRIBDATA data;
             data.dwAttrib = WCA_ACCENT_POLICY;
             data.pvData = &accent;
             data.cbData = sizeof(accent);
-            setWindowCompositionAttribute(window, &data);
+            return (ddSetWindowCompositionAttribute(window, &data) == TRUE);
         }
     }
+    return false;
+}
+
+// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-setprocessdpiawarenesscontext
+bool setProcessDpiAwarenessContext()
+{
+    struct DD_DPI_AWARENESS_CONTEXT__
+    {
+        int unused;
+    };
+    using DD_DPI_AWARENESS_CONTEXT = struct DD_DPI_AWARENESS_CONTEXT__ *;
+    HMODULE user32Lib = GetModuleHandle(TEXT("User32"));
+    if (user32Lib != nullptr)
+    {
+        using pfnSetProcessDpiAwarenessContext = BOOL (*)(DD_DPI_AWARENESS_CONTEXT);
+        auto ddSetProcessDpiAwarenessContext = reinterpret_cast<pfnSetProcessDpiAwarenessContext>(GetProcAddress(user32Lib, "SetProcessDpiAwarenessContext"));
+        if (ddSetProcessDpiAwarenessContext != nullptr)
+        {
+            // #define DPI_AWARENESS_CONTEXT_SYSTEM_AWARE         ((DPI_AWARENESS_CONTEXT)-2)
+            // #define DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE    ((DPI_AWARENESS_CONTEXT)-3)
+            // #define DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2 ((DPI_AWARENESS_CONTEXT)-4)
+            if (ddSetProcessDpiAwarenessContext((DD_DPI_AWARENESS_CONTEXT)-4) != TRUE)
+                if (ddSetProcessDpiAwarenessContext((DD_DPI_AWARENESS_CONTEXT)-3) != TRUE)
+                    if (ddSetProcessDpiAwarenessContext((DD_DPI_AWARENESS_CONTEXT)-2) != TRUE)
+                        return false;
+            return true;
+        }
+    }
+    return false;
+}
+
+// https://docs.microsoft.com/en-us/windows/desktop/api/shellscalingapi/nf-shellscalingapi-setprocessdpiawareness
+bool setProcessDpiAwareness()
+{
+    using DD_PROCESS_DPI_AWARENESS = enum _DD_PROCESS_DPI_AWARENESS
+    {
+        PROCESS_DPI_UNAWARE = 0,
+        PROCESS_SYSTEM_DPI_AWARE = 1,
+        PROCESS_PER_MONITOR_DPI_AWARE = 2
+    };
+    HMODULE shcoreLib = GetModuleHandle(TEXT("Shcore"));
+    if (shcoreLib != nullptr)
+    {
+        using pfnSetProcessDpiAwareness = HRESULT (*)(DD_PROCESS_DPI_AWARENESS);
+        auto ddSetProcessDpiAwareness = reinterpret_cast<pfnSetProcessDpiAwareness>(GetProcAddress(shcoreLib, "SetProcessDpiAwareness"));
+        if (ddSetProcessDpiAwareness != nullptr)
+        {
+            if (FAILED(ddSetProcessDpiAwareness(DD_PROCESS_DPI_AWARENESS::PROCESS_PER_MONITOR_DPI_AWARE)))
+                if (FAILED(ddSetProcessDpiAwareness(DD_PROCESS_DPI_AWARENESS::PROCESS_SYSTEM_DPI_AWARE)))
+                    return false;
+            return true;
+        }
+    }
+    return false;
+}
+
+// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-setprocessdpiaware
+bool setProcessDPIAware()
+{
+    HMODULE user32Lib = GetModuleHandle(TEXT("User32"));
+    if (user32Lib != nullptr)
+    {
+        using pfnSetProcessDPIAware = BOOL (*)();
+        auto ddSetProcessDPIAware = reinterpret_cast<pfnSetProcessDPIAware>(GetProcAddress(user32Lib, "SetProcessDPIAware"));
+        if (ddSetProcessDPIAware != nullptr)
+            return (ddSetProcessDPIAware() == TRUE);
+    }
+    return false;
 }
 
 }

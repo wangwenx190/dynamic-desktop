@@ -14,8 +14,11 @@ extern "C" {
 bool DD_SHARED_EXPORT launchSession1Process(LPCTSTR path, LPCTSTR params);
 bool DD_SHARED_EXPORT isAutoStartServiceInstalled(LPCTSTR name);
 bool DD_SHARED_EXPORT isSession1Process();
-void DD_SHARED_EXPORT getCurrentDir(LPTSTR path);
-void DD_SHARED_EXPORT enableBlurBehindWindow(HWND window);
+bool DD_SHARED_EXPORT getCurrentDir(LPTSTR path);
+bool DD_SHARED_EXPORT enableBlurBehindWindow(HWND window);
+bool DD_SHARED_EXPORT setProcessDpiAwarenessContext();
+bool DD_SHARED_EXPORT setProcessDpiAwareness();
+bool DD_SHARED_EXPORT setProcessDPIAware();
 
 #ifdef __cplusplus
 }
