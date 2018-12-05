@@ -25,7 +25,7 @@ QStringList externalFilesToLoad(const QFileInfo &originalMediaFile, const QStrin
         return QStringList();
     const QString fileBaseName = originalMediaFile.baseName().toLower();
     QStringList newFileList;
-    for (auto& fi : fileList)
+    for (const auto& fi : fileList)
     {
         if (fi.absoluteFilePath() == originalMediaFile.absoluteFilePath())
             continue;

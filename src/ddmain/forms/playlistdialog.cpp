@@ -88,7 +88,7 @@ PlaylistDialog::PlaylistDialog(QWidget *parent) : CFramelessWindow(parent)
             }
             else
             {
-                for (auto& path : paths)
+                for (const auto& path : paths)
                 {
                     const QString path2 = QDir::toNativeSeparators(QDir::cleanPath(path));
                     if (findItem(ui->listWidget_file, path2) < 0)

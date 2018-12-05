@@ -284,7 +284,7 @@ void PlayerWindow::onStartPlay()
         if (!externalAudioTracks.isEmpty())
         {
             emit this->audioTracksChanged(player->externalAudioTracks(), true);
-            for (auto& track : externalAudioTracks)
+            for (const auto& track : externalAudioTracks)
             {
                 QVariantMap trackData = track.toMap();
                 const QString audioFilePath = trackData[QStringLiteral("file")].toString();
@@ -308,7 +308,7 @@ void PlayerWindow::onStartPlay()
         QStringList externalSubtitlePaths = Utils::externalFilesToLoad(QFileInfo(player->file()), QStringLiteral("sub"));
         if (!externalSubtitlePaths.isEmpty())
         {
-            for (auto& subPath : externalSubtitlePaths)
+            for (const auto& subPath : externalSubtitlePaths)
             {
                 QVariantMap externalSubtitle;
                 externalSubtitle[QStringLiteral("file")] = subPath;

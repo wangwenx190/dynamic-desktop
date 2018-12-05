@@ -124,7 +124,7 @@ QString SettingsManager::getLastDir() const
         if (QFileInfo::exists(dir) && QFileInfo(dir).isDir())
             return QDir::toNativeSeparators(dir);
     }
-    for (auto& dirPath : QStandardPaths::standardLocations(QStandardPaths::MoviesLocation))
+    for (const auto& dirPath : QStandardPaths::standardLocations(QStandardPaths::MoviesLocation))
         if (QFileInfo::exists(dirPath) && QFileInfo(dirPath).isDir())
             return QDir::toNativeSeparators(QDir::cleanPath(dirPath));
     return QDir::toNativeSeparators(QDir::cleanPath(QCoreApplication::applicationDirPath()));

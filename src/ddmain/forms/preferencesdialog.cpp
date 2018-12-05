@@ -48,7 +48,7 @@ void PreferencesDialog::populateSkins(const QString &dirPath, bool add, bool isE
             ui->comboBox_skin->clear();
             ui->comboBox_skin->addItem(DD_TR("<None>"), QStringLiteral("none"));
         }
-        for (auto& skinFile : skinFileList)
+        for (const auto& skinFile : skinFileList)
             ui->comboBox_skin->addItem(skinFile.completeBaseName(), isExternal ? skinFile.absoluteFilePath() : skinFile.completeBaseName());
     }
     if (ui->comboBox_skin->count() > 1)
@@ -75,7 +75,7 @@ void PreferencesDialog::populateLanguages(const QString &dirPath, bool add, bool
             ui->comboBox_language->addItem(DD_TR("Auto"), QStringLiteral("auto"));
             ui->comboBox_language->addItem(QStringLiteral("American English"), QStringLiteral("en"));
         }
-        for (auto& languageFile : languageFileList)
+        for (const auto& languageFile : languageFileList)
         {
             QString fileName = languageFile.completeBaseName();
             if (!fileName.startsWith(QStringLiteral("dd_"), Qt::CaseInsensitive))
@@ -135,7 +135,7 @@ void PreferencesDialog::setVideoTracks(const QVariantList& videoTracks)
     if (!videoTracks.isEmpty())
     {
         ui->comboBox_video_track->clear();
-        for (auto& track : videoTracks)
+        for (const auto& track : videoTracks)
         {
             QVariantMap trackData = track.toMap();
             quint32 id = trackData[QStringLiteral("id")].toUInt();
@@ -158,7 +158,7 @@ void PreferencesDialog::setAudioTracks(const QVariantList& audioTracks, bool add
     {
         if (!add)
             ui->comboBox_audio_track->clear();
-        for (auto& track : audioTracks)
+        for (const auto& track : audioTracks)
         {
             QVariantMap trackData = track.toMap();
             quint32 id = trackData[QStringLiteral("id")].toUInt();
@@ -181,7 +181,7 @@ void PreferencesDialog::setSubtitleTracks(const QVariantList& subtitleTracks, bo
     {
         if (!add)
             ui->comboBox_subtitle_track->clear();
-        for (auto& track : subtitleTracks)
+        for (const auto& track : subtitleTracks)
         {
             QVariantMap trackData = track.toMap();
             if (!add)
@@ -495,7 +495,7 @@ void PreferencesDialog::initUI()
 #endif
     ui->comboBox_subtitle_charset->addItem(DD_TR("Auto detect"), QStringLiteral("AutoDetect"));
     ui->comboBox_subtitle_charset->addItem(DD_TR("System"), QStringLiteral("System"));
-    for (auto& codec : QTextCodec::availableCodecs())
+    for (const auto& codec : QTextCodec::availableCodecs())
         ui->comboBox_subtitle_charset->addItem(QString::fromLatin1(codec), QString::fromLatin1(codec));
     if (audioAvailable)
     {
