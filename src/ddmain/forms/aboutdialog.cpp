@@ -17,7 +17,15 @@ AboutDialog::AboutDialog(QWidget *parent) : CFramelessWindow(parent)
     addIgnoreWidget(ui->label_windowTitle);
     initIcons();
     Utils::enableBlurBehindWindow(this);
-    ui->lineEdit_version->setText(QApplication::applicationVersion());
+    QString versionText = QApplication::applicationVersion();
+    versionText = versionText.isEmpty() ? QStringLiteral("Unknown") : versionText;
+#ifdef DD_HAVE_CI_VERSION_H
+    versionText += QStringLiteral("-Nightly");
+#endif
+#ifdef _DEBUG
+    versionText += QStringLiteral("-Debug");
+#endif
+    ui->lineEdit_version->setText(versionText);
     ui->lineEdit_commit_id->setText(QStringLiteral(DD_COMMIT_ID));
     ui->lineEdit_commit_time->setText(QStringLiteral(DD_COMMIT_TIME));
     QString compiler = QStringLiteral("Unknown");
