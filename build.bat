@@ -37,11 +37,9 @@ set PATH=%_qt_dir%;%_qt_bin_dir%;%PATH%
 set _vs_dev_cmd_path=
 set _vs_2017_path=
 for /f "delims=" %%A in ('"%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe" -property installationPath -latest -requires Microsoft.Component.MSBuild Microsoft.VisualStudio.Component.VC.Tools.x86.x64') do set _vs_2017_path=%%A
-set _vs_dev_cmd_path=%_vs_2017_path%\Common7\Tools\VsDevCmd.bat
-if not exist "%_vs_dev_cmd_path%" echo Cannot find [VsDevCmd.bat], if you did't install VS2017 in it's default location, please change this script && goto build_finish
-set _vs_arch=%_target_arch%
-if /i "%_target_arch%" == "x64" set _vs_arch=amd64
-CALL "%_vs_dev_cmd_path%" -no_logo -arch=%_vs_arch%
+set _vs_dev_cmd_path=%_vs_2017_path%\VC\Auxiliary\Build\vcvarsall.bat
+if not exist "%_vs_dev_cmd_path%" echo Cannot find [vcvarsall.bat], if you did't install VS2017 in it's default location, please change this script && goto build_finish
+CALL "%_vs_dev_cmd_path%" %_target_arch%
 set _mkspec=%1
 if defined _mkspec (
     set _mkspec=%_mkspec:~1,-1%
