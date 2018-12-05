@@ -50,11 +50,13 @@ PlaylistDialog::PlaylistDialog(QWidget *parent) : CFramelessWindow(parent)
     {
         itemMoveUp(ui->listWidget_playlist);
         SettingsManager::getInstance()->setAllPlaylistNames(getAllItems(ui->listWidget_playlist));
+        emit this->dataRefreshed();
     });
     connect(ui->pushButton_playlist_down, &QPushButton::clicked, this, [=]
     {
         itemMoveDown(ui->listWidget_playlist);
         SettingsManager::getInstance()->setAllPlaylistNames(getAllItems(ui->listWidget_playlist));
+        emit this->dataRefreshed();
     });
     connect(ui->listWidget_playlist, &QListWidget::currentTextChanged, this, [=](const QString &text)
     {
@@ -144,11 +146,13 @@ PlaylistDialog::PlaylistDialog(QWidget *parent) : CFramelessWindow(parent)
     {
         itemMoveUp(ui->listWidget_file);
         SettingsManager::getInstance()->setPlaylistFiles(currentPlaylist, getAllItems(ui->listWidget_file));
+        emit this->dataRefreshed();
     });
     connect(ui->pushButton_file_down, &QPushButton::clicked, this, [=]
     {
         itemMoveDown(ui->listWidget_file);
         SettingsManager::getInstance()->setPlaylistFiles(currentPlaylist, getAllItems(ui->listWidget_file));
+        emit this->dataRefreshed();
     });
     connect(ui->listWidget_file, &QListWidget::itemDoubleClicked, this, [=](QListWidgetItem *item)
     {
@@ -238,7 +242,6 @@ void PlaylistDialog::itemMoveUp(QListWidget *listWidget)
     int index = listWidget->currentRow() - 1;
     index = index < 0 ? listWidget->count() - 1 : index;
     moveItem(listWidget, listWidget->currentRow(), index);
-    emit dataRefreshed();
 }
 
 void PlaylistDialog::itemMoveDown(QListWidget *listWidget)
@@ -246,7 +249,6 @@ void PlaylistDialog::itemMoveDown(QListWidget *listWidget)
     int index = listWidget->currentRow() + 1;
     index = index >= listWidget->count() ? 0 : index;
     moveItem(listWidget, listWidget->currentRow(), index);
-    emit dataRefreshed();
 }
 
 void PlaylistDialog::addPlaylist(const QString &name)
