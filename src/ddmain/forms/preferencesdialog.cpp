@@ -241,10 +241,13 @@ void PreferencesDialog::refreshPlaylistsAndFiles()
 {
     if (!refreshingData)
         refreshingData = true;
+    static bool playNow = ui->comboBox_url->count() < 1;
     populatePlaylists();
     populateFiles();
     if (refreshingData)
         refreshingData = false;
+    if (playNow)
+        emit urlChanged(SettingsManager::getInstance()->getLastFile());
 }
 
 void PreferencesDialog::switchPlaylist(const QString &name)
