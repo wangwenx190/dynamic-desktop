@@ -10,7 +10,6 @@ mainlib.depends *= \
     qtavlib \
     utilslib
 launcher.file = src/ddlauncher/ddlauncher.pro
-launcher.depends *= utilslib
 SUBDIRS *= \
     qtavlib \
     utilslib \

@@ -7,5 +7,4 @@ LIBS *= \
     -lKernel32 \
     -lUser32 \
     -lShell32
-include(../ddutils/ddutils.pri)
 SOURCES *= main.cpp

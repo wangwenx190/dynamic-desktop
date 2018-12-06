@@ -16,9 +16,6 @@ bool DD_SHARED_EXPORT isAutoStartServiceInstalled(LPCTSTR name);
 bool DD_SHARED_EXPORT isSession1Process();
 bool DD_SHARED_EXPORT getCurrentDir(LPTSTR path);
 bool DD_SHARED_EXPORT enableBlurBehindWindow(HWND window);
-bool DD_SHARED_EXPORT setProcessDpiAwarenessContext();
-bool DD_SHARED_EXPORT setProcessDpiAwareness();
-bool DD_SHARED_EXPORT setProcessDPIAware();
 
 #ifdef __cplusplus
 }
