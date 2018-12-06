@@ -6,10 +6,7 @@ contains(QT_ARCH, x86_64) {
     BIN_DIR = $$join(BIN_DIR,,,64)
     LIB_DIR = $$join(LIB_DIR,,,64)
 }
-CONFIG(static, static|shared) {
-    contains(TEMPLATE, lib): CONFIG -= ltcg
-    LIB_DIR = $$join(LIB_DIR,,,_static)
-}
+CONFIG(static, static|shared): LIB_DIR = $$join(LIB_DIR,,,_static)
 contains(TEMPLATE, app): DESTDIR = $${BIN_DIR}
 else:contains(TEMPLATE, lib): DESTDIR = $${LIB_DIR}
 CONFIG(dll): DLLDESTDIR = $${BIN_DIR}

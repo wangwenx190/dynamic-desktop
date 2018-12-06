@@ -20,10 +20,10 @@ AboutDialog::AboutDialog(QWidget *parent) : CFramelessWindow(parent)
     QString versionText = QApplication::applicationVersion();
     versionText = versionText.isEmpty() ? QStringLiteral("Unknown") : versionText;
 #ifdef DD_HAVE_CI_VERSION_H
-    versionText += QStringLiteral("-Nightly");
+    versionText += QStringLiteral(" - Nightly");
 #endif
 #ifdef _DEBUG
-    versionText += QStringLiteral("-Debug");
+    versionText += QStringLiteral(" - Debug");
 #endif
     ui->lineEdit_version->setText(versionText);
     ui->lineEdit_commit_id->setText(QStringLiteral(DD_COMMIT_ID));
