@@ -27,7 +27,9 @@ AboutDialog::AboutDialog(QWidget *parent) : CFramelessWindow(parent)
 #endif
     ui->lineEdit_version->setText(versionText);
     ui->lineEdit_commit_id->setText(QStringLiteral(DD_COMMIT_ID));
+    ui->lineEdit_commit_id->setCursorPosition(0);
     ui->lineEdit_commit_time->setText(QStringLiteral(DD_COMMIT_TIME));
+    ui->lineEdit_commit_time->setCursorPosition(0);
     QString compiler = QStringLiteral("Unknown");
 #ifdef Q_CC_CLANG
     compiler = QStringLiteral("Clang C++ Compiler V%0.%1.%2").arg(__clang_major__).arg(__clang_minor__).arg(__clang_patchlevel__);
