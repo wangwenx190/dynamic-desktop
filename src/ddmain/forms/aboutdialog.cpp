@@ -1,10 +1,16 @@
 #include "aboutdialog.h"
 #include "ui_aboutdialog.h"
 #include "utils.h"
-#include "../dd_version.h"
 
 #include <QApplication>
 #include <QtAVWidgets>
+
+#ifndef DD_COMMIT_ID
+#define DD_COMMIT_ID "Unknown"
+#endif
+#ifndef DD_COMMIT_TIME
+#define DD_COMMIT_TIME "Unknown"
+#endif
 
 AboutDialog::AboutDialog(QWidget *parent) : CFramelessWindow(parent)
 {
@@ -19,7 +25,7 @@ AboutDialog::AboutDialog(QWidget *parent) : CFramelessWindow(parent)
     Utils::enableBlurBehindWindow(this);
     QString versionText = QApplication::applicationVersion();
     versionText = versionText.isEmpty() ? QStringLiteral("Unknown") : versionText;
-#ifdef DD_HAVE_CI_VERSION_H
+#ifdef DD_NIGHTLY_BUILD
     versionText += QStringLiteral(" - Nightly");
 #endif
 #ifdef _DEBUG

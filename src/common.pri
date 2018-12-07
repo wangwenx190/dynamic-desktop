@@ -21,7 +21,13 @@ CONFIG -= app_bundle
 CONFIG(static, static|shared):contains(TEMPLATE, lib): CONFIG *= dd_no_ver_info
 else: CONFIG -= dd_no_ver_info
 !CONFIG(dd_no_ver_info) {
-    contains(TEMPLATE, app): DEFINES *= DD_EMBED_ICON
-    exists("$${ROOT}/version_ci.h"): DEFINES *= DD_HAVE_CI_VERSION_H
-    RC_FILE *= $$PWD/dd.rc
+    contains(TEMPLATE, app): RC_ICONS = $$PWD/resources/icons/color_palette.ico
+    exists("$${ROOT}/version_ci.pri"): include($${ROOT}/version_ci.pri)
+    isEmpty(DD_MAJOR_VERSION): DD_MAJOR_VERSION = 1
+    isEmpty(DD_MINOR_VERSION): DD_MINOR_VERSION = 0
+    isEmpty(DD_PATCH_VERSION): DD_PATCH_VERSION = 0
+    isEmpty(VERSION): VERSION = $${DD_MAJOR_VERSION}.$${DD_MINOR_VERSION}.$${DD_PATCH_VERSION}
+    QMAKE_TARGET_PRODUCT = "Dynamic Desktop"
+    QMAKE_TARGET_DESCRIPTION = "Dynamic Desktop"
+    QMAKE_TARGET_COPYRIGHT = "GNU General Public License version 3.0"
 }

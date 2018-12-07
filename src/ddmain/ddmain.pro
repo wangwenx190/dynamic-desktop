@@ -103,7 +103,6 @@ include(../3rdparty/qtsingleapplication/qtsingleapplication.pri)
 include(../3rdparty/qtav/av.pri)
 include(../3rdparty/qtav/avwidgets.pri)
 HEADERS += \
-    ../dd_version.h \
     forms/preferencesdialog.h \
     forms/aboutdialog.h \
     playerwindow.h \
@@ -112,7 +111,7 @@ HEADERS += \
     utils.h \
     forms/playlistdialog.h
 SOURCES += \
-    ddmain.cpp \
+    main.cpp \
     forms/preferencesdialog.cpp \
     forms/aboutdialog.cpp \
     playerwindow.cpp \
