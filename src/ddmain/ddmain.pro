@@ -1,11 +1,5 @@
 TARGET = DDMain
-CONFIG(enable_launcher) {
-    TEMPLATE = lib
-    CONFIG(shared, static|shared): CONFIG *= dll
-    DEFINES *= BUILD_SHARED_LIBRARY_DD_MAIN
-} else {
-    TEMPLATE = app
-}
+TEMPLATE = app
 include(../common.pri)
 CONFIG(static, static|shared) {
     DEFINES *= BUILD_DD_STATIC
@@ -108,11 +102,6 @@ include(../3rdparty/wallpaper/wallpaper.pri)
 include(../3rdparty/qtsingleapplication/qtsingleapplication.pri)
 include(../3rdparty/qtav/av.pri)
 include(../3rdparty/qtav/avwidgets.pri)
-CONFIG(enable_launcher) {
-    HEADERS *= \
-        ddmain_global.h \
-        ddmain.h
-}
 HEADERS += \
     ../dd_version.h \
     forms/preferencesdialog.h \

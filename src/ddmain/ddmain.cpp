@@ -1,6 +1,3 @@
-#ifdef BUILD_SHARED_LIBRARY_DD_MAIN
-#include "ddmain.h"
-#endif
 #include "settingsmanager.h"
 #ifndef DD_NO_CSS
 #include "skinsmanager.h"
@@ -57,11 +54,7 @@ void installTranslation(const QString &lang, const QTranslator &translator)
 }
 #endif
 
-#ifdef BUILD_SHARED_LIBRARY_DD_MAIN
-int ddmain(int argc, char *argv[])
-#else
 int main(int argc, char *argv[])
-#endif
 {
     QtSingleApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QtSingleApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);

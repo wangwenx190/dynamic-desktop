@@ -156,12 +156,7 @@ DWORD WINAPI ServiceWorkerThread(LPVOID lpParam)
     (void)lpParam;
     auto filePath = new TCHAR[MAX_PATH + 1];
     Win32Utils::getCurrentDir(filePath);
-    _tcscat(filePath, TEXT("\\DD"));
-#ifdef DD_HAVE_LAUNCHER
-    _tcscat(filePath, TEXT("Launcher"));
-#else
-    _tcscat(filePath, TEXT("Main"));
-#endif
+    _tcscat(filePath, TEXT("\\DDMain"));
 #ifdef _DEBUG
     _tcscat(filePath, TEXT("d"));
 #endif

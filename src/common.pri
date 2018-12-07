@@ -25,4 +25,3 @@ else: CONFIG -= dd_no_ver_info
     exists("$${ROOT}/version_ci.h"): DEFINES *= DD_HAVE_CI_VERSION_H
     RC_FILE *= $$PWD/dd.rc
 }
-CONFIG(enable_launcher): DEFINES *= DD_HAVE_LAUNCHER
