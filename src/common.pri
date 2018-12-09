@@ -10,7 +10,7 @@ CONFIG(static, static|shared): LIB_DIR = $$join(LIB_DIR,,,_static)
 contains(TEMPLATE, app): DESTDIR = $${BIN_DIR}
 else:contains(TEMPLATE, lib): DESTDIR = $${LIB_DIR}
 CONFIG(dll): DLLDESTDIR = $${BIN_DIR}
-CONFIG *= c++11 c++1z
+CONFIG *= c++11
 CONFIG(qt) {
     DEFINES *= \
         QT_DEPRECATED_WARNINGS \
