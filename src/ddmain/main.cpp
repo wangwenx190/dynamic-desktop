@@ -28,27 +28,41 @@
 void installTranslation(const QString &lang, const QTranslator &translator)
 {
     auto ts = const_cast<QTranslator *>(&translator);
-    QtSingleApplication::removeTranslator(ts);
-    if (lang.startsWith(QStringLiteral("en"), Qt::CaseInsensitive))
+    if (lang.toLower() == QLatin1String("c")
+            || lang.toLower() == QLatin1String("en")
+            || lang.toLower() == QLatin1String("none")
+            || lang.startsWith(QStringLiteral("en_"), Qt::CaseInsensitive))
+    {
+        QtSingleApplication::removeTranslator(ts);
         return;
+    }
     const QString qmDir = QStringLiteral(":/i18n");
     if (lang.toLower() == QLatin1String("auto"))
     {
         if (ts->load(QLocale(), QStringLiteral("dd"), QStringLiteral("_"), qmDir))
+        {
+            QtSingleApplication::removeTranslator(ts);
             QtSingleApplication::installTranslator(ts);
+        }
     }
     else
     {
         if (lang.contains(QLatin1Char('/')) || lang.contains(QLatin1Char('\\')))
         {
             if (ts->load(lang))
+            {
+                QtSingleApplication::removeTranslator(ts);
                 QtSingleApplication::installTranslator(ts);
+            }
         }
         else
         {
             const QString fileName = QStringLiteral("dd_%0").arg(lang);
             if (ts->load(fileName, qmDir))
+            {
+                QtSingleApplication::removeTranslator(ts);
                 QtSingleApplication::installTranslator(ts);
+            }
         }
     }
 }
